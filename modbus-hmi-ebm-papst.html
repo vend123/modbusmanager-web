@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modbus HMI for ebm-papst EC Fans | ModbusManager</title>
+<meta name="description" content="Monitor and control a bank of ebm-papst EC fans over Modbus RTU on one live dashboard. Free 16-fan demo workspace for ModbusManager Pro - runs on the built-in simulator or real fans.">
+<meta name="keywords" content="ebm-papst Modbus, EC fan Modbus RTU, Modbus HVAC fan control, Modbus fan monitoring software, ebm-papst Modbus RTU dashboard, HVAC fan HMI, ModbusManager Pro ebm-papst">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/modbus-hmi-ebm-papst.html">
+
+<meta property="og:title" content="Modbus HMI for ebm-papst EC Fans">
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:description" content="Monitor and control a bank of ebm-papst EC fans over Modbus RTU on one dashboard. Free 16-fan demo workspace, runs on the built-in simulator or real fans.">
+<meta property="og:url" content="https://modbusmanager.com/modbus-hmi-ebm-papst.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://modbusmanager.com/og-ebmpapst.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Modbus HMI for ebm-papst EC Fans">
+<meta name="twitter:description" content="16 EC fans on one Modbus dashboard. Free demo workspace, no hardware needed.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-ebmpapst.png">
+
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+[
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Modbus HMI for ebm-papst EC Fans",
+  "description": "Monitor and control a bank of ebm-papst EC fans over Modbus RTU on one ModbusManager Pro dashboard. Free 16-fan demo workspace you can download and run on the built-in simulator or real fans.",
+  "url": "https://modbusmanager.com/modbus-hmi-ebm-papst.html",
+  "datePublished": "2026-06-19",
+  "dateModified": "2026-06-19",
+  "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
+  "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
+  "about": {
+    "@type": "SoftwareApplication",
+    "name": "ModbusManager Pro",
+    "operatingSystem": "Windows 10, Windows 11",
+    "applicationCategory": "DeveloperApplication",
+    "offers": {"@type": "Offer", "price": "119", "priceCurrency": "USD"},
+    "downloadUrl": "https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.6.2/Modbus.Manager.Pro.Setup.1.6.2.exe"
+  }
+},
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Do I need real ebm-papst fans to try the demo?","acceptedAnswer":{"@type":"Answer","text":"No. The demo workspace includes 16 simulated slave devices, so you can run the whole 16-fan dashboard on one PC with no hardware. Swap in real fans over RS-485 when you are ready."}},
+    {"@type":"Question","name":"Which ebm-papst fans does this work with?","acceptedAnswer":{"@type":"Answer","text":"Any ebm-papst EC fan with the integrated Modbus RTU interface - the common 84, 112, 150 and 200 mm EC and RadiCal ranges. The demo follows the ebm-papst MODBUS parameter layout (D-registers)."}},
+    {"@type":"Question","name":"Modbus RTU or TCP?","acceptedAnswer":{"@type":"Answer","text":"ebm-papst EC fans use Modbus RTU, typically 19200 baud, 8 data bits, even parity, 1 stop bit, over RS-485. Connect a USB-to-RS485 adapter. ModbusManager Pro also supports Modbus TCP if the fans sit behind an RTU-to-TCP gateway."}},
+    {"@type":"Question","name":"Can I control fan speed, not just monitor it?","acceptedAnswer":{"@type":"Answer","text":"Yes. Write the speed setpoint holding register (D001) with function code 06. The feedback values - actual speed, motor status, power, temperature - are read-only input registers read with function code 04."}},
+    {"@type":"Question","name":"How many fans can I show on one dashboard?","acceptedAnswer":{"@type":"Answer","text":"The demo shows 16, but a Modbus RTU bus addresses up to 247 devices and ModbusManager Pro can poll and display many fans on a single dashboard page."}},
+    {"@type":"Question","name":"Does this only work with ebm-papst?","acceptedAnswer":{"@type":"Answer","text":"No. ModbusManager Pro is vendor-neutral. Mix ebm-papst fans with energy meters, VFDs, inverters and PLCs from any manufacturer on one screen."}},
+    {"@type":"Question","name":"What does ModbusManager Pro cost?","acceptedAnswer":{"@type":"Answer","text":"A one-time 119 USD perpetual license for one machine, with 12 months of free updates and a 14-day free trial - no credit card required."}}
+  ]
+}
+]
+</script>
+
+<style>
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+.mono{font-family:'IBM Plex Mono',monospace}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+
+/* HAZARD STRIPE */
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+
+/* HERO */
+.hero{padding:4rem 3rem 3.5rem;max-width:1140px;margin:0 auto}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.9rem}
+.hero h1{font-family:'Saira Condensed',sans-serif;font-size:3rem;font-weight:700;line-height:1;color:var(--ink);margin-bottom:1rem;letter-spacing:0.01em;text-transform:uppercase;max-width:720px}
+.hero h1 .accent{color:var(--amber-ink)}
+.hero-desc{font-size:1rem;color:var(--body);line-height:1.7;margin-bottom:1.8rem;max-width:640px}
+.hero-ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn-primary{background:var(--run);color:#fff;padding:0.75rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-primary:hover{background:#186040}
+.btn-ghost{background:transparent;color:var(--ink);border:2px solid var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-ghost:hover{background:var(--ink);color:var(--safety)}
+.hero-note{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--muted);margin-top:0.7rem}
+
+/* SECTION */
+.section{padding:3.5rem 3rem;max-width:1140px;margin:0 auto}
+.sec-label{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem}
+.sec-title{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:0.6rem}
+.sec-sub{font-size:0.95rem;color:var(--body);line-height:1.7;margin-bottom:2rem;max-width:680px}
+.divider-line{border:none;border-top:2px solid var(--ink)}
+
+/* WHAT IS HMI */
+.explainer-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.explainer-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.definition-box{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem}
+.definition-box .def-label{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem}
+.definition-box p{font-size:0.9rem;color:var(--body);line-height:1.7}
+
+/* WIDGET GRID */
+.widget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.widget-card{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem}
+.widget-icon{font-size:1.6rem;margin-bottom:0.7rem}
+.widget-name{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem}
+.widget-desc{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;counter-reset:step}
+.step{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem;position:relative}
+.step::before{counter-increment:step;content:counter(step);font-family:'Saira Condensed',sans-serif;font-size:2.5rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.5rem;right:1rem;line-height:1}
+.step-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--amber-ink);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem}
+.step-title{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.5rem}
+.step-text{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* TAG ENGINE */
+.tag-block{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:start}
+.tag-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.code-box{background:var(--ink);color:#D4D8D0;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;line-height:1.7;padding:1.4rem 1.6rem;border-radius:3px;overflow-x:auto}
+.code-box .cm{color:#5F7A5F}
+.code-box .ck{color:var(--safety)}
+.code-box .cv{color:#8EC0B0}
+
+/* COMPARE TABLE */
+.compare-table{width:100%;border-collapse:collapse;font-size:0.88rem}
+.compare-table th{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.05em;text-transform:uppercase;padding:0.7rem 1rem;border-bottom:2px solid var(--ink);text-align:left;background:var(--enclosure2)}
+.compare-table td{padding:0.65rem 1rem;border-bottom:1px solid var(--steel)}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table .hl{background:rgba(30,122,79,0.06)}
+.yes{color:var(--run);font-weight:600}
+.no{color:var(--bad)}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:0}
+.faq-item{border-top:1px solid var(--steel)}
+.faq-item:last-child{border-bottom:1px solid var(--steel)}
+.faq-q{font-family:'Saira Condensed',sans-serif;font-size:1.05rem;font-weight:600;letter-spacing:0.02em;padding:1.1rem 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq-q:hover{color:var(--amber-ink)}
+.faq-q .icon{font-family:'IBM Plex Mono',monospace;font-size:1.1rem;flex-shrink:0;transition:transform 0.2s}
+.faq-a{font-size:0.9rem;color:var(--body);line-height:1.75;padding:0 0 1.1rem;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .icon{transform:rotate(45deg)}
+
+/* CTA STRIP */
+.cta-strip{background:var(--ink);color:var(--safety);padding:3.5rem 3rem;text-align:center}
+.cta-strip h2{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.6rem}
+.cta-strip p{font-size:0.95rem;color:var(--enclosure);margin-bottom:1.8rem;max-width:540px;margin-left:auto;margin-right:auto}
+.cta-strip .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-cta-yellow{background:var(--safety);color:var(--ink);padding:0.8rem 2rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-cta-yellow:hover{background:#e09800}
+.btn-cta-outline{background:transparent;color:var(--safety);border:2px solid var(--safety);padding:0.7rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+
+/* FOOTER */
+footer{background:var(--ink);color:var(--steel);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:0.75rem}
+.footer-logo{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:0.05em;text-transform:uppercase}
+footer a{color:var(--steel);text-decoration:none}
+footer a:hover{color:#fff}
+
+@media(max-width:768px){
+  nav{padding:0.75rem 1.2rem;flex-wrap:wrap;gap:0.5rem}
+  .nav-links{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  .hero h1{font-size:2.2rem}
+  .section{padding:2.5rem 1.2rem}
+  .explainer-grid,.tag-block{grid-template-columns:1fr}
+  .widget-grid{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .cta-strip{padding:2.5rem 1.2rem}
+  footer{padding:1.5rem 1.2rem;flex-direction:column;align-items:flex-start;gap:0.75rem}
+}
+@media(max-width:520px){
+  .widget-grid,.steps{grid-template-columns:1fr}
+}
+.dl-options{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.8rem}
+@media(max-width:768px){.dl-options{grid-template-columns:1fr}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;max-width:100%}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;background:transparent;border:none;min-width:190px;display:none;flex-direction:column;z-index:200}.nav-drop-menu>a{background:var(--enclosure2,#e8e9e4);border-left:1px solid var(--ink,#16181A);border-right:1px solid var(--ink,#16181A)}.nav-drop-menu>a:first-child{border-top:1px solid var(--ink,#16181A);border-radius:3px 3px 0 0;padding-top:0.5rem}.nav-drop-menu>a:last-child{border-bottom:1px solid var(--ink,#16181A);border-radius:0 0 3px 3px;padding-bottom:0.5rem;box-shadow:0 6px 20px rgba(0,0,0,0.18)}
+.nav-drop:hover .nav-drop-menu{display:flex}
+.nav-drop-menu a{padding:0.5rem 1rem;white-space:nowrap;text-transform:none;font-size:0.78rem;color:var(--ink,#16181A)}
+.nav-drop-menu a:hover{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+nav .nav-links.open .nav-drop-menu{position:static;display:flex;margin:0.3rem 0 0.3rem 0.8rem;border:none;box-shadow:none;padding:0;min-width:0;background:none}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+</style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  // Consent Mode v2 - analytics denied by default until the visitor accepts
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/#guides"},{"@type": "ListItem","position": 3,"name": "ebm-papst EC Fans HMI","item": "https://modbusmanager.com/modbus-hmi-ebm-papst.html"}]}
+</script>
+</head>
+<body>
+
+<div class="hazard"></div>
+
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label">Features ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+        <a href="/modbus-data-logger-software.html">Data Logger</a>
+        <a href="/modbus-alarm-software.html">Alarms</a>
+      </div>
+    </li>
+    <li class="nav-drop">
+      <span class="nav-drop-label">Guides ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200</a>
+        <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+        <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+        <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+        <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+        <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+        <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+        <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+        <a href="/manual.html">Documentation</a>
+      </div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.6.2/Modbus.Manager.Pro.Setup.1.6.2.exe" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ebmpapst-NavText', 'product': 'pro', 'value': 1})" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em">Pro trial &darr;</a>
+    <a href="/ModbusManager-ebm-papst-16fan-demo.zip" download class="nav-cta">Free demo &darr;</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow">// ModbusManager Pro &mdash; ebm-papst EC fans</div>
+  <h1>Modbus HMI for<br><span class="accent">ebm-papst EC fans</span></h1>
+  <p class="hero-desc">Monitor and control a whole bank of ebm-papst EC fans over Modbus RTU on one live dashboard &mdash; speed, motor status and power for every fan, without a BMS or a SCADA project. Download the free 16-fan demo workspace, open it in ModbusManager Pro, and explore it with the built-in simulator or your real fans. The same dashboard works with any Modbus device.</p>
+  <div class="hero-ctas">
+    <a href="/ModbusManager-ebm-papst-16fan-demo.zip" download class="btn-primary">Download free demo workspace</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.6.2/Modbus.Manager.Pro.Setup.1.6.2.exe" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ebmpapst-Hero', 'product': 'pro', 'value': 1})" class="btn-ghost">Download Pro trial</a>
+  </div>
+  <p class="hero-note">Demo: 16-fan Pro workspace &middot; runs on the built-in simulator or real fans &middot; Modbus RTU</p>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// what the demo shows</div>
+  <h2 class="sec-title">16 EC fans on one screen</h2>
+  <div class="explainer-grid">
+    <div class="explainer-text">
+      <p>ebm-papst EC fans ship with Modbus RTU built in &mdash; every fan reports its actual speed, motor status, power draw and module temperature, and accepts a speed setpoint. This demo turns a bank of sixteen such fans into a single operator dashboard.</p>
+      <p>ModbusManager Pro polls all 16 fans, and a small Structured Text script flags each fan green when its status word is healthy (0) and red on any fault. Speed shows on a fan widget, power as a live value, status on a lamp &mdash; sixteen times over, on one page.</p>
+      <p>No building-management system, no SCADA server, no per-point licensing. One PC on the RS-485 line &mdash; or the built-in simulator if you have no fans on the bench yet.</p>
+    </div>
+    <div>
+      <div class="definition-box">
+        <div class="def-label">Data flow</div>
+        <p>16 &times; ebm-papst EC fan (Modbus RTU, 19200 8E1) &rarr; USB&ndash;RS485 adapter &rarr; ModbusManager Pro dashboard on Windows. Up to 247 fans on one bus.</p>
+      </div>
+      <div style="margin-top:1.2rem;background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.2rem 1.5rem">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.8rem">Dashboard shows (per fan)</div>
+        <ul style="list-style:none;font-size:0.88rem;color:var(--body);line-height:1.7">
+          <li>&#127744; Actual speed &mdash; fan widget (%)</li>
+          <li>&#128202; Current power draw (W)</li>
+          <li>&#128161; Motor-status lamp (green = OK)</li>
+          <li>&#127991; Fan label &amp; slave address</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// download the demo</div>
+  <h2 class="sec-title">Free 16-fan demo workspace</h2>
+  <p class="sec-sub">One download: a ready-made ModbusManager Pro workspace with sixteen fans pre-mapped to the ebm-papst register layout, the motor-status script, and a finished dashboard page. Open it, point it at the simulator or your fans, and you have a live fan wall.</p>
+  <div class="widget-grid">
+    <div class="widget-card">
+      <div class="widget-icon">&#128202;</div>
+      <div class="widget-name">16-fan workspace</div>
+      <div class="widget-desc">Sixteen poll windows (one slave each), tags for speed, status and power, and a dashboard page with a fan widget, power value and status lamp per fan.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">&#128220;</div>
+      <div class="widget-name">Status script</div>
+      <div class="widget-desc">A Structured Text loop that turns each fan&rsquo;s status word into a clean OK / fault flag driving the lamps &mdash; an example of Pro&rsquo;s tag engine.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">&#128214;</div>
+      <div class="widget-name">README</div>
+      <div class="widget-desc">Register map, RS-485 bus settings, how to load the workspace, and how to run it against the built-in simulator or real fans.</div>
+    </div>
+  </div>
+  <div style="margin-top:1.8rem;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+    <a href="/ModbusManager-ebm-papst-16fan-demo.zip" download class="btn-primary">Download demo workspace (.zip)</a>
+    <a href="/ebmpapst_16fans_workspace.json" download class="btn-ghost">Just the .json</a>
+  </div>
+  <p style="margin-top:1rem;font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--muted)">Needs ModbusManager Pro (14-day trial works). No hardware required &mdash; the built-in slave simulator can stand in for the fans.</p>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// how to run it</div>
+  <h2 class="sec-title">Four steps to a live fan wall</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-label">Step 1</div>
+      <div class="step-title">Open the workspace</div>
+      <div class="step-text">In ModbusManager Pro, open the demo workspace. It loads sixteen poll windows, the tags, the motor-status script and the dashboard page &mdash; all pre-configured.</div>
+    </div>
+    <div class="step">
+      <div class="step-label">Step 2</div>
+      <div class="step-title">Pick a source</div>
+      <div class="step-text">No fans yet? The workspace ships with sixteen simulated slave devices &mdash; start the built-in simulator and drive the speed registers. Have real fans? Wire them on RS-485 and skip the simulator.</div>
+    </div>
+    <div class="step">
+      <div class="step-label">Step 3</div>
+      <div class="step-title">Connect</div>
+      <div class="step-text">Connect over Modbus RTU (19200, 8E1) through your USB&ndash;RS485 adapter, or to the local simulator. Each fan is one slave address &mdash; 1 to 16 in the demo.</div>
+    </div>
+    <div class="step">
+      <div class="step-label">Step 4</div>
+      <div class="step-title">Run it</div>
+      <div class="step-text">Start the script loop and switch the dashboard to Runtime. Speed, power and the status lamps update live across all sixteen fans at once.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// register map</div>
+  <h2 class="sec-title">What each fan exposes</h2>
+  <p class="sec-sub">ebm-papst uses decimal register addresses. The demo reads the feedback block (D010&ndash;D021) as input registers with function code 04; the speed setpoint is a holding register written with function code 06.</p>
+  <table class="compare-table">
+    <thead>
+      <tr><th>Addr</th><th>Value</th><th>Access</th><th>Range / scale</th><th>Unit</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="mono">53264 (D010)</td><td>Actual speed</td><td>FC04 read</td><td>0&ndash;65535 = 0&ndash;100%</td><td>%</td></tr>
+      <tr><td class="mono">53265 (D011)</td><td>Motor status (0 = OK)</td><td>FC04 read</td><td>bitfield</td><td>&mdash;</td></tr>
+      <tr><td class="mono">53269 (D015)</td><td>Module temperature</td><td>FC04 read</td><td>signed</td><td>&deg;C</td></tr>
+      <tr><td class="mono">53281 (D021)</td><td>Current power</td><td>FC04 read</td><td>&divide;1</td><td>W</td></tr>
+      <tr class="hl"><td class="mono">53249 (D001)</td><td>Speed setpoint</td><td>FC06 write</td><td>0&ndash;65535 = 0&ndash;100%</td><td>%</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:1rem;font-size:0.85rem;color:var(--muted);font-family:'IBM Plex Mono',monospace">Bus: Modbus RTU, 19200 baud, 8E1, up to 247 fans. The setpoint is stored in EEPROM &mdash; write it on change, not continuously. Full map and steps are in the README inside the zip.</div>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// why modbusmanager pro</div>
+  <h2 class="sec-title">A lightweight HMI for your fan plant</h2>
+  <div class="explainer-grid">
+    <div class="explainer-text">
+      <p>For a fan wall, an air-handling unit or a test bench, a full BMS or SCADA setup is overkill. ModbusManager Pro gives you a clean operator dashboard for a one-time 119 USD license &mdash; no runtime fees, no per-point pricing, no server to maintain.</p>
+      <p>Because it speaks plain Modbus, it is not tied to ebm-papst. Put EC fans, an energy meter, a VFD and a temperature controller on the same screen, whatever the brand.</p>
+    </div>
+    <div class="definition-box">
+      <div class="def-label">Good fit for</div>
+      <p>HVAC and ventilation commissioning, fan-wall and AHU monitoring, cleanroom and data-centre cooling, OEM test benches, and anyone running several Modbus EC fans who wants one live view without a BMS.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// frequently asked questions</div>
+  <h2 class="sec-title">ebm-papst + Modbus &mdash; FAQ</h2>
+  <div class="faq-list">
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Do I need real ebm-papst fans to try the demo?<span class="icon">+</span></div><div class="faq-a">No. The workspace includes sixteen simulated slave devices, so you can run the whole 16-fan dashboard on one PC with no hardware. Swap in real fans over RS-485 when you are ready.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Which ebm-papst fans does this work with?<span class="icon">+</span></div><div class="faq-a">Any ebm-papst EC fan with the integrated Modbus RTU interface &mdash; the common 84, 112, 150 and 200 mm EC and RadiCal ranges. The demo follows the ebm-papst MODBUS parameter layout (D-registers).</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Modbus RTU or TCP?<span class="icon">+</span></div><div class="faq-a">ebm-papst EC fans use Modbus RTU, typically 19200 baud, 8 data bits, even parity, 1 stop bit, over RS-485. Connect a USB-to-RS485 adapter. Pro also supports Modbus TCP if the fans sit behind an RTU-to-TCP gateway.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I control fan speed, not just monitor it?<span class="icon">+</span></div><div class="faq-a">Yes. Write the speed setpoint holding register (D001) with function code 06. The feedback values &mdash; actual speed, motor status, power, temperature &mdash; are read-only input registers read with FC04.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How many fans can I show on one dashboard?<span class="icon">+</span></div><div class="faq-a">The demo shows 16, but a Modbus RTU bus addresses up to 247 devices and Pro can poll and display many fans on a single dashboard page.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does this only work with ebm-papst?<span class="icon">+</span></div><div class="faq-a">No. ModbusManager Pro is vendor-neutral &mdash; mix ebm-papst fans with meters, VFDs, inverters and PLCs from any maker on one screen.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What does ModbusManager Pro cost?<span class="icon">+</span></div><div class="faq-a">A one-time 119 USD perpetual license for one machine, with 12 months of free updates and a 14-day free trial &mdash; no credit card required.</div></div>
+  </div>
+</section>
+
+<div class="cta-strip">
+  <h2>Put your fan wall on one screen</h2>
+  <p>Download the free 16-fan demo workspace and the ModbusManager Pro trial, and have a live ebm-papst dashboard running in minutes &mdash; with or without hardware.</p>
+  <div class="ctas">
+    <a href="/ModbusManager-ebm-papst-16fan-demo.zip" download class="btn-cta-yellow">Download free demo</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.6.2/Modbus.Manager.Pro.Setup.1.6.2.exe" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ebmpapst-CTA', 'product': 'pro', 'value': 1})" class="btn-cta-outline">Download Pro trial</a>
+  </div>
+  <p style="margin-top:1rem;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--steel)">Windows 10/11 &middot; 14-day trial &middot; Pro $119 one-time</p>
+</div>
+
+<footer>
+  <div class="footer-logo">ModbusManager</div>
+  <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
+    <a href="/">Home</a>
+    <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+    <a href="/modbus-data-logger-software.html">Data Logger</a>
+    <a href="/modbus-alarm-software.html">Alarms</a>
+    <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+    <a href="/abb-acs580-modbus.html">VFD drives</a>
+    <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    <a href="/manual.html">Documentation</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/license-terms.html">License terms</a>
+    <a href="mailto:support@modbusmanager.com">Support</a>
+  </div>
+  <div>support@modbusmanager.com</div>
+</footer>
+
+<script>
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+</script>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+</body>
+</html>

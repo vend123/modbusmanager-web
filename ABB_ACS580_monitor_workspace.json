@@ -1,0 +1,276 @@
+{
+ "version": 2,
+ "polls": [
+  {
+   "name": "ACS580 — status (read-only)",
+   "fc": 3,
+   "addr": 40004,
+   "qty": 9,
+   "slaveId": 1,
+   "interval": 500,
+   "disabled": false,
+   "addrBase": 0,
+   "chart": {
+    "paused": false,
+    "crosshair": false,
+    "cursorX": null,
+    "dragging": false,
+    "layout": null,
+    "data": []
+   },
+   "log": {
+    "active": false,
+    "buffer": [],
+    "startTime": null,
+    "count": 0
+   },
+   "chartReg": 0,
+   "chartName": "ACS580 [40004]",
+   "logFile": "log_ACS580.txt"
+  }
+ ],
+ "activePoll": 0,
+ "condColors": {},
+ "scaling": {},
+ "valueNames": {},
+ "chartSeries": [
+  {
+   "reg": 40005,
+   "name": "Output frequency (raw)",
+   "color": "#4ec9b0"
+  }
+ ],
+ "slaveBlocks": [
+  {
+   "unitId": 1,
+   "regType": "holdingRegisters",
+   "start": 40004,
+   "count": 9
+  }
+ ],
+ "dashPages": [
+  {
+   "id": 1,
+   "name": "ACS580 Status",
+   "elements": [
+    {
+     "value": 0,
+     "id": 1,
+     "type": "statictext",
+     "x": 40,
+     "y": 16,
+     "text": "⚡  ABB ACS580 — Drive Status (read-only)",
+     "fontSize": 22,
+     "color": "#00d4aa",
+     "bold": true,
+     "w": 700,
+     "h": 32
+    },
+    {
+     "value": 0,
+     "id": 2,
+     "type": "statictext",
+     "x": 40,
+     "y": 50,
+     "text": "Monitoring only — no control word is written. Modbus RTU · ABB Drives profile",
+     "fontSize": 12,
+     "color": "#5b6470",
+     "bold": false,
+     "w": 700,
+     "h": 20
+    },
+    {
+     "id": 3,
+     "type": "lamp",
+     "x": 40,
+     "y": 92,
+     "value": 0,
+     "label": "Ready",
+     "sourceType": "tag",
+     "tagName": "st_ready",
+     "onColor": "#3fb950",
+     "offColor": "#30363d",
+     "w": 150,
+     "h": 70
+    },
+    {
+     "id": 4,
+     "type": "lamp",
+     "x": 210,
+     "y": 92,
+     "value": 0,
+     "label": "Running",
+     "sourceType": "tag",
+     "tagName": "st_running",
+     "onColor": "#3fb950",
+     "offColor": "#30363d",
+     "w": 150,
+     "h": 70
+    },
+    {
+     "id": 5,
+     "type": "lamp",
+     "x": 380,
+     "y": 92,
+     "value": 0,
+     "label": "Fault",
+     "sourceType": "tag",
+     "tagName": "st_fault",
+     "onColor": "#3fb950",
+     "offColor": "#30363d",
+     "w": 150,
+     "h": 70
+    },
+    {
+     "id": 6,
+     "type": "iconvalue",
+     "x": 40,
+     "y": 186,
+     "value": 0,
+     "label": "Output frequency",
+     "sourceType": "tag",
+     "tagName": "out_freq_hz",
+     "unit": "Hz",
+     "icon": "〰",
+     "decimals": 1,
+     "w": 210,
+     "h": 64,
+     "color": "#f0c040"
+    },
+    {
+     "id": 7,
+     "type": "iconvalue",
+     "x": 280,
+     "y": 186,
+     "value": 0,
+     "label": "Motor current",
+     "sourceType": "tag",
+     "tagName": "motor_curr_a",
+     "unit": "A",
+     "icon": "⚡",
+     "decimals": 1,
+     "w": 210,
+     "h": 64,
+     "color": "#f0c040"
+    },
+    {
+     "value": 0,
+     "id": 8,
+     "type": "statictext",
+     "x": 40,
+     "y": 270,
+     "text": "Status word (raw decimal): see status_word tag for the full bit pattern",
+     "fontSize": 11,
+     "color": "#5b6470",
+     "bold": false,
+     "w": 700,
+     "h": 20
+    }
+   ]
+  }
+ ],
+ "tags": [
+  {
+   "name": "status_word",
+   "type": "register",
+   "slaveId": 1,
+   "regType": "holdingRegisters",
+   "address": 40004,
+   "dataType": "int16",
+   "wordOrder": "big",
+   "value": 0,
+   "description": "Status word (raw)"
+  },
+  {
+   "name": "act_freq_raw",
+   "type": "register",
+   "slaveId": 1,
+   "regType": "holdingRegisters",
+   "address": 40005,
+   "dataType": "int16",
+   "wordOrder": "big",
+   "value": 0,
+   "description": "Actual 1 (typ. output freq)"
+  },
+  {
+   "name": "act_curr_raw",
+   "type": "register",
+   "slaveId": 1,
+   "regType": "holdingRegisters",
+   "address": 40006,
+   "dataType": "int16",
+   "wordOrder": "big",
+   "value": 0,
+   "description": "Actual 2 (typ. motor current)"
+  },
+  {
+   "name": "act_pwr_raw",
+   "type": "register",
+   "slaveId": 1,
+   "regType": "holdingRegisters",
+   "address": 40007,
+   "dataType": "int16",
+   "wordOrder": "big",
+   "value": 0,
+   "description": "Actual 3 (typ. power)"
+  },
+  {
+   "name": "out_freq_hz",
+   "type": "internal",
+   "slaveId": 0,
+   "regType": "holdingRegisters",
+   "address": 0,
+   "dataType": "int16",
+   "wordOrder": "big",
+   "value": 0,
+   "description": "Output frequency (Hz, scaled)"
+  },
+  {
+   "name": "motor_curr_a",
+   "type": "internal",
+   "slaveId": 0,
+   "regType": "holdingRegisters",
+   "address": 0,
+   "dataType": "int16",
+   "wordOrder": "big",
+   "value": 0,
+   "description": "Motor current (A, scaled)"
+  },
+  {
+   "name": "st_ready",
+   "type": "internal",
+   "slaveId": 0,
+   "regType": "holdingRegisters",
+   "address": 0,
+   "dataType": "int16",
+   "wordOrder": "big",
+   "value": 0,
+   "description": "Status: ready (bit 0)"
+  },
+  {
+   "name": "st_running",
+   "type": "internal",
+   "slaveId": 0,
+   "regType": "holdingRegisters",
+   "address": 0,
+   "dataType": "int16",
+   "wordOrder": "big",
+   "value": 0,
+   "description": "Status: operation enabled / running (bit 2)"
+  },
+  {
+   "name": "st_fault",
+   "type": "internal",
+   "slaveId": 0,
+   "regType": "holdingRegisters",
+   "address": 0,
+   "dataType": "int16",
+   "wordOrder": "big",
+   "value": 0,
+   "description": "Status: fault (bit 3)"
+  }
+ ],
+ "script": "(* ABB ACS580 read-only monitoring — scale + decode status word *)\n(* NB: scaling and actual-value mapping depend on drive parameters 53.10-53.17. *)\n(* Verify against your drive; adjust gains below if values look off.            *)\n\n(* Output frequency: ABB Drives reference scale 20000 = 100% of 50 Hz *)\nout_freq_hz := act_freq_raw / 20000 * 50;\n\n(* Motor current: typical scale 10 = 1 A *)\nmotor_curr_a := act_curr_raw / 10;\n\n(* Status word bit decode: bit N = (sw mod 2^(N+1) - sw mod 2^N) / 2^N *)\nst_ready := status_word % 2;\nst_running := (status_word % 8 - status_word % 4) / 4;\nst_fault := (status_word % 16 - status_word % 8) / 8;\n",
+ "scriptInterval": "500",
+ "saved": "2026-06-30T08:36:00.229451+00:00"
+}

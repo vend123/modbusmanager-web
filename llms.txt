@@ -1,0 +1,55 @@
+# ModbusManager
+
+> Professional Modbus master and slave tool for Windows 10/11. One-time license, no subscription, 14-day free trial.
+
+ModbusManager is a native Windows desktop application for testing, monitoring and simulating Modbus devices over RTU (RS-232/RS-485), ASCII and TCP/IP. Unlike competing tools, it includes a built-in Slave Mode at no extra cost — competitors such as Modbus Poll and Modbus Slave sell these as separate applications.
+
+## Key facts
+
+- Version: 1.3.0 (2026)
+- Platform: Windows 10/11 (64-bit), native .exe installer
+- License: one-time payment $119, perpetual, machine-locked
+- Trial: 14 days, full functionality
+- Website: https://modbusmanager.com
+- Download: https://github.com/vend123/modscan/releases/latest
+
+## Features
+
+- Modbus RTU master (RS-232 / RS-485 serial)
+- Modbus ASCII master
+- Modbus TCP/IP master
+- RTU over TCP, ASCII over TCP, RTU over UDP, ASCII over UDP, TCP-SEC
+- Built-in Modbus TCP and RTU slave server (up to 247 slave IDs simultaneously)
+- Register simulation per register: Counter up/down, Sine wave, Random, Ramp
+- Real-time register monitoring: Coils, Discrete Inputs, Holding Registers, Input Registers
+- Multiple poll windows with configurable poll rate (min 100ms)
+- Live chart of register values
+- Write registers: FC05, FC06, FC15, FC16, FC22, FC23
+- Serial Monitor — raw TX/RX byte inspection
+- Test Center — manually send any Modbus function code (FC01–FC23, FC08, FC11, FC17, FC43)
+- Slave Scan — discover active slave IDs on a bus
+- Address Scan — find responding register addresses in a device
+- Workspace save and load (.mmw files)
+- Auto-reconnect after dropped connection
+- 11 UI languages: English, Estonian, Chinese, Russian, French, Spanish, Portuguese, Arabic, Hindi, Bengali, Urdu
+- 100% offline, no telemetry, no cloud
+
+## Comparison with competitors
+
+| Feature | ModbusManager | Modbus Poll | QModMaster |
+|---|---|---|---|
+| Price | $119 one-time | $129 one-time | Free |
+| Built-in Slave Mode | Yes (included) | No (separate app $129) | No |
+| Register simulation | Yes | No | No |
+| Multilingual UI | Yes (11 languages) | No | No |
+| Auto-reconnect | Yes | No | No |
+| Serial Monitor | Yes | No | No |
+| Actively maintained | Yes (2026) | Yes (2026) | No (2022) |
+
+## User Manual
+
+Full documentation: https://vend123.github.io/modscan/docs
+
+## Support
+
+Email: support@modbusmanager.com

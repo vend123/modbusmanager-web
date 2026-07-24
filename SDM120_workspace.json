@@ -1,0 +1,363 @@
+{
+ "version": 2,
+ "polls": [
+  {
+   "name": "SDM120 \u2014 measurements",
+   "fc": 4,
+   "addr": 30001,
+   "qty": 80,
+   "slaveId": 1,
+   "interval": 1000,
+   "disabled": false,
+   "addrBase": 0,
+   "chart": {
+    "paused": false,
+    "crosshair": false,
+    "cursorX": null,
+    "dragging": false,
+    "layout": null,
+    "data": []
+   },
+   "log": {
+    "active": false,
+    "buffer": [],
+    "startTime": null,
+    "count": 0
+   },
+   "chartReg": 0,
+   "chartName": "SDM630 [30001]",
+   "logFile": "log_SDM630.txt"
+  },
+  {
+   "name": "SDM120 \u2014 total energy",
+   "fc": 4,
+   "addr": 30343,
+   "qty": 4,
+   "slaveId": 1,
+   "interval": 5000,
+   "disabled": false,
+   "addrBase": 0,
+   "chart": {
+    "paused": false,
+    "crosshair": false,
+    "cursorX": null,
+    "dragging": false,
+    "layout": null,
+    "data": []
+   },
+   "log": {
+    "active": false,
+    "buffer": [],
+    "startTime": null,
+    "count": 0
+   },
+   "chartReg": 0,
+   "chartName": "SDM630 [30001]",
+   "logFile": "log_SDM630.txt"
+  }
+ ],
+ "activePoll": 0,
+ "condColors": {},
+ "scaling": {},
+ "valueNames": {},
+ "chartSeries": [
+  {
+   "reg": 30053,
+   "name": "Total Active Power",
+   "color": "#00ffcc"
+  }
+ ],
+ "slaveBlocks": [
+  {
+   "unitId": 1,
+   "regType": "inputRegisters",
+   "start": 30001,
+   "count": 80
+  }
+ ],
+ "dashPages": [
+  {
+   "id": 1,
+   "name": "SDM120",
+   "elements": [
+    {
+     "value": 0,
+     "id": 1,
+     "type": "statictext",
+     "x": 40,
+     "y": 16,
+     "text": "\u26a1  Eastron SDM120 \u2014 1-Phase Energy Meter",
+     "fontSize": 22,
+     "color": "#00d4aa",
+     "bold": true,
+     "w": 760,
+     "h": 32
+    },
+    {
+     "value": 0,
+     "id": 2,
+     "type": "statictext",
+     "x": 40,
+     "y": 50,
+     "text": "Modbus RTU \u00b7 FLOAT32 \u00b7 FC04 input registers @ 30001",
+     "fontSize": 12,
+     "color": "#5b6470",
+     "bold": false,
+     "w": 760,
+     "h": 20
+    },
+    {
+     "value": 0,
+     "id": 3,
+     "type": "gauge",
+     "x": 40,
+     "y": 90,
+     "w": 170,
+     "h": 170,
+     "label": "Voltage",
+     "sourceType": "tag",
+     "tagName": "voltage",
+     "unit": "V",
+     "min": 180,
+     "max": 260,
+     "decimals": 1,
+     "color": "#00d4aa"
+    },
+    {
+     "value": 0,
+     "id": 4,
+     "type": "gauge",
+     "x": 230,
+     "y": 90,
+     "w": 170,
+     "h": 170,
+     "label": "Active Power",
+     "sourceType": "tag",
+     "tagName": "power_w",
+     "unit": "W",
+     "min": 0,
+     "max": 10000,
+     "decimals": 0,
+     "color": "#f0c040"
+    },
+    {
+     "value": 0,
+     "id": 5,
+     "type": "gauge",
+     "x": 420,
+     "y": 90,
+     "w": 170,
+     "h": 170,
+     "label": "Current",
+     "sourceType": "tag",
+     "tagName": "current",
+     "unit": "A",
+     "min": 0,
+     "max": 45,
+     "decimals": 2,
+     "color": "#4aa8ff"
+    },
+    {
+     "value": 0,
+     "id": 6,
+     "type": "value",
+     "x": 610,
+     "y": 90,
+     "w": 190,
+     "h": 50,
+     "label": "Power factor",
+     "sourceType": "tag",
+     "tagName": "pf",
+     "unit": "",
+     "decimals": 3
+    },
+    {
+     "value": 0,
+     "id": 7,
+     "type": "value",
+     "x": 610,
+     "y": 150,
+     "w": 190,
+     "h": 50,
+     "label": "Frequency",
+     "sourceType": "tag",
+     "tagName": "freq",
+     "unit": "Hz",
+     "decimals": 2
+    },
+    {
+     "value": 0,
+     "id": 8,
+     "type": "value",
+     "x": 610,
+     "y": 210,
+     "w": 190,
+     "h": 50,
+     "label": "Total energy",
+     "sourceType": "tag",
+     "tagName": "total_kwh",
+     "unit": "kWh",
+     "decimals": 2
+    },
+    {
+     "value": 0,
+     "id": 9,
+     "type": "value",
+     "x": 40,
+     "y": 280,
+     "w": 270,
+     "h": 50,
+     "label": "Import energy",
+     "sourceType": "tag",
+     "tagName": "import_kwh",
+     "unit": "kWh",
+     "decimals": 2
+    },
+    {
+     "value": 0,
+     "id": 10,
+     "type": "value",
+     "x": 330,
+     "y": 280,
+     "w": 270,
+     "h": 50,
+     "label": "Export energy",
+     "sourceType": "tag",
+     "tagName": "export_kwh",
+     "unit": "kWh",
+     "decimals": 2
+    },
+    {
+     "value": 0,
+     "id": 11,
+     "type": "trend",
+     "x": 40,
+     "y": 350,
+     "w": 560,
+     "h": 180,
+     "label": "Active power (W)",
+     "sourceType": "tag",
+     "tagName": "power_w",
+     "unit": "W",
+     "min": 0,
+     "max": 10000
+    }
+   ]
+  }
+ ],
+ "tags": [
+  {
+   "name": "voltage",
+   "type": "register",
+   "slaveId": 1,
+   "regType": "inputRegisters",
+   "address": 30001,
+   "dataType": "float32",
+   "wordOrder": "big",
+   "value": 0,
+   "description": "Voltage L-N (V)"
+  },
+  {
+   "name": "current",
+   "type": "register",
+   "slaveId": 1,
+   "regType": "inputRegisters",
+   "address": 30007,
+   "dataType": "float32",
+   "wordOrder": "big",
+   "value": 0,
+   "description": "Current (A)"
+  },
+  {
+   "name": "power_w",
+   "type": "register",
+   "slaveId": 1,
+   "regType": "inputRegisters",
+   "address": 30013,
+   "dataType": "float32",
+   "wordOrder": "big",
+   "value": 0,
+   "description": "Active power (W)"
+  },
+  {
+   "name": "apparent_va",
+   "type": "register",
+   "slaveId": 1,
+   "regType": "inputRegisters",
+   "address": 30019,
+   "dataType": "float32",
+   "wordOrder": "big",
+   "value": 0,
+   "description": "Apparent power (VA)"
+  },
+  {
+   "name": "reactive_var",
+   "type": "register",
+   "slaveId": 1,
+   "regType": "inputRegisters",
+   "address": 30025,
+   "dataType": "float32",
+   "wordOrder": "big",
+   "value": 0,
+   "description": "Reactive power (VAr)"
+  },
+  {
+   "name": "pf",
+   "type": "register",
+   "slaveId": 1,
+   "regType": "inputRegisters",
+   "address": 30031,
+   "dataType": "float32",
+   "wordOrder": "big",
+   "value": 0,
+   "description": "Power factor"
+  },
+  {
+   "name": "freq",
+   "type": "register",
+   "slaveId": 1,
+   "regType": "inputRegisters",
+   "address": 30071,
+   "dataType": "float32",
+   "wordOrder": "big",
+   "value": 0,
+   "description": "Frequency (Hz)"
+  },
+  {
+   "name": "import_kwh",
+   "type": "register",
+   "slaveId": 1,
+   "regType": "inputRegisters",
+   "address": 30073,
+   "dataType": "float32",
+   "wordOrder": "big",
+   "value": 0,
+   "description": "Import active energy (kWh)"
+  },
+  {
+   "name": "export_kwh",
+   "type": "register",
+   "slaveId": 1,
+   "regType": "inputRegisters",
+   "address": 30075,
+   "dataType": "float32",
+   "wordOrder": "big",
+   "value": 0,
+   "description": "Export active energy (kWh)"
+  },
+  {
+   "name": "total_kwh",
+   "type": "register",
+   "slaveId": 1,
+   "regType": "inputRegisters",
+   "address": 30343,
+   "dataType": "float32",
+   "wordOrder": "big",
+   "value": 0,
+   "description": "Total active energy (kWh)"
+  }
+ ],
+ "script": "",
+ "scriptInterval": "1000",
+ "saved": "2026-06-30T09:46:43.033128+00:00"
+}

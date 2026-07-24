@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ModbusManager User Manual &amp; Documentation</title>
+<meta name="description" content="Complete ModbusManager user manual: connect over Modbus TCP, RTU and ASCII, poll and write registers, run the slave simulator, build tags with Structured Text, and create HMI dashboards. Windows, free 14-day trial.">
+<meta name="keywords" content="Modbus software manual, ModbusManager documentation, how to poll Modbus registers, Modbus TCP RTU ASCII guide, Modbus slave simulator, Modbus Structured Text, Modbus FC03 holding register, Modbus address base, Modbus HMI dashboard">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/manual.html">
+
+<!-- Open Graph -->
+<meta property="og:title" content="ModbusManager User Manual &amp; Documentation">
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:description" content="Complete manual: Modbus TCP/RTU/ASCII connecting, polling, writing, slave simulator, Structured Text tags and HMI dashboards. Windows, free trial.">
+<meta property="og:url" content="https://modbusmanager.com/manual.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://modbusmanager.com/og-hmi.png">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ModbusManager User Manual &amp; Documentation">
+<meta name="twitter:description" content="Connect, poll, write, simulate, script and build HMI dashboards with ModbusManager. Full documentation for Windows.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-hmi.png">
+
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+[
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"ModbusManager User Manual",
+  "description":"Complete user manual for ModbusManager: connecting over Modbus TCP, RTU and ASCII, polling and writing registers, the slave simulator, tags with Structured Text, and HMI dashboards.",
+  "url":"https://modbusmanager.com/manual.html",
+  "datePublished":"2026-06-01",
+  "dateModified":"2026-06-14",
+  "author":{"@type":"Organization","name":"ModbusManager","url":"https://modbusmanager.com"},
+  "publisher":{"@type":"Organization","name":"ModbusManager","url":"https://modbusmanager.com"},
+  "about":{
+    "@type":"SoftwareApplication",
+    "name":"ModbusManager Pro",
+    "operatingSystem":"Windows 10, Windows 11",
+    "applicationCategory":"DeveloperApplication",
+    "offers":{"@type":"Offer","price":"119","priceCurrency":"USD"},
+    "url":"https://modbusmanager.com/#pro",
+    "downloadUrl":"https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.6.2/Modbus.Manager.Pro.Setup.1.6.2.exe"
+  }
+},
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://modbusmanager.com/"},
+    {"@type":"ListItem","position":2,"name":"User Manual","item":"https://modbusmanager.com/manual.html"}
+  ]
+},
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"How do I connect ModbusManager to a Modbus TCP device?",
+     "acceptedAnswer":{"@type":"Answer","text":"Click Connect, choose the TCP/IP tab, enter the device IP address and port (502 by default), set the slave/unit ID, and connect."}},
+    {"@type":"Question","name":"Which Modbus function codes does ModbusManager support?",
+     "acceptedAnswer":{"@type":"Answer","text":"Reading uses FC01 coils, FC02 discrete inputs, FC03 holding registers and FC04 input registers. Writing uses FC05 single coil and FC06 single register, plus FC08 diagnostics."}},
+    {"@type":"Question","name":"What is the difference between address base 0 and base 1?",
+     "acceptedAnswer":{"@type":"Answer","text":"Base 0 uses raw protocol addresses where the first register is 0. Base 1 uses documentation addresses where the first register is 1. Choose the base that matches your device manual."}},
+    {"@type":"Question","name":"Is there a free trial?",
+     "acceptedAnswer":{"@type":"Answer","text":"Yes. New installations include a 14-day free trial with the full Pro feature set. After that you activate a license key issued for your machine."}}
+  ]
+}
+]
+</script>
+
+<style>
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+.mono{font-family:'IBM Plex Mono',monospace}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+
+/* HAZARD STRIPE */
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+
+/* HERO */
+.hero{padding:4rem 3rem 3.5rem;max-width:1140px;margin:0 auto}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.9rem}
+.hero h1{font-family:'Saira Condensed',sans-serif;font-size:3rem;font-weight:700;line-height:1;color:var(--ink);margin-bottom:1rem;letter-spacing:0.01em;text-transform:uppercase;max-width:720px}
+.hero h1 .accent{color:var(--amber-ink)}
+.hero-desc{font-size:1rem;color:var(--body);line-height:1.7;margin-bottom:1.8rem;max-width:640px}
+.hero-ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn-primary{background:var(--run);color:#fff;padding:0.75rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-primary:hover{background:#186040}
+.btn-ghost{background:transparent;color:var(--ink);border:2px solid var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-ghost:hover{background:var(--ink);color:var(--safety)}
+.hero-note{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--muted);margin-top:0.7rem}
+
+/* SECTION */
+.section{padding:3.5rem 3rem;max-width:1140px;margin:0 auto}
+.sec-label{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem}
+.sec-title{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:0.6rem}
+.sec-sub{font-size:0.95rem;color:var(--body);line-height:1.7;margin-bottom:2rem;max-width:680px}
+.divider-line{border:none;border-top:2px solid var(--ink)}
+
+/* WHAT IS HMI */
+.explainer-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.explainer-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.definition-box{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem}
+.definition-box .def-label{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem}
+.definition-box p{font-size:0.9rem;color:var(--body);line-height:1.7}
+
+/* WIDGET GRID */
+.widget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.widget-card{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem}
+.widget-icon{font-size:1.6rem;margin-bottom:0.7rem}
+.widget-name{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem}
+.widget-desc{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;counter-reset:step}
+.step{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem;position:relative}
+.step::before{counter-increment:step;content:counter(step);font-family:'Saira Condensed',sans-serif;font-size:2.5rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.5rem;right:1rem;line-height:1}
+.step-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--amber-ink);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem}
+.step-title{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.5rem}
+.step-text{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* TAG ENGINE */
+.tag-block{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:start}
+.tag-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.code-box{background:var(--ink);color:#D4D8D0;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;line-height:1.7;padding:1.4rem 1.6rem;border-radius:3px;overflow-x:auto}
+.code-box .cm{color:#5F7A5F}
+.code-box .ck{color:var(--safety)}
+.code-box .cv{color:#8EC0B0}
+
+/* COMPARE TABLE */
+.compare-table{width:100%;border-collapse:collapse;font-size:0.88rem}
+.compare-table th{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.05em;text-transform:uppercase;padding:0.7rem 1rem;border-bottom:2px solid var(--ink);text-align:left;background:var(--enclosure2)}
+.compare-table td{padding:0.65rem 1rem;border-bottom:1px solid var(--steel)}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table .hl{background:rgba(30,122,79,0.06)}
+.yes{color:var(--run);font-weight:600}
+.no{color:var(--bad)}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:0}
+.faq-item{border-top:1px solid var(--steel)}
+.faq-item:last-child{border-bottom:1px solid var(--steel)}
+.faq-q{font-family:'Saira Condensed',sans-serif;font-size:1.05rem;font-weight:600;letter-spacing:0.02em;padding:1.1rem 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq-q:hover{color:var(--amber-ink)}
+.faq-q .icon{font-family:'IBM Plex Mono',monospace;font-size:1.1rem;flex-shrink:0;transition:transform 0.2s}
+.faq-a{font-size:0.9rem;color:var(--body);line-height:1.75;padding:0 0 1.1rem;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .icon{transform:rotate(45deg)}
+
+/* CTA STRIP */
+.cta-strip{background:var(--ink);color:var(--safety);padding:3.5rem 3rem;text-align:center}
+.cta-strip h2{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.6rem}
+.cta-strip p{font-size:0.95rem;color:var(--enclosure);margin-bottom:1.8rem;max-width:540px;margin-left:auto;margin-right:auto}
+.cta-strip .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-cta-yellow{background:var(--safety);color:var(--ink);padding:0.8rem 2rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-cta-yellow:hover{background:#e09800}
+.btn-cta-outline{background:transparent;color:var(--safety);border:2px solid var(--safety);padding:0.7rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+
+/* FOOTER */
+footer{background:var(--ink);color:var(--steel);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:0.75rem}
+.footer-logo{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:0.05em;text-transform:uppercase}
+footer a{color:var(--steel);text-decoration:none}
+footer a:hover{color:#fff}
+
+@media(max-width:768px){
+  nav{padding:0.75rem 1.2rem;flex-wrap:wrap;gap:0.5rem}
+  .nav-links{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  .hero h1{font-size:2.2rem}
+  .section{padding:2.5rem 1.2rem}
+  .explainer-grid,.tag-block{grid-template-columns:1fr}
+  .widget-grid{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .cta-strip{padding:2.5rem 1.2rem}
+  footer{padding:1.5rem 1.2rem;flex-direction:column;align-items:flex-start;gap:0.75rem}
+}
+@media(max-width:520px){
+  .widget-grid,.steps{grid-template-columns:1fr}
+}
+
+/* DOC LAYOUT (manual page) */
+.doc-wrap{display:grid;grid-template-columns:232px 1fr;gap:3rem;max-width:1140px;margin:0 auto;padding:2.5rem 3rem 1rem;align-items:start}
+.doc-toc{position:sticky;top:84px;font-family:'IBM Plex Mono',monospace;font-size:0.78rem}
+.doc-toc .toc-label{font-size:0.62rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.8rem}
+.doc-toc ul{list-style:none;display:flex;flex-direction:column;gap:0.5rem}
+.doc-toc a{color:var(--body);text-decoration:none;border-left:2px solid var(--steel);padding-left:0.7rem;display:block}
+.doc-toc a:hover{color:var(--ink);border-left-color:var(--amber-ink)}
+.doc-main{min-width:0}
+.doc-section{padding:0 0 2.4rem;scroll-margin-top:90px}
+.doc-section>h2{font-family:'Saira Condensed',sans-serif;font-size:1.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:0.5rem;padding-top:0.9rem;border-top:2px solid var(--ink)}
+.doc-section h3{font-family:'Saira Condensed',sans-serif;font-size:1.12rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin:1.3rem 0 0.5rem}
+.doc-section p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:0.9rem}
+.doc-section ul.body-list,.doc-section ol.body-list{margin:0 0 1rem 1.15rem;color:var(--body);font-size:0.95rem;line-height:1.65}
+.doc-section ul.body-list li,.doc-section ol.body-list li{margin-bottom:0.4rem}
+.callout{border:2px solid var(--ink);border-left-width:5px;border-radius:3px;background:var(--plate);padding:0.9rem 1.1rem;margin:0.4rem 0 1.1rem}
+.callout .c-label{font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.3rem}
+.callout p{font-size:0.88rem;margin-bottom:0;color:var(--body);line-height:1.65}
+.callout.note{border-left-color:var(--run)} .callout.note .c-label{color:var(--run)}
+.callout.tip{border-left-color:var(--amber-ink)} .callout.tip .c-label{color:var(--amber-ink)}
+.callout.warn{border-left-color:var(--bad)} .callout.warn .c-label{color:var(--bad)}
+a.inline-link{color:var(--amber-ink);text-decoration:none;border-bottom:1px solid var(--steel)}
+a.inline-link:hover{border-bottom-color:var(--amber-ink)}
+.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin:0.4rem 0 0.6rem}
+.quick-card{display:block;background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.1rem 1.2rem;text-decoration:none;color:var(--ink)}
+.quick-card:hover{background:var(--enclosure2)}
+.quick-card .q-k{font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:var(--amber-ink);letter-spacing:0.1em;text-transform:uppercase}
+.quick-card .q-t{font-family:'Saira Condensed',sans-serif;font-size:1.12rem;font-weight:700;text-transform:uppercase;margin:0.3rem 0}
+.quick-card .q-d{font-size:0.82rem;color:var(--body);line-height:1.5}
+.doc-table{width:100%;border-collapse:collapse;font-size:0.86rem;margin:0.3rem 0 1.2rem}
+.doc-table th{font-family:'IBM Plex Mono',monospace;font-size:0.66rem;letter-spacing:0.05em;text-transform:uppercase;padding:0.55rem 0.8rem;border-bottom:2px solid var(--ink);text-align:left;background:var(--enclosure2)}
+.doc-table td{padding:0.5rem 0.8rem;border-bottom:1px solid var(--steel);color:var(--body);vertical-align:top}
+.doc-table tr:last-child td{border-bottom:none}
+@media(max-width:768px){
+  .doc-wrap{grid-template-columns:1fr;padding:1.6rem 1.2rem;gap:1.2rem}
+  .doc-toc{position:static}
+  .quick-grid{grid-template-columns:1fr}
+}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;background:transparent;border:none;min-width:190px;display:none;flex-direction:column;z-index:200}.nav-drop-menu>a{background:var(--enclosure2,#e8e9e4);border-left:1px solid var(--ink,#16181A);border-right:1px solid var(--ink,#16181A)}.nav-drop-menu>a:first-child{border-top:1px solid var(--ink,#16181A);border-radius:3px 3px 0 0;padding-top:0.5rem}.nav-drop-menu>a:last-child{border-bottom:1px solid var(--ink,#16181A);border-radius:0 0 3px 3px;padding-bottom:0.5rem;box-shadow:0 6px 20px rgba(0,0,0,0.18)}
+.nav-drop:hover .nav-drop-menu{display:flex}
+.nav-drop-menu a{padding:0.5rem 1rem;white-space:nowrap;text-transform:none;font-size:0.78rem;color:var(--ink,#16181A)}
+.nav-drop-menu a:hover{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+nav .nav-links.open .nav-drop-menu{position:static;display:flex;margin:0.3rem 0 0.3rem 0.8rem;border:none;box-shadow:none;padding:0;min-width:0;background:none}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
+}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;max-width:100%}}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+</style>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+</head>
+<body>
+
+<div class="hazard"></div>
+
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label">Features ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+        <a href="/modbus-data-logger-software.html">Data Logger</a>
+        <a href="/modbus-alarm-software.html">Alarms</a>
+      </div>
+    </li>
+    <li class="nav-drop">
+      <span class="nav-drop-label">Guides ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200</a>
+        <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+        <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+        <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+        <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+        <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+        <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+        <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+        <a href="/manual.html">Documentation</a>
+      </div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.6.2/Modbus.Manager.Pro.Setup.1.6.2.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-NavText','product':'pro','value':1})">Pro trial &darr;</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.6.2/Modbus.Manager.Pro.Setup.1.6.2.exe" class="nav-cta" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-Nav','product':'pro','value':1})">Download Pro trial</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="eyebrow">Documentation &mdash; ModbusManager Pro v1.6.0</div>
+  <h1>ModbusManager <span class="accent">User Manual</span></h1>
+  <p class="hero-desc">Everything you need to connect, poll, write, simulate, script and visualise Modbus data on Windows. Use the contents to jump to a topic, or download the full manual as a printable PDF.</p>
+  <div class="hero-ctas">
+    <a href="/ModbusManagerPro_UserManual.pdf" class="btn-primary">Download PDF manual</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.6.2/Modbus.Manager.Pro.Setup.1.6.2.exe" class="btn-ghost" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-Hero','product':'pro','value':1})">Download Pro trial</a>
+  </div>
+  <p class="hero-note">Free 14-day trial &bull; One-time license from &#36;119 &bull; Windows 10 / 11</p>
+</header>
+
+<div class="doc-wrap">
+<aside class="doc-toc"><div class="toc-label">On this page</div><ul>
+<li><a href="#getting-started">Getting started</a></li>
+<li><a href="#connecting">Connecting</a></li>
+<li><a href="#polling">Polling registers</a></li>
+<li><a href="#writing">Writing values</a></li>
+<li><a href="#monitoring">Charts &amp; monitoring</a></li>
+<li><a href="#scanning">Scanning tools</a></li>
+<li><a href="#slave">Slave simulator</a></li>
+<li><a href="#tags">Tags &amp; scripting</a></li>
+<li><a href="#dashboard">HMI dashboard</a></li>
+<li><a href="#solar">Solar / SmartLogger</a></li>
+<li><a href="#workspaces">Workspaces</a></li>
+<li><a href="#licensing">Licensing</a></li>
+<li><a href="#languages">Languages</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+<li><a href="#faq">FAQ</a></li>
+</ul></aside>
+<main class="doc-main">
+<section id="getting-started" class="doc-section">
+<h2>Getting started</h2>
+<p>ModbusManager is a Windows desktop tool for talking to Modbus devices &mdash; PLCs, drives, energy meters and inverters. It combines a fast register poller, a built-in slave simulator, a tag engine with Structured Text scripting and, in the Pro edition, a full drag-and-drop <a href="/modbus-hmi-dashboard.html">HMI dashboard</a>, a <a href="/modbus-data-logger-software.html">data logging Historian</a> and an <a href="/modbus-alarm-software.html">alarm system</a>. Everything runs locally; no cloud account is required.</p>
+<div class="steps"><div class="step"><div class="step-label">Install</div><div class="step-title">Run the installer</div><div class="step-text">Download the Pro installer for Windows and launch ModbusManager from the Start menu.</div></div><div class="step"><div class="step-label">Trial</div><div class="step-title">14-day trial starts</div><div class="step-text">The full Pro feature set unlocks for 14 days. Days remaining show in the title bar.</div></div><div class="step"><div class="step-label">Connect</div><div class="step-title">Add your device</div><div class="step-text">Click Connect, pick TCP, RTU or ASCII, enter the parameters and go online.</div></div><div class="step"><div class="step-label">Build</div><div class="step-title">Poll &amp; visualise</div><div class="step-text">Read registers, then drag widgets onto a dashboard to build an operator screen.</div></div></div>
+<h3>Where to go next</h3>
+<div class="quick-grid"><a class="quick-card" href="/modbus-hmi-dashboard.html"><div class="q-k">Guide</div><div class="q-t">HMI Dashboard</div><div class="q-d">Build a live drag-and-drop dashboard without SCADA licenses.</div></a><a class="quick-card" href="/huawei-smartlogger-modbus.html"><div class="q-k">Guide</div><div class="q-t">Huawei SmartLogger</div><div class="q-d">Read SUN2000 inverter data via the SmartLogger Modbus scheme.</div></a><a class="quick-card" href="/ModbusManagerPro_UserManual.pdf"><div class="q-k">PDF</div><div class="q-t">Full manual</div><div class="q-d">Download the complete manual as a printable PDF.</div></a></div>
+</section>
+<section id="connecting" class="doc-section">
+<h2>Connecting</h2>
+<p>Click <b>Connect</b> to open the connection dialog. ModbusManager offers nine transport modes covering direct serial, direct network and framing-over-network for gateways.</p>
+<table class="doc-table"><thead><tr><th style='width:110px'>Mode</th><th style='width:None'>Use it for</th></tr></thead><tbody><tr><td>TCP/IP</td><td>Modbus TCP devices over Ethernet. Default port 502.</td></tr><tr><td>RTU</td><td>Direct serial RS-485 / RS-232 via a COM port or USB adapter.</td></tr><tr><td>ASCII</td><td>Serial Modbus ASCII &mdash; each byte sent as two hex characters.</td></tr><tr><td>RTU / TCP</td><td>RTU framing tunnelled over TCP (serial gateway / converter).</td></tr><tr><td>ASCII / TCP</td><td>ASCII framing over a TCP connection.</td></tr><tr><td>UDP</td><td>Modbus UDP/IP.</td></tr><tr><td>RTU / UDP</td><td>RTU framing over UDP/IP.</td></tr><tr><td>ASCII / UDP</td><td>ASCII framing over UDP/IP.</td></tr><tr><td>TCP-SEC</td><td>Modbus/TCP Security (TLS). Default port 802.</td></tr></tbody></table>
+<h3>Modbus TCP/IP</h3>
+<ol class="body-list"><li>Open <b>Connect</b> and select the <b>TCP/IP</b> tab.</li><li>Enter the device IP address (for example 192.168.1.100) and port (usually 502).</li><li>Set the slave / unit ID (often 1) and click Connect.</li></ol>
+<h3>Modbus RTU (RS-485 / RS-232)</h3>
+<ol class="body-list"><li>Connect your USB-RS485 adapter and note its port &mdash; COM3, COM4 on Windows; /dev/ttyUSB0 on Linux.</li><li>Open <b>Connect</b> &rarr; <b>RTU</b> and choose the serial port.</li><li>Match the device baud rate, parity, data bits and stop bits, then connect. RTS-toggle, echo removal and a custom baud-rate field are available for adapters that need them.</li></ol>
+<div class="callout note"><div class="c-label">Note &mdash; auto reconnect</div><p>If a connection drops, ModbusManager attempts to recover it automatically and reflects the live state in the interface, so transient cable or network glitches do not require a manual reconnect.</p></div>
+</section>
+<section id="polling" class="doc-section">
+<h2>Polling registers</h2>
+<p>Once connected, configure the poll from the toolbar and watch values stream into the <b>Registers</b> grid.</p>
+<h3>Function code &amp; addressing</h3>
+<table class="doc-table"><thead><tr><th style='width:60px'>FC</th><th style='width:190px'>Reads</th><th style='width:None'>Type</th></tr></thead><tbody><tr><td>FC01</td><td>Coils</td><td>Read/write bits</td></tr><tr><td>FC02</td><td>Discrete Inputs</td><td>Read-only bits</td></tr><tr><td>FC03</td><td>Holding Registers</td><td>Read/write 16-bit words</td></tr><tr><td>FC04</td><td>Input Registers</td><td>Read-only 16-bit words</td></tr></tbody></table>
+<ul class="body-list"><li><b>Start address</b> and <b>quantity</b> define the block to read.</li><li><b>Address base</b> switches between Base 0 (protocol addressing, first register = 0) and Base 1 (documentation addressing, first register = 1) so displayed addresses match your device manual.</li><li><b>Poll delay (ms)</b> sets the interval between successive polls.</li></ul>
+<h3>Data formats &amp; scaling</h3>
+<p>Register values can be shown as 16-bit integers, combined into 32-bit floats, and reinterpreted with word swap and big- or little-endian byte order using the toolbar toggles. Per-address <b>scaling</b> converts a raw register into engineering units directly in the grid.</p>
+<div class="callout tip"><div class="c-label">Tip</div><p>Each grid row has a quick action to send that register straight to the Dashboard as a bound widget &mdash; a fast way to build a screen from a live device.</p></div>
+</section>
+<section id="writing" class="doc-section">
+<h2>Writing values</h2>
+<p>The <b>Write</b> tab sends values back to the device: a single coil (FC05) or holding register (FC06), or a block of multiple registers at once. Enter the target address and value(s), confirm, and the result is reported immediately.</p>
+<div class="callout warn"><div class="c-label">Warning</div><p>Writing to a connected controller changes its state. Confirm the slave ID, address base and value before sending &mdash; especially on live machinery.</p></div>
+</section>
+<section id="monitoring" class="doc-section">
+<h2>Charts &amp; monitoring</h2>
+<p>The <b>Chart</b> tab plots the values from the active poll over time, so you can watch trends and spot noise visually. For protocol-level work, the <b>Serial Monitor</b> shows the raw Modbus request and response frames, and the <b>Test Center</b> lets you compose and send individual requests (including FC08 diagnostics) and inspect the exact reply.</p>
+</section>
+<section id="scanning" class="doc-section">
+<h2>Scanning tools</h2>
+<p><b>Slave Scan</b> probes a range of slave / unit IDs and reports which ones respond &mdash; useful when a device is on the bus but its address is unknown. <b>Address Scan</b> sweeps a range of register addresses on a known slave to find which return data, helping you map an undocumented device.</p>
+</section>
+<section id="slave" class="doc-section">
+<h2>Slave simulator</h2>
+<p>The <b>Slave</b> tab turns ModbusManager into a Modbus server that answers requests as if it were real hardware. Define one or more virtual slave devices, each with its own register map, and let an external master (or a second copy of the tool) poll them.</p>
+<ul class="body-list"><li>Develop and test a SCADA/HMI or master application before the hardware exists.</li><li>Reproduce a device register layout for training or demonstrations.</li><li>Validate dashboard screens against known, controllable values.</li></ul>
+</section>
+<section id="tags" class="doc-section">
+<h2>Tags &amp; Structured Text</h2>
+<p>Tags give your data meaningful names and let you compute derived values &mdash; the bridge between raw registers and a readable dashboard.</p>
+<table class="doc-table"><thead><tr><th style='width:130px'>Type</th><th style='width:None'>Description</th></tr></thead><tbody><tr><td>Register (REG)</td><td>Bound to a real register (slave ID, register type, address). Its value tracks the live device.</td></tr><tr><td>Internal (INT)</td><td>A computed or stored value that lives only inside the tool, typically set from a Structured Text script.</td></tr></tbody></table>
+<p>The Tags tab includes a <b>Structured Text</b> editor (the IEC&nbsp;61131-3 style language used on PLCs). A script can read register tags, apply logic and write results to internal tags. Set a <b>loop interval</b> in milliseconds and start the loop to run it continuously.</p>
+<div class="code-box"><span class="cm">(* Structured Text example *)</span><br><span class="ck">IF</span> MotorSpeed &gt; 100 <span class="ck">THEN</span><br>&nbsp;&nbsp;AlarmActive := <span class="cv">TRUE</span>;<br><span class="ck">ELSIF</span> MotorSpeed &lt; 10 <span class="ck">THEN</span><br>&nbsp;&nbsp;AlarmActive := <span class="cv">FALSE</span>;<br><span class="ck">END_IF</span>;<br><br><span class="cm">(* Write to internal tag *)</span><br>OutputValue := MotorSpeed * 2;</div>
+<div class="callout tip"><div class="c-label">Tip</div><p>Any tag &mdash; register or internal &mdash; can be selected as the source for a dashboard widget. Compute an alarm flag or a scaled value once in a script, then show it anywhere on your screens.</p></div>
+</section>
+<section id="dashboard" class="doc-section">
+<h2>HMI dashboard</h2>
+<p>The <b>Dashboard</b> is the heart of the Pro edition: a drag-and-drop canvas for building operator screens. Drop widgets from the toolbox, bind each to a register or tag, arrange the layout, then switch to <b>Runtime</b> to operate the live screen or go <b>fullscreen</b> as an operator display. You can build multiple <b>pages</b> (including click-to-open popup pages), snap to a grid, multi-select, copy/paste, undo/redo and export a screen as a PNG.</p>
+<h3>Widget categories</h3>
+<table class="doc-table"><thead><tr><th style='width:140px'>Category</th><th style='width:None'>Widgets</th></tr></thead><tbody><tr><td>Standard Objects</td><td>Rectangle, Rounded Rect, Circle, Ellipse, Polygon, Polyline, Arc, Ellipse Arc, Pie Segment, Ellipse Segment, Static Text, Connector</td></tr><tr><td>Basic</td><td>Gauge, Lamp, Bar, Value, Button, Toggle, Line</td></tr><tr><td>Solar / Energy</td><td>Semi Gauge, Trend, Flow Arrow, Icon + Value, Progress Bar, Status Badge</td></tr><tr><td>Process</td><td>Tank, Valve, Pump, Pipe</td></tr><tr><td>Input / Data</td><td>Slider, Setpoint, Clock</td></tr><tr><td>Charts</td><td>Bar Graph, Multi Trend, Alarm List</td></tr></tbody></table>
+<h3>Binding: register or tag</h3>
+<p>Select a widget to open the <b>properties panel</b>. Most value widgets offer a <b>Source</b> choice: a <b>Register</b> (slave ID, register type, address &mdash; polled automatically in the background) or a <b>Tag</b> (a named value from a script). Label, colour, scale, units, decimals, thresholds and size appear according to the widget type.</p>
+<h3>Charts group &amp; the channel editor</h3>
+<p>Bar Graph, Multi Trend and Alarm List each hold a list of <b>channels</b> rather than a single binding. Select the widget and click <b>Edit channels&hellip;</b> in the properties panel to add or remove channels and set each one's name, source (register or tag), colour, and &mdash; depending on the widget &mdash; its threshold, shared min/max scale or trend history length. Register channels refresh at the polling rate and tag channels refresh when their tag updates, so you can mix both on one chart.</p>
+<div class="callout note"><div class="c-label">Note</div><p>For a full walkthrough with examples, see the <a class="inline-link" href="/modbus-hmi-dashboard.html">Modbus HMI Dashboard guide</a>.</p></div>
+</section>
+<section id="solar" class="doc-section">
+<h2>Solar / SmartLogger</h2>
+<p>ModbusManager is well suited to PV monitoring. Using the Huawei <b>SmartLogger Modbus Remapped</b> scheme you can read SUN2000 inverter data over FC03, apply the correct scaling, and present a whole plant on a dashboard &mdash; the Solar/Energy widget category exists for exactly this.</p>
+<div class="callout note"><div class="c-label">Note</div><p>Register addresses, scaling and FC03 polling for Huawei inverters are covered in the dedicated <a class="inline-link" href="/huawei-smartlogger-modbus.html">Huawei SmartLogger Modbus guide</a>.</p></div>
+</section>
+<section id="workspaces" class="doc-section">
+<h2>Workspaces</h2>
+<p>A <b>workspace</b> captures your whole setup &mdash; connection settings, poll configuration, tags, scripts and every dashboard page &mdash; in a single file. Use <b>Save Workspace</b> to write it to your Documents folder and <b>Open Workspace</b> to restore it or move it to another machine. Build a screen once for a device family and reuse the workspace as a template.</p>
+</section>
+<section id="licensing" class="doc-section">
+<h2>Licensing</h2>
+<ul class="body-list"><li><b>Trial:</b> 14 days with the full feature set, starting at first launch.</li><li><b>Machine ID:</b> a unique identifier for your computer, shown in the license dialog.</li><li><b>Activation:</b> enter the key issued for your Machine ID to unlock permanently. Keys are machine-bound, so a new computer needs a new key.</li><li><b>Reinstalling:</b> the trial start is recorded outside the application folder, so reinstalling does not reset it.</li></ul>
+</section>
+<section id="languages" class="doc-section">
+<h2>Languages</h2>
+<p>The interface is fully translated into 11 languages, selectable at any time from the toolbar: English, Chinese, Hindi, Spanish, French, Arabic, Bengali, Russian, Portuguese, Urdu and Estonian. Right-to-left layouts (Arabic, Urdu) are handled automatically.</p>
+</section>
+<section id="troubleshooting" class="doc-section">
+<h2>Troubleshooting</h2>
+<table class="doc-table"><thead><tr><th style='width:220px'>Symptom</th><th style='width:None'>Check</th></tr></thead><tbody><tr><td>No response from a TCP device</td><td>Confirm IP and port (502), network reachability, and the slave/unit ID.</td></tr><tr><td>Serial (RTU) connection fails</td><td>Verify COM port, baud rate, parity, data and stop bits; check adapter drivers and RS-485 A/B polarity.</td></tr><tr><td>Values look wrong or scaled oddly</td><td>Try the word-swap and byte-order toggles, the 32-bit float option, and confirm address base (0 vs 1).</td></tr><tr><td>A dashboard widget shows nothing</td><td>Open its properties / Edit channels and confirm the source, slave ID and address &mdash; or that the tag exists and updates.</td></tr><tr><td>Trial expired</td><td>Activate a license key for your Machine ID from the license dialog.</td></tr></tbody></table>
+</section>
+<section id="faq" class="doc-section">
+<h2>FAQ</h2>
+<div class="faq-list">
+<div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I connect to a Modbus TCP device?<span class="icon">+</span></div><div class="faq-a">Click Connect, choose the TCP/IP tab, enter the device IP and port (502 by default), set the slave/unit ID and connect.</div></div>
+<div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Which function codes are supported?<span class="icon">+</span></div><div class="faq-a">Reading uses FC01 coils, FC02 discrete inputs, FC03 holding registers and FC04 input registers. Writing uses FC05 and FC06, plus FC08 diagnostics.</div></div>
+<div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the difference between address base 0 and base 1?<span class="icon">+</span></div><div class="faq-a">Base 0 uses raw protocol addresses (first register = 0); Base 1 uses documentation addresses (first register = 1). Pick the one that matches your device manual.</div></div>
+<div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I test without hardware?<span class="icon">+</span></div><div class="faq-a">Yes &mdash; the built-in Slave simulator answers requests as one or more virtual devices, so you can develop and validate against known values.</div></div>
+<div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is there a free trial?<span class="icon">+</span></div><div class="faq-a">Yes, 14 days with the full Pro feature set. After that you activate a machine-bound license key.</div></div>
+<div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Windows shows &ldquo;Windows protected your PC&rdquo; when I run the installer &mdash; is that a problem?<span class="icon">+</span></div><div class="faq-a">No. Windows SmartScreen shows this notice for newly released installers it hasn&rsquo;t seen many times yet &mdash; it is not a virus warning. Click <strong>More info</strong>, then <strong>Run anyway</strong> to install. Every release is also published on our <a href="https://github.com/vend123/modscan/releases">GitHub releases page</a>, so you can confirm the download comes from the official source.</div></div>
+</div>
+</section>
+</main>
+</div>
+
+<section class="cta-strip">
+  <h2>Start with the 14-day trial</h2>
+  <p>Install ModbusManager Pro on Windows and follow this manual to connect, poll and build your first dashboard.</p>
+  <div class="ctas">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.6.2/Modbus.Manager.Pro.Setup.1.6.2.exe" class="btn-cta-yellow" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-CTA','product':'pro','value':1})">Download Pro trial</a>
+    <a href="/ModbusManagerPro_UserManual.pdf" class="btn-cta-outline">Download PDF manual</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">ModbusManager</div>
+  <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
+    <a href="/">Home</a>
+    <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+    <a href="/modbus-data-logger-software.html">Data Logger</a>
+    <a href="/modbus-alarm-software.html">Alarms</a>
+    <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+    <a href="/abb-acs580-modbus.html">VFD drives</a>
+    <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    <a href="/manual.html">Documentation</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/license-terms.html">License terms</a>
+    <a href="mailto:support@modbusmanager.com">Support</a>
+  </div>
+  <div>support@modbusmanager.com</div>
+</footer>
+
+<script>
+function toggleFaq(el){var item=el.parentElement;item.classList.toggle('open');}
+</script>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+</body>
+</html>

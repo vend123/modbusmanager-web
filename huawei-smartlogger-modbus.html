@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Huawei SmartLogger Modbus RTU Guide | SUN2000 Registers</title>
+<meta name="description" content="Read Huawei SUN2000 inverter data via the SmartLogger Modbus Remapped scheme. Register addresses, scaling, and FC03 polling with ModbusManager.">
+<meta name="keywords" content="Huawei SmartLogger Modbus, SmartLogger Modbus RTU, SUN2000 Modbus registers, SmartLogger Modbus Remapped, Huawei inverter Modbus address, SmartLogger register map, Modbus solar inverter, Huawei SUN2000 register 51000, SmartLogger RS485, solar plant Modbus monitoring">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/huawei-smartlogger-modbus.html">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:title" content="Huawei SmartLogger Modbus RTU Setup Guide">
+<meta property="og:description" content="Read SUN2000 inverter data via the SmartLogger Modbus Remapped scheme. Register map, scaling, and FC03 polling.">
+<meta property="og:url" content="https://modbusmanager.com/huawei-smartlogger-modbus.html">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://modbusmanager.com/og-smartlogger.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:published_time" content="2026-06-01T00:00:00Z">
+<meta property="article:section" content="Guides">
+<meta property="article:tag" content="Huawei SmartLogger">
+<meta property="article:tag" content="Modbus">
+<meta property="article:tag" content="SUN2000">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Huawei SmartLogger Modbus RTU Setup Guide">
+<meta name="twitter:description" content="Read SUN2000 inverter data via the SmartLogger Modbus Remapped scheme. Register map, scaling, and FC03 polling.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-smartlogger.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Huawei SmartLogger Modbus RTU Setup Guide",
+  "description": "Step-by-step guide to reading Huawei SUN2000 inverter data via the SmartLogger Modbus Remapped register scheme.",
+  "url": "https://modbusmanager.com/huawei-smartlogger-modbus.html",
+  "author": { "@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com" },
+  "publisher": { "@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com" },
+  "keywords": "Huawei SmartLogger, Modbus RTU, SUN2000, Modbus Remapped, solar inverter monitoring"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can I use Modbus TCP instead of RS485?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The SmartLogger supports Modbus TCP on port 502. The register map is identical \u2014 the same address formula and scaling applies. Connect ModbusManager via TCP to the SmartLogger's IP address, logic device ID 0."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "My inverter reads 0 even though it is running",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Check that the SmartLogger has detected the inverter (SmartLogger web UI \u203a Device List). If the inverter shows undetected, the RS485 wiring between SmartLogger and inverter is the issue, not the Modbus polling side."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "The active power register shows a huge number",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You are likely reading it as U16 instead of combining the hi/lo pair into I32. Select the 32-bit signed integer display column in ModbusManager for the register pair starting at offset +0 (the first two registers of the inverter block)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which SmartLogger firmware versions does this apply to?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Modbus Remapped scheme described here applies to SmartLogger 3000A and SmartLogger 1000A with firmware V300R023 and later. Older firmware versions may use a different starting address or block size \u2014 always verify against the SmartLogger Modbus Interface Definition document from Huawei's support portal."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+.article-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 5rem}
+.breadcrumb{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--muted);margin-bottom:2rem}
+.breadcrumb a{color:var(--muted);text-decoration:none}
+.breadcrumb a:hover{color:var(--ink)}
+h1{font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;line-height:1.05;text-transform:uppercase;letter-spacing:0.01em;margin-bottom:1rem}
+h2{font-family:'Saira Condensed',sans-serif;font-size:1.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin:2.5rem 0 0.8rem;padding-top:0.5rem;border-top:2px solid var(--ink)}
+h3{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.03em;margin:1.5rem 0 0.5rem;color:var(--amber-ink)}
+p{font-size:0.93rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+ul{font-size:0.93rem;color:var(--body);line-height:1.75;margin:0 0 1rem 1.2rem;padding-left:0.6rem}
+li{margin-bottom:0.4rem}
+.lead{font-size:1.05rem;color:var(--ink);line-height:1.7;margin-bottom:2rem;border-left:3px solid var(--safety);padding-left:1rem}
+code{font-family:'IBM Plex Mono',monospace;font-size:0.82rem;background:#fff;border:1px solid var(--steel);padding:1px 5px;border-radius:2px}
+pre{font-family:'IBM Plex Mono',monospace;font-size:0.8rem;background:var(--ink);color:#E6E8E3;padding:1.2rem 1.4rem;border-radius:3px;overflow-x:auto;margin:1.2rem 0;line-height:1.6}
+pre .c{color:#888}
+pre .v{color:#F2A900}
+pre .k{color:#7ec8e3}
+table{width:100%;border-collapse:collapse;font-size:0.83rem;margin:1.2rem 0;background:var(--plate);border:2px solid var(--ink)}
+th{text-align:left;padding:0.65rem 0.9rem;border-bottom:2px solid var(--ink);background:var(--enclosure2);font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted)}
+td{padding:0.6rem 0.9rem;border-bottom:1px solid var(--steel);color:var(--body)}
+tr:hover td{background:#ECEEE9}
+td.mono{font-family:'IBM Plex Mono',monospace;font-size:0.78rem}
+td.formula{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--amber-ink)}
+.callout{background:var(--plate);border:1.5px solid var(--ink);border-left:4px solid var(--safety);padding:1rem 1.2rem;border-radius:2px;margin:1.5rem 0;font-size:0.88rem;color:var(--body);line-height:1.6}
+.callout strong{color:var(--ink)}
+.callout.tip{border-left-color:var(--run)}
+.callout.warn{border-left-color:var(--bad)}
+.step-num{display:inline-block;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.85rem;background:var(--ink);color:var(--safety);padding:2px 8px;border-radius:2px;margin-right:8px;letter-spacing:0.05em}
+.cta-box{background:var(--ink);color:var(--enclosure);padding:2rem 2.2rem;border-radius:3px;margin:3rem 0;display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
+.cta-box h3{color:var(--safety);margin:0 0 0.4rem;font-size:1.2rem;border:none;padding:0}
+.cta-box p{color:#B9BDB6;font-size:0.85rem;margin:0}
+.cta-box a{background:var(--safety);color:var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.cta-box a:hover{background:#fff}
+.download-box{border:2px solid var(--ink);background:var(--enclosure2);padding:1.4rem 1.8rem;border-radius:3px;margin:2rem 0;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.download-box h3{margin:0 0 0.3rem;font-size:1rem;border:none;padding:0;font-family:'IBM Plex Mono',monospace;color:var(--ink)}
+.download-box p{margin:0;font-size:0.82rem;color:var(--muted);max-width:46ch}
+.download-box a{background:var(--ink);color:var(--enclosure);padding:0.6rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.download-box a:hover{background:var(--safety);color:var(--ink)}
+footer{border-top:2px solid var(--ink);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;color:var(--muted);flex-wrap:wrap;gap:1rem;background:var(--enclosure2)}
+.footer-logo{font-family:'Saira Condensed',sans-serif;color:var(--ink);font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--ink)}
+@media(max-width:640px){nav .nav-links{display:none}.article-wrap{padding:2rem 1.2rem 4rem}h1{font-size:2rem}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}td,th{white-space:normal;word-break:break-word}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;background:transparent;border:none;min-width:190px;display:none;flex-direction:column;z-index:200}.nav-drop-menu>a{background:var(--enclosure2,#e8e9e4);border-left:1px solid var(--ink,#16181A);border-right:1px solid var(--ink,#16181A)}.nav-drop-menu>a:first-child{border-top:1px solid var(--ink,#16181A);border-radius:3px 3px 0 0;padding-top:0.5rem}.nav-drop-menu>a:last-child{border-bottom:1px solid var(--ink,#16181A);border-radius:0 0 3px 3px;padding-bottom:0.5rem;box-shadow:0 6px 20px rgba(0,0,0,0.18)}
+.nav-drop:hover .nav-drop-menu{display:flex}
+.nav-drop-menu a{padding:0.5rem 1rem;white-space:nowrap;text-transform:none;font-size:0.78rem;color:var(--ink,#16181A)}
+.nav-drop-menu a:hover{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+nav .nav-links.open .nav-drop-menu{position:static;display:flex;margin:0.3rem 0 0.3rem 0.8rem;border:none;box-shadow:none;padding:0;min-width:0;background:none}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+
+@media(max-width:680px){pre,code{white-space:pre-wrap;word-break:break-word;max-width:100%;overflow-x:auto}}
+</style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/#guides"},{"@type": "ListItem","position": 3,"name": "Huawei SmartLogger Guide","item": "https://modbusmanager.com/huawei-smartlogger-modbus.html"}]}
+</script>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label">Features ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+        <a href="/modbus-data-logger-software.html">Data Logger</a>
+        <a href="/modbus-alarm-software.html">Alarms</a>
+      </div>
+    </li>
+    <li class="nav-drop">
+      <span class="nav-drop-label">Guides ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200</a>
+        <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+        <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+        <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+        <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+        <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+        <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+        <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+        <a href="/manual.html">Documentation</a>
+      </div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.6.2/Modbus.Manager.Pro.Setup.1.6.2.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-SmartLogger-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/v1.4.0/Modbus.Manager.Setup.1.4.0.exe" class="nav-cta" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManager-SmartLogger-Nav', 'product': 'standard', 'value': 1})">Download free trial</a>
+  </div>
+</nav>
+<div class="hazard"></div>
+
+<div class="article-wrap">
+
+  <div class="breadcrumb">
+    <a href="/">ModbusManager</a> &rsaquo; Guides &rsaquo; Huawei SmartLogger Modbus RTU
+  </div>
+
+  <h1>Huawei SmartLogger Modbus RTU Setup Guide</h1>
+
+  <p class="lead">The Huawei SmartLogger uses a <strong>Modbus Remapped</strong> register scheme where each connected SUN2000 inverter is accessible at a calculated starting address — not at the inverter's own Modbus ID. This guide walks through the register layout, address formula, scaling rules, and how to poll a full solar plant using ModbusManager.</p>
+
+  <h2>What is Modbus Remapped?</h2>
+
+  <p>When SUN2000 inverters connect to a SmartLogger via RS485, the SmartLogger acts as the single Modbus slave on the external RS485 bus. It remaps each inverter's registers into a sequential address space, making them all available from one slave ID.</p>
+
+  <p>This is different from daisy-chaining inverters directly — you do <em>not</em> talk to each inverter at its own Modbus ID. You talk to the SmartLogger only, and use the remapped addresses to target specific inverters.</p>
+
+  <div class="callout">
+    <strong>Key point:</strong> All polling goes to the SmartLogger itself, at its Modbus address. In the SmartLogger Modbus-TCP protocol the logic device ID is <code>0</code> for the SmartLogger and its remapped registers. The inverter number is encoded in the register address, not in the slave ID. (Some gateways or RS485 setups expose the SmartLogger at address <code>1</code> — check SmartLogger &rsaquo; Settings &rsaquo; Modbus if a read at 0 returns nothing.)
+  </div>
+
+  <h2>Inverter Address Formula</h2>
+
+  <p>The starting holding register for inverter N (1-based) is:</p>
+
+  <pre><span class="k">start_address</span> = <span class="v">51000</span> + <span class="v">25</span> × (N − 1)</pre>
+
+  <p>Examples for a 24-inverter plant:</p>
+
+  <table>
+    <tr><th>Inverter</th><th>Start Address (0-based)</th><th>Decimal</th></tr>
+    <tr><td>1</td><td class="mono">0xC738</td><td class="mono">51000</td></tr>
+    <tr><td>2</td><td class="mono">0xC751</td><td class="mono">51025</td></tr>
+    <tr><td>3</td><td class="mono">0xC76A</td><td class="mono">51050</td></tr>
+    <tr><td>12</td><td class="mono">0xC7FF</td><td class="mono">51275</td></tr>
+    <tr><td>24</td><td class="mono">0xC897</td><td class="mono">51575</td></tr>
+  </table>
+
+  <p>Each inverter block occupies 25 registers. Reading FC03 from the start address with <code>quantity = 25</code> retrieves all parameters for that inverter in one request.</p>
+
+  <h2>Key Registers (Offsets from Start Address)</h2>
+
+  <p>The offsets below follow Huawei's <em>SmartLogger Modbus Interface Definition</em>, section 2.7 (Remapped Modbus definitions), Table 2-7. Each value's offset is its position within the 25-register inverter block; multi-register values (I32 / U32) occupy two consecutive registers.</p>
+
+  <table>
+    <tr><th>Offset</th><th>Parameter</th><th>Type</th><th>Gain</th><th>Unit</th></tr>
+    <tr><td class="mono">+0 … +1</td><td>Active power</td><td class="mono">I32</td><td class="formula">÷1000</td><td>kW</td></tr>
+    <tr><td class="mono">+2 … +3</td><td>Reactive power</td><td class="mono">I32</td><td class="formula">÷1000 (signed)</td><td>kVar</td></tr>
+    <tr><td class="mono">+4</td><td>Total DC input current</td><td class="mono">I16</td><td class="formula">÷100</td><td>A</td></tr>
+    <tr><td class="mono">+5 … +6</td><td>Total input power</td><td class="mono">U32</td><td class="formula">÷1000</td><td>kW</td></tr>
+    <tr><td class="mono">+7</td><td>Insulation resistance</td><td class="mono">U16</td><td class="formula">÷1000</td><td>MΩ</td></tr>
+    <tr><td class="mono">+8</td><td>Power factor</td><td class="mono">I16</td><td class="formula">÷1000</td><td>—</td></tr>
+    <tr><td class="mono">+9</td><td>Inverter status</td><td class="mono">U16</td><td class="formula">raw (enum)</td><td>—</td></tr>
+    <tr><td class="mono">+11</td><td>Cabinet temperature</td><td class="mono">I16</td><td class="formula">÷10</td><td>°C</td></tr>
+    <tr><td class="mono">+12 … +13</td><td>Major fault code</td><td class="mono">U32</td><td class="formula">Alarm ID (bit 31–16) + Cause ID (bit 15–0)</td><td>—</td></tr>
+    <tr><td class="mono">+14 … +15</td><td>Minor fault code</td><td class="mono">U32</td><td class="formula">Alarm ID + Cause ID</td><td>—</td></tr>
+    <tr><td class="mono">+16 … +17</td><td>Warning code</td><td class="mono">U32</td><td class="formula">Alarm ID + Cause ID</td><td>—</td></tr>
+    <tr><td class="mono">+18 … +24</td><td>Spare (reserved)</td><td class="mono">U16</td><td class="formula">—</td><td>—</td></tr>
+  </table>
+
+  <div class="callout warn">
+    <strong>Watch the offsets:</strong> Active power sits at the <em>start</em> of the block (offset +0/+1), not the inverter status. Status is at offset +9. Reading status from offset +0 is the most common mistake — you would be reading the high word of active power instead.
+  </div>
+
+  <div class="callout tip">
+    <strong>32-bit pairs:</strong> Active power, reactive power, total input power, and the fault codes each span two consecutive 16-bit registers (hi-word first, then lo-word — big-endian). Combine them before applying the gain: <code>value = (hi &lt;&lt; 16 | lo) / 1000</code>. Active and reactive power are signed I32, so treat the combined value as two's complement; total input power is unsigned U32.
+  </div>
+
+  <h2>Inverter Status Values</h2>
+
+  <p>The status register (offset +9) returns an enum. The underlying values come from the SUN2000's own Modbus protocol, but the SmartLogger adds two states of its own (per Table 2-7, "Scope" column):</p>
+
+  <table>
+    <tr><th>Value (hex)</th><th>Decimal</th><th>Meaning</th></tr>
+    <tr><td class="mono">0xB000</td><td class="mono">45056</td><td>Communication interrupted (added by SmartLogger)</td></tr>
+    <tr><td class="mono">0xC000</td><td class="mono">49152</td><td>Uploading / firmware update (added by SmartLogger)</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>Inverter-level status codes:</strong> All other status values (standby, grid-connected, derating, fault, etc.) are defined in the separate <em>SUN2000 Modbus Protocol</em> document, not in the SmartLogger interface definition. The exact enum varies by inverter model and firmware — consult the SUN2000 protocol for your specific model rather than assuming a fixed table. For a simple "running / not running" indicator, treat anything other than 0xB000 and a fault state as on-grid.
+  </div>
+
+  <h2>Plant-Level SmartLogger Registers</h2>
+
+  <p>Besides the individual inverter blocks, the SmartLogger exposes plant-level aggregates in its own register range (section 2.1 of the interface definition, roughly registers 40000–41949). These sum or aggregate across all connected inverters. A few useful ones:</p>
+
+  <table>
+    <tr><th>Register</th><th>Parameter</th><th>Type</th><th>Gain</th><th>Unit</th></tr>
+    <tr><td class="mono">40525</td><td>Total active power (all inverters)</td><td class="mono">I32</td><td class="formula">÷1000</td><td>kW</td></tr>
+    <tr><td class="mono">40544</td><td>Total reactive power</td><td class="mono">I32</td><td class="formula">÷1000</td><td>kVar</td></tr>
+    <tr><td class="mono">40560</td><td>Total energy yield (E-Total)</td><td class="mono">U32</td><td class="formula">÷10</td><td>kWh</td></tr>
+    <tr><td class="mono">40562</td><td>Daily energy yield (E-Daily)</td><td class="mono">U32</td><td class="formula">÷10</td><td>kWh</td></tr>
+    <tr><td class="mono">40543</td><td>Plant status</td><td class="mono">U16</td><td class="formula">raw (enum)</td><td>—</td></tr>
+  </table>
+
+  <p>These plant-level registers are read at the SmartLogger's own logic device ID (0), not at an inverter address. Always verify the exact map against the "SmartLogger Modbus Interface Definition" document for your firmware — register availability can differ between SmartLogger 3000A and 1000A models and across firmware versions.</p>
+
+  <h2>Step-by-Step: Polling with ModbusManager</h2>
+
+  <p><span class="step-num">1</span> <strong>Connect</strong> — Set up an RS485 or TCP connection to the SmartLogger. For Modbus-TCP, the logic device ID is <code>0</code> (the SmartLogger itself). Baud rate for RS485 is usually 9600 or 19200 (check SmartLogger &rsaquo; Settings &rsaquo; RS485).</p>
+
+  <p><span class="step-num">2</span> <strong>Open a poll window</strong> — Choose Function Code <code>03</code> (Read Holding Registers), slave / logic device ID <code>0</code>. Enter the start address for inverter 1: <code>51000</code>. Set quantity to <code>25</code>.</p>
+
+  <p><span class="step-num">3</span> <strong>Apply scaling</strong> — Right-click on registers that need scaling, select Scaling and enter the gain. Active power occupies the first two registers (offset +0/+1) — combine them into an I32 using the 32-bit display column in ModbusManager, then scale ÷1000. Single-register values scale directly: DC current ÷100, power factor ÷1000, cabinet temperature ÷10.</p>
+
+  <p><span class="step-num">4</span> <strong>Duplicate for each inverter</strong> — Clone the poll window and change only the start address: <code>51000 + 25 × (N−1)</code>. Name each window "INV-01", "INV-02", etc.</p>
+
+  <p><span class="step-num">5</span> <strong>Save workspace</strong> — Use File &rsaquo; Save Workspace to store all 24 poll windows in a single JSON file. Reload in one click next time.</p>
+
+  <div class="callout warn">
+    <strong>Poll rate:</strong> The SmartLogger updates its internal data cache every 1–5 minutes depending on configuration. Polling faster than the cache refresh rate returns stale values — a scan rate of 60 seconds per window is typically sufficient.
+  </div>
+
+  <h2>Calculating Plant KPIs with Tags (Pro)</h2>
+
+  <p>ModbusManager Pro includes a tag engine where you can write Structured Text expressions to compute derived values across multiple poll windows. For a 24-inverter plant, a tag that sums active power across all inverters looks like:</p>
+
+  <pre><span class="c">// Total active power — sum I32 pairs from all 24 inverters</span>
+<span class="k">plant_kw</span> := <span class="v">0.0</span>;
+<span class="k">FOR</span> i := <span class="v">1</span> <span class="k">TO</span> <span class="v">24</span> <span class="k">DO</span>
+  hi := reg[<span class="v">51000</span> + <span class="v">25</span>*(i-<span class="v">1</span>) + <span class="v">0</span>];
+  lo := reg[<span class="v">51000</span> + <span class="v">25</span>*(i-<span class="v">1</span>) + <span class="v">1</span>];
+  raw := (hi SHL <span class="v">16</span>) OR lo;
+  <span class="k">IF</span> raw > <span class="v">2147483647</span> <span class="k">THEN</span> raw := raw - <span class="v">4294967296</span>; <span class="k">END_IF</span>
+  plant_kw := plant_kw + (raw / <span class="v">1000.0</span>);
+<span class="k">END_FOR</span>;</pre>
+
+  <p>The result can be bound to a Dashboard gauge or KPI element for a live plant overview visible in full-screen runtime mode.</p>
+
+  <h2>Download a Ready-Made Workspace</h2>
+
+  <p>Rather than building all 24 poll windows, scaling rules, tags and dashboard elements by hand, you can start from a complete example workspace. It contains:</p>
+
+  <ul>
+    <li>24 inverter poll windows (start address 51000, step 25, FC03)</li>
+    <li>Scaling for DC current (÷100), power factor (÷1000) and cabinet temperature (÷10)</li>
+    <li>Status enum names for the SmartLogger-added codes (0xB000, 0xC000)</li>
+    <li>Tags that combine the I32 active-power pairs into kW per inverter, plus plant-level totals</li>
+    <li>A Dashboard overview page with per-inverter status lamps and clickable popup windows</li>
+  </ul>
+
+  <div class="callout warn">
+    <strong>Requires ModbusManager Pro:</strong> this workspace uses the tag engine and Dashboard HMI, which are Pro features. Opening it in Standard will load the poll windows, but the tags and dashboard will not function. Verify the register map against your own SmartLogger firmware before relying on the values.
+  </div>
+
+  <div class="download-box">
+    <div>
+      <h3>SmartLogger_24inv.json</h3>
+      <p>24-inverter solar plant workspace for the Modbus Remapped scheme. Open via File &rsaquo; Open Workspace in ModbusManager Pro.</p>
+    </div>
+    <a href="/SmartLogger_24inv.json" download>Download Workspace</a>
+  </div>
+
+  <div class="cta-box">
+    <div>
+      <h3>Try it with ModbusManager Pro</h3>
+      <p>Tag engine + <a href="/modbus-hmi-dashboard.html">Modbus HMI software</a> for live plant overviews. Free 14-day trial. No credit card. Windows 10/11.</p>
+    </div>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.6.2/Modbus.Manager.Pro.Setup.1.6.2.exe" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-SmartLogger-Body', 'product': 'pro', 'value': 1})">Download Pro Trial</a>
+  </div>
+
+  <h2>Frequently Asked Questions</h2>
+
+  <h3>Can I use Modbus TCP instead of RS485?</h3>
+  <p>Yes. The SmartLogger supports Modbus TCP on port 502. The register map is identical — the same address formula and scaling applies. Connect ModbusManager via TCP to the SmartLogger's IP address, logic device ID 0.</p>
+
+  <h3>My inverter reads 0 even though it is running</h3>
+  <p>Check that the SmartLogger has detected the inverter (SmartLogger web UI &rsaquo; Device List). If the inverter shows "undetected", the RS485 wiring between SmartLogger and inverter is the issue, not the Modbus polling side.</p>
+
+  <h3>The active power register shows a huge number</h3>
+  <p>You are likely reading it as U16 instead of combining the hi/lo pair into I32. Select the 32-bit signed integer display column in ModbusManager for the register pair starting at offset +0 (the first two registers of the inverter block).</p>
+
+  <h3>Which SmartLogger firmware versions does this apply to?</h3>
+  <p>The Modbus Remapped scheme described here applies to SmartLogger 3000A and SmartLogger 1000A with firmware V300R023 and later. Older firmware versions may use a different starting address or block size — always verify against the "SmartLogger Modbus Interface Definition" document from Huawei's support portal.</p>
+
+</div>
+
+<div class="hazard"></div>
+<footer>
+  <div class="footer-logo">ModbusManager</div>
+  <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
+    <a href="/">Home</a>
+    <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+    <a href="/modbus-data-logger-software.html">Data Logger</a>
+    <a href="/modbus-alarm-software.html">Alarms</a>
+    <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+    <a href="/abb-acs580-modbus.html">VFD drives</a>
+    <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    <a href="/manual.html">Documentation</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/license-terms.html">License terms</a>
+    <a href="mailto:support@modbusmanager.com">Support</a>
+  </div>
+  <div>support@modbusmanager.com</div>
+</footer>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+</body>
+</html>

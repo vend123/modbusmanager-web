@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy | ModbusManager</title>
+<meta name="description" content="How ModbusManager (E-Netter OU) handles your data under GDPR. The software is offline and collects no telemetry.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/privacy.html">
+<meta property="og:title" content="Privacy Policy | ModbusManager">
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:description" content="How ModbusManager (E-Netter OU) handles your data under GDPR. The software is offline and collects no telemetry.">
+<meta property="og:url" content="https://modbusmanager.com/privacy.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://modbusmanager.com/og-hmi.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Privacy Policy | ModbusManager">
+<meta name="twitter:description" content="How ModbusManager (E-Netter OU) handles your data under GDPR. The software is offline and collects no telemetry.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-hmi.png">
+
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+.mono{font-family:'IBM Plex Mono',monospace}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+
+/* HAZARD STRIPE */
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+
+/* HERO */
+.hero{padding:4rem 3rem 3.5rem;max-width:1140px;margin:0 auto}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.9rem}
+.hero h1{font-family:'Saira Condensed',sans-serif;font-size:3rem;font-weight:700;line-height:1;color:var(--ink);margin-bottom:1rem;letter-spacing:0.01em;text-transform:uppercase;max-width:720px}
+.hero h1 .accent{color:var(--amber-ink)}
+.hero-desc{font-size:1rem;color:var(--body);line-height:1.7;margin-bottom:1.8rem;max-width:640px}
+.hero-ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn-primary{background:var(--run);color:#fff;padding:0.75rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-primary:hover{background:#186040}
+.btn-ghost{background:transparent;color:var(--ink);border:2px solid var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-ghost:hover{background:var(--ink);color:var(--safety)}
+.hero-note{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--muted);margin-top:0.7rem}
+
+/* SECTION */
+.section{padding:3.5rem 3rem;max-width:1140px;margin:0 auto}
+.sec-label{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem}
+.sec-title{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:0.6rem}
+.sec-sub{font-size:0.95rem;color:var(--body);line-height:1.7;margin-bottom:2rem;max-width:680px}
+.divider-line{border:none;border-top:2px solid var(--ink)}
+
+/* WHAT IS HMI */
+.explainer-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.explainer-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.definition-box{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem}
+.definition-box .def-label{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem}
+.definition-box p{font-size:0.9rem;color:var(--body);line-height:1.7}
+
+/* WIDGET GRID */
+.widget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.widget-card{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem}
+.widget-icon{font-size:1.6rem;margin-bottom:0.7rem}
+.widget-name{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem}
+.widget-desc{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;counter-reset:step}
+.step{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem;position:relative}
+.step::before{counter-increment:step;content:counter(step);font-family:'Saira Condensed',sans-serif;font-size:2.5rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.5rem;right:1rem;line-height:1}
+.step-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--amber-ink);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem}
+.step-title{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.5rem}
+.step-text{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* TAG ENGINE */
+.tag-block{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:start}
+.tag-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.code-box{background:var(--ink);color:#D4D8D0;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;line-height:1.7;padding:1.4rem 1.6rem;border-radius:3px;overflow-x:auto}
+.code-box .cm{color:#5F7A5F}
+.code-box .ck{color:var(--safety)}
+.code-box .cv{color:#8EC0B0}
+
+/* COMPARE TABLE */
+.compare-table{width:100%;border-collapse:collapse;font-size:0.88rem}
+.compare-table th{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.05em;text-transform:uppercase;padding:0.7rem 1rem;border-bottom:2px solid var(--ink);text-align:left;background:var(--enclosure2)}
+.compare-table td{padding:0.65rem 1rem;border-bottom:1px solid var(--steel)}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table .hl{background:rgba(30,122,79,0.06)}
+.yes{color:var(--run);font-weight:600}
+.no{color:var(--bad)}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:0}
+.faq-item{border-top:1px solid var(--steel)}
+.faq-item:last-child{border-bottom:1px solid var(--steel)}
+.faq-q{font-family:'Saira Condensed',sans-serif;font-size:1.05rem;font-weight:600;letter-spacing:0.02em;padding:1.1rem 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq-q:hover{color:var(--amber-ink)}
+.faq-q .icon{font-family:'IBM Plex Mono',monospace;font-size:1.1rem;flex-shrink:0;transition:transform 0.2s}
+.faq-a{font-size:0.9rem;color:var(--body);line-height:1.75;padding:0 0 1.1rem;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .icon{transform:rotate(45deg)}
+
+/* CTA STRIP */
+.cta-strip{background:var(--ink);color:var(--safety);padding:3.5rem 3rem;text-align:center}
+.cta-strip h2{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.6rem}
+.cta-strip p{font-size:0.95rem;color:var(--enclosure);margin-bottom:1.8rem;max-width:540px;margin-left:auto;margin-right:auto}
+.cta-strip .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-cta-yellow{background:var(--safety);color:var(--ink);padding:0.8rem 2rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-cta-yellow:hover{background:#e09800}
+.btn-cta-outline{background:transparent;color:var(--safety);border:2px solid var(--safety);padding:0.7rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+
+/* FOOTER */
+footer{background:var(--ink);color:var(--steel);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:0.75rem}
+.footer-logo{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:0.05em;text-transform:uppercase}
+footer a{color:var(--steel);text-decoration:none}
+footer a:hover{color:#fff}
+
+@media(max-width:768px){
+  nav{padding:0.75rem 1.2rem;flex-wrap:wrap;gap:0.5rem}
+  .nav-links{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  .hero h1{font-size:2.2rem}
+  .section{padding:2.5rem 1.2rem}
+  .explainer-grid,.tag-block{grid-template-columns:1fr}
+  .widget-grid{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .cta-strip{padding:2.5rem 1.2rem}
+  footer{padding:1.5rem 1.2rem;flex-direction:column;align-items:flex-start;gap:0.75rem}
+}
+@media(max-width:520px){
+  .widget-grid,.steps{grid-template-columns:1fr}
+}
+.dl-options{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.8rem}
+@media(max-width:768px){.dl-options{grid-template-columns:1fr}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;max-width:100%}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;background:transparent;border:none;min-width:190px;display:none;flex-direction:column;z-index:200}.nav-drop-menu>a{background:var(--enclosure2,#e8e9e4);border-left:1px solid var(--ink,#16181A);border-right:1px solid var(--ink,#16181A)}.nav-drop-menu>a:first-child{border-top:1px solid var(--ink,#16181A);border-radius:3px 3px 0 0;padding-top:0.5rem}.nav-drop-menu>a:last-child{border-bottom:1px solid var(--ink,#16181A);border-radius:0 0 3px 3px;padding-bottom:0.5rem;box-shadow:0 6px 20px rgba(0,0,0,0.18)}
+.nav-drop:hover .nav-drop-menu{display:flex}
+.nav-drop-menu a{padding:0.5rem 1rem;white-space:nowrap;text-transform:none;font-size:0.78rem;color:var(--ink,#16181A)}
+.nav-drop-menu a:hover{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+nav .nav-links.open .nav-drop-menu{position:static;display:flex;margin:0.3rem 0 0.3rem 0.8rem;border:none;box-shadow:none;padding:0;min-width:0;background:none}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+</style>
+<style>
+.legal{max-width:820px;margin:0 auto;padding:3.2rem 2rem 4.5rem}
+.legal h1{font-family:'Saira Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.01em;font-size:2.7rem;line-height:1.04;color:var(--ink);margin-bottom:0.5rem}
+.legal .updated{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2.6rem}
+.legal h2{font-family:'IBM Plex Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--amber-ink);letter-spacing:0.07em;text-transform:uppercase;margin:2.4rem 0 0.7rem;padding-top:1.6rem;border-top:1px solid var(--steel)}
+.legal p{color:var(--body);margin-bottom:0.85rem;font-size:0.97rem;line-height:1.7}
+.legal ul{margin:0 0 1.1rem 1.2rem;color:var(--body)}
+.legal li{margin-bottom:0.4rem;line-height:1.6}
+.legal a{color:var(--amber-ink);text-decoration:underline;text-underline-offset:2px}
+.legal strong{color:var(--ink);font-weight:600}
+.legal table{width:100%;border-collapse:collapse;margin:1rem 0 1.5rem;font-size:0.9rem}
+.legal th{text-align:left;padding:0.65rem 0.95rem;border-bottom:2px solid var(--ink);background:var(--enclosure2);font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.05em;text-transform:uppercase;color:var(--muted)}
+.legal td{padding:0.6rem 0.95rem;border-bottom:1px solid var(--steel);color:var(--body);vertical-align:top}
+.legal .note{background:var(--plate);border-left:3px solid var(--safety);padding:1rem 1.3rem;margin:1.3rem 0;font-size:0.93rem;color:var(--body);border-radius:0 3px 3px 0}
+</style>
+
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  // Consent Mode v2 - analytics denied by default until the visitor accepts
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Privacy Policy","item": "https://modbusmanager.com/privacy.html"}]}
+</script>
+</head>
+<body>
+
+<div class="hazard"></div>
+
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label">Features ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+        <a href="/modbus-data-logger-software.html">Data Logger</a>
+        <a href="/modbus-alarm-software.html">Alarms</a>
+      </div>
+    </li>
+    <li class="nav-drop">
+      <span class="nav-drop-label">Guides ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200</a>
+        <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+        <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+        <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+        <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+        <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+        <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+        <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+        <a href="/manual.html">Documentation</a>
+      </div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+  </ul>
+  <a href="/" class="nav-cta">modbusmanager.com &rarr;</a>
+</nav>
+
+<div class="legal">
+  <h1>Privacy Policy</h1>
+  <div class="updated">Last updated: June 2026</div>
+
+  <p>This Privacy Policy explains how E-Netter OÜ ("we", "us", "our") collects, uses and protects your personal data when you visit <strong>modbusmanager.com</strong> or purchase and use ModbusManager software.</p>
+  <p>We are committed to protecting your privacy and complying with the <strong>General Data Protection Regulation (GDPR)</strong>.</p>
+
+  <h2>1. Who We Are</h2>
+  <p><strong>Data Controller:</strong><br>
+  E-Netter O&Uuml; (operating as ModbusManager)<br>
+  Email: <a href="mailto:support@modbusmanager.com">support@modbusmanager.com</a></p>
+
+  <h2>2. What Data We Collect</h2>
+  <table>
+    <tr><th>Data</th><th>When collected</th><th>Purpose</th></tr>
+    <tr><td><strong>Email address</strong></td><td>When you purchase a license</td><td>Sending license key and order confirmation</td></tr>
+    <tr><td><strong>Machine ID</strong></td><td>When you request license activation</td><td>Generating your unique license key</td></tr>
+    <tr><td><strong>Order information</strong></td><td>When you make a purchase</td><td>Processing payment and providing support</td></tr>
+    <tr><td><strong>Support emails</strong></td><td>When you contact support</td><td>Responding to your inquiry</td></tr>
+    <tr><td><strong>Usage &amp; device data</strong></td><td>When you visit the website</td><td>Website analytics via Google Analytics &mdash; pages viewed, approximate location, device and browser type</td></tr>
+  </table>
+
+  <div class="note"><strong>Important:</strong> ModbusManager software itself does <strong>not</strong> collect any data from your computer. It works completely offline and does not send any telemetry, usage statistics or device information to our servers.</div>
+
+  <h2>3. What We Do NOT Collect</h2>
+  <ul>
+    <li>We do <strong>not</strong> collect payment card details (handled by Paddle)</li>
+    <li>We do <strong>not</strong> sell or rent your personal data to third parties</li>
+    <li>The software does <strong>not</strong> send any data from your computer to our servers</li>
+  </ul>
+
+  <h2>4. Legal Basis for Processing</h2>
+  <p>We process your personal data on the following legal bases:</p>
+  <ul>
+    <li><strong>Contract performance</strong> &mdash; processing your order and delivering your license key</li>
+    <li><strong>Legitimate interests</strong> &mdash; providing customer support and preventing fraud</li>
+    <li><strong>Legal obligation</strong> &mdash; retaining financial records as required by law</li>
+  </ul>
+
+  <h2>5. Third-Party Services</h2>
+  <p>We use the following third-party services to operate our business:</p>
+  <table>
+    <tr><th>Service</th><th>Purpose</th><th>Privacy Policy</th></tr>
+    <tr>
+      <td><strong>Paddle</strong></td>
+      <td>Payment processing and order management (merchant of record)</td>
+      <td><a href="https://www.paddle.com/legal/privacy" target="_blank">paddle.com/legal/privacy</a></td>
+    </tr>
+    <tr>
+      <td><strong>Make.com</strong></td>
+      <td>Automated license delivery</td>
+      <td><a href="https://www.make.com/en/privacy-notice" target="_blank">make.com/privacy</a></td>
+    </tr>
+    <tr>
+      <td><strong>GitHub Pages</strong></td>
+      <td>Website hosting</td>
+      <td><a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank">github.com/privacy</a></td>
+    </tr>
+    <tr>
+      <td><strong>Google Analytics</strong></td>
+      <td>Website usage analytics</td>
+      <td><a href="https://policies.google.com/privacy" target="_blank">policies.google.com/privacy</a></td>
+    </tr>
+    <tr>
+      <td><strong>Google (Gmail)</strong></td>
+      <td>Customer support email</td>
+      <td><a href="https://policies.google.com/privacy" target="_blank">policies.google.com/privacy</a></td>
+    </tr>
+  </table>
+
+  <p>These services may process your personal data according to their own privacy policies. We only share the minimum data necessary for each service to function.</p>
+
+  <h2>6. How Long We Keep Your Data</h2>
+  <ul>
+    <li><strong>Order and license records</strong> &mdash; 7 years (required by Estonian accounting law)</li>
+    <li><strong>Support emails</strong> &mdash; 2 years after the last communication</li>
+    <li><strong>Machine ID</strong> &mdash; for the duration of your license</li>
+  </ul>
+
+  <h2>7. Your Rights (GDPR)</h2>
+  <p>Under GDPR, you have the following rights regarding your personal data:</p>
+  <ul>
+    <li><strong>Right of access</strong> &mdash; request a copy of the data we hold about you</li>
+    <li><strong>Right to rectification</strong> &mdash; request correction of inaccurate data</li>
+    <li><strong>Right to erasure</strong> &mdash; request deletion of your data ("right to be forgotten")</li>
+    <li><strong>Right to restriction</strong> &mdash; request that we limit how we use your data</li>
+    <li><strong>Right to data portability</strong> &mdash; receive your data in a machine-readable format</li>
+    <li><strong>Right to object</strong> &mdash; object to processing based on legitimate interests</li>
+  </ul>
+  <p>To exercise any of these rights, contact us at <a href="mailto:support@modbusmanager.com">support@modbusmanager.com</a>. We will respond within <strong>30 days</strong>.</p>
+
+  <h2>8. Data Security</h2>
+  <p>We take reasonable technical and organisational measures to protect your personal data against unauthorised access, loss or disclosure. All communication with our website is encrypted using HTTPS/TLS.</p>
+
+  <h2>9. Cookies</h2>
+  <p>Our website uses <strong>Google Analytics</strong> to understand how visitors use the site (for example, which pages are viewed). Google Analytics sets cookies and may process aggregated, largely anonymised usage and device data. We do not use these cookies for advertising or to identify you personally.</p>
+  <p>You can refuse or delete cookies in your browser settings, or install Google's official <a href="https://tools.google.com/dlpage/gaoptout" target="_blank">opt-out browser add-on</a> to stop Google Analytics on all sites.</p>
+
+  <h2>10. Children's Privacy</h2>
+  <p>ModbusManager is a professional tool intended for adults. We do not knowingly collect personal data from children under the age of 16.</p>
+
+  <h2>11. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. The date at the top of this page indicates when it was last revised. Continued use of our services after changes constitutes acceptance of the updated policy.</p>
+
+  <h2>12. Contact &amp; Complaints</h2>
+  <p>For any privacy-related questions or to exercise your rights, contact us:</p>
+  <p><strong>ModbusManager</strong><br>
+  Email: <a href="mailto:support@modbusmanager.com">support@modbusmanager.com</a></p>
+  <p>If you are not satisfied with our response, you have the right to lodge a complaint with your local data protection authority.</p>
+</div>
+
+<footer>
+  <div class="footer-logo">ModbusManager</div>
+  <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
+    <a href="/">Home</a>
+    <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+    <a href="/modbus-data-logger-software.html">Data Logger</a>
+    <a href="/modbus-alarm-software.html">Alarms</a>
+    <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+    <a href="/abb-acs580-modbus.html">VFD drives</a>
+    <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    <a href="/manual.html">Documentation</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/license-terms.html">License terms</a>
+    <a href="mailto:support@modbusmanager.com">Support</a>
+  </div>
+  <div>support@modbusmanager.com</div>
+</footer>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+</body>
+</html>

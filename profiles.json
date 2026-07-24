@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Aken 1",
+    "fc": 3,
+    "addr": 0,
+    "qty": 20,
+    "slaveId": 1
+  },
+  {
+    "name": "testaken",
+    "fc": 3,
+    "addr": 100,
+    "qty": 10,
+    "slaveId": 1
+  },
+  {
+    "name": "Aken 3",
+    "fc": 3,
+    "addr": 100,
+    "qty": 10,
+    "slaveId": 1
+  },
+  {
+    "name": "Aken 4",
+    "fc": 3,
+    "addr": 100,
+    "qty": 10,
+    "slaveId": 1
+  }
+]

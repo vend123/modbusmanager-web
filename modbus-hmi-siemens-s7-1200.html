@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modbus HMI for Siemens S7-1200 | ModbusManager</title>
+<meta name="description" content="Turn ModbusManager Pro into a live HMI dashboard for your Siemens S7-1200 over Modbus TCP. Free demo project (SCL + workspace) you can download and run on real hardware.">
+<meta name="keywords" content="Modbus HMI Siemens S7-1200, S7-1200 Modbus TCP, Siemens PLC HMI software, MB_SERVER, Modbus dashboard Siemens, S7-1200 SCADA alternative, ModbusManager Pro Siemens">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/modbus-hmi-siemens-s7-1200.html">
+
+<meta property="og:title" content="Modbus HMI for Siemens S7-1200">
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:description" content="Live HMI dashboard for your Siemens S7-1200 over Modbus TCP. Free demo project you can download and run on real hardware.">
+<meta property="og:url" content="https://modbusmanager.com/modbus-hmi-siemens-s7-1200.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://modbusmanager.com/og-siemens.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Modbus HMI for Siemens S7-1200">
+<meta name="twitter:description" content="Live HMI dashboard for your S7-1200 over Modbus TCP. Free demo project, runs on real hardware.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-siemens.png">
+
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+[
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Modbus HMI for Siemens S7-1200",
+  "description": "How to use ModbusManager Pro as a live HMI dashboard for a Siemens S7-1200 over Modbus TCP, with a downloadable demo project (SCL source + Pro workspace).",
+  "url": "https://modbusmanager.com/modbus-hmi-siemens-s7-1200.html",
+  "datePublished": "2026-06-15",
+  "dateModified": "2026-06-15",
+  "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
+  "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
+  "about": {
+    "@type": "SoftwareApplication",
+    "name": "ModbusManager Pro",
+    "operatingSystem": "Windows 10, Windows 11",
+    "applicationCategory": "DeveloperApplication",
+    "offers": {"@type": "Offer", "price": "119", "priceCurrency": "USD"},
+    "downloadUrl": "https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.6.2/Modbus.Manager.Pro.Setup.1.6.2.exe"
+  }
+},
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Do I need WinCC or a SCADA license to visualise an S7-1200?","acceptedAnswer":{"@type":"Answer","text":"No. ModbusManager Pro runs on a normal Windows PC and polls the S7-1200 directly over Modbus TCP. There is no SCADA server, OPC-UA license or WinCC runtime to buy."}},
+    {"@type":"Question","name":"Does the demo work with a real S7-1200?","acceptedAnswer":{"@type":"Answer","text":"Yes. The demo was built and tested on real S7-1200 hardware. The PLC runs a small simulation and acts as a Modbus TCP server on port 502; ModbusManager Pro polls it and displays the data live."}},
+    {"@type":"Question","name":"Which TIA Portal version do I need?","acceptedAnswer":{"@type":"Answer","text":"The demo logic is an SCL source file that imports into TIA Portal V13 or newer. It was developed on TIA Portal V15.1. You import it via External source files and generate the blocks."}},
+    {"@type":"Question","name":"Modbus TCP or RTU?","acceptedAnswer":{"@type":"Answer","text":"The demo uses Modbus TCP over the S7-1200 onboard Ethernet port, so no extra module is needed. ModbusManager Pro also supports Modbus RTU if you add a CM 1241 serial module."}},
+    {"@type":"Question","name":"Does this only work with Siemens PLCs?","acceptedAnswer":{"@type":"Answer","text":"No. ModbusManager Pro is vendor-neutral. It works with any Modbus RTU or TCP device - inverters, energy meters, VFDs, sensors and PLCs from any manufacturer - and can show several devices on one dashboard."}},
+    {"@type":"Question","name":"Is the inverter data real?","acceptedAnswer":{"@type":"Answer","text":"In the demo the S7-1200 generates a simulated solar inverter (power, voltage, energy, temperature, status) so the dashboard looks alive without real sensors. For production you map the dashboard to your real device registers instead."}},
+    {"@type":"Question","name":"What does ModbusManager Pro cost?","acceptedAnswer":{"@type":"Answer","text":"ModbusManager Pro is a one-time 119 USD perpetual license for one machine, with 12 months of free updates and a 14-day free trial - no credit card required."}}
+  ]
+}
+]
+</script>
+
+<style>
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+.mono{font-family:'IBM Plex Mono',monospace}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+
+/* HAZARD STRIPE */
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+
+/* HERO */
+.hero{padding:4rem 3rem 3.5rem;max-width:1140px;margin:0 auto}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.9rem}
+.hero h1{font-family:'Saira Condensed',sans-serif;font-size:3rem;font-weight:700;line-height:1;color:var(--ink);margin-bottom:1rem;letter-spacing:0.01em;text-transform:uppercase;max-width:720px}
+.hero h1 .accent{color:var(--amber-ink)}
+.hero-desc{font-size:1rem;color:var(--body);line-height:1.7;margin-bottom:1.8rem;max-width:640px}
+.hero-ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn-primary{background:var(--run);color:#fff;padding:0.75rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-primary:hover{background:#186040}
+.btn-ghost{background:transparent;color:var(--ink);border:2px solid var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-ghost:hover{background:var(--ink);color:var(--safety)}
+.hero-note{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--muted);margin-top:0.7rem}
+
+/* SECTION */
+.section{padding:3.5rem 3rem;max-width:1140px;margin:0 auto}
+.sec-label{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem}
+.sec-title{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:0.6rem}
+.sec-sub{font-size:0.95rem;color:var(--body);line-height:1.7;margin-bottom:2rem;max-width:680px}
+.divider-line{border:none;border-top:2px solid var(--ink)}
+
+/* WHAT IS HMI */
+.explainer-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.explainer-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.definition-box{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem}
+.definition-box .def-label{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem}
+.definition-box p{font-size:0.9rem;color:var(--body);line-height:1.7}
+
+/* WIDGET GRID */
+.widget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.widget-card{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem}
+.widget-icon{font-size:1.6rem;margin-bottom:0.7rem}
+.widget-name{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem}
+.widget-desc{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;counter-reset:step}
+.step{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem;position:relative}
+.step::before{counter-increment:step;content:counter(step);font-family:'Saira Condensed',sans-serif;font-size:2.5rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.5rem;right:1rem;line-height:1}
+.step-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--amber-ink);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem}
+.step-title{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.5rem}
+.step-text{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* TAG ENGINE */
+.tag-block{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:start}
+.tag-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.code-box{background:var(--ink);color:#D4D8D0;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;line-height:1.7;padding:1.4rem 1.6rem;border-radius:3px;overflow-x:auto}
+.code-box .cm{color:#5F7A5F}
+.code-box .ck{color:var(--safety)}
+.code-box .cv{color:#8EC0B0}
+
+/* COMPARE TABLE */
+.compare-table{width:100%;border-collapse:collapse;font-size:0.88rem}
+.compare-table th{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.05em;text-transform:uppercase;padding:0.7rem 1rem;border-bottom:2px solid var(--ink);text-align:left;background:var(--enclosure2)}
+.compare-table td{padding:0.65rem 1rem;border-bottom:1px solid var(--steel)}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table .hl{background:rgba(30,122,79,0.06)}
+.yes{color:var(--run);font-weight:600}
+.no{color:var(--bad)}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:0}
+.faq-item{border-top:1px solid var(--steel)}
+.faq-item:last-child{border-bottom:1px solid var(--steel)}
+.faq-q{font-family:'Saira Condensed',sans-serif;font-size:1.05rem;font-weight:600;letter-spacing:0.02em;padding:1.1rem 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq-q:hover{color:var(--amber-ink)}
+.faq-q .icon{font-family:'IBM Plex Mono',monospace;font-size:1.1rem;flex-shrink:0;transition:transform 0.2s}
+.faq-a{font-size:0.9rem;color:var(--body);line-height:1.75;padding:0 0 1.1rem;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .icon{transform:rotate(45deg)}
+
+/* CTA STRIP */
+.cta-strip{background:var(--ink);color:var(--safety);padding:3.5rem 3rem;text-align:center}
+.cta-strip h2{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.6rem}
+.cta-strip p{font-size:0.95rem;color:var(--enclosure);margin-bottom:1.8rem;max-width:540px;margin-left:auto;margin-right:auto}
+.cta-strip .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-cta-yellow{background:var(--safety);color:var(--ink);padding:0.8rem 2rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-cta-yellow:hover{background:#e09800}
+.btn-cta-outline{background:transparent;color:var(--safety);border:2px solid var(--safety);padding:0.7rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+
+/* FOOTER */
+footer{background:var(--ink);color:var(--steel);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:0.75rem}
+.footer-logo{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:0.05em;text-transform:uppercase}
+footer a{color:var(--steel);text-decoration:none}
+footer a:hover{color:#fff}
+
+@media(max-width:768px){
+  nav{padding:0.75rem 1.2rem;flex-wrap:wrap;gap:0.5rem}
+  .nav-links{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  .hero h1{font-size:2.2rem}
+  .section{padding:2.5rem 1.2rem}
+  .explainer-grid,.tag-block{grid-template-columns:1fr}
+  .widget-grid{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .cta-strip{padding:2.5rem 1.2rem}
+  footer{padding:1.5rem 1.2rem;flex-direction:column;align-items:flex-start;gap:0.75rem}
+}
+@media(max-width:520px){
+  .widget-grid,.steps{grid-template-columns:1fr}
+}
+.dl-options{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.8rem}
+@media(max-width:768px){.dl-options{grid-template-columns:1fr}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;max-width:100%}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;background:transparent;border:none;min-width:190px;display:none;flex-direction:column;z-index:200}.nav-drop-menu>a{background:var(--enclosure2,#e8e9e4);border-left:1px solid var(--ink,#16181A);border-right:1px solid var(--ink,#16181A)}.nav-drop-menu>a:first-child{border-top:1px solid var(--ink,#16181A);border-radius:3px 3px 0 0;padding-top:0.5rem}.nav-drop-menu>a:last-child{border-bottom:1px solid var(--ink,#16181A);border-radius:0 0 3px 3px;padding-bottom:0.5rem;box-shadow:0 6px 20px rgba(0,0,0,0.18)}
+.nav-drop:hover .nav-drop-menu{display:flex}
+.nav-drop-menu a{padding:0.5rem 1rem;white-space:nowrap;text-transform:none;font-size:0.78rem;color:var(--ink,#16181A)}
+.nav-drop-menu a:hover{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+nav .nav-links.open .nav-drop-menu{position:static;display:flex;margin:0.3rem 0 0.3rem 0.8rem;border:none;box-shadow:none;padding:0;min-width:0;background:none}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+</style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/#guides"},{"@type": "ListItem","position": 3,"name": "Siemens S7-1200 HMI","item": "https://modbusmanager.com/modbus-hmi-siemens-s7-1200.html"}]}
+</script>
+</head>
+<body>
+
+<div class="hazard"></div>
+
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label">Features ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+        <a href="/modbus-data-logger-software.html">Data Logger</a>
+        <a href="/modbus-alarm-software.html">Alarms</a>
+      </div>
+    </li>
+    <li class="nav-drop">
+      <span class="nav-drop-label">Guides ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200</a>
+        <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+        <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+        <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+        <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+        <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+        <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+        <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+        <a href="/manual.html">Documentation</a>
+      </div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.6.2/Modbus.Manager.Pro.Setup.1.6.2.exe" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-Siemens-NavText', 'product': 'pro', 'value': 1})" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em">Pro trial &darr;</a>
+    <a href="/ModbusManager-Siemens-S7-1200-demo.zip" download class="nav-cta">Free demo &darr;</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow">// ModbusManager Pro &mdash; Siemens S7-1200</div>
+  <h1>Modbus HMI for<br><span class="accent">Siemens S7-1200</span></h1>
+  <p class="hero-desc">Build a live operator dashboard for your Siemens S7-1200 over Modbus TCP &mdash; without WinCC, a SCADA server or an OPC-UA license. Download the free demo project, run it on real hardware, and watch ModbusManager Pro display the PLC data live. Works the same with any other Modbus device.</p>
+  <div class="hero-ctas">
+    <a href="/ModbusManager-Siemens-S7-1200-demo.zip" download class="btn-primary">Download free demo project</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.6.2/Modbus.Manager.Pro.Setup.1.6.2.exe" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-Siemens-Hero', 'product': 'pro', 'value': 1})" class="btn-ghost">Download Pro trial</a>
+  </div>
+  <p class="hero-note">Demo: TIA Portal SCL + Pro workspace &middot; tested on real S7-1200 &middot; Modbus TCP</p>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// what the demo shows</div>
+  <h2 class="sec-title">Your S7-1200, visualised live</h2>
+  <div class="explainer-grid">
+    <div class="explainer-text">
+      <p>The demo turns a Siemens S7-1200 into a Modbus TCP server running a small simulated solar inverter &mdash; AC power, DC voltage and current, grid frequency, temperature, energy yield, battery state of charge and status bits. The PLC generates a realistic day curve so the data moves on its own.</p>
+      <p>ModbusManager Pro polls the PLC over Modbus TCP and shows everything on a drag-and-drop dashboard: gauges, KPI tiles, a power trend and status lamps &mdash; updating live. No WinCC runtime, no SCADA server, no per-tag licensing.</p>
+      <p>The Siemens PLC is just a relatable starting point. The same dashboard works with inverters, energy meters, VFDs and PLCs from any vendor, all on one screen.</p>
+    </div>
+    <div>
+      <div class="definition-box">
+        <div class="def-label">Data flow</div>
+        <p>S7-1200 (MB_SERVER, simulated inverter) &rarr; Modbus TCP, port 502 &rarr; ModbusManager Pro dashboard on Windows. One PC, no extra software.</p>
+      </div>
+      <div style="margin-top:1.2rem;background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.2rem 1.5rem">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.8rem">Dashboard shows</div>
+        <ul style="list-style:none;font-size:0.88rem;color:var(--body);line-height:1.7">
+          <li>&#9201; AC power &amp; inverter temperature gauges</li>
+          <li>&#128202; Voltage, current, frequency, energy KPIs</li>
+          <li>&#128267; Battery state-of-charge</li>
+          <li>&#128161; Grid / derating / standby status lamps</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// download the demo</div>
+  <h2 class="sec-title">Free demo project</h2>
+  <p class="sec-sub">Two ways to get it: a universal source package for any TIA version, or a ready-to-open TIA V15.1 project. Either way you import the PLC logic, open the workspace in ModbusManager Pro, connect, and you have a live dashboard.</p>
+  <div class="widget-grid">
+    <div class="widget-card">
+      <div class="widget-icon">&#128220;</div>
+      <div class="widget-name">SolarInverterDemo.scl</div>
+      <div class="widget-desc">TIA Portal SCL source &mdash; a data block plus a function block that simulates the inverter and runs the Modbus TCP server. Imports into TIA V13 or newer.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">&#128202;</div>
+      <div class="widget-name">Workspace .json</div>
+      <div class="widget-desc">A ready-made ModbusManager Pro workspace: poll window, tags, scaling script and a full dashboard page mapped to the demo registers.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">&#128214;</div>
+      <div class="widget-name">README</div>
+      <div class="widget-desc">Register map, TIA setup steps, wiring and test instructions, plus the common gotchas (non-optimized DB, connection settings, power-cycle after download).</div>
+    </div>
+  </div>
+  <div class="dl-options">
+    <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem;display:flex;flex-direction:column">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--amber-ink);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem">Any TIA version</div>
+      <div style="font-family:'Saira Condensed',sans-serif;font-size:1.15rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.5rem">Source package (.zip)</div>
+      <div style="font-size:0.85rem;color:var(--body);line-height:1.6;margin-bottom:1.1rem;flex:1">SCL source + workspace + README. Imports into TIA Portal V13 or newer. Best if you are not on V15.1 or want to read the code.</div>
+      <a href="/ModbusManager-Siemens-S7-1200-demo.zip" download class="btn-primary" style="text-align:center">Download source (.zip)</a>
+    </div>
+    <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem;display:flex;flex-direction:column">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--amber-ink);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem">TIA Portal V15.1+</div>
+      <div style="font-family:'Saira Condensed',sans-serif;font-size:1.15rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.5rem">Ready-to-open project</div>
+      <div style="font-size:0.85rem;color:var(--body);line-height:1.6;margin-bottom:1.1rem;flex:1">Full TIA project archive. Retrieve it in TIA Portal V15.1 or newer, swap in your CPU if needed, compile and download. Fastest if you run V15.1.</div>
+      <a href="/SolarInverterDemo.zap15_1" download class="btn-ghost" style="text-align:center">Download project (.zap15_1)</a>
+    </div>
+  </div>
+  <p style="margin-top:1rem;font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--muted)">Both need: an S7-1200 &middot; ModbusManager Pro (14-day trial works). The workspace .json is also inside the source zip.</p>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// how to run it</div>
+  <h2 class="sec-title">Four steps to a live dashboard</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-label">Step 1</div>
+      <div class="step-title">Import the SCL</div>
+      <div class="step-text">In TIA Portal: External source files &rarr; add <span class="mono">SolarInverterDemo.scl</span> &rarr; Generate blocks from source. This creates the holding-register DB and the simulation function block.</div>
+    </div>
+    <div class="step">
+      <div class="step-label">Step 2</div>
+      <div class="step-title">Download to the PLC</div>
+      <div class="step-text">Add a call to the function block in OB1, compile, and download to your S7-1200. Power-cycle the CPU once so the Modbus TCP server binds cleanly to port 502.</div>
+    </div>
+    <div class="step">
+      <div class="step-label">Step 3</div>
+      <div class="step-title">Open the workspace</div>
+      <div class="step-text">In ModbusManager Pro, open the included workspace. It already has the poll window, tags, scaling script and dashboard configured for the demo register map.</div>
+    </div>
+    <div class="step">
+      <div class="step-label">Step 4</div>
+      <div class="step-title">Connect &amp; watch</div>
+      <div class="step-text">Connect over Modbus TCP to the PLC IP on port 502, unit 1. Switch to Runtime mode &mdash; the power gauge rises and falls, energy climbs and the status lamps react, all live.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// register map</div>
+  <h2 class="sec-title">What the PLC exposes</h2>
+  <p class="sec-sub">Holding registers, 0-based addressing, read with function code 03. 32-bit energy values use two registers (high word first).</p>
+  <table class="compare-table">
+    <thead>
+      <tr><th>Addr</th><th>Value</th><th>Type</th><th>Scale</th><th>Unit</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="mono">0</td><td>AC active power</td><td>INT</td><td>&divide;10</td><td>kW</td></tr>
+      <tr><td class="mono">1</td><td>DC voltage</td><td>INT</td><td>&divide;1</td><td>V</td></tr>
+      <tr><td class="mono">2</td><td>DC current</td><td>INT</td><td>&divide;10</td><td>A</td></tr>
+      <tr><td class="mono">3</td><td>Grid frequency</td><td>INT</td><td>&divide;100</td><td>Hz</td></tr>
+      <tr><td class="mono">4</td><td>Inverter temperature</td><td>INT</td><td>&divide;10</td><td>&deg;C</td></tr>
+      <tr><td class="mono">5&ndash;6</td><td>Daily energy yield</td><td>U32</td><td>&divide;100</td><td>kWh</td></tr>
+      <tr><td class="mono">7&ndash;8</td><td>Total energy yield</td><td>U32</td><td>&divide;1</td><td>kWh</td></tr>
+      <tr><td class="mono">9</td><td>DC string 1 current</td><td>INT</td><td>&divide;10</td><td>A</td></tr>
+      <tr><td class="mono">10</td><td>Battery SOC</td><td>INT</td><td>&divide;1</td><td>%</td></tr>
+      <tr><td class="mono">11</td><td>Status word (bit0 run, bit2 derate, bit3 standby)</td><td>WORD</td><td>bits</td><td>&mdash;</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:1rem;font-size:0.85rem;color:var(--muted);font-family:'IBM Plex Mono',monospace">Full details and setup steps are in the README inside the zip.</div>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// why modbusmanager pro</div>
+  <h2 class="sec-title">A lightweight HMI for your PLC</h2>
+  <div class="explainer-grid">
+    <div class="explainer-text">
+      <p>For a small system, a full WinCC or SCADA setup is expensive and heavy. ModbusManager Pro gives you a clean operator dashboard for a one-time 119 USD license &mdash; no runtime fees, no per-tag pricing, no server to maintain.</p>
+      <p>Because it speaks plain Modbus, it is not tied to Siemens. Put an S7-1200, a solar inverter, an energy meter and a VFD on the same dashboard, regardless of brand.</p>
+    </div>
+    <div class="definition-box">
+      <div class="def-label">Good fit for</div>
+      <p>Commissioning and test benches, small operator panels, solar and energy monitoring, machine builders who want a quick visual without a SCADA project, and anyone with mixed-vendor Modbus devices.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// frequently asked questions</div>
+  <h2 class="sec-title">Siemens + Modbus &mdash; FAQ</h2>
+  <div class="faq-list">
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Do I need WinCC or a SCADA license to visualise an S7-1200?<span class="icon">+</span></div><div class="faq-a">No. ModbusManager Pro runs on a normal Windows PC and polls the S7-1200 directly over Modbus TCP. There is no SCADA server, OPC-UA license or WinCC runtime to buy.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does the demo work with a real S7-1200?<span class="icon">+</span></div><div class="faq-a">Yes. It was built and tested on real S7-1200 hardware. The PLC runs a small simulation and acts as a Modbus TCP server on port 502; ModbusManager Pro polls it and displays the data live.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Which TIA Portal version do I need?<span class="icon">+</span></div><div class="faq-a">The demo logic is an SCL source file that imports into TIA Portal V13 or newer. It was developed on V15.1. Import it via External source files and generate the blocks.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Modbus TCP or RTU?<span class="icon">+</span></div><div class="faq-a">The demo uses Modbus TCP over the S7-1200 onboard Ethernet port, so no extra module is needed. ModbusManager Pro also supports Modbus RTU if you add a CM 1241 serial module.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does this only work with Siemens PLCs?<span class="icon">+</span></div><div class="faq-a">No. ModbusManager Pro is vendor-neutral &mdash; it works with any Modbus RTU or TCP device (inverters, meters, VFDs, sensors, PLCs from any maker) and can show several on one dashboard.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is the inverter data real?<span class="icon">+</span></div><div class="faq-a">In the demo the S7-1200 generates a simulated inverter so the dashboard looks alive without sensors. For production you map the dashboard to your real device registers instead.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What does ModbusManager Pro cost?<span class="icon">+</span></div><div class="faq-a">A one-time 119 USD perpetual license for one machine, with 12 months of free updates and a 14-day free trial &mdash; no credit card required.</div></div>
+  </div>
+</section>
+
+<div class="cta-strip">
+  <h2>Try it on your own S7-1200</h2>
+  <p>Download the free demo project and the ModbusManager Pro trial, and have a live Siemens <a href="/modbus-hmi-dashboard.html">dashboard</a> running in minutes.</p>
+  <div class="ctas">
+    <a href="/ModbusManager-Siemens-S7-1200-demo.zip" download class="btn-cta-yellow">Download free demo</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.6.2/Modbus.Manager.Pro.Setup.1.6.2.exe" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-Siemens-CTA', 'product': 'pro', 'value': 1})" class="btn-cta-outline">Download Pro trial</a>
+  </div>
+  <p style="margin-top:1rem;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--steel)">Windows 10/11 &middot; 14-day trial &middot; Pro $119 one-time</p>
+</div>
+
+<footer>
+  <div class="footer-logo">ModbusManager</div>
+  <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
+    <a href="/">Home</a>
+    <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+    <a href="/modbus-data-logger-software.html">Data Logger</a>
+    <a href="/modbus-alarm-software.html">Alarms</a>
+    <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+    <a href="/abb-acs580-modbus.html">VFD drives</a>
+    <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    <a href="/manual.html">Documentation</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/license-terms.html">License terms</a>
+    <a href="mailto:support@modbusmanager.com">Support</a>
+  </div>
+  <div>support@modbusmanager.com</div>
+</footer>
+
+<script>
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+</script>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+</body>
+</html>

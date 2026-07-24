@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modbus HMI Dashboard Software for Windows | ModbusManager</title>
+<meta name="description" content="Modbus HMI software for Windows: drag-and-drop gauges, trends, lamps and alarms — no SCADA server, no OPC licenses, no subscription. $119 one-time, 14-day free trial.">
+<meta name="keywords" content="Modbus HMI software, Modbus HMI dashboard, Modbus dashboard Windows, build Modbus HMI, Modbus visualization software, Modbus gauge, Modbus SCADA alternative, HMI builder Modbus, Modbus dashboard tool, Modbus Pro">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/modbus-hmi-dashboard.html">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Modbus HMI Dashboard Software for Windows">
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:description" content="Build a live Modbus HMI dashboard without SCADA licenses. Drag-and-drop gauges, lamps and trends. $119 one-time, Windows.">
+<meta property="og:url" content="https://modbusmanager.com/modbus-hmi-dashboard.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://modbusmanager.com/og-hmi.png">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Modbus HMI Dashboard Software for Windows">
+<meta name="twitter:description" content="Live Modbus HMI dashboard for Windows. Drag-and-drop gauges, lamps, trends. No SCADA license needed. $119 one-time.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-hmi.png">
+
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- JSON-LD: TechArticle + FAQPage + SoftwareApplication -->
+<script type="application/ld+json">
+[
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Modbus HMI Dashboard Software for Windows",
+  "description": "How to build a live Modbus HMI dashboard on Windows using ModbusManager Pro — drag-and-drop gauges, lamps, trend charts and fullscreen runtime mode without SCADA licenses.",
+  "url": "https://modbusmanager.com/modbus-hmi-dashboard.html",
+  "datePublished": "2026-06-01",
+  "dateModified": "2026-06-01",
+  "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
+  "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
+  "about": {
+    "@type": "SoftwareApplication",
+    "name": "ModbusManager Pro",
+    "operatingSystem": "Windows 10, Windows 11",
+    "applicationCategory": "DeveloperApplication",
+    "offers": {"@type": "Offer", "price": "119", "priceCurrency": "USD"},
+    "url": "https://modbusmanager.com/#pro",
+    "downloadUrl": "https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.6.2/Modbus.Manager.Pro.Setup.1.6.2.exe"
+  }
+},
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do I need a separate SCADA server to run a Modbus HMI dashboard?",
+      "acceptedAnswer": {"@type": "Answer", "text": "No. ModbusManager Pro runs entirely on Windows — no server, no cloud, no OPC-UA license. The dashboard polls your Modbus devices directly and displays live data in the same application."}
+    },
+    {
+      "@type": "Question",
+      "name": "Does the Modbus HMI work with both RTU and TCP devices?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Yes. The dashboard reads from any poll window configured in ModbusManager Pro, so you can mix RTU (serial RS-485) and TCP/IP devices on the same dashboard page."}
+    },
+    {
+      "@type": "Question",
+      "name": "What dashboard elements are available?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Gauges, numeric KPI displays, status lamps, multi-state status indicators, bars, trend charts, a live value table, tank/valve/pump/motor/boiler and other HVAC and process symbols, battery state-of-charge, image elements for site diagrams, and write controls: switches, buttons, sliders, setpoints and enum dropdowns. All elements resize and snap to grid."}
+    },
+    {
+      "@type": "Question",
+      "name": "Can I build multi-page dashboards?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Yes. ModbusManager Pro supports multiple dashboard pages in a single workspace. You can link pages via button elements or navigate with tabs in runtime mode."}
+    },
+    {
+      "@type": "Question",
+      "name": "What is fullscreen runtime mode?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Runtime mode hides all editor controls and expands the dashboard to fill the screen — suitable for an operator panel or wall display. You exit with Escape."}
+    },
+    {
+      "@type": "Question",
+      "name": "How does the tag engine work?",
+      "acceptedAnswer": {"@type": "Answer", "text": "ModbusManager Pro includes a tag engine with Structured Text scripting. You define register-linked tags and write simple expressions (e.g. combining hi/lo word pairs into a 32-bit value, applying gains) that run every poll cycle. Dashboard elements bind to tag values, not raw registers."}
+    },
+    {
+      "@type": "Question",
+      "name": "Can I export the dashboard to PNG or PDF?",
+      "acceptedAnswer": {"@type": "Answer", "text": "You can export a snapshot of the current dashboard view to PNG. PDF export is not currently supported."}
+    },
+    {
+      "@type": "Question",
+      "name": "What is the price and license model?",
+      "acceptedAnswer": {"@type": "Answer", "text": "ModbusManager Pro costs $119 as a one-time perpetual license for one machine. It includes 12 months of free updates. A 14-day free trial is available — no credit card required."}
+    }
+  ]
+}
+]
+</script>
+
+<style>
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+.mono{font-family:'IBM Plex Mono',monospace}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+
+/* HAZARD STRIPE */
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+
+/* HERO */
+.hero{padding:4rem 3rem 3.5rem;max-width:1140px;margin:0 auto}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.9rem}
+.hero h1{font-family:'Saira Condensed',sans-serif;font-size:3rem;font-weight:700;line-height:1;color:var(--ink);margin-bottom:1rem;letter-spacing:0.01em;text-transform:uppercase;max-width:720px}
+.hero h1 .accent{color:var(--amber-ink)}
+.hero-desc{font-size:1rem;color:var(--body);line-height:1.7;margin-bottom:1.8rem;max-width:640px}
+.hero-ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn-primary{background:var(--run);color:#fff;padding:0.75rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-primary:hover{background:#186040}
+.btn-ghost{background:transparent;color:var(--ink);border:2px solid var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-ghost:hover{background:var(--ink);color:var(--safety)}
+.hero-note{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--muted);margin-top:0.7rem}
+
+/* SECTION */
+.section{padding:3.5rem 3rem;max-width:1140px;margin:0 auto}
+.sec-label{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem}
+.sec-title{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:0.6rem}
+.sec-sub{font-size:0.95rem;color:var(--body);line-height:1.7;margin-bottom:2rem;max-width:680px}
+.divider-line{border:none;border-top:2px solid var(--ink)}
+
+/* WHAT IS HMI */
+.explainer-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.explainer-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.definition-box{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem}
+.definition-box .def-label{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem}
+.definition-box p{font-size:0.9rem;color:var(--body);line-height:1.7}
+
+/* WIDGET GRID */
+.widget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.widget-card{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem}
+.widget-icon{font-size:1.6rem;margin-bottom:0.7rem}
+.widget-name{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem}
+.widget-desc{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;counter-reset:step}
+.step{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem;position:relative}
+.step::before{counter-increment:step;content:counter(step);font-family:'Saira Condensed',sans-serif;font-size:2.5rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.5rem;right:1rem;line-height:1}
+.step-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--amber-ink);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem}
+.step-title{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.5rem}
+.step-text{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* TAG ENGINE */
+.tag-block{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:start}
+.tag-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.code-box{background:var(--ink);color:#D4D8D0;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;line-height:1.7;padding:1.4rem 1.6rem;border-radius:3px;overflow-x:auto}
+.code-box .cm{color:#5F7A5F}
+.code-box .ck{color:var(--safety)}
+.code-box .cv{color:#8EC0B0}
+
+/* COMPARE TABLE */
+.compare-table{width:100%;border-collapse:collapse;font-size:0.88rem}
+.compare-table th{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.05em;text-transform:uppercase;padding:0.7rem 1rem;border-bottom:2px solid var(--ink);text-align:left;background:var(--enclosure2)}
+.compare-table td{padding:0.65rem 1rem;border-bottom:1px solid var(--steel)}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table .hl{background:rgba(30,122,79,0.06)}
+.yes{color:var(--run);font-weight:600}
+.no{color:var(--bad)}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:0}
+.faq-item{border-top:1px solid var(--steel)}
+.faq-item:last-child{border-bottom:1px solid var(--steel)}
+.faq-q{font-family:'Saira Condensed',sans-serif;font-size:1.05rem;font-weight:600;letter-spacing:0.02em;padding:1.1rem 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq-q:hover{color:var(--amber-ink)}
+.faq-q .icon{font-family:'IBM Plex Mono',monospace;font-size:1.1rem;flex-shrink:0;transition:transform 0.2s}
+.faq-a{font-size:0.9rem;color:var(--body);line-height:1.75;padding:0 0 1.1rem;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .icon{transform:rotate(45deg)}
+
+/* CTA STRIP */
+.cta-strip{background:var(--ink);color:var(--safety);padding:3.5rem 3rem;text-align:center}
+.cta-strip h2{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.6rem}
+.cta-strip p{font-size:0.95rem;color:var(--enclosure);margin-bottom:1.8rem;max-width:540px;margin-left:auto;margin-right:auto}
+.cta-strip .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-cta-yellow{background:var(--safety);color:var(--ink);padding:0.8rem 2rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-cta-yellow:hover{background:#e09800}
+.btn-cta-outline{background:transparent;color:var(--safety);border:2px solid var(--safety);padding:0.7rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+
+/* FOOTER */
+footer{background:var(--ink);color:var(--steel);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:0.75rem}
+.footer-logo{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:0.05em;text-transform:uppercase}
+footer a{color:var(--steel);text-decoration:none}
+footer a:hover{color:#fff}
+
+@media(max-width:768px){
+  nav{padding:0.75rem 1.2rem;flex-wrap:wrap;gap:0.5rem}
+  .nav-links{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  .hero h1{font-size:2.2rem}
+  .section{padding:2.5rem 1.2rem}
+  .explainer-grid,.tag-block{grid-template-columns:1fr}
+  .widget-grid{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .cta-strip{padding:2.5rem 1.2rem}
+  footer{padding:1.5rem 1.2rem;flex-direction:column;align-items:flex-start;gap:0.75rem}
+}
+@media(max-width:520px){
+  .widget-grid,.steps{grid-template-columns:1fr}
+}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;background:transparent;border:none;min-width:190px;display:none;flex-direction:column;z-index:200}.nav-drop-menu>a{background:var(--enclosure2,#e8e9e4);border-left:1px solid var(--ink,#16181A);border-right:1px solid var(--ink,#16181A)}.nav-drop-menu>a:first-child{border-top:1px solid var(--ink,#16181A);border-radius:3px 3px 0 0;padding-top:0.5rem}.nav-drop-menu>a:last-child{border-bottom:1px solid var(--ink,#16181A);border-radius:0 0 3px 3px;padding-bottom:0.5rem;box-shadow:0 6px 20px rgba(0,0,0,0.18)}
+.nav-drop:hover .nav-drop-menu{display:flex}
+.nav-drop-menu a{padding:0.5rem 1rem;white-space:nowrap;text-transform:none;font-size:0.78rem;color:var(--ink,#16181A)}
+.nav-drop-menu a:hover{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+nav .nav-links.open .nav-drop-menu{position:static;display:flex;margin:0.3rem 0 0.3rem 0.8rem;border:none;box-shadow:none;padding:0;min-width:0;background:none}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
+}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;max-width:100%}}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+</style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Features","item": "https://modbusmanager.com/#features"},{"@type": "ListItem","position": 3,"name": "HMI Dashboard Software","item": "https://modbusmanager.com/modbus-hmi-dashboard.html"}]}
+</script>
+</head>
+<body>
+
+<div class="hazard"></div>
+
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label">Features ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+        <a href="/modbus-data-logger-software.html">Data Logger</a>
+        <a href="/modbus-alarm-software.html">Alarms</a>
+      </div>
+    </li>
+    <li class="nav-drop">
+      <span class="nav-drop-label">Guides ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200</a>
+        <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+        <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+        <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+        <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+        <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+        <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+        <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+        <a href="/manual.html">Documentation</a>
+      </div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.6.2/Modbus.Manager.Pro.Setup.1.6.2.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-HMI-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.6.2/Modbus.Manager.Pro.Setup.1.6.2.exe" class="nav-cta" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-HMI-Nav', 'product': 'pro', 'value': 1})">Download Pro trial</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════ HERO -->
+<section class="hero">
+  <div class="eyebrow">// ModbusManager Pro — HMI Dashboard</div>
+  <h1>Modbus <span class="accent">HMI Dashboard</span><br>Software for Windows</h1>
+  <p class="hero-desc">Build a live operator dashboard directly from your Modbus registers — without a SCADA server, OPC-UA license, or subscription. Drag-and-drop gauges, lamps, trend charts and run it fullscreen. Works with RTU and TCP devices on Windows 10/11.</p>
+  <div class="hero-ctas">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.6.2/Modbus.Manager.Pro.Setup.1.6.2.exe" class="btn-primary" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-HMI-Hero', 'product': 'pro', 'value': 1})">Download Pro trial — free 14 days</a>
+    <a href="/#pricing" class="btn-ghost">Buy Pro — $119</a>
+  </div>
+  <p class="hero-note">No credit card for trial · Windows 10/11 · One-time license</p>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ WHAT IS -->
+<section class="section">
+  <div class="sec-label">// what is modbus hmi software</div>
+  <h2 class="sec-title">Your Modbus data, visualised</h2>
+  <div class="explainer-grid">
+    <div class="explainer-text">
+      <p>A Modbus HMI (Human-Machine Interface) dashboard is a graphical panel that reads live register values from your devices and displays them as gauges, indicators, trends and numbers — the same way an industrial SCADA system would, but without the infrastructure overhead.</p>
+      <p>ModbusManager Pro is built for engineers, integrators and technicians who need a quick, lightweight way to visualise Modbus data on a Windows PC. You configure poll windows as normal, bind dashboard elements to register values, and the display updates in real time. No server, no OPC-UA, no licensing maze.</p>
+      <p>Typical use cases: commissioning a new drive or inverter, building a test-bench display, monitoring a solar plant, or creating a simple operator panel for a small system.</p>
+    </div>
+    <div>
+      <div class="definition-box">
+        <div class="def-label">In one sentence</div>
+        <p>ModbusManager Pro reads Modbus RTU / TCP registers, lets you map them to dashboard elements, and displays everything live in a fullscreen operator view — all on a single Windows machine, no extra software.</p>
+      </div>
+      <div style="margin-top:1.2rem;background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.2rem 1.5rem">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.8rem">Who uses it</div>
+        <ul style="list-style:none;font-size:0.88rem;color:var(--body);line-height:1.7">
+          <li>⚡ Solar / energy engineers monitoring inverters</li>
+          <li>🏭 Integrators commissioning drive systems</li>
+          <li>🔬 R&amp;D labs needing a test-bench display</li>
+          <li>🛠 Technicians who want status at a glance</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ WIDGETS -->
+<section class="section">
+  <div class="sec-label">// dashboard elements</div>
+  <h2 class="sec-title">What you can put on the dashboard</h2>
+  <p class="sec-sub">All elements are resizable, snap to grid, and bind to a tag or raw register value. Mix and match freely.</p>
+  <div class="widget-grid">
+    <div class="widget-card">
+      <div class="widget-icon">⏱</div>
+      <div class="widget-name">Gauge</div>
+      <div class="widget-desc">Circular arc gauge with configurable min/max, coloured zones (green/yellow/red) and a numeric readout. Ideal for speed, pressure or temperature.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">🔆</div>
+      <div class="widget-name">Status lamp</div>
+      <div class="widget-desc">Binary on/off indicator or multi-state lamp driven by a register value. Set custom colours and labels per state — great for alarm and run status.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">📈</div>
+      <div class="widget-name">Trend chart</div>
+      <div class="widget-desc">Rolling time-series chart for up to four tags. Shows the last N samples at the current poll rate. Useful for monitoring temperature drift or power ramp.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">🔢</div>
+      <div class="widget-name">KPI display</div>
+      <div class="widget-desc">Large numeric readout with unit label and optional upper/lower limits. Clean format for displaying power, energy or current values at a glance.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">📊</div>
+      <div class="widget-name">Bar / level</div>
+      <div class="widget-desc">Horizontal or vertical bar showing a value as a filled percentage of the range. Works well for tank fill level, battery state or load percentage.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">🪣</div>
+      <div class="widget-name">Tank &amp; valve</div>
+      <div class="widget-desc">Animated tank fill icon driven by a register value, plus valve icons that open/close based on a coil or discrete input. Adds visual context to P&amp;ID-style dashboards.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">🎚</div>
+      <div class="widget-name">Write controls</div>
+      <div class="widget-desc">Switches, buttons, sliders, numeric setpoints and enum dropdowns (Off / Auto / Manual) that write back to coils and registers — safe by default: they only operate in Runtime mode, and stay locked until a live value has been read.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">◉</div>
+      <div class="widget-name">Multi-state status &amp; value table</div>
+      <div class="widget-desc">Map raw values to coloured state pills (0 = Stopped, 1 = Running, 2 = Fault) with your own texts and colours, and drop a live value table on the canvas for commissioning — many channels, one glance.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">♨</div>
+      <div class="widget-name">HVAC, process &amp; energy symbols</div>
+      <div class="widget-desc">Fans, dampers, pumps, motors, boilers, heating/cooling coils, AHU, compressors, battery state-of-charge and more — plus an image element for putting your site diagram or logo behind the live values.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ HOW TO -->
+<section class="section">
+  <div class="sec-label">// how to build a modbus hmi dashboard</div>
+  <h2 class="sec-title">Four steps from device to display</h2>
+  <p class="sec-sub">No scripting required for basic dashboards. The tag engine is optional but unlocks computed values like I32/U32 word pairs and gain-applied engineering units.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-label">Step 1</div>
+      <div class="step-title">Poll your device</div>
+      <div class="step-text">Configure a connection (RTU or TCP), add a poll window for your register range, and verify the raw values in the register table. This works the same as ModbusManager Standard.</div>
+    </div>
+    <div class="step">
+      <div class="step-label">Step 2</div>
+      <div class="step-title">Define tags</div>
+      <div class="step-text">Create register-linked tags that map raw register addresses to named engineering values. Optionally write a Structured Text script to combine word pairs or apply a gain multiplier.</div>
+    </div>
+    <div class="step">
+      <div class="step-label">Step 3</div>
+      <div class="step-title">Build the dashboard</div>
+      <div class="step-text">Open the Dashboard editor, drag elements onto the canvas from the palette, and bind each element to a tag or register. Resize, reposition and set ranges or colour zones.</div>
+    </div>
+    <div class="step">
+      <div class="step-label">Step 4</div>
+      <div class="step-title">Run fullscreen</div>
+      <div class="step-text">Switch to Runtime mode to hide all editor controls. The dashboard fills the screen and updates live at your poll interval. Press Escape to return to the editor.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ WRITE SAFETY -->
+<section class="section">
+  <div class="sec-label">// built for real devices</div>
+  <h2 class="sec-title">Safe-by-default writes</h2>
+  <p class="sec-sub">An HMI that can write to a live PLC needs guard rails. ModbusManager Pro ships with two, on by default.</p>
+  <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.7"><strong>Edit mode never writes.</strong> While you are placing and configuring elements, switches, buttons, sliders and setpoints are inert — clicking them selects the element instead of actuating an output. Writes are only possible after you switch the dashboard to Runtime mode.</p>
+  <p style="max-width:780px;margin:1rem auto 0;text-align:center;color:var(--muted);line-height:1.7"><strong>No blind writes.</strong> Write elements stay locked and dimmed until a real value has been read from the device, so a slider or setpoint always starts from the actual state of the output — never from a default. The operator sees what the device is doing before being able to change it.</p>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ TAG ENGINE -->
+<section class="section">
+  <div class="sec-label">// tag engine &amp; structured text</div>
+  <h2 class="sec-title">Computed values with the tag engine</h2>
+  <div class="tag-block">
+    <div class="tag-text">
+      <p>Raw Modbus registers often need transformation before they make sense on a dashboard. A 32-bit active power value is stored across two 16-bit registers. A temperature is an integer that needs to be divided by 10. A signed reactive power value needs special handling for negative readings.</p>
+      <p>ModbusManager Pro includes a tag engine with Structured Text scripting. You write simple expressions that run every poll cycle and produce the engineering-unit values that your dashboard elements display.</p>
+      <p>Tags can also be computed internals — totals, differences or Boolean combinations — that have no direct register address but are derived from other tags.</p>
+    </div>
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5rem">Example: 32-bit power + gain</div>
+      <div class="code-box"><span class="cm">// Combine hi/lo word pair → I32, apply gain</span>
+<span class="ck">raw</span> := <span class="cv">tag_hi</span> * 65536 + <span class="cv">tag_lo</span>;
+<span class="ck">IF</span> raw > 2147483647 <span class="ck">THEN</span>
+  raw := raw - 4294967296;
+<span class="ck">END_IF</span>;
+<span class="cv">active_power_kW</span> := raw * 0.001;
+
+<span class="cm">// Signed reactive power (same pattern)</span>
+<span class="cv">reactive_kVAr</span> := raw_q * 0.001;</div>
+      <div style="font-size:0.82rem;color:var(--muted);margin-top:0.7rem;font-family:'IBM Plex Mono',monospace">Dashboard gauge binds to <code style="color:var(--amber-ink)">active_power_kW</code></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ COMPARE -->
+<section class="section">
+  <div class="sec-label">// standard vs pro</div>
+  <h2 class="sec-title">Which edition do you need?</h2>
+  <p class="sec-sub">Both editions include the full Modbus master and slave toolset. Pro adds the Dashboard HMI on top.</p>
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Standard — $49</th>
+        <th class="hl">Pro — $119</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Modbus RTU, TCP &amp; ASCII master</td><td class="yes">✓</td><td class="hl yes">✓</td></tr>
+      <tr><td>Built-in Slave Mode &amp; register simulation</td><td class="yes">✓</td><td class="hl yes">✓</td></tr>
+      <tr><td>Serial Monitor, Test Center, Slave &amp; Address Scan</td><td class="yes">✓</td><td class="hl yes">✓</td></tr>
+      <tr><td>Charts, scaling, conditional colours, workspaces</td><td class="yes">✓</td><td class="hl yes">✓</td></tr>
+      <tr><td>Auto-reconnect &amp; 11-language UI</td><td class="yes">✓</td><td class="hl yes">✓</td></tr>
+      <tr><td>Drag-and-drop HMI Dashboard canvas</td><td class="no">✗</td><td class="hl yes">✓</td></tr>
+      <tr><td>Gauges, lamps, bars, trends, tanks, valves</td><td class="no">✗</td><td class="hl yes">✓</td></tr>
+      <tr><td>Tag engine with Structured Text scripting</td><td class="no">✗</td><td class="hl yes">✓</td></tr>
+      <tr><td>Fullscreen runtime mode</td><td class="no">✗</td><td class="hl yes">✓</td></tr>
+      <tr><td>Multi-page dashboard, popup windows</td><td class="no">✗</td><td class="hl yes">✓</td></tr>
+      <tr><td>Snap-to-grid, undo/redo, PNG export</td><td class="no">✗</td><td class="hl yes">✓</td></tr>
+      <tr><td>Price (one-time, perpetual)</td><td style="color:var(--amber-ink)">$49</td><td class="hl" style="color:var(--amber-ink)">$119</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:1.2rem;font-size:0.85rem;color:var(--muted);font-family:'IBM Plex Mono',monospace">
+    Need just the polling tool? <a href="/" style="color:var(--amber-ink)">ModbusManager Standard → $49</a>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ FAQ -->
+<section class="section">
+  <div class="sec-label">// frequently asked questions</div>
+  <h2 class="sec-title">Modbus HMI — FAQ</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Can I accidentally write to my PLC while editing the dashboard?<span class="icon">+</span></div>
+      <div class="faq-a">No. Dashboard writes are disabled in edit mode — write elements only operate in Runtime mode, and each element stays locked until a live value has been read from the device. Editing a dashboard connected to production equipment cannot trigger an output.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Do I need a separate SCADA server to run a Modbus HMI dashboard?<span class="icon">+</span></div>
+      <div class="faq-a">No. ModbusManager Pro runs entirely on Windows — no server, no cloud, no OPC-UA license. The dashboard polls your Modbus devices directly and displays live data in the same application.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Does the Modbus HMI work with both RTU and TCP devices?<span class="icon">+</span></div>
+      <div class="faq-a">Yes. The dashboard reads from any poll window configured in ModbusManager Pro, so you can mix RTU (serial RS-485) and TCP/IP devices on the same dashboard page.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What dashboard elements are available?<span class="icon">+</span></div>
+      <div class="faq-a">Gauges, numeric KPI displays, status lamps, multi-state status indicators, bars, trend charts (backed by the <a href="/modbus-data-logger-software.html">data logging Historian</a>), a live value table, tank/valve/pump/motor/boiler and other HVAC and process symbols, battery state-of-charge, image elements for site diagrams, and write controls: switches, buttons, sliders, setpoints and enum dropdowns. All elements resize and snap to grid.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Can I build multi-page dashboards?<span class="icon">+</span></div>
+      <div class="faq-a">Yes. ModbusManager Pro supports multiple dashboard pages in a single workspace. You can link pages via button elements or navigate with tabs in runtime mode.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What is fullscreen runtime mode?<span class="icon">+</span></div>
+      <div class="faq-a">Runtime mode hides all editor controls and expands the dashboard to fill the screen — suitable for an operator panel or wall display. You exit with Escape.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How does the tag engine work?<span class="icon">+</span></div>
+      <div class="faq-a">ModbusManager Pro includes a tag engine with Structured Text scripting. You define register-linked tags and write simple expressions (e.g. combining hi/lo word pairs into a 32-bit value, applying gains) that run every poll cycle. Dashboard elements bind to tag values, not raw registers.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Can I export the dashboard to PNG or PDF?<span class="icon">+</span></div>
+      <div class="faq-a">You can export a snapshot of the current dashboard view to PNG. PDF export is not currently supported.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What is the price and license model?<span class="icon">+</span></div>
+      <div class="faq-a">ModbusManager Pro costs $119 as a one-time perpetual license for one machine. It includes 12 months of free updates. A 14-day free trial is available — no credit card required.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ CTA -->
+<div class="cta-strip">
+  <h2>Try the HMI Dashboard free for 14 days</h2>
+  <p>Download ModbusManager Pro and build your first Modbus dashboard today. No credit card, no cloud, no subscription.</p>
+  <div class="ctas">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.6.2/Modbus.Manager.Pro.Setup.1.6.2.exe" class="btn-cta-yellow" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-HMI-CTA', 'product': 'pro', 'value': 1})">Download Pro trial</a>
+    <a href="/#pricing" class="btn-cta-outline">See pricing</a>
+  </div>
+  <p style="margin-top:1rem;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--steel)">Windows 10/11 · 14-day trial · Pro from $119 one-time</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">ModbusManager</div>
+  <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
+    <a href="/">Home</a>
+    <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+    <a href="/modbus-data-logger-software.html">Data Logger</a>
+    <a href="/modbus-alarm-software.html">Alarms</a>
+    <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+    <a href="/abb-acs580-modbus.html">VFD drives</a>
+    <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    <a href="/manual.html">Documentation</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/license-terms.html">License terms</a>
+    <a href="mailto:support@modbusmanager.com">Support</a>
+  </div>
+  <div>support@modbusmanager.com</div>
+</footer>
+
+<script>
+function toggleFaq(el) {
+  var item = el.parentElement;
+  item.classList.toggle('open');
+}
+</script>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+</body>
+</html>
