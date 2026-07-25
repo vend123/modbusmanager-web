@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 460" width="1100" height="460" font-family="Archivo, Arial, sans-serif" role="img" aria-labelledby="gwTitle gwDesc">
+  <title id="gwTitle">ModbusManager Pro Gateway — multiple Modbus devices aggregated into one common register map</title>
+  <desc id="gwDesc">Modbus RTU and TCP devices on the left are polled by ModbusManager Pro in the middle, which exposes a single common register map that a PLC reads and writes on the right.</desc>
+
+  <defs>
+    <style>
+      .card  { fill:#ffffff; stroke:#d7d2c4; stroke-width:1.5; }
+      .lbl   { font-size:13px; fill:#5c574b; letter-spacing:.06em; }
+      .h     { font-size:15px; font-weight:600; fill:#23201a; }
+      .mono  { font-family:'IBM Plex Mono', Consolas, monospace; font-size:12.5px; fill:#23201a; }
+      .monod { font-family:'IBM Plex Mono', Consolas, monospace; font-size:12px; fill:#8d877a; }
+      .cap   { font-size:11.5px; fill:#6e7681; letter-spacing:.04em; }
+      .trunk { stroke:#b45309; stroke-width:1.8; fill:none; }
+    </style>
+    <marker id="ah" markerWidth="10" markerHeight="10" refX="7.5" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b45309"/>
+    </marker>
+    <marker id="ah2" markerWidth="10" markerHeight="10" refX="7.5" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0d9488"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1100" height="5" fill="#b45309"/>
+
+  <!-- ── LEFT: field devices ── -->
+  <text x="30" y="50" class="lbl">FIELD DEVICES</text>
+  <g><rect x="30" y="64"  width="220" height="56" rx="4" class="card"/><text x="44" y="87"  class="h">Energy meter</text><text x="44" y="107" class="monod">RTU · COM4 · slave 50</text></g>
+  <g><rect x="30" y="136" width="220" height="56" rx="4" class="card"/><text x="44" y="159" class="h">VFD / drive</text><text x="44" y="179" class="monod">RTU · COM4 · slave 51</text></g>
+  <g><rect x="30" y="208" width="220" height="56" rx="4" class="card"/><text x="44" y="231" class="h">Inverter</text><text x="44" y="251" class="monod">TCP · 192.168.1.10</text></g>
+  <g><rect x="30" y="280" width="220" height="56" rx="4" class="card"/><text x="44" y="303" class="h">Sensor gateway</text><text x="44" y="323" class="monod">TCP · 192.168.1.20</text></g>
+  <text x="30" y="362" class="cap">Different buses · different slave IDs · different data types</text>
+
+  <!-- collector: short stubs into one vertical trunk, then a single arrow -->
+  <line class="trunk" x1="250" y1="92"  x2="292" y2="92"/>
+  <line class="trunk" x1="250" y1="164" x2="292" y2="164"/>
+  <line class="trunk" x1="250" y1="236" x2="292" y2="236"/>
+  <line class="trunk" x1="250" y1="308" x2="292" y2="308"/>
+  <line class="trunk" x1="292" y1="92"  x2="292" y2="308"/>
+  <line class="trunk" stroke-width="3" marker-end="url(#ah)" x1="292" y1="200" x2="344" y2="200"/>
+
+  <!-- ── MIDDLE: ModbusManager Pro ── -->
+  <rect x="350" y="58" width="350" height="306" rx="6" fill="#1b1f24"/>
+  <rect x="350" y="58" width="350" height="4"  rx="2" fill="#d29922"/>
+  <text x="372" y="92"  font-size="16" font-weight="700" fill="#ffffff">ModbusManager Pro</text>
+  <text x="372" y="112" font-size="12" fill="#8b949e" letter-spacing=".05em">GATEWAY</text>
+
+  <rect x="372" y="128" width="306" height="46" rx="4" fill="#21262d" stroke="#30363d"/>
+  <text x="388" y="148" font-size="12.5" fill="#e6edf3" font-weight="600">1 · Master</text>
+  <text x="388" y="165" font-size="11.5" fill="#8b949e">Polls every device on its own connection</text>
+
+  <rect x="372" y="184" width="306" height="92" rx="4" fill="#21262d" stroke="#d29922"/>
+  <text x="388" y="204" font-size="12.5" fill="#d29922" font-weight="600">2 · Common register map</text>
+  <text x="388" y="224" font-family="'IBM Plex Mono',monospace" font-size="11" fill="#e6edf3">slave 50 hold 39 → hold 0</text>
+  <text x="388" y="241" font-family="'IBM Plex Mono',monospace" font-size="11" fill="#8b949e">uint16 123 → float32 12.3</text>
+  <text x="388" y="262" font-family="'IBM Plex Mono',monospace" font-size="11" fill="#e6edf3">slave 51 hold 12 → hold 2</text>
+
+  <rect x="372" y="286" width="306" height="46" rx="4" fill="#21262d" stroke="#30363d"/>
+  <text x="388" y="306" font-size="12.5" fill="#e6edf3" font-weight="600">3 · Slave (Modbus TCP)</text>
+  <text x="388" y="323" font-size="11.5" fill="#8b949e">One address the PLC connects to</text>
+
+  <text x="372" y="352" font-size="11.5" fill="#6e7681">Runs in the background · starts with Windows</text>
+
+  <!-- ── straight arrows to / from PLC ── -->
+  <text x="742" y="158" class="cap" fill="#b45309" text-anchor="middle">read</text>
+  <line class="trunk" stroke-width="3" marker-end="url(#ah)" x1="700" y1="172" x2="808" y2="172"/>
+  <line stroke="#0d9488" stroke-width="3" fill="none" marker-end="url(#ah2)" x1="808" y1="248" x2="700" y2="248"/>
+  <text x="754" y="270" class="cap" fill="#0d9488" text-anchor="middle">write setpoints</text>
+
+  <!-- ── RIGHT: PLC ── -->
+  <text x="816" y="50" class="lbl">CONTROL SYSTEM</text>
+  <rect x="816" y="118" width="254" height="184" rx="6" class="card"/>
+  <rect x="816" y="118" width="254" height="4" rx="2" fill="#2563eb"/>
+  <text x="838" y="150" class="h" font-size="16">PLC / SCADA</text>
+  <text x="838" y="174" class="monod">one Modbus TCP connection</text>
+  <line x1="838" y1="190" x2="1048" y2="190" stroke="#d7d2c4"/>
+  <text x="838" y="212" class="mono">192.168.1.50 : 502</text>
+  <text x="838" y="233" class="mono">slave ID 10</text>
+  <text x="838" y="254" class="mono">holding 0 … 111</text>
+  <text x="838" y="284" class="cap">No per-device configuration</text>
+
+  <line x1="30" y1="404" x2="1070" y2="404" stroke="#d7d2c4"/>
+  <text x="30" y="432" font-size="12.5" fill="#5c574b">Ten devices on three different buses look like one device to the PLC — with the data types the PLC actually wants.</text>
+</svg>

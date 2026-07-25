@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modbus Gateway Software for Windows — Combine Devices into One Register Map | ModbusManager</title>
+<meta name="description" content="Modbus gateway software for Windows: read registers from many RTU and TCP devices and expose them as one common register map a PLC reads and writes. Type and scale conversion both ways. $119 one-time, 14-day trial.">
+<meta name="keywords" content="Modbus gateway software, Modbus data concentrator, Modbus aggregator, combine Modbus devices, Modbus register mapping software, Modbus RTU to TCP gateway software, Modbus slave simulator PLC, Modbus gateway Windows, Modbus concentrator software, Modbus Pro">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/modbus-gateway-software.html">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Modbus Gateway Software for Windows">
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:description" content="Combine registers from many Modbus RTU and TCP devices into one map your PLC reads with a single connection. Type and scale conversion both ways.">
+<meta property="og:url" content="https://modbusmanager.com/modbus-gateway-software.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://modbusmanager.com/og-gateway.png">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Modbus Gateway Software for Windows">
+<meta name="twitter:description" content="Many Modbus devices, one register map for the PLC. Aggregation plus type and scale conversion, on Windows.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-gateway.png">
+
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+
+<!-- JSON-LD: TechArticle + FAQPage + SoftwareApplication -->
+<script type="application/ld+json">
+[
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Modbus Gateway Software for Windows",
+  "description": "How to combine registers from several Modbus RTU and TCP devices into a single common register map on Windows using ModbusManager Pro, including data type and scale conversion in both directions.",
+  "url": "https://modbusmanager.com/modbus-gateway-software.html",
+  "datePublished": "2026-07-25",
+  "author": {"@type": "Organization", "name": "ModbusManager"},
+  "publisher": {"@type": "Organization", "name": "ModbusManager"}
+},
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "What is Modbus gateway software?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Modbus gateway software polls several Modbus devices as a master and republishes selected registers as a single Modbus slave. A PLC or SCADA system then reads one address instead of configuring every device separately."}},
+    {"@type": "Question", "name": "Can it convert a 16-bit device register into a float for the PLC?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Yes. Each mapping row has a source data type and a separate common-map data type, plus scale and offset. A device holding 123 as uint16 can appear to the PLC as float32 12.3, and a float setpoint written by the PLC is converted back to 123 before it reaches the device."}},
+    {"@type": "Question", "name": "Can it read devices on different buses at the same time?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Yes. The gateway keeps its own connection per endpoint, so Modbus RTU serial ports and multiple Modbus TCP IP addresses can be polled simultaneously and merged into the same common map."}},
+    {"@type": "Question", "name": "Does it keep running when the window is closed?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Yes. The gateway runs in the background with a tray icon and can start automatically with Windows, so it keeps polling and forwarding writes without the window open."}},
+    {"@type": "Question", "name": "Is PC-based gateway software suitable for permanent critical installations?",
+      "acceptedAnswer": {"@type": "Answer", "text": "For commissioning, testing, temporary bridging and small non-critical systems it works well. For permanent installations on critical processes a DIN-rail hardware gateway with watchdog and redundancy remains the better choice."}}
+  ]
+},
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "ModbusManager Pro",
+  "applicationCategory": "EngineeringApplication",
+  "operatingSystem": "Windows 10, Windows 11",
+  "offers": {"@type": "Offer", "price": "119", "priceCurrency": "USD"},
+  "downloadUrl": "https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.7.0/Modbus.Manager.Pro.Setup.1.7.0.exe"
+}
+]
+</script>
+<style>
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+.mono{font-family:'IBM Plex Mono',monospace}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+
+/* HAZARD STRIPE */
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+
+/* HERO */
+.hero{padding:4rem 3rem 3.5rem;max-width:1140px;margin:0 auto}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.9rem}
+.hero h1{font-family:'Saira Condensed',sans-serif;font-size:3rem;font-weight:700;line-height:1;color:var(--ink);margin-bottom:1rem;letter-spacing:0.01em;text-transform:uppercase;max-width:720px}
+.hero h1 .accent{color:var(--amber-ink)}
+.hero-desc{font-size:1rem;color:var(--body);line-height:1.7;margin-bottom:1.8rem;max-width:640px}
+.hero-ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn-primary{background:var(--run);color:#fff;padding:0.75rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-primary:hover{background:#186040}
+.btn-ghost{background:transparent;color:var(--ink);border:2px solid var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-ghost:hover{background:var(--ink);color:var(--safety)}
+.hero-note{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--muted);margin-top:0.7rem}
+
+/* SECTION */
+.section{padding:3.5rem 3rem;max-width:1140px;margin:0 auto}
+.sec-label{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem}
+.sec-title{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:0.6rem}
+.sec-sub{font-size:0.95rem;color:var(--body);line-height:1.7;margin-bottom:2rem;max-width:680px}
+.divider-line{border:none;border-top:2px solid var(--ink)}
+
+/* WHAT IS HMI */
+.explainer-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.explainer-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.definition-box{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem}
+.definition-box .def-label{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem}
+.definition-box p{font-size:0.9rem;color:var(--body);line-height:1.7}
+
+/* WIDGET GRID */
+.widget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.widget-card{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem}
+.widget-icon{font-size:1.6rem;margin-bottom:0.7rem}
+.widget-name{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem}
+.widget-desc{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;counter-reset:step}
+.step{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem;position:relative}
+.step::before{counter-increment:step;content:counter(step);font-family:'Saira Condensed',sans-serif;font-size:2.5rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.5rem;right:1rem;line-height:1}
+.step-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--amber-ink);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem}
+.step-title{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.5rem}
+.step-text{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* TAG ENGINE */
+.tag-block{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:start}
+.tag-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.code-box{background:var(--ink);color:#D4D8D0;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;line-height:1.7;padding:1.4rem 1.6rem;border-radius:3px;overflow-x:auto}
+.code-box .cm{color:#5F7A5F}
+.code-box .ck{color:var(--safety)}
+.code-box .cv{color:#8EC0B0}
+
+/* COMPARE TABLE */
+.compare-table{width:100%;border-collapse:collapse;font-size:0.88rem}
+.compare-table th{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.05em;text-transform:uppercase;padding:0.7rem 1rem;border-bottom:2px solid var(--ink);text-align:left;background:var(--enclosure2)}
+.compare-table td{padding:0.65rem 1rem;border-bottom:1px solid var(--steel)}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table .hl{background:rgba(30,122,79,0.06)}
+.yes{color:var(--run);font-weight:600}
+.no{color:var(--bad)}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:0}
+.faq-item{border-top:1px solid var(--steel)}
+.faq-item:last-child{border-bottom:1px solid var(--steel)}
+.faq-q{font-family:'Saira Condensed',sans-serif;font-size:1.05rem;font-weight:600;letter-spacing:0.02em;padding:1.1rem 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq-q:hover{color:var(--amber-ink)}
+.faq-q .icon{font-family:'IBM Plex Mono',monospace;font-size:1.1rem;flex-shrink:0;transition:transform 0.2s}
+.faq-a{font-size:0.9rem;color:var(--body);line-height:1.75;padding:0 0 1.1rem;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .icon{transform:rotate(45deg)}
+
+/* CTA STRIP */
+.cta-strip{background:var(--ink);color:var(--safety);padding:3.5rem 3rem;text-align:center}
+.cta-strip h2{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.6rem}
+.cta-strip p{font-size:0.95rem;color:var(--enclosure);margin-bottom:1.8rem;max-width:540px;margin-left:auto;margin-right:auto}
+.cta-strip .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-cta-yellow{background:var(--safety);color:var(--ink);padding:0.8rem 2rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-cta-yellow:hover{background:#e09800}
+.btn-cta-outline{background:transparent;color:var(--safety);border:2px solid var(--safety);padding:0.7rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+
+/* FOOTER */
+footer{background:var(--ink);color:var(--steel);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:0.75rem}
+.footer-logo{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:0.05em;text-transform:uppercase}
+footer a{color:var(--steel);text-decoration:none}
+footer a:hover{color:#fff}
+
+@media(max-width:768px){
+  nav{padding:0.75rem 1.2rem;flex-wrap:wrap;gap:0.5rem}
+  .nav-links{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  .hero h1{font-size:2.2rem}
+  .section{padding:2.5rem 1.2rem}
+  .explainer-grid,.tag-block{grid-template-columns:1fr}
+  .widget-grid{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .cta-strip{padding:2.5rem 1.2rem}
+  footer{padding:1.5rem 1.2rem;flex-direction:column;align-items:flex-start;gap:0.75rem}
+}
+@media(max-width:520px){
+  .widget-grid,.steps{grid-template-columns:1fr}
+}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;background:transparent;border:none;min-width:190px;display:none;flex-direction:column;z-index:200}.nav-drop-menu>a{background:var(--enclosure2,#e8e9e4);border-left:1px solid var(--ink,#16181A);border-right:1px solid var(--ink,#16181A)}.nav-drop-menu>a:first-child{border-top:1px solid var(--ink,#16181A);border-radius:3px 3px 0 0;padding-top:0.5rem}.nav-drop-menu>a:last-child{border-bottom:1px solid var(--ink,#16181A);border-radius:0 0 3px 3px;padding-bottom:0.5rem;box-shadow:0 6px 20px rgba(0,0,0,0.18)}
+.nav-drop:hover .nav-drop-menu{display:flex}
+.nav-drop-menu a{padding:0.5rem 1rem;white-space:nowrap;text-transform:none;font-size:0.78rem;color:var(--ink,#16181A)}
+.nav-drop-menu a:hover{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+nav .nav-links.open .nav-drop-menu{position:static;display:flex;margin:0.3rem 0 0.3rem 0.8rem;border:none;box-shadow:none;padding:0;min-width:0;background:none}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
+}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;max-width:100%}}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+</style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Features","item": "https://modbusmanager.com/#features"},{"@type": "ListItem","position": 3,"name": "Modbus Gateway Software","item": "https://modbusmanager.com/modbus-gateway-software.html"}]}
+</script>
+</head>
+<body>
+<div class="hazard"></div>
+
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label">Features ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+        <a href="/modbus-data-logger-software.html">Data Logger</a>
+        <a href="/modbus-alarm-software.html">Alarms</a>
+        <a href="/modbus-gateway-software.html">Gateway</a>
+      </div>
+    </li>
+    <li class="nav-drop">
+      <span class="nav-drop-label">Guides ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200</a>
+        <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+        <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+        <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+        <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+        <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+        <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+        <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+        <a href="/manual.html">Documentation</a>
+      </div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.7.0/Modbus.Manager.Pro.Setup.1.7.0.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-Gateway-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.7.0/Modbus.Manager.Pro.Setup.1.7.0.exe" class="nav-cta" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-Gateway-Nav', 'product': 'pro', 'value': 1})">Download Pro trial</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════ HERO -->
+<section class="hero">
+  <div class="eyebrow">// ModbusManager Pro — Gateway</div>
+  <h1>Modbus <span class="accent">Gateway</span> Software<br>for Windows</h1>
+  <p class="hero-desc">Your PLC has one Modbus connection. Your devices are spread across a serial line and several IP addresses, and none of them store data the way the PLC wants it. ModbusManager Pro polls them all and republishes the registers you choose as <strong>one common register map</strong> — with data type and scale conversion in both directions.</p>
+  <div class="hero-ctas">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.7.0/Modbus.Manager.Pro.Setup.1.7.0.exe" class="btn-primary" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-Gateway-Hero', 'product': 'pro', 'value': 1})">Download Pro trial — free 14 days</a>
+    <a href="/#pricing" class="btn-ghost">Buy Pro — $119</a>
+  </div>
+  <p class="hero-note">No credit card for trial · Windows 10/11 · One-time license</p>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ PROBLEM -->
+<section class="section">
+  <div class="sec-label">// what a modbus gateway solves</div>
+  <h2 class="sec-title">Many devices, one connection</h2>
+  <div class="explainer-grid">
+    <div class="explainer-text">
+      <p>A Modbus gateway (also called a concentrator or aggregator) sits between field devices and a control system. It reads the devices as a <strong>master</strong>, keeps the values in a register map of your own design, and serves that map as a single <strong>slave</strong>. To the PLC it looks like one device.</p>
+      <p>That solves three problems at once. First, the PLC may only support a handful of Modbus connections — or the integrator simply does not want to configure twelve devices in the PLC program. Second, the devices may be on different buses: some on RS-485, others on Ethernet at different IP addresses. Third, and most often overlooked, the <strong>data types rarely match</strong>: the meter stores 123 meaning 12.3 °C as a plain 16-bit integer, while the PLC block expects a float.</p>
+      <p>ModbusManager Pro handles all three. You define the mapping row by row, and the gateway takes care of polling, conversion and write-forwarding.</p>
+    </div>
+    <div>
+      <div class="definition-box">
+        <div class="def-label">In one sentence</div>
+        <p>Read registers from any number of Modbus RTU and TCP devices, merge them into one register map, and let a PLC or SCADA system read and write that map over a single Modbus TCP connection.</p>
+      </div>
+      <div style="margin-top:1.2rem;background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.2rem 1.5rem">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.8rem">Typical situations</div>
+        <ul style="list-style:none;font-size:0.88rem;color:var(--body);line-height:1.7">
+          <li>⚡ Ten energy meters, one PLC input block</li>
+          <li>🏭 Drives on RS-485, inverters on Ethernet</li>
+          <li>🌀 Fan setpoints written from one shared map</li>
+          <li>🔧 Proving a gateway design before buying hardware</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ HOW IT WORKS -->
+<section class="section">
+  <div class="sec-label">// how it works</div>
+  <h2 class="sec-title">Master, mapping, slave</h2>
+  <p class="sec-sub">One application takes on three roles at the same time. The field side and the control side never talk to each other directly — the common register map sits in between.</p>
+  <div style="margin:1.6rem 0;border:2px solid var(--ink);border-radius:3px;background:#fff;overflow:hidden">
+    <img src="gateway-diagram.svg" alt="Diagram: Modbus RTU and TCP field devices are polled by ModbusManager Pro, which exposes one common register map that a PLC reads and writes over a single Modbus TCP connection" style="display:block;width:100%;height:auto">
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-label">Role 1</div>
+      <div class="step-title">Master — reads the devices</div>
+      <div class="step-text">The gateway opens its own connection to every endpoint you define: serial ports and TCP addresses side by side. Each mapping row is polled at its own interval, and requests on the same connection are serialised so the bus is never flooded.</div>
+    </div>
+    <div class="step">
+      <div class="step-label">Role 2</div>
+      <div class="step-title">Mapping — converts and merges</div>
+      <div class="step-text">Every row says where a value comes from and where it lands: source slave ID, register type, address and data type on one side; common map slave ID, address and data type on the other. Scale and offset are applied on the way through, and reversed on the way back.</div>
+    </div>
+    <div class="step">
+      <div class="step-label">Role 3</div>
+      <div class="step-title">Slave — serves the PLC</div>
+      <div class="step-text">The common map is published as a Modbus TCP slave on a port you choose. The PLC connects to one IP, one port and one slave ID, and reads a contiguous block of registers. Writes into the map are forwarded to the original device.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ FEATURES -->
+<section class="section">
+  <div class="sec-label">// what the gateway does</div>
+  <h2 class="sec-title">Built for real installations</h2>
+  <p class="sec-sub">Everything below is configured in the Gateway tab — no scripting required.</p>
+  <div class="widget-grid">
+    <div class="widget-card">
+      <div class="widget-icon">🔀</div>
+      <div class="widget-name">Register aggregation</div>
+      <div class="widget-desc">Pull any register from any device into any address of the common map. Group values logically — all fan speeds together, all setpoints in another block — regardless of where they physically live.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">📐</div>
+      <div class="widget-name">Type and scale conversion</div>
+      <div class="widget-desc">Source and common map each have their own data type: uint16, int16, uint32, int32, float32, coils and discrete inputs. Add scale and offset and the PLC receives engineering units instead of raw counts.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">✍</div>
+      <div class="widget-name">Write-through setpoints</div>
+      <div class="widget-desc">When the PLC writes into the common map, the value is converted back and forwarded to the real device. 32-bit setpoints are assembled from both registers before being sent, so no half-written value ever reaches the device.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">🔌</div>
+      <div class="widget-name">Mixed buses at once</div>
+      <div class="widget-desc">Serial RTU ports and multiple Modbus TCP addresses run in parallel, each with its own connection and retry logic. One bad device or unplugged adapter does not stop the rest.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">🖥</div>
+      <div class="widget-name">Runs in the background</div>
+      <div class="widget-desc">Close the window and the gateway keeps polling from the tray. It can start with Windows and load its configuration automatically, so a commissioning laptop or panel PC comes back up on its own after a reboot.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">📋</div>
+      <div class="widget-name">CSV import and diagnostics</div>
+      <div class="widget-desc">Build large mappings in a spreadsheet and import them, or download the template to start from. Connection state, per-row errors and every forwarded write appear in the TX/RX log with automatic retry back-off.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ TUTORIAL -->
+<section class="section">
+  <div class="sec-label">// step by step</div>
+  <h2 class="sec-title">Setting up a gateway, start to finish</h2>
+  <p class="sec-sub">This walkthrough builds a working gateway from one RTU device and verifies it from the PLC side — using ModbusManager itself as the PLC, so you can test the whole chain without a PLC on the desk.</p>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-label">Step 1</div>
+      <div class="step-title">Collect the details you need</div>
+      <div class="step-text">For every device: the connection (serial port and baud rate, or IP address and port), the <strong>slave ID</strong>, and the register addresses you want, with their data types. If you already poll the device in ModbusManager, you have all of it. Disconnect the interactive connection before starting the gateway — one serial port can only have one owner, and the gateway will tell you if the port is already in use.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-label">Step 2</div>
+      <div class="step-title">Add a source endpoint</div>
+      <div class="step-text">Open the <strong>Gateway</strong> tab and add an endpoint with <em>+ RTU</em> or <em>+ TCP</em>. RTU needs the COM port, baud rate and parity; TCP needs the host and port. Add as many as you like — a serial line and several IP addresses can run at the same time. Give each one a name you will recognise in the mapping table.
+      <figure style="margin:1.2rem 0 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
+        <img src="gw-01-endpoints.png" alt="Gateway tab in ModbusManager Pro showing source endpoints: one Modbus RTU serial port and one Modbus TCP address" loading="lazy" style="display:block;width:100%;height:auto" onerror="this.closest('figure').style.display='none'">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);padding:0.6rem 0.9rem;border-top:1px solid var(--steel)">Source endpoints — serial and TCP side by side</figcaption>
+      </figure>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-label">Step 3</div>
+      <div class="step-title">Map the registers</div>
+      <div class="step-text">Add a row for every value. On the source side choose the endpoint, mode <em>read</em>, the device slave ID, register type, address and data type. On the common side choose the slave ID the PLC will use, the address, and the data type the PLC should see. Set <strong>scale</strong> if the device stores a scaled integer — a meter holding 123 for 12.3 needs scale 0.1 and common type float32.
+      <figure style="margin:1.2rem 0 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
+        <img src="gw-02-mapping.png" alt="Gateway mapping table showing source slave ID, register address and data type mapped to a common register map with scale and float32 conversion" loading="lazy" style="display:block;width:100%;height:auto" onerror="this.closest('figure').style.display='none'">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);padding:0.6rem 0.9rem;border-top:1px solid var(--steel)">One row per value — note uint16 → float32 with scale 0.1</figcaption>
+      </figure>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-label">Step 4</div>
+      <div class="step-title">Set the PLC side and start</div>
+      <div class="step-text">Choose the <strong>Slave TCP port</strong> the PLC will connect to — 502 is the Modbus standard, use another if something already occupies it. Tick <em>Start gateway automatically</em> if this machine should bring the gateway up on its own. Press <strong>Start gateway</strong>: the slave server starts, the endpoints connect, and the status pill turns green with <em>connected</em> under each endpoint.
+      <figure style="margin:1.2rem 0 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
+        <img src="gw-03-running.png" alt="Gateway running: green status indicator and connected source endpoint in ModbusManager Pro" loading="lazy" style="display:block;width:100%;height:auto" onerror="this.closest('figure').style.display='none'">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);padding:0.6rem 0.9rem;border-top:1px solid var(--steel)">Running, with the source endpoint connected</figcaption>
+      </figure>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-label">Step 5</div>
+      <div class="step-title">Verify from the PLC side</div>
+      <div class="step-text">You do not need a PLC to test this. Open a second connection in ModbusManager — <em>Connection settings</em> → TCP, host <code class="mono">127.0.0.1</code>, the port you chose — and set the <strong>slave ID to the common map ID</strong> (not the device ID; this is the most common mistake). Read the addresses you mapped: the values from the field devices appear there, updating live.
+      <figure style="margin:1.2rem 0 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
+        <img src="gw-04-plc-read.png" alt="Register view reading the common map over Modbus TCP on localhost, showing aggregated values from field devices" loading="lazy" style="display:block;width:100%;height:auto" onerror="this.closest('figure').style.display='none'">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);padding:0.6rem 0.9rem;border-top:1px solid var(--steel)">Reading the common map exactly as a PLC would</figcaption>
+      </figure>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-label">Step 6</div>
+      <div class="step-title">Leave it running</div>
+      <div class="step-text">For a machine that should keep the gateway alive, close the window to the tray instead of quitting, and enable <em>Start with Windows</em> from the tray menu. After a reboot the gateway loads its saved configuration and starts polling before anyone logs into the application. When a real PLC connects, point it at this computer's IP address, the slave port, and the common map slave ID.
+      <figure style="margin:1.2rem 0 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
+        <img src="gw-05-tray.png" alt="Tray menu of ModbusManager Pro with options to keep running when the window is closed and to start with Windows" loading="lazy" style="display:block;width:100%;height:auto" onerror="this.closest('figure').style.display='none'">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);padding:0.6rem 0.9rem;border-top:1px solid var(--steel)">Tray menu — background operation and Windows autostart</figcaption>
+      </figure>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ WHERE IT FITS -->
+<section class="section">
+  <div class="sec-label">// where it fits</div>
+  <h2 class="sec-title">Honest limits</h2>
+  <p class="sec-sub">Software on a PC is not the same thing as a DIN-rail gateway, and pretending otherwise wastes your time. Here is where each one belongs.</p>
+  <table class="compare-table">
+    <thead>
+      <tr><th>Situation</th><th>ModbusManager Pro</th><th>Hardware gateway</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Commissioning — proving the mapping works with real devices</td><td class="yes">✓ Ideal</td><td>Overkill before the design is proven</td></tr>
+      <tr><td>Test bench, lab, temporary bridge during a retrofit</td><td class="yes">✓ Ideal</td><td>Unnecessary cost</td></tr>
+      <tr><td>Small, non-critical system with a PC already on site</td><td class="yes">✓ Works well</td><td>Also fine</td></tr>
+      <tr><td>Panel PC or logging machine that stays powered</td><td class="yes">✓ Background mode</td><td>Also fine</td></tr>
+      <tr><td>Permanent installation on a critical process</td><td class="no">✗ Use hardware</td><td class="yes">✓ Watchdog, DIN rail, redundancy</td></tr>
+      <tr><td>Site with no PC and no Windows maintenance</td><td class="no">✗ Not suitable</td><td class="yes">✓ The right tool</td></tr>
+    </tbody>
+  </table>
+  <div class="tag-block" style="margin-top:1.6rem">
+    <div class="tag-text"><strong>The practical use:</strong> prove the gateway design on real hardware during commissioning — mapping, scaling, write-through — before anyone orders a hardware gateway or writes the PLC blocks. If the installation is small and non-critical, the same setup can simply stay in service.</div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ FAQ -->
+<section class="section">
+  <div class="sec-label">// frequently asked questions</div>
+  <h2 class="sec-title">Modbus gateway — FAQ</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Can the gateway and my normal polling use the same COM port?<span class="icon">+</span></div>
+      <div class="faq-a">No — a serial port can only be opened by one client at a time, and that is a Windows limitation, not a software one. The gateway owns the ports it uses while running. If you try to open the same port interactively you get a clear message telling you which port is in use, instead of a stream of access errors. Ethernet endpoints have no such restriction.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">My device stores 123 and means 12.3. Can the PLC just read 12.3?<span class="icon">+</span></div>
+      <div class="faq-a">Yes, and this is one of the main reasons to use the gateway. Set the source data type to uint16 with scale 0.1, and the common map data type to float32. The PLC reads a proper float. If the PLC writes a float setpoint back, the value is divided by the scale and written to the device as the integer it expects.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Do I have to keep the window open?<span class="icon">+</span></div>
+      <div class="faq-a">No. The polling engine runs in a separate background process, so closing the browser view or the window does not interrupt it. Enable the tray option and the application stays resident; enable Windows autostart and it comes back after a reboot, loading the saved gateway configuration and starting on its own.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Which IP address and slave ID does the PLC use?<span class="icon">+</span></div>
+      <div class="faq-a">The IP address is the address of the computer running ModbusManager — check it with <code class="mono">ipconfig</code>; the gateway listens on all network interfaces. The port is the Slave TCP port set in the Gateway tab, and the slave ID is the <em>common</em> slave ID from your mapping rows, not the ID of the field device. Remember to allow the port through the Windows firewall for connections from other machines.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What happens if a device is unplugged or stops answering?<span class="icon">+</span></div>
+      <div class="faq-a">That endpoint reports the error in the log and retries with an increasing delay — two seconds, then four, up to thirty — so a missing device neither floods the log nor hammers the bus. Other endpoints keep working normally. When the device comes back, the gateway reconnects and logs that reads are succeeding again, without anyone pressing anything.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Can I build a large mapping without clicking every row?<span class="icon">+</span></div>
+      <div class="faq-a">Yes. Download the CSV template from the Gateway tab, fill it in a spreadsheet — one row per value, with source and common columns — and import it. Existing rows are kept, so you can import in batches. Endpoint names in the CSV are matched to the endpoints you have defined.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Is this the same as an OPC server?<span class="icon">+</span></div>
+      <div class="faq-a">No. An OPC server exposes data to OPC clients over OPC DA or UA. This gateway stays inside the Modbus world: Modbus in, Modbus out. That is deliberately narrower, and it is why a PLC that speaks nothing but Modbus TCP can use it with no extra software, drivers or licenses on either side.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ CTA -->
+<div class="cta-strip">
+  <h2>Try the Modbus gateway free for 14 days</h2>
+  <p>Download ModbusManager Pro, map your first devices into one register map, and read it from your PLC today. No credit card, no cloud, no subscription.</p>
+  <div class="ctas">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.7.0/Modbus.Manager.Pro.Setup.1.7.0.exe" class="btn-cta-yellow" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-Gateway-CTA', 'product': 'pro', 'value': 1})">Download Pro trial</a>
+    <a href="/#pricing" class="btn-cta-outline">See pricing</a>
+  </div>
+  <p style="margin-top:1rem;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--steel)">Windows 10/11 · 14-day trial · Pro from $119 one-time</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">ModbusManager</div>
+  <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
+    <a href="/">Home</a>
+    <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+    <a href="/modbus-data-logger-software.html">Data Logger</a>
+    <a href="/modbus-alarm-software.html">Alarms</a>
+        <a href="/modbus-gateway-software.html">Gateway</a>
+    <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+    <a href="/abb-acs580-modbus.html">VFD drives</a>
+    <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    <a href="/manual.html">Documentation</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/license-terms.html">License terms</a>
+    <a href="mailto:support@modbusmanager.com">Support</a>
+  </div>
+  <div>support@modbusmanager.com</div>
+</footer>
+<script>
+function toggleFaq(el) {
+  var item = el.parentElement;
+  item.classList.toggle('open');
+}
+</script>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+</body>
+</html>
