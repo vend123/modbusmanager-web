@@ -357,6 +357,17 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   </div>
 </section>
 
+<div class="divider-line"></div>
+
+<!-- GATEWAY CROSS-LINK -->
+<section class="section">
+  <div class="sec-label">// sub-metering with many meters</div>
+  <h2 class="sec-title">Forty SDM120s behind one address</h2>
+  <div style="max-width:820px;margin:0 auto;background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem">
+    <p style="color:var(--body);line-height:1.75;margin:0 0 1.1rem">SDM120 meters are usually installed by the dozen — one per circuit, per tenant, per machine. Reading forty of them from a PLC means forty Modbus configurations in the control program. ModbusManager Pro polls them all on the RS-485 line and presents the registers you care about as one contiguous block, so the PLC or SCADA system reads a single slave and every meter lands at a predictable address.</p>
+    <a href="/modbus-gateway-software.html" style="font-family:'IBM Plex Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">Modbus gateway software &rarr;</a>
+  </div>
+</section>
 <footer>
   <div class="footer-logo">ModbusManager</div>
   <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
