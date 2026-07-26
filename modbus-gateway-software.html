@@ -397,70 +397,65 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <h2 class="sec-title">Setting up a gateway, start to finish</h2>
   <p class="sec-sub">This walkthrough builds a working gateway from one RTU device and verifies it from the PLC side — using ModbusManager itself as the PLC, so you can test the whole chain without a PLC on the desk.</p>
 
-  <div class="steps">
+  <div style="max-width:900px;margin:0 auto">
+  <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+    <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">1</div>
+    <div class="step-label">Step 1</div>
+    <div class="step-title">Collect the details you need</div>
+    <div class="step-text" style="max-width:62ch">For every device: the connection (serial port and baud rate, or IP address and port), the <strong>slave ID</strong>, and the register addresses you want, with their data types. If you already poll the device in ModbusManager, you have all of it. Disconnect the interactive connection before starting the gateway — one serial port can only have one owner, and the gateway will tell you if the port is already in use.</div>
 
-    <div class="step">
-      <div class="step-label">Step 1</div>
-      <div class="step-title">Collect the details you need</div>
-      <div class="step-text">For every device: the connection (serial port and baud rate, or IP address and port), the <strong>slave ID</strong>, and the register addresses you want, with their data types. If you already poll the device in ModbusManager, you have all of it. Disconnect the interactive connection before starting the gateway — one serial port can only have one owner, and the gateway will tell you if the port is already in use.</div>
-    </div>
-
-    <div class="step">
-      <div class="step-label">Step 2</div>
-      <div class="step-title">Add a source endpoint</div>
-      <div class="step-text">Open the <strong>Gateway</strong> tab and add an endpoint with <em>+ RTU</em> or <em>+ TCP</em>. RTU needs the COM port, baud rate and parity; TCP needs the host and port. Add as many as you like — a serial line and several IP addresses can run at the same time. Give each one a name you will recognise in the mapping table.
-      <figure style="margin:1.2rem 0 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
+  </div>
+  <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+    <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">2</div>
+    <div class="step-label">Step 2</div>
+    <div class="step-title">Add a source endpoint</div>
+    <div class="step-text" style="max-width:62ch">Open the <strong>Gateway</strong> tab and add an endpoint with <em>+ RTU</em> or <em>+ TCP</em>. RTU needs the COM port, baud rate and parity; TCP needs the host and port. Add as many as you like — a serial line and several IP addresses can run at the same time. Give each one a name you will recognise in the mapping table.</div>
+<figure style="margin:1.3rem 0 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
         <img src="gw-01-endpoints.png" alt="Gateway tab in ModbusManager Pro showing source endpoints: one Modbus RTU serial port and one Modbus TCP address" loading="lazy" style="display:block;width:100%;height:auto" onerror="this.closest('figure').style.display='none'">
         <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);padding:0.6rem 0.9rem;border-top:1px solid var(--steel)">Source endpoints — serial and TCP side by side</figcaption>
       </figure>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-label">Step 3</div>
-      <div class="step-title">Map the registers</div>
-      <div class="step-text">Add a row for every value. On the source side choose the endpoint, mode <em>read</em>, the device slave ID, register type, address and data type. On the common side choose the slave ID the PLC will use, the address, and the data type the PLC should see. Set <strong>scale</strong> if the device stores a scaled integer — a meter holding 123 for 12.3 needs scale 0.1 and common type float32.
-      <figure style="margin:1.2rem 0 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
+  </div>
+  <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+    <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">3</div>
+    <div class="step-label">Step 3</div>
+    <div class="step-title">Map the registers</div>
+    <div class="step-text" style="max-width:62ch">Add a row for every value. On the source side choose the endpoint, mode <em>read</em>, the device slave ID, register type, address and data type. On the common side choose the slave ID the PLC will use, the address, and the data type the PLC should see. Set <strong>scale</strong> if the device stores a scaled integer — a meter holding 123 for 12.3 needs scale 0.1 and common type float32.</div>
+<figure style="margin:1.3rem 0 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
         <img src="gw-02-mapping.png" alt="Gateway mapping table showing source slave ID, register address and data type mapped to a common register map with scale and float32 conversion" loading="lazy" style="display:block;width:100%;height:auto" onerror="this.closest('figure').style.display='none'">
         <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);padding:0.6rem 0.9rem;border-top:1px solid var(--steel)">One row per value — note uint16 → float32 with scale 0.1</figcaption>
       </figure>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-label">Step 4</div>
-      <div class="step-title">Set the PLC side and start</div>
-      <div class="step-text">Choose the <strong>Slave TCP port</strong> the PLC will connect to — 502 is the Modbus standard, use another if something already occupies it. Tick <em>Start gateway automatically</em> if this machine should bring the gateway up on its own. Press <strong>Start gateway</strong>: the slave server starts, the endpoints connect, and the status pill turns green with <em>connected</em> under each endpoint.
-      <figure style="margin:1.2rem 0 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
+  </div>
+  <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+    <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">4</div>
+    <div class="step-label">Step 4</div>
+    <div class="step-title">Set the PLC side and start</div>
+    <div class="step-text" style="max-width:62ch">Choose the <strong>Slave TCP port</strong> the PLC will connect to — 502 is the Modbus standard, use another if something already occupies it. Tick <em>Start gateway automatically</em> if this machine should bring the gateway up on its own. Press <strong>Start gateway</strong>: the slave server starts, the endpoints connect, and the status pill turns green with <em>connected</em> under each endpoint.</div>
+<figure style="margin:1.3rem 0 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
         <img src="gw-03-running.png" alt="Gateway running: green status indicator and connected source endpoint in ModbusManager Pro" loading="lazy" style="display:block;width:100%;height:auto" onerror="this.closest('figure').style.display='none'">
         <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);padding:0.6rem 0.9rem;border-top:1px solid var(--steel)">Running, with the source endpoint connected</figcaption>
       </figure>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-label">Step 5</div>
-      <div class="step-title">Verify from the PLC side</div>
-      <div class="step-text">You do not need a PLC to test this. Open a second connection in ModbusManager — <em>Connection settings</em> → TCP, host <code class="mono">127.0.0.1</code>, the port you chose — and set the <strong>slave ID to the common map ID</strong> (not the device ID; this is the most common mistake). Read the addresses you mapped: the values from the field devices appear there, updating live.
-      <figure style="margin:1.2rem 0 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
+  </div>
+  <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+    <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">5</div>
+    <div class="step-label">Step 5</div>
+    <div class="step-title">Verify from the PLC side</div>
+    <div class="step-text" style="max-width:62ch">You do not need a PLC to test this. Open a second connection in ModbusManager — <em>Connection settings</em> → TCP, host <code class="mono">127.0.0.1</code>, the port you chose — and set the <strong>slave ID to the common map ID</strong> (not the device ID; this is the most common mistake). Read the addresses you mapped: the values from the field devices appear there, updating live.</div>
+<figure style="margin:1.3rem 0 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
         <img src="gw-04-plc-read.png" alt="Register view reading the common map over Modbus TCP on localhost, showing aggregated values from field devices" loading="lazy" style="display:block;width:100%;height:auto" onerror="this.closest('figure').style.display='none'">
         <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);padding:0.6rem 0.9rem;border-top:1px solid var(--steel)">Reading the common map exactly as a PLC would</figcaption>
       </figure>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-label">Step 6</div>
-      <div class="step-title">Leave it running</div>
-      <div class="step-text">For a machine that should keep the gateway alive, close the window to the tray instead of quitting, and enable <em>Start with Windows</em> from the tray menu. After a reboot the gateway loads its saved configuration and starts polling before anyone logs into the application. When a real PLC connects, point it at this computer's IP address, the slave port, and the common map slave ID.
-      <figure style="margin:1.2rem 0 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
+  </div>
+  <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+    <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">6</div>
+    <div class="step-label">Step 6</div>
+    <div class="step-title">Leave it running</div>
+    <div class="step-text" style="max-width:62ch">For a machine that should keep the gateway alive, close the window to the tray instead of quitting, and enable <em>Start with Windows</em> from the tray menu. After a reboot the gateway loads its saved configuration and starts polling before anyone logs into the application. When a real PLC connects, point it at this computer's IP address, the slave port, and the common map slave ID.</div>
+<figure style="margin:1.3rem 0 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
         <img src="gw-05-tray.png" alt="Tray menu of ModbusManager Pro with options to keep running when the window is closed and to start with Windows" loading="lazy" style="display:block;width:100%;height:auto" onerror="this.closest('figure').style.display='none'">
         <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);padding:0.6rem 0.9rem;border-top:1px solid var(--steel)">Tray menu — background operation and Windows autostart</figcaption>
       </figure>
-      </div>
-    </div>
-
   </div>
+</div>
 </section>
 
 <div class="divider-line"></div>
