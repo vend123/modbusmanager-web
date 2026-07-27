@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PowerFlex 525 Modbus RTU: Register Addressing Explained</title>
+<meta name="description" content="Why PowerFlex 525 Modbus reads land one register off, which function codes the drive answers, and how to verify it on a live drive with a free tool.">
+<meta name="keywords" content="PowerFlex 525 Modbus, PowerFlex 525 Modbus RTU, PowerFlex 525 register address, PowerFlex 520 Modbus register map, Allen-Bradley VFD Modbus, PowerFlex Logic Command 2000H, PowerFlex 523 Modbus, Rockwell drive Modbus RTU, PowerFlex Modbus off by one">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/powerflex-525-modbus.html">
+<meta property="og:title" content="PowerFlex 525 Modbus RTU: Register Addressing Explained">
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:description" content="The off-by-one problem, which function codes work, and how to verify the Logic Command and Status words on a real drive.">
+<meta property="og:url" content="https://modbusmanager.com/powerflex-525-modbus.html">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://modbusmanager.com/og-gateway.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PowerFlex 525 Modbus RTU: Register Addressing Explained">
+<meta name="twitter:description" content="Why PowerFlex Modbus reads land one register off, and how to verify it on the drive.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-gateway.png">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+[
+{
+  "@context":"https://schema.org","@type":"TechArticle",
+  "headline":"PowerFlex 525 Modbus RTU: Register Addressing Explained",
+  "description":"How 0-based and 1-based Modbus addressing shifts PowerFlex 520-series register addresses by one, which function codes the drive supports, and how to verify the Logic Command and Logic Status words on a live drive.",
+  "url":"https://modbusmanager.com/powerflex-525-modbus.html","datePublished":"2026-07-27",
+  "author":{"@type":"Organization","name":"ModbusManager"},
+  "publisher":{"@type":"Organization","name":"ModbusManager"}
+},
+{
+  "@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+   {"@type":"Question","name":"Why are my PowerFlex 525 Modbus reads one register off?",
+     "acceptedAnswer":{"@type":"Answer","text":"Because Modbus masters differ: some number registers from 0, others from 1. Rockwell documents this in the 520-series user manual and notes the listed addresses may need a +1 offset, giving Logic Command as 8192 on one master and 8193 on another. The drive did not change; the numbering convention did."}},
+   {"@type":"Question","name":"Which Modbus function codes does a PowerFlex 525 support?",
+     "acceptedAnswer":{"@type":"Answer","text":"Read Holding Registers (03), Write Single Register (06) and Write Multiple Registers (16 decimal, 10 hex). Reading with function code 04 (Input Registers) returns an illegal data address exception, because drive parameters live in the holding register space."}},
+   {"@type":"Question","name":"Where is the Logic Command word on a PowerFlex 525?",
+     "acceptedAnswer":{"@type":"Answer","text":"At register address 2000 hex. Writes to it are accepted only when the drive's start source is set to Serial/DSI, otherwise the drive ignores the command word even though the write itself succeeds."}},
+   {"@type":"Question","name":"Can I test PowerFlex Modbus communication without a PLC?",
+     "acceptedAnswer":{"@type":"Answer","text":"Yes. A Windows Modbus master tool on an RS-485 adapter can read the status word and write the command word directly, which isolates addressing and scaling questions from the PLC program."}}
+  ]
+}
+]
+</script>
+<style>
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+.mono{font-family:'IBM Plex Mono',monospace}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+
+/* HAZARD STRIPE */
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+
+/* HERO */
+.hero{padding:4rem 3rem 3.5rem;max-width:1140px;margin:0 auto}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.9rem}
+.hero h1{font-family:'Saira Condensed',sans-serif;font-size:3rem;font-weight:700;line-height:1;color:var(--ink);margin-bottom:1rem;letter-spacing:0.01em;text-transform:uppercase;max-width:720px}
+.hero h1 .accent{color:var(--amber-ink)}
+.hero-desc{font-size:1rem;color:var(--body);line-height:1.7;margin-bottom:1.8rem;max-width:640px}
+.hero-ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn-primary{background:var(--run);color:#fff;padding:0.75rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-primary:hover{background:#186040}
+.btn-ghost{background:transparent;color:var(--ink);border:2px solid var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-ghost:hover{background:var(--ink);color:var(--safety)}
+.hero-note{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--muted);margin-top:0.7rem}
+
+/* SECTION */
+.section{padding:3.5rem 3rem;max-width:1140px;margin:0 auto}
+.sec-label{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem}
+.sec-title{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:0.6rem}
+.sec-sub{font-size:0.95rem;color:var(--body);line-height:1.7;margin-bottom:2rem;max-width:680px}
+.divider-line{border:none;border-top:2px solid var(--ink)}
+
+/* WHAT IS HMI */
+.explainer-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.explainer-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.definition-box{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem}
+.definition-box .def-label{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem}
+.definition-box p{font-size:0.9rem;color:var(--body);line-height:1.7}
+
+/* WIDGET GRID */
+.widget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.widget-card{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem}
+.widget-icon{font-size:1.6rem;margin-bottom:0.7rem}
+.widget-name{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem}
+.widget-desc{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;counter-reset:step}
+.step{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem;position:relative}
+.step::before{counter-increment:step;content:counter(step);font-family:'Saira Condensed',sans-serif;font-size:2.5rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.5rem;right:1rem;line-height:1}
+.step-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--amber-ink);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem}
+.step-title{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.5rem}
+.step-text{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* TAG ENGINE */
+.tag-block{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:start}
+.tag-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.code-box{background:var(--ink);color:#D4D8D0;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;line-height:1.7;padding:1.4rem 1.6rem;border-radius:3px;overflow-x:auto}
+.code-box .cm{color:#5F7A5F}
+.code-box .ck{color:var(--safety)}
+.code-box .cv{color:#8EC0B0}
+
+/* COMPARE TABLE */
+.compare-table{width:100%;border-collapse:collapse;font-size:0.88rem}
+.compare-table th{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.05em;text-transform:uppercase;padding:0.7rem 1rem;border-bottom:2px solid var(--ink);text-align:left;background:var(--enclosure2)}
+.compare-table td{padding:0.65rem 1rem;border-bottom:1px solid var(--steel)}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table .hl{background:rgba(30,122,79,0.06)}
+.yes{color:var(--run);font-weight:600}
+.no{color:var(--bad)}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:0}
+.faq-item{border-top:1px solid var(--steel)}
+.faq-item:last-child{border-bottom:1px solid var(--steel)}
+.faq-q{font-family:'Saira Condensed',sans-serif;font-size:1.05rem;font-weight:600;letter-spacing:0.02em;padding:1.1rem 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq-q:hover{color:var(--amber-ink)}
+.faq-q .icon{font-family:'IBM Plex Mono',monospace;font-size:1.1rem;flex-shrink:0;transition:transform 0.2s}
+.faq-a{font-size:0.9rem;color:var(--body);line-height:1.75;padding:0 0 1.1rem;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .icon{transform:rotate(45deg)}
+
+/* CTA STRIP */
+.cta-strip{background:var(--ink);color:var(--safety);padding:3.5rem 3rem;text-align:center}
+.cta-strip h2{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.6rem}
+.cta-strip p{font-size:0.95rem;color:var(--enclosure);margin-bottom:1.8rem;max-width:540px;margin-left:auto;margin-right:auto}
+.cta-strip .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-cta-yellow{background:var(--safety);color:var(--ink);padding:0.8rem 2rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-cta-yellow:hover{background:#e09800}
+.btn-cta-outline{background:transparent;color:var(--safety);border:2px solid var(--safety);padding:0.7rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+
+/* FOOTER */
+footer{background:var(--ink);color:var(--steel);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:0.75rem}
+.footer-logo{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:0.05em;text-transform:uppercase}
+footer a{color:var(--steel);text-decoration:none}
+footer a:hover{color:#fff}
+
+@media(max-width:768px){
+  nav{padding:0.75rem 1.2rem;flex-wrap:wrap;gap:0.5rem}
+  .nav-links{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  .hero h1{font-size:2.2rem}
+  .section{padding:2.5rem 1.2rem}
+  .explainer-grid,.tag-block{grid-template-columns:1fr}
+  .widget-grid{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .cta-strip{padding:2.5rem 1.2rem}
+  footer{padding:1.5rem 1.2rem;flex-direction:column;align-items:flex-start;gap:0.75rem}
+}
+@media(max-width:520px){
+  .widget-grid,.steps{grid-template-columns:1fr}
+}
+.dl-options{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.8rem}
+@media(max-width:768px){.dl-options{grid-template-columns:1fr}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;max-width:100%}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;background:transparent;border:none;min-width:190px;display:none;flex-direction:column;z-index:200}.nav-drop-menu>a{background:var(--enclosure2,#e8e9e4);border-left:1px solid var(--ink,#16181A);border-right:1px solid var(--ink,#16181A)}.nav-drop-menu>a:first-child{border-top:1px solid var(--ink,#16181A);border-radius:3px 3px 0 0;padding-top:0.5rem}.nav-drop-menu>a:last-child{border-bottom:1px solid var(--ink,#16181A);border-radius:0 0 3px 3px;padding-bottom:0.5rem;box-shadow:0 6px 20px rgba(0,0,0,0.18)}
+.nav-drop:hover .nav-drop-menu{display:flex}
+.nav-drop-menu a{padding:0.5rem 1rem;white-space:nowrap;text-transform:none;font-size:0.78rem;color:var(--ink,#16181A)}
+.nav-drop-menu a:hover{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+nav .nav-links.open .nav-drop-menu{position:static;display:flex;margin:0.3rem 0 0.3rem 0.8rem;border:none;box-shadow:none;padding:0;min-width:0;background:none}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/#guides"},{"@type": "ListItem","position": 3,"name": "ABB ACS580 Guide","item": "https://modbusmanager.com/abb-acs580-modbus.html"}]}
+</script>
+</head>
+<body>
+
+<div class="hazard"></div>
+</head>
+<body>
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label">Features ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+        <a href="/modbus-data-logger-software.html">Data Logger</a>
+        <a href="/modbus-alarm-software.html">Alarms</a>
+        <a href="/modbus-gateway-software.html">Gateway</a>
+      </div>
+    </li>
+    <li class="nav-drop">
+      <span class="nav-drop-label">Guides ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200</a>
+        <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+        <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+        <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+        <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+        <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+        <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+        <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+        <a href="/manual.html">Documentation</a>
+      </div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.7.0/Modbus.Manager.Pro.Setup.1.7.0.exe" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-PF525-NavText', 'product': 'pro', 'value': 1})" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em">Pro trial &darr;</a>
+    <a href="/ModbusManager-Siemens-S7-1200-demo.zip" download class="nav-cta">Free demo &darr;</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow">// Allen-Bradley PowerFlex 520-Series</div>
+  <h1>PowerFlex 525 <span class="accent">Modbus RTU</span><br>register addressing</h1>
+  <p class="hero-desc">You read the address straight out of the manual, and the value comes back wrong — or one register late. This is the single most common PowerFlex Modbus problem, and it is not a fault in the drive. Here is what actually happens, which function codes the drive answers, and how to settle it on a live drive in a few minutes.</p>
+  <div class="hero-ctas">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.7.0/Modbus.Manager.Pro.Setup.1.7.0.exe" class="btn-primary" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-PF525-Hero', 'product': 'pro', 'value': 1})">Download Pro trial — free 14 days</a>
+    <a href="#verify" class="btn-ghost">Jump to the verification steps</a>
+  </div>
+  <p class="hero-note">Windows 10/11 · RS-485 adapter · No PLC needed to test</p>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// the off-by-one problem</div>
+  <h2 class="sec-title">The drive is right. So is the manual.</h2>
+  <div class="explainer-grid">
+    <div class="explainer-text">
+      <p>Modbus has never agreed with itself about where counting starts. Some masters number holding registers from <strong>0</strong>, others from <strong>1</strong>. The wire protocol always sends the zero-based number, so the same physical register can legitimately be called 8192 or 8193 depending on which tool you are holding.</p>
+      <p>Rockwell says so plainly in the 520-series user manual: the addresses in the tables <em>may need to be offset by +1</em> depending on the master, and it gives the example that Logic Command is register 8192 on a ProSoft scanner but 8193 on a PanelView.</p>
+      <p>So when a colleague insists the command word is at 8193 and your gateway needs 8192, you are both right. What you need is not another opinion — it is one confirmed reading from the actual drive.</p>
+    </div>
+    <div>
+      <div class="definition-box">
+        <div class="def-label">The rule that ends the argument</div>
+        <p>Read a register whose value you can predict — the status word of a stopped, healthy drive. If the answer looks like a status word, your offset is right. If it is garbage or an exception, shift by one and read again.</p>
+      </div>
+      <div style="margin-top:1.2rem;background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.2rem 1.5rem">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.8rem">Same register, two names</div>
+        <table style="width:100%;border-collapse:collapse;font-family:'IBM Plex Mono',monospace;font-size:0.78rem">
+          <tr><td style="padding:.35rem 0;color:var(--body)">Hex, as documented</td><td style="text-align:right;color:var(--ink);font-weight:600">2000H</td></tr>
+          <tr><td style="padding:.35rem 0;color:var(--body)">Zero-based decimal</td><td style="text-align:right;color:var(--ink);font-weight:600">8192</td></tr>
+          <tr><td style="padding:.35rem 0;color:var(--body)">One-based decimal</td><td style="text-align:right;color:var(--ink);font-weight:600">8193</td></tr>
+          <tr><td style="padding:.35rem 0;color:var(--body)">5-digit convention</td><td style="text-align:right;color:var(--ink);font-weight:600">48193</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// what the drive answers</div>
+  <h2 class="sec-title">Function codes and the two words that matter</h2>
+  <p class="sec-sub">Before hunting for parameter addresses, get these four facts straight. They account for most of the failed first attempts.</p>
+  <table class="compare-table">
+    <thead><tr><th>Fact</th><th>Detail</th><th>What goes wrong without it</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Read with FC03</strong></td><td>Read Holding Registers</td><td>FC04 (Input Registers) returns an illegal data address exception — drive parameters live in the holding register space</td></tr>
+      <tr><td><strong>Write with FC06 or FC16</strong></td><td>Single or multiple registers (16 decimal = 10 hex)</td><td>Other write codes are not supported by the drive's serial interface</td></tr>
+      <tr><td><strong>Logic Command</strong></td><td>Register 2000H</td><td>Writes are accepted but ignored unless the start source is set to Serial/DSI</td></tr>
+      <tr><td><strong>Logic Status</strong></td><td>Register 2100H (2101H one-based)</td><td>Reading the wrong word gives plausible-looking nonsense instead of an obvious error</td></tr>
+    </tbody>
+  </table>
+  <div class="tag-block" style="margin-top:1.6rem">
+    <div class="tag-text"><strong>The trap that costs the most time:</strong> a write to the command word returns a normal, successful Modbus response even when the drive is not configured to obey it. The bus says everything is fine; the motor does not move. If your writes acknowledge but nothing happens, the start source is the first thing to check — not the wiring, not the address.</div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section" id="verify">
+  <div class="sec-label">// five minutes on a real drive</div>
+  <h2 class="sec-title">Settle it by reading, not by arguing</h2>
+  <p class="sec-sub">This is the fastest way to pin down addressing and scaling on the drive in front of you. No PLC program, no download to the controller — a laptop, an RS-485 adapter and a Modbus master.</p>
+  <div style="max-width:900px;margin:0 auto">
+    <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+      <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">1</div>
+      <div class="step-label">Step 1</div>
+      <div class="step-title">Match the serial settings</div>
+      <div class="step-text" style="max-width:62ch">Take the node address, baud rate and data format from the drive's communications parameters — the exact parameter numbers depend on the drive and firmware, so read them off the keypad or from 520-UM001 rather than assuming. Set your master to the same values. A mismatch here produces timeouts, not wrong values, which is a useful distinction: timeouts mean the settings; wrong values mean the address.</div>
+    </div>
+    <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+      <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">2</div>
+      <div class="step-label">Step 2</div>
+      <div class="step-title">Read the status word both ways</div>
+      <div class="step-text" style="max-width:62ch">With FC03, read one register at <code class="mono">8448</code> — then at <code class="mono">8449</code>. One of the two returns something that behaves like a status word: stable while the drive is idle, changing bits when you start or stop from the keypad. That single observation fixes your offset for every other address on the drive.</div>
+    </div>
+    <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+      <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">3</div>
+      <div class="step-label">Step 3</div>
+      <div class="step-title">Watch the bits move</div>
+      <div class="step-text" style="max-width:62ch">Poll that register continuously and operate the drive from the keypad. Bits toggle as the state changes — running, direction, fault. Reading the word in binary makes the mapping obvious without decoding tables, and it proves the link end to end before any control is attempted.</div>
+    </div>
+    <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+      <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">4</div>
+      <div class="step-label">Step 4</div>
+      <div class="step-title">Confirm the speed reference scaling</div>
+      <div class="step-text" style="max-width:62ch">Documented scaling for the speed reference varies between drive families and firmware revisions, and second-hand sources contradict each other. Do not trust a number from a forum: write a mid-range value, read the actual output frequency from the keypad, and calculate the factor from what the drive actually did. Two writes give you the scale and the offset with certainty.</div>
+    </div>
+    <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+      <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">5</div>
+      <div class="step-label">Step 5</div>
+      <div class="step-title">Only then write the command word</div>
+      <div class="step-text" style="max-width:62ch">With the offset known and the drive set to accept serial control, write the command word at 2000H. Because you already proved the status word reads correctly, a command that does nothing now has exactly one likely cause — the start source — instead of five. Keep the motor uncoupled or the drive in a safe state for this step.</div>
+    </div>
+  </div>
+  <div class="tag-block" style="margin-top:1.2rem">
+    <div class="tag-text">ModbusManager shows every register in decimal, hex and binary side by side, and switches between base 0 and base 1 with one dropdown — which is why the offset question takes seconds rather than a rebuild of the PLC program. The same window writes single registers, so steps 4 and 5 need no extra tooling.</div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// honest limits</div>
+  <h2 class="sec-title">What this page deliberately does not give you</h2>
+  <div class="explainer-grid">
+    <div class="explainer-text">
+      <p>You will not find a full parameter-to-register table here, and that is on purpose. Parameter numbering differs across the 520-series and between firmware revisions, and the secondary sources that publish these tables disagree with each other — including on the speed reference address and its scaling.</p>
+      <p>The authoritative answer is in Rockwell's own documentation for your exact drive and firmware: the 520-series user manual (520-UM001) and the accompanying reference and programming manuals. Anything else, including this page, is a second opinion.</p>
+      <p>What a tool adds is not a better table. It is the ability to <strong>confirm</strong> the table you have against the drive on the bench, in minutes, before the number ends up in a PLC program that someone else will inherit.</p>
+    </div>
+    <div>
+      <div class="definition-box">
+        <div class="def-label">Rule of thumb</div>
+        <p>Take addresses from the manual. Take the offset and the scaling from the drive. Never take either from a forum post — including this one.</p>
+      </div>
+      <div style="margin-top:1.2rem;background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.2rem 1.5rem">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.8rem">Also covered on this site</div>
+        <ul style="list-style:none;font-size:0.88rem;color:var(--body);line-height:1.9">
+          <li>→ <a href="/abb-acs580-modbus.html" style="color:var(--amber-ink)">ABB ACS580 Modbus registers</a></li>
+          <li>→ <a href="/abb-acs880-modbus.html" style="color:var(--amber-ink)">ABB ACS880 Modbus registers</a></li>
+          <li>→ <a href="/modbus-gateway-software.html" style="color:var(--amber-ink)">Combine several drives into one register map</a></li>
+          <li>→ <a href="/modbus-hmi-dashboard.html" style="color:var(--amber-ink)">Live dashboard for drive status</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// frequently asked questions</div>
+  <h2 class="sec-title">PowerFlex 525 Modbus — FAQ</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Why are my reads exactly one register off?<span class="icon">+</span></div>
+      <div class="faq-a">Because masters disagree about whether counting starts at 0 or 1, while the wire protocol always carries the zero-based number. Rockwell's own 520-series manual warns that the listed addresses may need a +1 offset, and gives Logic Command as 8192 on one master and 8193 on another. Read a known register both ways once and the ambiguity is gone for good.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">FC04 returns an exception. Is the drive faulty?<span class="icon">+</span></div>
+      <div class="faq-a">No — that is expected. Drive parameters sit in the holding register space, so reading them needs function code 03. Function code 04 addresses input registers, which the drive does not use for parameters, and it answers with an illegal data address exception. Switch to FC03 and the same addresses respond normally.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">My write is acknowledged but the drive does not start.<span class="icon">+</span></div>
+      <div class="faq-a">The command word is only obeyed when the drive is told to take its start command from the serial interface. Until then the write completes successfully at protocol level and is discarded by the drive, which is why the bus gives no hint that anything is wrong. Check the start source setting before suspecting addresses or wiring.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What speed reference value equals 60 Hz?<span class="icon">+</span></div>
+      <div class="faq-a">That depends on the drive family, the maximum frequency setting and the firmware, and published sources contradict each other. Rather than trust a figure, write one value, read the resulting output frequency from the keypad, then write a second value and read again. Two data points give you the scale factor for that specific drive with no ambiguity left.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Can I do this without a PLC?<span class="icon">+</span></div>
+      <div class="faq-a">Yes, and it is usually faster. A Windows Modbus master on a USB RS-485 adapter reads the status word and writes the command word directly, so addressing and scaling are settled before any controller code exists. When the values are confirmed, the PLC program is written once with numbers you have already seen work.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">I have several drives on one line. Does the PLC need to address each one?<span class="icon">+</span></div>
+      <div class="faq-a">Not necessarily. The gateway function collects the registers you choose from every drive and republishes them as one common register map, so the PLC reads a single Modbus TCP slave instead of configuring each drive. Setpoints written into that map are routed back to the correct drive.</div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-strip">
+  <h2>Confirm the addresses on your own drive</h2>
+  <p>Read the status word, watch the bits move, and write the command word — from a laptop, before the PLC program exists. Free for 14 days, no credit card.</p>
+  <div class="ctas">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.7.0/Modbus.Manager.Pro.Setup.1.7.0.exe" class="btn-cta-yellow" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-PF525-CTA', 'product': 'pro', 'value': 1})">Download Pro trial</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/v1.4.0/Modbus.Manager.Setup.1.4.0.exe" class="btn-cta-outline">Or the Standard edition</a>
+  </div>
+  <p style="margin-top:1rem;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--steel)">Windows 10/11 · Modbus RTU, ASCII and TCP · One-time license</p>
+</div>
+
+<footer>
+  <div class="footer-logo">ModbusManager</div>
+  <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
+    <a href="/">Home</a>
+    <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+    <a href="/modbus-data-logger-software.html">Data Logger</a>
+    <a href="/modbus-alarm-software.html">Alarms</a>
+        <a href="/modbus-gateway-software.html">Gateway</a>
+    <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+    <a href="/abb-acs580-modbus.html">VFD drives</a>
+    <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    <a href="/manual.html">Documentation</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/license-terms.html">License terms</a>
+    <a href="mailto:support@modbusmanager.com">Support</a>
+  </div>
+  <div>support@modbusmanager.com</div>
+</footer>
+<script>
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+</script>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+</body>
+</body>
+</html>
