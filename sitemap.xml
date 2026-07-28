@@ -73,6 +73,24 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://modbusmanager.com/wattnode-modbus.html</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://modbusmanager.com/yaskawa-v1000-modbus.html</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://modbusmanager.com/durapulse-gs20-modbus.html</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://modbusmanager.com/powerflex-525-modbus.html</loc>
     <lastmod>2026-07-27</lastmod>
     <changefreq>monthly</changefreq>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DURApulse GS20 Modbus: Control Words and Register Formula</title>
+<meta name="description" content="How any GS20 parameter number converts into a Modbus register, where the two control words live, and how to verify both on a real drive.">
+<meta name="keywords" content="GS20 Modbus, DURApulse GS20 Modbus register, AutomationDirect GS20 Modbus, GS20 control word 2000, GS20 frequency command 2001, GS20 parameter register formula, GS20X Modbus RTU, DURApulse Modbus address, AutomationDirect drive Modbus">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/durapulse-gs20-modbus.html">
+<meta property="og:title" content="DURApulse GS20 Modbus: Control Words and Register Formula">
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:description" content="How any GS20 parameter number converts into a Modbus register, where the two control words live, and how to verify both on a real drive.">
+<meta property="og:url" content="https://modbusmanager.com/durapulse-gs20-modbus.html">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://modbusmanager.com/og-gateway.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DURApulse GS20 Modbus: Control Words and Register Formula">
+<meta name="twitter:description" content="How any GS20 parameter number converts into a Modbus register, where the two control words live, and how to verify both on a real drive.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-gateway.png">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+[
+{"@context":"https://schema.org","@type":"TechArticle","headline":"DURApulse GS20 Modbus: Control Words and Register Formula","description":"How Modbus register addresses are derived from parameter numbers on the AutomationDirect DURApulse GS20 and GS20X AC drives, where the two control words are located, and how to verify them on a live drive.","url":"https://modbusmanager.com/durapulse-gs20-modbus.html","datePublished":"2026-07-27","author":{"@type":"Organization","name":"ModbusManager"},"publisher":{"@type":"Organization","name":"ModbusManager"}},
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I find the Modbus address of a GS20 parameter?","acceptedAnswer":{"@type":"Answer","text":"Use the group number as the high byte and the parameter number as the low byte, in hex. Acceleration time 1 is P01.12, so group 01 gives 0100, parameter 12 is 0x0C, and the register is 0x010C, which is 268 in decimal. Every parameter follows the same rule, so no lookup table is needed."}},{"@type":"Question","name":"Where are the run command and frequency command?","acceptedAnswer":{"@type":"Answer","text":"Control Word 1 at 0x2000, which is 8192 decimal, carries run, stop and related commands. Control Word 2 at 0x2001, which is 8193 decimal, carries the commanded frequency. Both sit outside the parameter address space."}},{"@type":"Question","name":"Does the GS20 speak Modbus RTU or ASCII?","acceptedAnswer":{"@type":"Answer","text":"Both, but only one at a time. The protocol is selected in parameter P09.04, along with the address and baud rate in the same group. If a serial Modbus link and an Ethernet option card are both fitted, they can run simultaneously."}},{"@type":"Question","name":"What are the block transfer registers for?","acceptedAnswer":{"@type":"Answer","text":"They let you gather parameters that are scattered across the address map into a contiguous block, so a master can collect them in one request instead of several. On a slow serial line shared by multiple drives, that turns six messages into one."}},{"@type":"Question","name":"The addresses look the same as an Allen-Bradley drive. Are they interchangeable?","acceptedAnswer":{"@type":"Answer","text":"The addresses coincide, but nothing else does. Bit meanings, scaling and the conditions under which a drive accepts a command all differ between families. In a panel that mixes them, read each drive's status word and watch it change before writing anything."}},{"@type":"Question","name":"Can I test this without a PLC?","acceptedAnswer":{"@type":"Answer","text":"Yes, and it is the faster route. A Windows Modbus master on an RS-485 adapter reads a parameter you can see on the keypad, which validates the formula and the link at once. Only after that do the numbers go into PLC code."}}]}
+]
+</script>
+<style>
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+.mono{font-family:'IBM Plex Mono',monospace}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+
+/* HAZARD STRIPE */
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+
+/* HERO */
+.hero{padding:4rem 3rem 3.5rem;max-width:1140px;margin:0 auto}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.9rem}
+.hero h1{font-family:'Saira Condensed',sans-serif;font-size:3rem;font-weight:700;line-height:1;color:var(--ink);margin-bottom:1rem;letter-spacing:0.01em;text-transform:uppercase;max-width:720px}
+.hero h1 .accent{color:var(--amber-ink)}
+.hero-desc{font-size:1rem;color:var(--body);line-height:1.7;margin-bottom:1.8rem;max-width:640px}
+.hero-ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn-primary{background:var(--run);color:#fff;padding:0.75rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-primary:hover{background:#186040}
+.btn-ghost{background:transparent;color:var(--ink);border:2px solid var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-ghost:hover{background:var(--ink);color:var(--safety)}
+.hero-note{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--muted);margin-top:0.7rem}
+
+/* SECTION */
+.section{padding:3.5rem 3rem;max-width:1140px;margin:0 auto}
+.sec-label{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem}
+.sec-title{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:0.6rem}
+.sec-sub{font-size:0.95rem;color:var(--body);line-height:1.7;margin-bottom:2rem;max-width:680px}
+.divider-line{border:none;border-top:2px solid var(--ink)}
+
+/* WHAT IS HMI */
+.explainer-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.explainer-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.definition-box{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem}
+.definition-box .def-label{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem}
+.definition-box p{font-size:0.9rem;color:var(--body);line-height:1.7}
+
+/* WIDGET GRID */
+.widget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.widget-card{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem}
+.widget-icon{font-size:1.6rem;margin-bottom:0.7rem}
+.widget-name{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem}
+.widget-desc{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;counter-reset:step}
+.step{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem;position:relative}
+.step::before{counter-increment:step;content:counter(step);font-family:'Saira Condensed',sans-serif;font-size:2.5rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.5rem;right:1rem;line-height:1}
+.step-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--amber-ink);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem}
+.step-title{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.5rem}
+.step-text{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* TAG ENGINE */
+.tag-block{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:start}
+.tag-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.code-box{background:var(--ink);color:#D4D8D0;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;line-height:1.7;padding:1.4rem 1.6rem;border-radius:3px;overflow-x:auto}
+.code-box .cm{color:#5F7A5F}
+.code-box .ck{color:var(--safety)}
+.code-box .cv{color:#8EC0B0}
+
+/* COMPARE TABLE */
+.compare-table{width:100%;border-collapse:collapse;font-size:0.88rem}
+.compare-table th{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.05em;text-transform:uppercase;padding:0.7rem 1rem;border-bottom:2px solid var(--ink);text-align:left;background:var(--enclosure2)}
+.compare-table td{padding:0.65rem 1rem;border-bottom:1px solid var(--steel)}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table .hl{background:rgba(30,122,79,0.06)}
+.yes{color:var(--run);font-weight:600}
+.no{color:var(--bad)}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:0}
+.faq-item{border-top:1px solid var(--steel)}
+.faq-item:last-child{border-bottom:1px solid var(--steel)}
+.faq-q{font-family:'Saira Condensed',sans-serif;font-size:1.05rem;font-weight:600;letter-spacing:0.02em;padding:1.1rem 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq-q:hover{color:var(--amber-ink)}
+.faq-q .icon{font-family:'IBM Plex Mono',monospace;font-size:1.1rem;flex-shrink:0;transition:transform 0.2s}
+.faq-a{font-size:0.9rem;color:var(--body);line-height:1.75;padding:0 0 1.1rem;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .icon{transform:rotate(45deg)}
+
+/* CTA STRIP */
+.cta-strip{background:var(--ink);color:var(--safety);padding:3.5rem 3rem;text-align:center}
+.cta-strip h2{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.6rem}
+.cta-strip p{font-size:0.95rem;color:var(--enclosure);margin-bottom:1.8rem;max-width:540px;margin-left:auto;margin-right:auto}
+.cta-strip .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-cta-yellow{background:var(--safety);color:var(--ink);padding:0.8rem 2rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-cta-yellow:hover{background:#e09800}
+.btn-cta-outline{background:transparent;color:var(--safety);border:2px solid var(--safety);padding:0.7rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+
+/* FOOTER */
+footer{background:var(--ink);color:var(--steel);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:0.75rem}
+.footer-logo{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:0.05em;text-transform:uppercase}
+footer a{color:var(--steel);text-decoration:none}
+footer a:hover{color:#fff}
+
+@media(max-width:768px){
+  nav{padding:0.75rem 1.2rem;flex-wrap:wrap;gap:0.5rem}
+  .nav-links{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  .hero h1{font-size:2.2rem}
+  .section{padding:2.5rem 1.2rem}
+  .explainer-grid,.tag-block{grid-template-columns:1fr}
+  .widget-grid{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .cta-strip{padding:2.5rem 1.2rem}
+  footer{padding:1.5rem 1.2rem;flex-direction:column;align-items:flex-start;gap:0.75rem}
+}
+@media(max-width:520px){
+  .widget-grid,.steps{grid-template-columns:1fr}
+}
+.dl-options{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.8rem}
+@media(max-width:768px){.dl-options{grid-template-columns:1fr}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;max-width:100%}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;background:transparent;border:none;min-width:190px;display:none;flex-direction:column;z-index:200}.nav-drop-menu>a{background:var(--enclosure2,#e8e9e4);border-left:1px solid var(--ink,#16181A);border-right:1px solid var(--ink,#16181A)}.nav-drop-menu>a:first-child{border-top:1px solid var(--ink,#16181A);border-radius:3px 3px 0 0;padding-top:0.5rem}.nav-drop-menu>a:last-child{border-bottom:1px solid var(--ink,#16181A);border-radius:0 0 3px 3px;padding-bottom:0.5rem;box-shadow:0 6px 20px rgba(0,0,0,0.18)}
+.nav-drop:hover .nav-drop-menu{display:flex}
+.nav-drop-menu a{padding:0.5rem 1rem;white-space:nowrap;text-transform:none;font-size:0.78rem;color:var(--ink,#16181A)}
+.nav-drop-menu a:hover{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+nav .nav-links.open .nav-drop-menu{position:static;display:flex;margin:0.3rem 0 0.3rem 0.8rem;border:none;box-shadow:none;padding:0;min-width:0;background:none}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ModbusManager","item":"https://modbusmanager.com/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://modbusmanager.com/#guides"},{"@type":"ListItem","position":3,"name":"DURApulse GS20 Modbus Guide","item":"https://modbusmanager.com/durapulse-gs20-modbus.html"}]}
+</script>
+</head>
+<body>
+
+<div class="hazard"></div>
+</head>
+<body>
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label">Features ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+        <a href="/modbus-data-logger-software.html">Data Logger</a>
+        <a href="/modbus-alarm-software.html">Alarms</a>
+        <a href="/modbus-gateway-software.html">Gateway</a>
+      </div>
+    </li>
+    <li class="nav-drop">
+      <span class="nav-drop-label">Guides ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200</a>
+        <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+        <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+        <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+        <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+        <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+        <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+        <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+        <a href="/manual.html">Documentation</a>
+      </div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.7.0/Modbus.Manager.Pro.Setup.1.7.0.exe" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-GS20-NavText', 'product': 'pro', 'value': 1})" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em">Pro trial &darr;</a>
+    <a href="/ModbusManager-Siemens-S7-1200-demo.zip" download class="nav-cta">Free demo &darr;</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow">// AutomationDirect DURApulse GS20 / GS20X</div>
+  <h1>DURApulse GS20<br><span class="accent">Modbus</span> registers</h1>
+  <p class="hero-desc">The GS20 spares you the lookup table: every parameter address follows from the parameter number with one small calculation, and two fixed registers run the drive. This page gives the formula, the two control words, and a bench procedure that confirms both against the keypad before a PLC is anywhere near the panel.</p>
+  <div class="hero-ctas">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.7.0/Modbus.Manager.Pro.Setup.1.7.0.exe" class="btn-primary" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-GS20-Hero', 'product': 'pro', 'value': 1})">Download Pro trial &mdash; free 14 days</a>
+    <a href="#verify" class="btn-ghost">Jump to the verification steps</a>
+  </div>
+  <p class="hero-note">Windows 10/11 &middot; RS-485 adapter &middot; No PLC needed to test</p>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// the formula worth knowing</div>
+  <h2 class="sec-title">Any GS20 parameter becomes a register with one calculation</h2>
+  <div class="explainer-grid">
+    <div class="explainer-text">
+      <p>Most drive documentation makes you hunt through a table to find the Modbus address of a parameter. The DURApulse GS20 does not need one: the address follows directly from the parameter number, and the manual shows the arithmetic.</p>
+      <p>Take the group number as the high byte and the parameter number as the low byte, both in hex. Acceleration time 1 is <strong>P01.12</strong>: group 01 gives <code class="mono">0100</code>, parameter 12 is <code class="mono">0x0C</code>, and the register is <code class="mono">0x010C</code> &mdash; 268 in decimal.</p>
+      <p>Once you have that, every parameter in the drive is reachable without a lookup table, which also means a mistyped group number lands you on a completely unrelated parameter. Reading before writing is not optional here.</p>
+    </div>
+    <div>
+      <div class="definition-box">
+        <div class="def-label">The conversion</div>
+        <p>register = (group &times; 0x100) + parameter, both in hex. P01.12 &rarr; 0x0100 + 0x0C = 0x010C = 268 decimal.</p>
+      </div>
+      <div style="margin-top:1.2rem;background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.2rem 1.5rem">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.8rem">Also on this site</div>
+        <ul style="list-style:none;font-size:0.88rem;color:var(--body);line-height:1.9">
+          <li>&rarr; <a href="/powerflex-525-modbus.html" style="color:var(--amber-ink)">PowerFlex 525 Modbus addressing</a></li>
+          <li>&rarr; <a href="/abb-acs580-modbus.html" style="color:var(--amber-ink)">ABB ACS580 Modbus registers</a></li>
+          <li>&rarr; <a href="/modbus-gateway-software.html" style="color:var(--amber-ink)">Merge several devices into one register map</a></li>
+          <li>&rarr; <a href="/modbus-hmi-dashboard.html" style="color:var(--amber-ink)">Live dashboard for device values</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// control words</div>
+  <h2 class="sec-title">Two registers run the drive</h2>
+  <p class="sec-sub">These are documented in the GS20 user manual&rsquo;s serial communications chapter. They sit outside the parameter space, at addresses that will look familiar to anyone who has worked with Delta-based drives.</p>
+  <div style="overflow-x:auto">
+  <table class="compare-table" style="font-family:'IBM Plex Mono',monospace;font-size:0.84rem">
+    <thead><tr><th style="font-family:'Archivo',sans-serif">What it is</th><th>Hex</th><th>Decimal</th><th style="font-family:'Archivo',sans-serif">Purpose</th></tr></thead>
+    <tbody>
+      <tr><td style="font-family:'Archivo',sans-serif"><strong>Control Word 1</strong></td><td>0x2000</td><td>8192</td><td style="font-family:'Archivo',sans-serif">Run, stop and related commands</td></tr>
+      <tr><td style="font-family:'Archivo',sans-serif"><strong>Control Word 2</strong></td><td>0x2001</td><td>8193</td><td style="font-family:'Archivo',sans-serif">Commanded frequency</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="tag-block" style="margin-top:1.6rem">
+    <div class="tag-text"><strong>A useful coincidence:</strong> 0x2000 and 0x2001 are the same addresses used for the command and reference words on Allen-Bradley PowerFlex drives. If a panel mixes the two families, the addresses look identical while the bit meanings and scaling do not &mdash; which is a good reason to read each drive&rsquo;s status word and watch it change before writing anything.</div>
+  </div>
+  <p style="color:var(--body);line-height:1.75;margin-top:1.4rem;max-width:70ch">The drive also offers block transfer registers, configured through the P09 group, which let a master collect scattered parameters in a single request instead of six. On a slow serial line with several drives that difference is worth having. Protocol selection between Modbus RTU and ASCII is made in <strong>P09.04</strong>.</p>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section" id="verify">
+  <div class="sec-label">// bench test before the plc</div>
+  <h2 class="sec-title">Four reads and one write</h2>
+  <p class="sec-sub">Because the parameter addresses come from a formula, the fastest way to build confidence is to read a parameter whose value you can see on the keypad, and confirm the two match.</p>
+  <div style="max-width:900px;margin:0 auto">
+    <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+      <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">1</div>
+      <div class="step-label">Step 1</div>
+      <div class="step-title">Set the protocol and serial settings</div>
+      <div class="step-text" style="max-width:62ch">Choose Modbus RTU or ASCII in P09.04 and set the address and baud rate in the same group. Only one serial protocol runs at a time. If your PLC has RS-232 only, an RS-485 converter sits between them &mdash; the drive itself expects RS-485.</div>
+    </div>
+    <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+      <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">2</div>
+      <div class="step-label">Step 2</div>
+      <div class="step-title">Read a parameter you can see</div>
+      <div class="step-text" style="max-width:62ch">Pick a parameter whose value is visible on the keypad, convert its number with the formula and read that register. The keypad and the register must agree. This single check validates the formula, the address, the baud rate and the wiring in one go.</div>
+    </div>
+    <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+      <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">3</div>
+      <div class="step-label">Step 3</div>
+      <div class="step-title">Read the running frequency</div>
+      <div class="step-text" style="max-width:62ch">Poll the output frequency continuously and change the setpoint from the keypad. A value that tracks the display proves you are reading live data rather than a stale or unrelated register.</div>
+    </div>
+    <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+      <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">4</div>
+      <div class="step-label">Step 4</div>
+      <div class="step-title">Write the frequency command</div>
+      <div class="step-text" style="max-width:62ch">Write to Control Word 2 at 0x2001, then read the actual output frequency and calculate the scaling from what the drive did. Two different written values give you the factor with no ambiguity, which is safer than trusting a figure from a forum.</div>
+    </div>
+    <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+      <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">5</div>
+      <div class="step-label">Step 5</div>
+      <div class="step-title">Command run and stop last</div>
+      <div class="step-text" style="max-width:62ch">Write Control Word 1 at 0x2000 only when the drive is in a safe state and the motor is uncoupled or free to turn. By this point the status is readable and the reference is proven, so anything that goes wrong has a short list of causes.</div>
+    </div>
+  </div>
+  <div class="tag-block" style="margin-top:1.2rem">
+    <div class="tag-text">ModbusManager reads and writes both control words from the same window, shows every value in decimal, hex and binary, and logs each request and response &mdash; so the formula can be checked against the keypad in seconds. For a line of several GS20 drives, the gateway function merges the registers you choose into one common map that a PLC reads with a single connection.</div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// frequently asked questions</div>
+  <h2 class="sec-title">FAQ</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How do I find the Modbus address of a GS20 parameter?<span class="icon">+</span></div>
+      <div class="faq-a">Use the group number as the high byte and the parameter number as the low byte, in hex. Acceleration time 1 is P01.12, so group 01 gives 0100, parameter 12 is 0x0C, and the register is 0x010C, which is 268 in decimal. Every parameter follows the same rule, so no lookup table is needed.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Where are the run command and frequency command?<span class="icon">+</span></div>
+      <div class="faq-a">Control Word 1 at 0x2000, which is 8192 decimal, carries run, stop and related commands. Control Word 2 at 0x2001, which is 8193 decimal, carries the commanded frequency. Both sit outside the parameter address space.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Does the GS20 speak Modbus RTU or ASCII?<span class="icon">+</span></div>
+      <div class="faq-a">Both, but only one at a time. The protocol is selected in parameter P09.04, along with the address and baud rate in the same group. If a serial Modbus link and an Ethernet option card are both fitted, they can run simultaneously.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What are the block transfer registers for?<span class="icon">+</span></div>
+      <div class="faq-a">They let you gather parameters that are scattered across the address map into a contiguous block, so a master can collect them in one request instead of several. On a slow serial line shared by multiple drives, that turns six messages into one.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">The addresses look the same as an Allen-Bradley drive. Are they interchangeable?<span class="icon">+</span></div>
+      <div class="faq-a">The addresses coincide, but nothing else does. Bit meanings, scaling and the conditions under which a drive accepts a command all differ between families. In a panel that mixes them, read each drive's status word and watch it change before writing anything.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Can I test this without a PLC?<span class="icon">+</span></div>
+      <div class="faq-a">Yes, and it is the faster route. A Windows Modbus master on an RS-485 adapter reads a parameter you can see on the keypad, which validates the formula and the link at once. Only after that do the numbers go into PLC code.</div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-strip">
+  <h2>Check the formula against your own drive</h2>
+  <p>Read a parameter, compare it with the keypad, then write the control words &mdash; from a laptop, before the PLC program exists. Free for 14 days.</p>
+  <div class="ctas">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.7.0/Modbus.Manager.Pro.Setup.1.7.0.exe" class="btn-cta-yellow" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-GS20-CTA', 'product': 'pro', 'value': 1})">Download Pro trial</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/v1.4.0/Modbus.Manager.Setup.1.4.0.exe" class="btn-cta-outline">Or the Standard edition</a>
+  </div>
+  <p style="margin-top:1rem;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--steel)">Windows 10/11 &middot; Modbus RTU, ASCII and TCP &middot; One-time license</p>
+</div>
+
+<footer>
+  <div class="footer-logo">ModbusManager</div>
+  <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
+    <a href="/">Home</a>
+    <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+    <a href="/modbus-data-logger-software.html">Data Logger</a>
+    <a href="/modbus-alarm-software.html">Alarms</a>
+        <a href="/modbus-gateway-software.html">Gateway</a>
+    <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+    <a href="/abb-acs580-modbus.html">VFD drives</a>
+    <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    <a href="/manual.html">Documentation</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/license-terms.html">License terms</a>
+    <a href="mailto:support@modbusmanager.com">Support</a>
+  </div>
+  <div>support@modbusmanager.com</div>
+</footer>
+<script>
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+</script>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+</body>
+</body>
+</html>

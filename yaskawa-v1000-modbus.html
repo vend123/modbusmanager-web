@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yaskawa V1000 and GA500 MEMOBUS Modbus Register Guide</title>
+<meta name="description" content="The three MEMOBUS addresses that matter, why Yaskawa drives reject function code 06, and how to confirm the command word on a real drive.">
+<meta name="keywords" content="Yaskawa V1000 Modbus, Yaskawa MEMOBUS, GA500 Modbus, Yaskawa Modbus register 0001H, Yaskawa frequency reference 0002H, Yaskawa drive status 0020H, Yaskawa FC16 write, MEMOBUS Modbus RTU, Yaskawa 1000 series Modbus">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/yaskawa-v1000-modbus.html">
+<meta property="og:title" content="Yaskawa V1000 and GA500 MEMOBUS Modbus Register Guide">
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:description" content="The three MEMOBUS addresses that matter, why Yaskawa drives reject function code 06, and how to confirm the command word on a real drive.">
+<meta property="og:url" content="https://modbusmanager.com/yaskawa-v1000-modbus.html">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://modbusmanager.com/og-gateway.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Yaskawa V1000 and GA500 MEMOBUS Modbus Register Guide">
+<meta name="twitter:description" content="The three MEMOBUS addresses that matter, why Yaskawa drives reject function code 06, and how to confirm the command word on a real drive.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-gateway.png">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+[
+{"@context":"https://schema.org","@type":"TechArticle","headline":"Yaskawa V1000 and GA500 MEMOBUS Modbus Register Guide","description":"How to communicate with Yaskawa V1000, 1000-series and GA500 drives over MEMOBUS/Modbus RTU, including the supported function codes, the operation command and frequency reference registers, and the monitor block.","url":"https://modbusmanager.com/yaskawa-v1000-modbus.html","datePublished":"2026-07-27","author":{"@type":"Organization","name":"ModbusManager"},"publisher":{"@type":"Organization","name":"ModbusManager"}},
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does my write to a Yaskawa drive fail?","acceptedAnswer":{"@type":"Answer","text":"Most likely because it was sent as function code 06. The MEMOBUS implementation supports function codes 03H for reading, 08H for a loopback test and 10H for writing, and rejects others. Send the write as function code 16 with a quantity of one register and the same address will accept it."}},{"@type":"Question","name":"Where are the run command and frequency reference?","acceptedAnswer":{"@type":"Answer","text":"The operation command is at 0001H and the frequency reference at 0002H. Yaskawa's own documentation shows both written together in one write-multiple transaction, which is the usual way to command a drive in a single message."}},{"@type":"Question","name":"Which register holds the drive status?","acceptedAnswer":{"@type":"Answer","text":"The monitor block starts at 0020H, and Yaskawa's read examples cover 0020H through 0023H in a single request. Monitor registers are a separate map from parameter registers, so a parameter cannot be read with a monitor address or the other way round."}},{"@type":"Question","name":"Is bit 1 reverse run or direction?","acceptedAnswer":{"@type":"Answer","text":"It depends on the drive family. On V1000 drives bit 1 is a reverse run command alongside bit 0 for forward run, while on GA500 bit 0 is run or stop and bit 1 selects the direction. Confirm which convention your drive follows by watching it respond rather than assuming."}},{"@type":"Question","name":"My write is rejected even with the right function code.","acceptedAnswer":{"@type":"Answer","text":"Yaskawa drives legitimately refuse some writes: during an undervoltage fault, to parameters that cannot be changed while the drive is running, to read-only data, or when the value is outside the allowed range. The exception code in the response tells you which case you are in, so log the raw response rather than only the failure."}},{"@type":"Question","name":"How many registers can I read in one request?","acceptedAnswer":{"@type":"Answer","text":"Up to sixteen consecutive registers, and the parameters have to be consecutive in the drive's map. Non-consecutive values need separate requests, which is worth planning around when a PLC polls many values on a slow serial line."}}]}
+]
+</script>
+<style>
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+.mono{font-family:'IBM Plex Mono',monospace}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+
+/* HAZARD STRIPE */
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+
+/* HERO */
+.hero{padding:4rem 3rem 3.5rem;max-width:1140px;margin:0 auto}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.9rem}
+.hero h1{font-family:'Saira Condensed',sans-serif;font-size:3rem;font-weight:700;line-height:1;color:var(--ink);margin-bottom:1rem;letter-spacing:0.01em;text-transform:uppercase;max-width:720px}
+.hero h1 .accent{color:var(--amber-ink)}
+.hero-desc{font-size:1rem;color:var(--body);line-height:1.7;margin-bottom:1.8rem;max-width:640px}
+.hero-ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn-primary{background:var(--run);color:#fff;padding:0.75rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-primary:hover{background:#186040}
+.btn-ghost{background:transparent;color:var(--ink);border:2px solid var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-ghost:hover{background:var(--ink);color:var(--safety)}
+.hero-note{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--muted);margin-top:0.7rem}
+
+/* SECTION */
+.section{padding:3.5rem 3rem;max-width:1140px;margin:0 auto}
+.sec-label{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem}
+.sec-title{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:0.6rem}
+.sec-sub{font-size:0.95rem;color:var(--body);line-height:1.7;margin-bottom:2rem;max-width:680px}
+.divider-line{border:none;border-top:2px solid var(--ink)}
+
+/* WHAT IS HMI */
+.explainer-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.explainer-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.definition-box{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem}
+.definition-box .def-label{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem}
+.definition-box p{font-size:0.9rem;color:var(--body);line-height:1.7}
+
+/* WIDGET GRID */
+.widget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.widget-card{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem}
+.widget-icon{font-size:1.6rem;margin-bottom:0.7rem}
+.widget-name{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem}
+.widget-desc{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;counter-reset:step}
+.step{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem;position:relative}
+.step::before{counter-increment:step;content:counter(step);font-family:'Saira Condensed',sans-serif;font-size:2.5rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.5rem;right:1rem;line-height:1}
+.step-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--amber-ink);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem}
+.step-title{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.5rem}
+.step-text{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* TAG ENGINE */
+.tag-block{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:start}
+.tag-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.code-box{background:var(--ink);color:#D4D8D0;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;line-height:1.7;padding:1.4rem 1.6rem;border-radius:3px;overflow-x:auto}
+.code-box .cm{color:#5F7A5F}
+.code-box .ck{color:var(--safety)}
+.code-box .cv{color:#8EC0B0}
+
+/* COMPARE TABLE */
+.compare-table{width:100%;border-collapse:collapse;font-size:0.88rem}
+.compare-table th{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.05em;text-transform:uppercase;padding:0.7rem 1rem;border-bottom:2px solid var(--ink);text-align:left;background:var(--enclosure2)}
+.compare-table td{padding:0.65rem 1rem;border-bottom:1px solid var(--steel)}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table .hl{background:rgba(30,122,79,0.06)}
+.yes{color:var(--run);font-weight:600}
+.no{color:var(--bad)}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:0}
+.faq-item{border-top:1px solid var(--steel)}
+.faq-item:last-child{border-bottom:1px solid var(--steel)}
+.faq-q{font-family:'Saira Condensed',sans-serif;font-size:1.05rem;font-weight:600;letter-spacing:0.02em;padding:1.1rem 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq-q:hover{color:var(--amber-ink)}
+.faq-q .icon{font-family:'IBM Plex Mono',monospace;font-size:1.1rem;flex-shrink:0;transition:transform 0.2s}
+.faq-a{font-size:0.9rem;color:var(--body);line-height:1.75;padding:0 0 1.1rem;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .icon{transform:rotate(45deg)}
+
+/* CTA STRIP */
+.cta-strip{background:var(--ink);color:var(--safety);padding:3.5rem 3rem;text-align:center}
+.cta-strip h2{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.6rem}
+.cta-strip p{font-size:0.95rem;color:var(--enclosure);margin-bottom:1.8rem;max-width:540px;margin-left:auto;margin-right:auto}
+.cta-strip .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-cta-yellow{background:var(--safety);color:var(--ink);padding:0.8rem 2rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-cta-yellow:hover{background:#e09800}
+.btn-cta-outline{background:transparent;color:var(--safety);border:2px solid var(--safety);padding:0.7rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+
+/* FOOTER */
+footer{background:var(--ink);color:var(--steel);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:0.75rem}
+.footer-logo{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:0.05em;text-transform:uppercase}
+footer a{color:var(--steel);text-decoration:none}
+footer a:hover{color:#fff}
+
+@media(max-width:768px){
+  nav{padding:0.75rem 1.2rem;flex-wrap:wrap;gap:0.5rem}
+  .nav-links{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  .hero h1{font-size:2.2rem}
+  .section{padding:2.5rem 1.2rem}
+  .explainer-grid,.tag-block{grid-template-columns:1fr}
+  .widget-grid{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .cta-strip{padding:2.5rem 1.2rem}
+  footer{padding:1.5rem 1.2rem;flex-direction:column;align-items:flex-start;gap:0.75rem}
+}
+@media(max-width:520px){
+  .widget-grid,.steps{grid-template-columns:1fr}
+}
+.dl-options{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.8rem}
+@media(max-width:768px){.dl-options{grid-template-columns:1fr}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;max-width:100%}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;background:transparent;border:none;min-width:190px;display:none;flex-direction:column;z-index:200}.nav-drop-menu>a{background:var(--enclosure2,#e8e9e4);border-left:1px solid var(--ink,#16181A);border-right:1px solid var(--ink,#16181A)}.nav-drop-menu>a:first-child{border-top:1px solid var(--ink,#16181A);border-radius:3px 3px 0 0;padding-top:0.5rem}.nav-drop-menu>a:last-child{border-bottom:1px solid var(--ink,#16181A);border-radius:0 0 3px 3px;padding-bottom:0.5rem;box-shadow:0 6px 20px rgba(0,0,0,0.18)}
+.nav-drop:hover .nav-drop-menu{display:flex}
+.nav-drop-menu a{padding:0.5rem 1rem;white-space:nowrap;text-transform:none;font-size:0.78rem;color:var(--ink,#16181A)}
+.nav-drop-menu a:hover{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+nav .nav-links.open .nav-drop-menu{position:static;display:flex;margin:0.3rem 0 0.3rem 0.8rem;border:none;box-shadow:none;padding:0;min-width:0;background:none}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ModbusManager","item":"https://modbusmanager.com/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://modbusmanager.com/#guides"},{"@type":"ListItem","position":3,"name":"Yaskawa MEMOBUS Modbus Guide","item":"https://modbusmanager.com/yaskawa-v1000-modbus.html"}]}
+</script>
+</head>
+<body>
+
+<div class="hazard"></div>
+</head>
+<body>
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label">Features ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+        <a href="/modbus-data-logger-software.html">Data Logger</a>
+        <a href="/modbus-alarm-software.html">Alarms</a>
+        <a href="/modbus-gateway-software.html">Gateway</a>
+      </div>
+    </li>
+    <li class="nav-drop">
+      <span class="nav-drop-label">Guides ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200</a>
+        <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+        <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+        <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+        <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+        <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+        <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+        <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+        <a href="/manual.html">Documentation</a>
+      </div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.7.0/Modbus.Manager.Pro.Setup.1.7.0.exe" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-Yaskawa-NavText', 'product': 'pro', 'value': 1})" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em">Pro trial &darr;</a>
+    <a href="/ModbusManager-Siemens-S7-1200-demo.zip" download class="nav-cta">Free demo &darr;</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow">// Yaskawa MEMOBUS / Modbus RTU</div>
+  <h1>Yaskawa <span class="accent">MEMOBUS</span><br>Modbus registers</h1>
+  <p class="hero-desc">Your read works, your write comes back as an error, and the address looks right. On a Yaskawa drive that usually means the function code, not the address: MEMOBUS supports 03H, 08H and 10H, and function code 06 is not among them. Here are the three addresses that do most of the work, and the order of operations that tells you which problem you actually have.</p>
+  <div class="hero-ctas">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.7.0/Modbus.Manager.Pro.Setup.1.7.0.exe" class="btn-primary" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-Yaskawa-Hero', 'product': 'pro', 'value': 1})">Download Pro trial &mdash; free 14 days</a>
+    <a href="#verify" class="btn-ghost">Jump to the verification steps</a>
+  </div>
+  <p class="hero-note">Windows 10/11 &middot; RS-485 adapter &middot; No PLC needed to test</p>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// what surprises people first</div>
+  <h2 class="sec-title">Yaskawa drives do not answer function code 06</h2>
+  <div class="explainer-grid">
+    <div class="explainer-text">
+      <p>Most Modbus devices accept a single-register write with function code 06, so that is what most people try first. On a Yaskawa drive it fails, and the failure is easy to misread as an addressing problem.</p>
+      <p>The MEMOBUS/Modbus implementation supports a deliberately narrow set: <strong>03H</strong> to read, <strong>08H</strong> for loopback test, and <strong>10H</strong> &mdash; function code 16 &mdash; to write. Sending anything else produces an error. So writes go out as &ldquo;write multiple registers&rdquo; with a quantity of one, not as function code 06.</p>
+      <p>The second thing worth knowing before you start: the drive keeps <strong>monitor</strong> registers and <strong>parameter</strong> registers in separate parts of the map. Reading a parameter with a monitor address gives you a plausible-looking number from somewhere else entirely.</p>
+    </div>
+    <div>
+      <div class="definition-box">
+        <div class="def-label">Two rules that save an afternoon</div>
+        <p>Write with FC16, never FC06. And keep monitor addresses and parameter addresses in separate mental columns &mdash; they are separate maps.</p>
+      </div>
+      <div style="margin-top:1.2rem;background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.2rem 1.5rem">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.8rem">Also on this site</div>
+        <ul style="list-style:none;font-size:0.88rem;color:var(--body);line-height:1.9">
+          <li>&rarr; <a href="/powerflex-525-modbus.html" style="color:var(--amber-ink)">PowerFlex 525 Modbus addressing</a></li>
+          <li>&rarr; <a href="/abb-acs580-modbus.html" style="color:var(--amber-ink)">ABB ACS580 Modbus registers</a></li>
+          <li>&rarr; <a href="/modbus-gateway-software.html" style="color:var(--amber-ink)">Merge several devices into one register map</a></li>
+          <li>&rarr; <a href="/modbus-hmi-dashboard.html" style="color:var(--amber-ink)">Live dashboard for device values</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// the control and monitor registers</div>
+  <h2 class="sec-title">Three addresses do most of the work</h2>
+  <p class="sec-sub">These come from Yaskawa&rsquo;s own MEMOBUS/Modbus documentation and are consistent across the 1000-series and GA500 families. Parameter addresses differ by drive and firmware and belong in your own drive&rsquo;s technical manual.</p>
+  <div style="overflow-x:auto">
+  <table class="compare-table">
+    <thead><tr><th>Address</th><th>What it is</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="mono"><strong>0001H</strong></td><td>Operation command</td><td>Bit-packed. On V1000, bit 0 is forward run (1 = run, 0 = stop) and bit 1 is reverse run. On GA500, bit 0 is run/stop and bit 1 selects direction. Check which convention your drive uses before writing.</td></tr>
+      <tr><td class="mono"><strong>0002H</strong></td><td>Frequency reference</td><td>Written together with the command word in a single FC16 transaction in Yaskawa&rsquo;s own examples</td></tr>
+      <tr><td class="mono"><strong>0020H</strong></td><td>Drive status</td><td>Start of the monitor block; Yaskawa&rsquo;s read examples cover 0020H to 0023H in one request</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="tag-block" style="margin-top:1.6rem">
+    <div class="tag-text"><strong>Note the bit 1 difference:</strong> on the V1000 family bit 1 is a reverse <em>run</em> command, while on GA500 bit 1 selects direction for a single run bit. The same value written to the same address therefore behaves differently between drive families &mdash; which is exactly the kind of thing worth confirming by watching the drive rather than by reading a table.</div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section" id="verify">
+  <div class="sec-label">// proving it on the drive</div>
+  <h2 class="sec-title">Read before you write, always</h2>
+  <p class="sec-sub">Yaskawa drives reject writes in several legitimate situations &mdash; during an undervoltage fault, or to parameters that cannot change while running. Reading first tells you which of those you are in.</p>
+  <div style="max-width:900px;margin:0 auto">
+    <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+      <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">1</div>
+      <div class="step-label">Step 1</div>
+      <div class="step-title">Match the serial settings</div>
+      <div class="step-text" style="max-width:62ch">Set your master to the drive&rsquo;s communication parameters. On 1000-series drives the baud rate lives in the H5 group; read the values off the keypad rather than assuming defaults, because a previous commissioning may have changed them. Addressing is zero-based, so no offset juggling is needed.</div>
+    </div>
+    <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+      <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">2</div>
+      <div class="step-label">Step 2</div>
+      <div class="step-title">Read the monitor block</div>
+      <div class="step-text" style="max-width:62ch">With FC03, read four registers starting at 0020H. A healthy idle drive returns a stable status word; operating the drive from the keypad changes bits. Viewing the register in binary makes the mapping obvious without decoding tables, and it proves the link end to end.</div>
+    </div>
+    <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+      <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">3</div>
+      <div class="step-label">Step 3</div>
+      <div class="step-title">Read the command word back</div>
+      <div class="step-text" style="max-width:62ch">Read 0001H and 0002H. They reflect what the drive currently holds, which is a useful reference point before you change anything &mdash; and it confirms that the two addresses you are about to write are the ones you think they are.</div>
+    </div>
+    <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+      <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">4</div>
+      <div class="step-label">Step 4</div>
+      <div class="step-title">Write with FC16, one register at a time</div>
+      <div class="step-text" style="max-width:62ch">Write the frequency reference to 0002H using function code 16 with a quantity of one. If your tool insists on function code 06, the drive will reject it &mdash; that is expected behaviour, not a fault. Confirm the resulting output frequency on the keypad and calculate the scaling from what the drive actually did.</div>
+    </div>
+    <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
+      <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">5</div>
+      <div class="step-label">Step 5</div>
+      <div class="step-title">Only then command a run</div>
+      <div class="step-text" style="max-width:62ch">With the status word readable and the reference confirmed, write the operation command. Keep the motor uncoupled or the drive in a safe state for this step. If the write is rejected, the likely causes are a narrow set: undervoltage, a parameter that cannot be written while running, or a value outside the allowed range.</div>
+    </div>
+  </div>
+  <div class="tag-block" style="margin-top:1.2rem">
+    <div class="tag-text">ModbusManager sends single-register writes as FC06 or FC16 by choice, shows every register in decimal, hex and binary at once, and logs the exact request and response &mdash; so a rejected write shows you the exception code instead of just failing quietly.</div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <div class="sec-label">// frequently asked questions</div>
+  <h2 class="sec-title">FAQ</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Why does my write to a Yaskawa drive fail?<span class="icon">+</span></div>
+      <div class="faq-a">Most likely because it was sent as function code 06. The MEMOBUS implementation supports function codes 03H for reading, 08H for a loopback test and 10H for writing, and rejects others. Send the write as function code 16 with a quantity of one register and the same address will accept it.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Where are the run command and frequency reference?<span class="icon">+</span></div>
+      <div class="faq-a">The operation command is at 0001H and the frequency reference at 0002H. Yaskawa's own documentation shows both written together in one write-multiple transaction, which is the usual way to command a drive in a single message.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Which register holds the drive status?<span class="icon">+</span></div>
+      <div class="faq-a">The monitor block starts at 0020H, and Yaskawa's read examples cover 0020H through 0023H in a single request. Monitor registers are a separate map from parameter registers, so a parameter cannot be read with a monitor address or the other way round.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Is bit 1 reverse run or direction?<span class="icon">+</span></div>
+      <div class="faq-a">It depends on the drive family. On V1000 drives bit 1 is a reverse run command alongside bit 0 for forward run, while on GA500 bit 0 is run or stop and bit 1 selects the direction. Confirm which convention your drive follows by watching it respond rather than assuming.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">My write is rejected even with the right function code.<span class="icon">+</span></div>
+      <div class="faq-a">Yaskawa drives legitimately refuse some writes: during an undervoltage fault, to parameters that cannot be changed while the drive is running, to read-only data, or when the value is outside the allowed range. The exception code in the response tells you which case you are in, so log the raw response rather than only the failure.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How many registers can I read in one request?<span class="icon">+</span></div>
+      <div class="faq-a">Up to sixteen consecutive registers, and the parameters have to be consecutive in the drive's map. Non-consecutive values need separate requests, which is worth planning around when a PLC polls many values on a slow serial line.</div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-strip">
+  <h2>Confirm the command word on your own drive</h2>
+  <p>Read the status block, watch the bits move, write with the function code the drive actually accepts. Free for 14 days, no credit card.</p>
+  <div class="ctas">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.7.0/Modbus.Manager.Pro.Setup.1.7.0.exe" class="btn-cta-yellow" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-Yaskawa-CTA', 'product': 'pro', 'value': 1})">Download Pro trial</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/v1.4.0/Modbus.Manager.Setup.1.4.0.exe" class="btn-cta-outline">Or the Standard edition</a>
+  </div>
+  <p style="margin-top:1rem;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--steel)">Windows 10/11 &middot; Modbus RTU, ASCII and TCP &middot; One-time license</p>
+</div>
+
+<footer>
+  <div class="footer-logo">ModbusManager</div>
+  <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
+    <a href="/">Home</a>
+    <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+    <a href="/modbus-data-logger-software.html">Data Logger</a>
+    <a href="/modbus-alarm-software.html">Alarms</a>
+        <a href="/modbus-gateway-software.html">Gateway</a>
+    <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+    <a href="/abb-acs580-modbus.html">VFD drives</a>
+    <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    <a href="/manual.html">Documentation</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/license-terms.html">License terms</a>
+    <a href="mailto:support@modbusmanager.com">Support</a>
+  </div>
+  <div>support@modbusmanager.com</div>
+</footer>
+<script>
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+</script>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+</body>
+</body>
+</html>
