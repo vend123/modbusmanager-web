@@ -307,7 +307,7 @@ function doUnsub() {
   }
   btn.disabled = true; btn.textContent = 'Removing\u2026';
   // TEINE Make.com webhook — loobumiste jaoks (loo eraldi stsenaarium)
-  var UNSUB_WEBHOOK = 'REPLACE_WITH_UNSUBSCRIBE_WEBHOOK_URL';
+  var UNSUB_WEBHOOK = 'https://hook.eu1.make.com/gaspnwphnxp8cvufudbb1rmcd266jgix';
   fetch(UNSUB_WEBHOOK, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
