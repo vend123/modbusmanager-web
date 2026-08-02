@@ -264,7 +264,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <li><a href="/#support">Support</a></li>
   </ul>
   <div style="display:flex;gap:12px;align-items:center">
-    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.7.0/Modbus.Manager.Pro.Setup.1.7.0.exe" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ACS580-NavText', 'product': 'pro', 'value': 1})" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em">Pro trial &darr;</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.0/Modbus.Manager.Pro.Setup.1.8.0.exe" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ACS580-NavText', 'product': 'pro', 'value': 1})" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em">Pro trial &darr;</a>
     <a href="/ModbusManager-Siemens-S7-1200-demo.zip" download class="nav-cta">Free demo &darr;</a>
   </div>
 </nav>
@@ -275,7 +275,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <h1>ABB ACS580<br><span class="accent">Modbus RTU</span> Guide</h1>
   <p class="hero-desc">Read and control an ABB ACS580 variable frequency drive over Modbus RTU through its embedded fieldbus (EFB). This guide covers the ABB Drives profile &mdash; control word, status word, frequency reference and actual values &mdash; and how to test it all with ModbusManager on Windows, without a PLC or ABB commissioning software.</p>
   <div class="hero-ctas">
-    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.7.0/Modbus.Manager.Pro.Setup.1.7.0.exe" class="btn-primary" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ABB-Hero', 'product': 'pro', 'value': 1})">Download ModbusManager Pro</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.0/Modbus.Manager.Pro.Setup.1.8.0.exe" class="btn-primary" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ABB-Hero', 'product': 'pro', 'value': 1})">Download ModbusManager Pro</a>
     <a href="/modbus-data-logger-software.html" class="btn-ghost">See the data logger</a>
   </div>
   <p class="hero-note">Windows 10/11 &middot; Modbus RTU &amp; TCP &middot; one-time license</p>
@@ -302,7 +302,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <p style="margin:0 0 1rem;color:var(--ink,#16181A);line-height:1.7">The workspace polls holding registers from 40004 read-only (FC03), decodes the status word into ready / running / fault indicators and scales the actual values to frequency and current. There is no control word and no write poll &mdash; it is safe to load on a live drive for monitoring. Set your drive&rsquo;s slave address and connection, and you see its state at a glance.</p>
     <div style="background:#fff4d6;border:1px solid #d4a72c;border-radius:4px;padding:0.7rem 1rem;margin:0 0 1rem;font-size:0.85rem;color:#6b5618;line-height:1.5">⚠ The actual-value registers (40005+) and their scaling depend on drive parameters 53.10&ndash;53.17. This workspace assumes a typical mapping (frequency, current). Verify against your drive and adjust the gains in the script if values look off.</p>
     <div class="hero-ctas">
-      <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.7.0/Modbus.Manager.Pro.Setup.1.7.0.exe" class="btn-primary" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ACS580-Workspace-Bridge', 'product': 'pro', 'value': 1})">Download ModbusManager Pro (free trial)</a>
+      <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.0/Modbus.Manager.Pro.Setup.1.8.0.exe" class="btn-primary" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ACS580-Workspace-Bridge', 'product': 'pro', 'value': 1})">Download ModbusManager Pro (free trial)</a>
       <a href="/ABB_ACS580_monitor_workspace.json" download style="background:transparent;color:var(--ink,#16181A);border:2px solid var(--ink,#16181A);padding:0.65rem 1.6rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none">+ ACS580 workspace (.json)</a>
     </div>
     <p style="margin:1rem 0 0;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--steel,#5b6470)">Two steps: install the free 14-day Pro trial &rarr; open the .json workspace inside it (📋 Workspace &rarr; open). Read-only, no control &mdash; safe on a live drive.</p>
@@ -355,7 +355,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.6;font-size:0.9rem">ABB also supports direct parameter access: register number = parameter number with a leading digit, e.g. parameter 01.06 maps to a register near 40106 in 16-bit mode. The exact mapping and 16/32-bit behaviour depend on par. 58.33 addressing mode &mdash; always confirm against the firmware manual for your drive.</p>
   <div style="max-width:720px;margin:1.8rem auto 0;background:var(--ink,#16181A);color:var(--enclosure,#e8e9e4);border-radius:4px;padding:1.1rem 1.4rem;display:flex;gap:1.2rem;align-items:center;justify-content:space-between;flex-wrap:wrap">
     <span style="line-height:1.5;font-size:0.92rem;flex:1;min-width:240px">Looking these up to actually read them off a drive? Poll the status word at 40004 live in about a minute &mdash; no PLC, no SCADA server.</span>
-    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.7.0/Modbus.Manager.Pro.Setup.1.7.0.exe" class="btn-cta-yellow" style="white-space:nowrap" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ACS580-RegisterMap-Bridge', 'product': 'pro', 'value': 1})">Read it live &rarr;</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.0/Modbus.Manager.Pro.Setup.1.8.0.exe" class="btn-cta-yellow" style="white-space:nowrap" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ACS580-RegisterMap-Bridge', 'product': 'pro', 'value': 1})">Read it live &rarr;</a>
   </div>
 </section>
 
@@ -443,7 +443,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <h2>Talk to your ABB drive in minutes</h2>
   <p>Download ModbusManager and connect to your ACS580 over RTU. Free 14-day Pro trial &mdash; no credit card, no cloud.</p>
   <div class="ctas">
-    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.7.0/Modbus.Manager.Pro.Setup.1.7.0.exe" class="btn-cta-yellow" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ABB-CTA', 'product': 'pro', 'value': 1})">Download free trial</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.0/Modbus.Manager.Pro.Setup.1.8.0.exe" class="btn-cta-yellow" onclick="gtag('event', 'file_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ABB-CTA', 'product': 'pro', 'value': 1})">Download free trial</a>
     <a href="/#pricing" class="btn-cta-outline">See pricing</a>
   </div>
   <p style="margin-top:1rem;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--steel)">Windows 10/11 &middot; Standard $49 &middot; Pro $119 one-time</p>
