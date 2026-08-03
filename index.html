@@ -144,7 +144,28 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 <script>
   window.paddleLoaded = false;
   function initPaddle() {
-    Paddle.Initialize({ token: 'live_ef962437cba8a2379e405749ef8' });
+    Paddle.Initialize({
+      token: 'live_ef962437cba8a2379e405749ef8',
+      eventCallback: function (data) {
+        // Ost õnnestus -> saada GA-sse purchase (kriitiline konversiooni mõõtmiseks)
+        if (data && data.name === 'checkout.completed') {
+          try {
+            var d = data.data || {};
+            var items = d.items || [];
+            var prod = (items[0] && items[0].price && /pro/i.test(items[0].price.id || '')) ? 'pro' : 'standard';
+            var total = (d.totals && d.totals.total) ? d.totals.total : (prod === 'pro' ? 119 : 49);
+            gtag('event', 'purchase', {
+              'event_category': 'Purchase',
+              'event_label': prod === 'pro' ? 'ModbusManagerPro-Purchased' : 'ModbusManager-Purchased',
+              'transaction_id': d.transaction_id || (d.id || ''),
+              'product': prod,
+              'value': total,
+              'currency': (d.currency_code || 'USD')
+            });
+          } catch (e) {}
+        }
+      }
+    });
     window.paddleLoaded = true;
   }
 </script>
