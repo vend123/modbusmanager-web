@@ -421,6 +421,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
           <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);text-align:center">$49 one-time · Windows 10/11</span>
         </div>
       </div>
+      <a href="#install" style="display:block;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--muted);text-decoration:none;margin:0 0 0.9rem;letter-spacing:0.03em">First run: what Windows will show you &amp; SHA-256 checksums &#8594;</a>
       <div class="os-tags">
         <span class="os-tag">Windows 10/11</span>
         <span class="os-tag">14-day free trial</span>
@@ -622,6 +623,52 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 </section>
 
 <div class="divider-line"></div>
+<section class="section" id="install">
+  <div class="sec-label">// first run</div>
+  <h2 class="sec-title">What Windows will show you</h2>
+  <p class="sec-sub">The installer is signed, but it is new. Here is what to expect and how to verify it.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;max-width:1000px;margin:0 auto">
+
+    <div>
+      <p style="margin:0 0 1rem;color:var(--body)">On first run Windows may show a blue Defender SmartScreen panel saying it prevented an unrecognized app from starting. This is a reputation check, not a virus warning. SmartScreen counts how many people have downloaded and run a given build; a new release starts that count at zero regardless of who signed it.</p>
+      <p style="margin:0 0 1rem;color:var(--body)">Both installers are signed by <strong>E-Netter OU</strong> through Microsoft Azure Artifact Signing and carry a Microsoft timestamp. You can confirm this before running anything.</p>
+
+      <div style="background:var(--plate);border-left:3px solid var(--safety);padding:1rem 1.2rem;margin:1.4rem 0">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--amber-ink);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.6rem">Check the publisher line</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.82rem;color:var(--ink)">Publisher: EE, Harjumaa, Rae vald,<br>E-Netter OU</div>
+        <div style="font-size:0.82rem;color:var(--muted);margin-top:0.7rem">If it says anything else - or says unknown publisher - do not run the file, and email us.</div>
+      </div>
+
+      <ol style="color:var(--body);padding-left:1.2rem;margin:0">
+        <li style="margin-bottom:0.4rem">Click <strong>More info</strong> on the SmartScreen panel.</li>
+        <li style="margin-bottom:0.4rem">Confirm the publisher line reads E-Netter OU.</li>
+        <li>Click <strong>Run anyway</strong>.</li>
+      </ol>
+    </div>
+
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--amber-ink);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.8rem">SHA-256 checksums</div>
+
+      <div style="background:var(--plate);border:1px solid var(--steel);padding:1rem;margin-bottom:0.8rem">
+        <div style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:1rem;color:var(--ink);letter-spacing:0.03em;text-transform:uppercase">Standard 1.4.0</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.66rem;color:var(--body);word-break:break-all;line-height:1.6;margin-top:0.4rem">8e7578cf57986f2dc5e17da4c110310e49f041776fd1c2eb669ae6ae17c94e5b</div>
+      </div>
+
+      <div style="background:var(--plate);border:1px solid var(--steel);padding:1rem;margin-bottom:1.2rem">
+        <div style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:1rem;color:var(--ink);letter-spacing:0.03em;text-transform:uppercase">Pro 1.8.0</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.66rem;color:var(--body);word-break:break-all;line-height:1.6;margin-top:0.4rem">6826457d7b3ca967b7e903bfddaa0863c36ce58d6ce1338b18c43e1bb5ab0b86</div>
+      </div>
+
+      <div style="font-size:0.82rem;color:var(--body);margin-bottom:0.5rem">Verify in PowerShell before installing:</div>
+      <div style="background:var(--ink);color:#E6E8E3;font-family:'IBM Plex Mono',monospace;font-size:0.68rem;padding:0.9rem 1rem;overflow-x:auto;line-height:1.7">Get-FileHash .\Modbus.Manager.Pro.Setup.1.8.0.exe -Algorithm SHA256</div>
+      <div style="font-size:0.78rem;color:var(--muted);margin-top:0.7rem">Hashes change with every release. If yours does not match the value above, you did not get the file from this site.</div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider-line"></div>
 <footer id="support">
   <div class="footer-logo">ModbusManager</div>
   <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
@@ -634,6 +681,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <a href="/abb-acs580-modbus.html">VFD drives</a>
     <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
     <a href="/manual.html">Documentation</a>
+    <a href="/#install">Install notes</a>
     <a href="/privacy.html">Privacy</a>
     <a href="/license-terms.html">License terms</a>
     <a href="https://bacmanager.com" style="color:var(--amber-ink)">BACManager (BACnet + Modbus) &#8599;</a>
