@@ -9,7 +9,7 @@
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <meta name="description" content="Free Modbus scanner and device discovery: auto-detect baud rate, parity and slave IDs, scan address ranges, and map registers when you have no documentation. RTU and TCP.">
-<meta name="keywords" content="Modbus Poll alternative, alternative to Modbus Poll, Modbus Poll vs, Modbus master slave software, Modbus Poll replacement, cheaper than Modbus Poll, Modbus Slave alternative, Modbus polling software Windows, Modbus test tool">
+<meta name="keywords" content="Modbus scanner, Modbus device discovery, Modbus auto detect baud rate, Modbus slave scanner, Modbus address scanner, find Modbus device, CAS Modbus Scanner alternative, Modbus register scanner, unknown Modbus device">
 <meta name="author" content="ModbusManager">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://modbusmanager.com/modbus-scanner.html">
@@ -22,8 +22,8 @@
 <meta property="og:image" content="https://modbusmanager.com/og-scanner.png">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Modbus Poll Alternative for Windows">
-<meta name="twitter:description" content="Windows Modbus master + slave tool with dashboard HMI and logging. From $49 one-time.">
+<meta name="twitter:title" content="Modbus Scanner — find unknown devices and settings">
+<meta name="twitter:description" content="Find unknown Modbus devices: auto-detect baud/parity, scan slave IDs, map registers. ModbusManager Pro, $119 one-time.">
 <meta name="twitter:image" content="https://modbusmanager.com/og-scanner.png">
 
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -36,9 +36,9 @@
 {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "Modbus Poll Alternative for Windows",
-  "description": "A comparison of ModbusManager and Modbus Poll for engineers looking for a Modbus master and slave tool on Windows, covering slave mode, licensing and visualization.",
-  "url": "https://modbusmanager.com/modbus-poll-alternative.html",
+  "headline": "Modbus Scanner: Find Unknown Devices, Addresses and Settings",
+  "description": "How to discover unknown Modbus devices: auto-detect baud rate and parity, scan slave IDs and address ranges, and map registers for RTU and TCP with ModbusManager Pro.",
+  "url": "https://modbusmanager.com/modbus-scanner.html",
   "datePublished": "2026-07-01",
   "dateModified": "2026-07-01",
   "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
@@ -48,11 +48,11 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {"@type": "Question", "name": "Is ModbusManager a drop-in replacement for Modbus Poll?", "acceptedAnswer": {"@type": "Answer", "text": "For the core job - polling Modbus RTU, ASCII and TCP devices, reading and writing registers and coils, and inspecting raw frames - yes. ModbusManager covers the same day-to-day master workflow, and adds a built-in slave simulator in the same app. It uses its own workspace format, so existing Modbus Poll .mbp files are not imported; you re-create poll windows, which takes a few minutes."}},
-    {"@type": "Question", "name": "Does ModbusManager include slave simulation?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Slave mode is built into ModbusManager - you can run a Modbus slave server over TCP or RTU inside the same application. With Modbus Poll, slave simulation is a separate product (Modbus Slave) bought separately."}},
-    {"@type": "Question", "name": "How does the price compare to Modbus Poll?", "acceptedAnswer": {"@type": "Answer", "text": "Modbus Poll is a one-time purchase for the master tool, and Modbus Slave is sold separately. ModbusManager Standard is a one-time license that includes both master and slave modes, and the Pro edition adds a dashboard HMI, data logging Historian and alarms. Both are perpetual licenses, not subscriptions."}},
-    {"@type": "Question", "name": "What does ModbusManager add beyond polling?", "acceptedAnswer": {"@type": "Answer", "text": "The Pro edition adds a drag-and-drop Dashboard HMI, a data logging Historian with trend charts and CSV export, and an alarm system with warning and critical levels. This lets it act as a lightweight local HMI, not just a register poller - without a SCADA server or cloud account."}},
-    {"@type": "Question", "name": "Is Modbus Poll still a good tool?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Modbus Poll is a mature, reliable, widely used master tool that many engineers know well. If you only need basic master polling and already own it, there is no urgent reason to switch. ModbusManager is aimed at engineers who also want slave simulation, visualization or logging in one application."}}
+    {"@type": "Question", "name": "How do I find a Modbus device when I don't know its address?", "acceptedAnswer": {"@type": "Answer", "text": "Use a slave-ID scan. ModbusManager Pro walks the address range 1-247 and reports every device that responds, including ones that only return an exception. Modbus has no built-in discovery, so scanning the address range is the standard way to find an unknown slave ID."}},
+    {"@type": "Question", "name": "Can I auto-detect the baud rate and parity of a Modbus device?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. ModbusManager Pro's auto-detect tries the common combinations of baud rate, parity and stop bits and reports which one the device answers on, in standard form such as 9600 8N1. This is useful when a device's serial settings are undocumented or were changed."}},
+    {"@type": "Question", "name": "What is the difference from CAS Modbus Scanner?", "acceptedAnswer": {"@type": "Answer", "text": "CAS Modbus Scanner is a free discovery and debug tool. ModbusManager Pro does the same discovery, but can also decode 32-bit values in both big- and little-endian word order, save and export the register map you find as CSV, XLSX or PDF, and keep working with the device through dashboards, logging and slave simulation."}},
+    {"@type": "Question", "name": "Does it work with Modbus TCP as well as RTU?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. ModbusManager Pro scans both Modbus RTU (serial, RS-485/RS-232) and Modbus TCP. On TCP it scans Unit IDs, which is useful for finding devices behind a TCP-to-RTU gateway."}},
+    {"@type": "Question", "name": "Why does a 32-bit float read as a wrong number?", "acceptedAnswer": {"@type": "Answer", "text": "A 32-bit float spans two registers and manufacturers differ on the byte and word order (ABCD, CDAB, BADC, DCBA). If the order is wrong the value looks like nonsense. ModbusManager Pro shows all four interpretations at once so you can pick the one that matches a real reading."}}
   ]
 }
 ]
@@ -219,7 +219,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   gtag('config', 'G-42Q8HEKC0X');
 </script>
 <script type="application/ld+json">
-{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Features","item": "https://modbusmanager.com/#features"},{"@type": "ListItem","position": 3,"name": "Modbus Poll Alternative","item": "https://modbusmanager.com/modbus-poll-alternative.html"}]}
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Features","item": "https://modbusmanager.com/#features"},{"@type": "ListItem","position": 3,"name": "Modbus Scanner","item": "https://modbusmanager.com/modbus-scanner.html"}]}
 </script>
 </head>
 <body>
@@ -313,7 +313,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 <!-- VS CAS -->
 <section class="section">
   <div class="sec-label">// honest comparison</div>
-  <h2 class="sec-title">ModbusManager vs CAS Modbus Scanner</h2>
+  <h2 class="sec-title">ModbusManager Pro vs CAS Modbus Scanner</h2>
   <p class="sec-sub">CAS Modbus Scanner is a good, genuinely free discovery tool &mdash; if all you need is to find devices and read registers for a few minutes, it does that well. The difference shows up once discovery is done and you need to <em>keep working</em> with what you found.</p>
 
   <div style="overflow-x:auto;margin-top:22px">
@@ -321,7 +321,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <thead>
       <tr style="border-bottom:2px solid var(--ink)">
         <th style="text-align:left;padding:10px 8px"></th>
-        <th style="text-align:center;padding:10px 8px;color:var(--amber-ink)">ModbusManager</th>
+        <th style="text-align:center;padding:10px 8px;color:var(--amber-ink)">ModbusManager Pro</th>
         <th style="text-align:center;padding:10px 8px;color:var(--muted)">CAS Scanner</th>
       </tr>
     </thead>
@@ -335,7 +335,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
       <tr style="border-bottom:1px solid var(--steel)"><td style="padding:9px 8px">Slave simulation (act as a device)</td><td style="text-align:center">&#10003;</td><td style="text-align:center;color:var(--muted)">&mdash;</td></tr>
       <tr style="border-bottom:1px solid var(--steel)"><td style="padding:9px 8px">Dashboard HMI, trends, alarms</td><td style="text-align:center">&#10003;</td><td style="text-align:center;color:var(--muted)">&mdash;</td></tr>
       <tr style="border-bottom:1px solid var(--steel)"><td style="padding:9px 8px">Combine several devices into one map (gateway)</td><td style="text-align:center">&#10003;</td><td style="text-align:center;color:var(--muted)">&mdash;</td></tr>
-      <tr><td style="padding:9px 8px">Price</td><td style="text-align:center">from $49 one-time</td><td style="text-align:center;color:var(--muted)">free</td></tr>
+      <tr><td style="padding:9px 8px">Price</td><td style="text-align:center">$119 one-time (Pro)</td><td style="text-align:center;color:var(--muted)">free</td></tr>
     </tbody>
   </table>
   </div>
