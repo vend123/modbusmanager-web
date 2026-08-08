@@ -239,6 +239,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
         <a href="/modbus-scanner.html" style="color:#9A6700;font-weight:600">&#9889; Modbus Scanner</a>
         <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
         <a href="/modbus-data-logger-software.html">Data Logger</a>
+        <a href="/modbus-rtu-rs485-data-logger.html">RTU / RS-485 Logging</a>
         <a href="/modbus-alarm-software.html">Alarms</a>
         <a href="/modbus-gateway-software.html">Gateway</a>
       </div>
@@ -340,6 +341,12 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
       <tr><td>Data type</td><td class="hl">FLOAT32 (2 registers, big-endian)</td></tr>
     </tbody>
   </table>
+  <p style="max-width:820px;margin:1.6rem auto 0;color:var(--body);line-height:1.8">
+    On RS-485 models the 19200&nbsp;baud default is worth keeping in mind before logging a whole
+    switchboard: each meter read takes its turn on the line, so the number of meters sets the
+    shortest interval you can actually sustain. <a href="/modbus-rtu-rs485-data-logger.html" style="color:var(--amber-ink)">Modbus RTU data logger over RS-485</a>
+    works through the arithmetic, including why one unresponsive meter delays every other one.
+  </p>
 </section>
 
 <div class="divider-line"></div>
@@ -446,6 +453,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <a href="/">Home</a>
     <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
     <a href="/modbus-data-logger-software.html">Data Logger</a>
+    <a href="/modbus-rtu-rs485-data-logger.html">RTU Logging</a>
     <a href="/modbus-alarm-software.html">Alarms</a>
         <a href="/modbus-gateway-software.html">Gateway</a>
     <a href="/eastron-sdm630-modbus.html">Energy meters</a>
