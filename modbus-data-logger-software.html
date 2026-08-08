@@ -36,37 +36,92 @@
 <!-- JSON-LD: TechArticle + FAQPage + SoftwareApplication -->
 <script type="application/ld+json">
 [
-{
-  "@context": "https://schema.org",
-  "@type": "TechArticle",
-  "headline": "Modbus Data Logger Software for Windows",
-  "description": "How to log Modbus register and tag values to a local database on Windows using ModbusManager Pro — trend charts, selectable time ranges, deadband and CSV export, fully offline.",
-  "url": "https://modbusmanager.com/modbus-data-logger-software.html",
-  "datePublished": "2026-06-26",
-  "dateModified": "2026-06-26",
-  "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
-  "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
-  "about": {
-    "@type": "SoftwareApplication",
-    "name": "ModbusManager Pro",
-    "operatingSystem": "Windows 10, Windows 11",
-    "applicationCategory": "DeveloperApplication",
-    "offers": {"@type": "Offer", "price": "119", "priceCurrency": "USD"},
-    "url": "https://modbusmanager.com/#pro",
-    "downloadUrl": "https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.1/Modbus.Manager.Pro.Setup.1.8.1.exe"
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Modbus Data Logger Software for Windows",
+    "description": "How to log Modbus register and tag values to a local database on Windows using ModbusManager Pro — trend charts, selectable time ranges, deadband and CSV export, fully offline.",
+    "url": "https://modbusmanager.com/modbus-data-logger-software.html",
+    "datePublished": "2026-06-26",
+    "dateModified": "2026-06-26",
+    "author": {
+      "@type": "Organization",
+      "name": "ModbusManager",
+      "url": "https://modbusmanager.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "ModbusManager",
+      "url": "https://modbusmanager.com"
+    },
+    "about": {
+      "@type": "SoftwareApplication",
+      "name": "ModbusManager Pro",
+      "operatingSystem": "Windows 10, Windows 11",
+      "applicationCategory": "DeveloperApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "119",
+        "priceCurrency": "USD"
+      },
+      "url": "https://modbusmanager.com/#pro",
+      "downloadUrl": "https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.1/Modbus.Manager.Pro.Setup.1.8.1.exe"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Can it work as a Modbus RTU datalogger on an RS-485 line?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The same Modbus datalogger reads RTU and ASCII over a COM port and TCP over Ethernet, and stores all of them the same way. On a shared RS-485 line each poll window keeps its own interval, so a slow energy meter and a fast drive can share one bus. At 9600 baud a short read plus its reply takes roughly 30-60 ms, which is what limits how often a long device list can realistically be sampled."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can ModbusManager log Modbus data to a file?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. ModbusManager Pro includes a built-in Historian that logs register and tag values to a local SQLite database. You can review the data as trend charts and export any series to CSV for use in Excel or other tools."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does the Modbus data logger work offline?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The Historian stores data in a local database on your PC. No cloud account, internet connection or separate historian server is required."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I reduce the amount of logged data?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Each logged series supports a deadband: a value is only stored when it changes by more than the deadband amount, keeping slow-moving signals compact."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I export logged Modbus values to Excel?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Any logged series can be exported to a CSV file, which opens directly in Excel, Google Sheets or any analysis tool."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is data logging available in the free Standard edition?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The Historian is a Pro-edition feature. ModbusManager Standard ($49) covers polling, slave mode and simulation; the Historian and alarm system are part of Pro ($119)."
+        }
+      }
+    ]
   }
-},
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {"@type": "Question", "name": "Can ModbusManager log Modbus data to a file?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. ModbusManager Pro includes a built-in Historian that logs register and tag values to a local SQLite database. You can review the data as trend charts and export any series to CSV for use in Excel or other tools."}},
-    {"@type": "Question", "name": "Does the Modbus data logger work offline?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The Historian stores data in a local database on your PC. No cloud account, internet connection or separate historian server is required."}},
-    {"@type": "Question", "name": "How do I reduce the amount of logged data?", "acceptedAnswer": {"@type": "Answer", "text": "Each logged series supports a deadband: a value is only stored when it changes by more than the deadband amount, keeping slow-moving signals compact."}},
-    {"@type": "Question", "name": "Can I export logged Modbus values to Excel?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Any logged series can be exported to a CSV file, which opens directly in Excel, Google Sheets or any analysis tool."}},
-    {"@type": "Question", "name": "Is data logging available in the free Standard edition?", "acceptedAnswer": {"@type": "Answer", "text": "The Historian is a Pro-edition feature. ModbusManager Standard ($49) covers polling, slave mode and simulation; the Historian and alarm system are part of Pro ($119)."}}
-  ]
-}
 ]
 </script>
 <style>
@@ -296,7 +351,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 <section class="section">
   <div class="sec-label">// what is modbus data logging</div>
   <h2 class="sec-title">Turn live registers into history</h2>
-  <p class="sec-sub">A Modbus poll shows you the value now. A data logger answers the questions that come later: what happened overnight, when did the value spike, is the trend drifting?</p>
+  <p class="sec-sub">A Modbus poll shows you the value now. A Modbus logger answers the questions that come later: what happened overnight, when did the value spike, is the trend drifting?</p>
   <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.7">ModbusManager Pro records the values you choose to a local database, so you can scroll back through hours, days or weeks of real device data without standing up a full SCADA or historian system. Logging starts with a single click from any poll window or tag, and the data is stored on your own PC in a compact SQLite database &mdash; no cloud account, no subscription, no separate server to maintain.</p>
 </section>
 
@@ -329,6 +384,69 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <div class="step"><div class="step-label">Step 2</div><div class="step-title">Start logging</div><div class="step-text">Click the Log button on a poll window or tag. Optionally set a deadband to control how much data is stored for that series.</div></div>
     <div class="step"><div class="step-label">Step 3</div><div class="step-title">Review &amp; export</div><div class="step-text">Open the History tab to see trend charts and statistics, pick a time range, and export to CSV when you need to share or analyse the data.</div></div>
   </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- RTU / RS-485 -->
+<section class="section" id="rtu">
+  <div class="sec-label">// serial lines</div>
+  <h2 class="sec-title">Modbus RTU data logger over RS-485</h2>
+  <p style="max-width:820px;margin:0 auto 2rem;text-align:center;color:var(--muted);line-height:1.7">
+    Most plant data still arrives over a two-wire RS-485 line rather than Ethernet. A serial
+    Modbus logger has constraints an Ethernet one does not, and they decide how often you can
+    realistically sample.
+  </p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.6rem;max-width:1000px;margin:0 auto">
+
+    <div style="background:var(--plate);border:1px solid var(--steel);padding:1.3rem">
+      <div style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:1.1rem;color:var(--ink);letter-spacing:0.03em;text-transform:uppercase;margin-bottom:0.6rem">One line, many devices</div>
+      <p style="color:var(--body);font-size:0.9rem;line-height:1.7;margin:0">
+        RS-485 is half duplex: one request and one reply at a time, in turn. Twenty meters on a
+        shared line at 9600&nbsp;baud cannot each be read every second. ModbusManager polls the
+        whole line from a single register map and gives every window its own interval, so a slow
+        energy meter and a fast drive can sit on the same bus without one starving the other.
+      </p>
+    </div>
+
+    <div style="background:var(--plate);border:1px solid var(--steel);padding:1.3rem">
+      <div style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:1.1rem;color:var(--ink);letter-spacing:0.03em;text-transform:uppercase;margin-bottom:0.6rem">What the line can carry</div>
+      <p style="color:var(--body);font-size:0.9rem;line-height:1.7;margin:0">
+        A rough figure worth knowing before you set an interval: at 9600&nbsp;baud one short
+        read plus its reply takes roughly 30&ndash;60&nbsp;ms including the silent gap between
+        frames. Thirty reads per cycle therefore needs about two seconds, and asking for one
+        second will simply build a backlog. At 115200&nbsp;baud the same cycle is comfortable.
+      </p>
+    </div>
+
+    <div style="background:var(--plate);border:1px solid var(--steel);padding:1.3rem">
+      <div style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:1.1rem;color:var(--ink);letter-spacing:0.03em;text-transform:uppercase;margin-bottom:0.6rem">When a device stops answering</div>
+      <p style="color:var(--body);font-size:0.9rem;line-height:1.7;margin:0">
+        On a serial line one silent slave delays everything behind it, because the master waits
+        out the timeout before moving on. The Serial Monitor shows the raw request and reply
+        bytes, so you can tell a wiring fault from a wrong unit ID or a mismatched baud rate
+        instead of guessing at it.
+      </p>
+    </div>
+
+    <div style="background:var(--plate);border:1px solid var(--steel);padding:1.3rem">
+      <div style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:1.1rem;color:var(--ink);letter-spacing:0.03em;text-transform:uppercase;margin-bottom:0.6rem">RTU and TCP together</div>
+      <p style="color:var(--body);font-size:0.9rem;line-height:1.7;margin:0">
+        A commissioning job rarely stays on one transport. The same Modbus logger handles RTU on
+        a COM port, ASCII, and TCP over Ethernet, and the history is stored the same way for all
+        three &mdash; so a serial meter and an Ethernet PLC end up in one exportable record.
+      </p>
+    </div>
+
+  </div>
+
+  <p style="max-width:820px;margin:2rem auto 0;text-align:center;color:var(--body);line-height:1.8">
+    Serial lines have enough of their own arithmetic to deserve a page of it:
+    <a href="/modbus-rtu-rs485-data-logger.html" style="color:var(--amber-ink)">Modbus RTU data logger for RS-485 lines</a>
+    covers frame timing at each baud rate, realistic intervals for a full device list, and how to
+    tell a wiring fault from a wrong unit ID.
+  </p>
 </section>
 
 <div class="divider-line"></div>
@@ -368,11 +486,57 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 
 <div class="divider-line"></div>
 
+<!-- TIMESTAMPS -->
+<section class="section" id="timestamps">
+  <div class="sec-label">// timestamps &amp; intervals</div>
+  <h2 class="sec-title">What a logged row actually contains</h2>
+  <p style="max-width:820px;margin:0 auto 2rem;text-align:center;color:var(--muted);line-height:1.7">
+    A data logger is only useful if you can trust the time column six months later. Here is what
+    gets written and what to decide before you start a long run.
+  </p>
+
+  <div style="max-width:900px;margin:0 auto">
+    <table style="width:100%;border-collapse:collapse;font-size:0.88rem">
+      <thead>
+        <tr style="border-bottom:2px solid var(--steel)">
+          <th style="text-align:left;padding:0.7rem 0.6rem;font-family:'Saira Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink)">Decision</th>
+          <th style="text-align:left;padding:0.7rem 0.6rem;font-family:'Saira Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink)">Why it matters later</th>
+        </tr>
+      </thead>
+      <tbody style="color:var(--body)">
+        <tr style="border-bottom:1px solid var(--steel)">
+          <td style="padding:0.7rem 0.6rem;vertical-align:top"><strong>Logging interval</strong></td>
+          <td style="padding:0.7rem 0.6rem;line-height:1.6">Each poll window keeps its own interval. Sample fast enough to see the event you care about, and no faster &mdash; a one-second interval on thirty registers is roughly 2.6&nbsp;million rows a month per register.</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--steel)">
+          <td style="padding:0.7rem 0.6rem;vertical-align:top"><strong>Deadband</strong></td>
+          <td style="padding:0.7rem 0.6rem;line-height:1.6">Write a row only when the value moves by more than a set amount. On a steady process this is the difference between a database that stays small and one that fills a disk with identical readings.</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--steel)">
+          <td style="padding:0.7rem 0.6rem;vertical-align:top"><strong>Timestamp source</strong></td>
+          <td style="padding:0.7rem 0.6rem;line-height:1.6">The time recorded is the PC clock at the moment the reply arrived, not a clock inside the device. On a long unattended run, make sure the logging PC has time sync enabled, or the record will drift away from every other system you compare it against.</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--steel)">
+          <td style="padding:0.7rem 0.6rem;vertical-align:top"><strong>Gaps</strong></td>
+          <td style="padding:0.7rem 0.6rem;line-height:1.6">A missing row is information. If a device went silent or the cable was pulled, the history shows the gap rather than repeating the last known value &mdash; so an outage does not read as a flat, healthy signal.</td>
+        </tr>
+        <tr>
+          <td style="padding:0.7rem 0.6rem;vertical-align:top"><strong>Getting data out</strong></td>
+          <td style="padding:0.7rem 0.6rem;line-height:1.6">History is kept in a local SQLite file on your own machine &mdash; no cloud account, no server to run. Pick a time range and export to CSV for Excel, a report, or a handover pack.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
 <!-- FAQ -->
 <section class="section">
   <div class="sec-label">// frequently asked questions</div>
   <h2 class="sec-title">Modbus data logging &mdash; FAQ</h2>
   <div class="faq-list">
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can it work as a Modbus RTU datalogger on an RS-485 line?<span class="icon">+</span></div><div class="faq-a">Yes. The same Modbus datalogger reads RTU and ASCII over a COM port and TCP over Ethernet, and stores all of them the same way. On a shared RS-485 line each poll window keeps its own interval, so a slow energy meter and a fast drive can share one bus. At 9600&nbsp;baud a short read plus its reply takes roughly 30&ndash;60&nbsp;ms, which is what limits how often a long device list can realistically be sampled.</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can ModbusManager log Modbus data to a file?<span class="icon">+</span></div><div class="faq-a">Yes. ModbusManager Pro includes a built-in Historian that logs register and tag values to a local SQLite database. You can review the data as trend charts and export any series to CSV for use in Excel or other tools.</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does the Modbus data logger work offline?<span class="icon">+</span></div><div class="faq-a">Yes. The Historian stores data in a local database on your PC. No cloud account, internet connection or separate historian server is required &mdash; everything runs inside the application.</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I reduce the amount of logged data?<span class="icon">+</span></div><div class="faq-a">Each logged series supports a deadband: a value is only stored when it changes by more than the deadband amount. This keeps slow-moving signals compact while still capturing meaningful changes.</div></div>
