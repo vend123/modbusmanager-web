@@ -297,18 +297,19 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <li class="nav-drop">
       <span class="nav-drop-label">Features ▾</span>
       <div class="nav-drop-menu">
-        <a href="/modbus-scanner.html" style="color:#9A6700;font-weight:600">&#9889; Modbus Scanner</a>
-        <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
-        <a href="/modbus-data-logger-software.html">Data Logger</a>
-        <a href="/modbus-rtu-rs485-data-logger.html">RTU / RS-485 Logging</a>
-        <a href="/modbus-alarm-software.html">Alarms</a>
-        <a href="/modbus-gateway-software.html">Gateway</a>
+        <a href="/modbus-scanner.html" style="color:#9A6700;font-weight:600">&#128269; Modbus Scanner</a>
+        <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
+        <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
+        <a href="/modbus-rtu-rs485-data-logger.html" style="padding-left:1.5rem">RTU / RS-485 Logging</a>
+        <a href="/modbus-logging-interval-deadband.html" style="padding-left:1.5rem">Interval &amp; Deadband</a>
+        <a href="/modbus-to-csv-logging.html" style="padding-left:1.5rem">CSV Export</a>
+        <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
+        <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
       </div>
     </li>
     <li class="nav-drop">
       <span class="nav-drop-label">Guides ▾</span>
       <div class="nav-drop-menu">
-        <a href="/modbus-scanner.html" style="color:#9A6700;font-weight:600">&#9889; Modbus Scanner</a>
         <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200</a>
         <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
         <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
@@ -444,7 +445,6 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 
   <p style="max-width:820px;margin:2rem auto 0;text-align:center;color:var(--body);line-height:1.8">
     Serial lines have enough of their own arithmetic to deserve a page of it:
-    <a href="/modbus-rtu-rs485-data-logger.html" style="color:var(--amber-ink)">Modbus RTU data logger for RS-485 lines</a>
     covers frame timing at each baud rate, realistic intervals for a full device list, and how to
     tell a wiring fault from a wrong unit ID.
   </p>
@@ -532,6 +532,33 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 
 <div class="divider-line"></div>
 
+<!-- CLUSTER -->
+<section class="section" id="guides">
+  <div class="sec-label">// in more detail</div>
+  <h2 class="sec-title">Three things worth getting right first</h2>
+  <p class="sec-sub">Each of these has enough detail to deserve its own page, and each one is where a logging run usually goes wrong.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.5rem;max-width:1000px;margin:1.8rem auto 0">
+    <a href="/modbus-rtu-rs485-data-logger.html" style="text-decoration:none;background:var(--plate);border:1px solid var(--steel);padding:1.4rem;display:block">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--amber-ink);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5rem">Serial lines</div>
+      <div style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:1.15rem;color:var(--ink);letter-spacing:0.03em;text-transform:uppercase;margin-bottom:0.6rem">Modbus RTU over RS-485</div>
+      <p style="margin:0;color:var(--body);font-size:0.9rem;line-height:1.7">What one read costs at each baud rate, why twenty devices at 9600&nbsp;baud cannot be sampled every second, and how to tell a wiring fault from a wrong unit ID.</p>
+    </a>
+    <a href="/modbus-logging-interval-deadband.html" style="text-decoration:none;background:var(--plate);border:1px solid var(--steel);padding:1.4rem;display:block">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--amber-ink);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5rem">Settings</div>
+      <div style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:1.15rem;color:var(--ink);letter-spacing:0.03em;text-transform:uppercase;margin-bottom:0.6rem">Interval and deadband</div>
+      <p style="margin:0;color:var(--body);font-size:0.9rem;line-height:1.7">Rows per day at each interval, sensible deadbands per signal type, and the one thing a deadband hides about a connection that has died.</p>
+    </a>
+    <a href="/modbus-to-csv-logging.html" style="text-decoration:none;background:var(--plate);border:1px solid var(--steel);padding:1.4rem;display:block">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--amber-ink);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5rem">Getting data out</div>
+      <div style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:1.15rem;color:var(--ink);letter-spacing:0.03em;text-transform:uppercase;margin-bottom:0.6rem">Export to CSV and Excel</div>
+      <p style="margin:0;color:var(--body);font-size:0.9rem;line-height:1.7">Why a comma-separated file opens as one column in Europe, which values Excel mangles on import, and when to export wide instead of long.</p>
+    </a>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
 <!-- FAQ -->
 <section class="section">
   <div class="sec-label">// frequently asked questions</div>
@@ -573,11 +600,12 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <div class="footer-logo">ModbusManager</div>
   <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
     <a href="/">Home</a>
-    <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
-    <a href="/modbus-data-logger-software.html">Data Logger</a>
+    <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
+    <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
     <a href="/modbus-rtu-rs485-data-logger.html">RTU Logging</a>
-    <a href="/modbus-alarm-software.html">Alarms</a>
-        <a href="/modbus-gateway-software.html">Gateway</a>
+    <a href="/modbus-to-csv-logging.html">CSV Export</a>
+    <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
+        <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
     <a href="/huawei-smartlogger-modbus.html">Guides</a>
     <a href="/manual.html">Documentation</a>
     <a href="/privacy.html">Privacy</a>

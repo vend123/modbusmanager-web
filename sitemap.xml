@@ -128,4 +128,6 @@
   </url>
   <url><loc>https://modbusmanager.com/modbus-scanner.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://modbusmanager.com/modbus-rtu-rs485-data-logger.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://modbusmanager.com/modbus-to-csv-logging.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://modbusmanager.com/modbus-logging-interval-deadband.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>

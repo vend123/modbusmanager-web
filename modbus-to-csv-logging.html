@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log Modbus Data to CSV: Export, Format and Excel | ModbusManager</title>
+<meta name="description" content="How to log Modbus data to CSV and open it correctly in Excel: why a comma-separated file shows as one column in Europe, which values Excel mangles on import, and when to export wide instead of long.">
+<meta name="keywords" content="Modbus to CSV, Modbus CSV export, log Modbus data to CSV, Modbus Excel export, Modbus data export, Modbus CSV delimiter, Modbus logging Excel">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/modbus-to-csv-logging.html">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Log Modbus Data to CSV: Export, Format and Excel">
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:description" content="Export Modbus data to CSV without the Excel traps: delimiters, decimal separators, leading zeros, wide vs long layout. Free 14-day trial.">
+<meta property="og:url" content="https://modbusmanager.com/modbus-to-csv-logging.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://modbusmanager.com/og-modbus-csv.png">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Log Modbus Data to CSV: Export, Format and Excel">
+<meta name="twitter:description" content="Export Modbus data to CSV without the Excel traps: delimiters, decimal separators, leading zeros, wide vs long layout. Free 14-day trial.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-modbus-csv.png">
+
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- JSON-LD: TechArticle + FAQPage + SoftwareApplication -->
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Log Modbus Data to CSV: Export, Format and Excel",
+    "description": "How to log Modbus data to CSV and open it correctly in Excel: why a comma-separated file shows as one column in Europe, which values Excel mangles on import, and when to export wide instead of long.",
+    "author": {
+      "@type": "Organization",
+      "name": "ModbusManager"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "ModbusManager",
+      "url": "https://modbusmanager.com"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://modbusmanager.com/modbus-to-csv-logging.html"
+    },
+    "datePublished": "2026-08-08"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Why does Excel open my Modbus CSV as a single column?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Excel does not read the delimiter from the file. On Windows it uses the list separator from your regional settings - a comma in the US and UK, a semicolon in most of continental Europe where the comma is the decimal separator. A comma-separated file therefore stays in one column on a European machine. Use Data &rarr; From Text/CSV instead of double-clicking: it asks for the delimiter and decimal separator and previews the result."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I export only part of the logged history?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Pick the series and the time range you want and export that. For a commissioning report a targeted window is usually more useful than the whole database, and the file stays small enough to email."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Should I export one column per signal or one row per reading?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "One column per signal (wide) is easier for a person to read and to chart. One row per reading (long) is better for pivot tables, for loading into another system, and when signals are logged at different intervals or with a deadband - in those cases the wide layout fills with blanks because the timestamps no longer line up."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why did leading zeros disappear from my unit IDs?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Excel treated the column as a number, so 0012 became 12. The value in the file is intact. In the From Text/CSV dialog set that column's type to Text before importing, and the padding is preserved."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does exporting require an internet connection or an account?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. The history is stored in a local database on your own PC and the export writes a file to your disk. There is no cloud service, no account and no server component - which is also why the file remains readable long after any licence question is settled."
+        }
+      }
+    ]
+  }
+]
+</script>
+<style>
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+.mono{font-family:'IBM Plex Mono',monospace}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;gap:1.5rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.5rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.78rem;letter-spacing:0.05em;color:var(--muted)}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+
+/* HAZARD STRIPE */
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+
+/* HERO */
+.hero{padding:4rem 3rem 3.5rem;max-width:1140px;margin:0 auto}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.9rem}
+.hero h1{font-family:'Saira Condensed',sans-serif;font-size:3rem;font-weight:700;line-height:1;color:var(--ink);margin-bottom:1rem;letter-spacing:0.01em;text-transform:uppercase;max-width:720px}
+.hero h1 .accent{color:var(--amber-ink)}
+.hero-desc{font-size:1rem;color:var(--body);line-height:1.7;margin-bottom:1.8rem;max-width:640px}
+.hero-ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn-primary{background:var(--run);color:#fff;padding:0.75rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-primary:hover{background:#186040}
+.btn-ghost{background:transparent;color:var(--ink);border:2px solid var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-ghost:hover{background:var(--ink);color:var(--safety)}
+.hero-note{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--muted);margin-top:0.7rem}
+
+/* SECTION */
+.section{padding:3.5rem 3rem;max-width:1140px;margin:0 auto}
+.sec-label{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem}
+.sec-title{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:0.6rem}
+.sec-sub{font-size:0.95rem;color:var(--body);line-height:1.7;margin-bottom:2rem;max-width:680px}
+.divider-line{border:none;border-top:2px solid var(--ink)}
+
+/* WHAT IS HMI */
+.explainer-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.explainer-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.definition-box{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem}
+.definition-box .def-label{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem}
+.definition-box p{font-size:0.9rem;color:var(--body);line-height:1.7}
+
+/* WIDGET GRID */
+.widget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.widget-card{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem}
+.widget-icon{font-size:1.6rem;margin-bottom:0.7rem}
+.widget-name{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem}
+.widget-desc{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;counter-reset:step}
+.step{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem;position:relative}
+.step::before{counter-increment:step;content:counter(step);font-family:'Saira Condensed',sans-serif;font-size:2.5rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.5rem;right:1rem;line-height:1}
+.step-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--amber-ink);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem}
+.step-title{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.5rem}
+.step-text{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* TAG ENGINE */
+.tag-block{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:start}
+.tag-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.code-box{background:var(--ink);color:#D4D8D0;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;line-height:1.7;padding:1.4rem 1.6rem;border-radius:3px;overflow-x:auto}
+.code-box .cm{color:#5F7A5F}
+.code-box .ck{color:var(--safety)}
+.code-box .cv{color:#8EC0B0}
+
+/* COMPARE TABLE */
+.compare-table{width:100%;border-collapse:collapse;font-size:0.88rem}
+.compare-table th{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.05em;text-transform:uppercase;padding:0.7rem 1rem;border-bottom:2px solid var(--ink);text-align:left;background:var(--enclosure2)}
+.compare-table td{padding:0.65rem 1rem;border-bottom:1px solid var(--steel)}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table .hl{background:rgba(30,122,79,0.06)}
+.yes{color:var(--run);font-weight:600}
+.no{color:var(--bad)}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:0}
+.faq-item{border-top:1px solid var(--steel)}
+.faq-item:last-child{border-bottom:1px solid var(--steel)}
+.faq-q{font-family:'Saira Condensed',sans-serif;font-size:1.05rem;font-weight:600;letter-spacing:0.02em;padding:1.1rem 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq-q:hover{color:var(--amber-ink)}
+.faq-q .icon{font-family:'IBM Plex Mono',monospace;font-size:1.1rem;flex-shrink:0;transition:transform 0.2s}
+.faq-a{font-size:0.9rem;color:var(--body);line-height:1.75;padding:0 0 1.1rem;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .icon{transform:rotate(45deg)}
+
+/* CTA STRIP */
+.cta-strip{background:var(--ink);color:var(--safety);padding:3.5rem 3rem;text-align:center}
+.cta-strip h2{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.6rem}
+.cta-strip p{font-size:0.95rem;color:var(--enclosure);margin-bottom:1.8rem;max-width:540px;margin-left:auto;margin-right:auto}
+.cta-strip .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-cta-yellow{background:var(--safety);color:var(--ink);padding:0.8rem 2rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-cta-yellow:hover{background:#e09800}
+.btn-cta-outline{background:transparent;color:var(--safety);border:2px solid var(--safety);padding:0.7rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+
+/* FOOTER */
+footer{background:var(--ink);color:var(--steel);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:0.75rem}
+.footer-logo{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:0.05em;text-transform:uppercase}
+footer a{color:var(--steel);text-decoration:none}
+footer a:hover{color:#fff}
+
+@media(max-width:768px){
+  nav{padding:0.75rem 1.2rem;flex-wrap:wrap;gap:0.5rem}
+  .nav-links{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  .hero h1{font-size:2.2rem}
+  .section{padding:2.5rem 1.2rem}
+  .explainer-grid,.tag-block{grid-template-columns:1fr}
+  .widget-grid{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .cta-strip{padding:2.5rem 1.2rem}
+  footer{padding:1.5rem 1.2rem;flex-direction:column;align-items:flex-start;gap:0.75rem}
+}
+@media(max-width:520px){
+  .widget-grid,.steps{grid-template-columns:1fr}
+}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;max-width:100%}}
+
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;background:transparent;border:none;min-width:190px;display:none;flex-direction:column;z-index:200}.nav-drop-menu>a{background:var(--enclosure2,#e8e9e4);border-left:1px solid var(--ink,#16181A);border-right:1px solid var(--ink,#16181A)}.nav-drop-menu>a:first-child{border-top:1px solid var(--ink,#16181A);border-radius:3px 3px 0 0;padding-top:0.5rem}.nav-drop-menu>a:last-child{border-bottom:1px solid var(--ink,#16181A);border-radius:0 0 3px 3px;padding-bottom:0.5rem;box-shadow:0 6px 20px rgba(0,0,0,0.18)}
+.nav-drop:hover .nav-drop-menu{display:flex}
+.nav-drop-menu a{padding:0.5rem 1rem;white-space:nowrap;text-transform:none;font-size:0.78rem;color:var(--ink,#16181A)}
+.nav-drop-menu a:hover{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+nav .nav-links.open .nav-drop-menu{position:static;display:flex;margin:0.3rem 0 0.3rem 0.8rem;border:none;box-shadow:none;padding:0;min-width:0;background:none}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+</style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "ModbusManager",
+      "item": "https://modbusmanager.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Data Logger Software",
+      "item": "https://modbusmanager.com/modbus-data-logger-software.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Log Modbus Data to CSV",
+      "item": "https://modbusmanager.com/modbus-to-csv-logging.html"
+    }
+  ]
+}
+</script>
+</head>
+
+
+<body>
+
+<div class="hazard"></div>
+
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label">Features ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-scanner.html" style="color:#9A6700;font-weight:600">&#128269; Modbus Scanner</a>
+        <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
+        <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
+        <a href="/modbus-rtu-rs485-data-logger.html" style="padding-left:1.5rem">RTU / RS-485 Logging</a>
+        <a href="/modbus-logging-interval-deadband.html" style="padding-left:1.5rem">Interval &amp; Deadband</a>
+        <a href="/modbus-to-csv-logging.html" style="padding-left:1.5rem">CSV Export</a>
+        <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
+        <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
+      </div>
+    </li>
+    <li class="nav-drop">
+      <span class="nav-drop-label">Guides ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200</a>
+        <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+        <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+        <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+        <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+        <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+        <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+        <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+        <a href="/powerflex-525-modbus.html">PowerFlex 525</a>
+        <a href="/durapulse-gs20-modbus.html">DURApulse GS20</a>
+        <a href="/yaskawa-v1000-modbus.html">Yaskawa V1000</a>
+        <a href="/wattnode-modbus.html">WattNode</a>
+        <a href="/manual.html">Documentation</a>
+      </div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.1/Modbus.Manager.Pro.Setup.1.8.1.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-CSV-NavText', 'product': 'pro', 'value': 1})">Pro trial &#8595;</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.1/Modbus.Manager.Pro.Setup.1.8.1.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-CSV-Nav', 'product': 'pro', 'value': 1})">Download Pro trial</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow">// ModbusManager Pro &mdash; CSV Export</div>
+  <h1>Log Modbus Data <span class="accent">to CSV</span><br>and Open It in Excel</h1>
+  <p class="hero-desc">Getting values out of a device is the easy half. The half that wastes an afternoon is a CSV that Excel opens as one column, or a decimal comma that turns 230.4&nbsp;V into two cells. This page covers the export format, the locale traps, and how to lay the file out so a pivot table works on the first try.</p>
+  <div class="hero-ctas">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.1/Modbus.Manager.Pro.Setup.1.8.1.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-CSV-Hero', 'product': 'pro', 'value': 1})">Download Pro trial &mdash; free 14 days</a>
+    <a href="/modbus-data-logger-software.html" class="btn-ghost">All logging features</a>
+  </div>
+  <p class="hero-note">Modbus RTU, ASCII and TCP &middot; Windows 10/11 &middot; One-time license</p>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- WHY CSV -->
+<section class="section">
+  <div class="sec-label">// why csv is still the answer</div>
+  <h2 class="sec-title">The format everyone downstream can already read</h2>
+  <p class="sec-sub">A commissioning report, an energy audit and a warranty claim have one thing in common: the person receiving it opens a spreadsheet, not your historian.</p>
+
+  <div style="max-width:820px;margin:1.6rem auto 0;color:var(--body);line-height:1.8">
+    <p>ModbusManager Pro records values to a local database, and any series over any time range can be written out as CSV. That file is the handover artefact &mdash; the customer keeps it, the auditor reads it, and nobody needs a licence or a login to open it in five years.</p>
+    <p>The rest of this page is about the details that decide whether that file is usable or annoying.</p>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- LOCALE -->
+<section class="section" id="locale">
+  <div class="sec-label">// the locale trap</div>
+  <h2 class="sec-title">Why Excel opens your CSV as one column</h2>
+  <p class="sec-sub">This is the single most common complaint about Modbus CSV export, and it is not the exporter&rsquo;s fault. It is a mismatch between the file and the machine reading it.</p>
+
+  <div style="max-width:860px;margin:1.6rem auto 0;color:var(--body);line-height:1.8">
+    <p>Excel does not read a separator from the file. On Windows it uses the <strong>list separator</strong> from your regional settings. In the US and UK that is a comma; across most of continental Europe it is a semicolon, because the comma is already the decimal separator.</p>
+    <p>So the same file behaves differently on two desks:</p>
+  </div>
+
+  <div style="max-width:900px;margin:1.6rem auto 0;overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:0.88rem">
+      <thead>
+        <tr style="border-bottom:2px solid var(--steel)">
+          <th style="text-align:left;padding:0.7rem 0.6rem;font-family:'Saira Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink)">File contains</th>
+          <th style="text-align:left;padding:0.7rem 0.6rem;font-family:'Saira Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink)">Excel with comma locale</th>
+          <th style="text-align:left;padding:0.7rem 0.6rem;font-family:'Saira Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink)">Excel with semicolon locale</th>
+        </tr>
+      </thead>
+      <tbody style="color:var(--body)">
+        <tr style="border-bottom:1px solid var(--steel)">
+          <td style="padding:0.7rem 0.6rem;font-family:'IBM Plex Mono',monospace;font-size:0.82rem">time,volts<br>10:00:01,230.4</td>
+          <td style="padding:0.7rem 0.6rem;line-height:1.6">Correct: two columns.</td>
+          <td style="padding:0.7rem 0.6rem;line-height:1.6">One column &mdash; nothing is split.</td>
+        </tr>
+        <tr>
+          <td style="padding:0.7rem 0.6rem;font-family:'IBM Plex Mono',monospace;font-size:0.82rem">time;volts<br>10:00:01;230,4</td>
+          <td style="padding:0.7rem 0.6rem;line-height:1.6">One column.</td>
+          <td style="padding:0.7rem 0.6rem;line-height:1.6">Correct: two columns, 230,4 is a number.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="max-width:860px;margin:2rem auto 0;background:var(--plate);border-left:3px solid var(--safety);padding:1.2rem 1.4rem">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--amber-ink);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.6rem">The fix that always works</div>
+    <p style="margin:0 0 0.8rem;color:var(--body);line-height:1.8">Do not double-click the file. In Excel use <strong>Data &rarr; From Text/CSV</strong>, which asks for the delimiter and the decimal separator and shows a preview before importing. It takes ten seconds and removes the guesswork on any machine.</p>
+    <p style="margin:0;color:var(--body);line-height:1.8">If a file has to be double-clickable on a specific customer&rsquo;s PC, match that PC: comma-separated with a dot decimal for an English locale, semicolon-separated with a comma decimal for most of Europe.</p>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- EXCEL DAMAGE -->
+<section class="section" id="excel">
+  <div class="sec-label">// what excel changes without asking</div>
+  <h2 class="sec-title">Values that arrive intact and get mangled on import</h2>
+  <p class="sec-sub">Excel guesses a type for every cell. On industrial data those guesses are sometimes wrong in ways you only notice much later.</p>
+
+  <div style="max-width:900px;margin:1.6rem auto 0;overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:0.88rem">
+      <thead>
+        <tr style="border-bottom:2px solid var(--steel)">
+          <th style="text-align:left;padding:0.7rem 0.6rem;font-family:'Saira Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink)">In the file</th>
+          <th style="text-align:left;padding:0.7rem 0.6rem;font-family:'Saira Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink)">What Excel may show</th>
+          <th style="text-align:left;padding:0.7rem 0.6rem;font-family:'Saira Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink)">Avoid it by</th>
+        </tr>
+      </thead>
+      <tbody style="color:var(--body)">
+        <tr style="border-bottom:1px solid var(--steel)">
+          <td style="padding:0.7rem 0.6rem;font-family:'IBM Plex Mono',monospace;font-size:0.82rem">0012</td>
+          <td style="padding:0.7rem 0.6rem;line-height:1.6">12 &mdash; leading zeros gone, so a padded unit ID or serial stops matching.</td>
+          <td style="padding:0.7rem 0.6rem;line-height:1.6">Import that column as Text in the From Text/CSV dialog.</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--steel)">
+          <td style="padding:0.7rem 0.6rem;font-family:'IBM Plex Mono',monospace;font-size:0.82rem">4294967295</td>
+          <td style="padding:0.7rem 0.6rem;line-height:1.6">4.29E+09 &mdash; still correct underneath, but unreadable in a report screenshot.</td>
+          <td style="padding:0.7rem 0.6rem;line-height:1.6">Widen the column and set a number format with no scientific notation.</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--steel)">
+          <td style="padding:0.7rem 0.6rem;font-family:'IBM Plex Mono',monospace;font-size:0.82rem">1-2</td>
+          <td style="padding:0.7rem 0.6rem;line-height:1.6">2&nbsp;Jan &mdash; a register range or a tag name read as a date.</td>
+          <td style="padding:0.7rem 0.6rem;line-height:1.6">Import as Text, or avoid bare number-dash-number in tag names.</td>
+        </tr>
+        <tr>
+          <td style="padding:0.7rem 0.6rem;font-family:'IBM Plex Mono',monospace;font-size:0.82rem">Non-ASCII names</td>
+          <td style="padding:0.7rem 0.6rem;line-height:1.6">Mojibake in headers if the file is read as ANSI rather than UTF-8.</td>
+          <td style="padding:0.7rem 0.6rem;line-height:1.6">Use the import dialog and set the encoding to UTF-8 explicitly.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- LAYOUT -->
+<section class="section" id="layout">
+  <div class="sec-label">// file layout</div>
+  <h2 class="sec-title">Wide or long: decide before you export</h2>
+  <p class="sec-sub">The same data can leave as one column per signal or one row per reading. Which one you want depends entirely on what happens to the file next.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.6rem;max-width:1000px;margin:1.6rem auto 0">
+    <div style="background:var(--plate);border:1px solid var(--steel);padding:1.3rem">
+      <div style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:1.1rem;color:var(--ink);letter-spacing:0.03em;text-transform:uppercase;margin-bottom:0.6rem">Wide &mdash; one column per signal</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.76rem;color:var(--body);background:var(--ink);color:#E6E8E3;padding:0.8rem;margin-bottom:0.8rem;overflow-x:auto">timestamp;L1_V;L2_V;kW<br>10:00:00;230,4;229,8;12,7<br>10:00:05;230,1;229,9;12,9</div>
+      <p style="margin:0;color:var(--body);font-size:0.9rem;line-height:1.7">Best for charting and for handing to someone who will just look at it. Every row is one moment in time, so a line chart is two clicks. Falls apart when signals have different intervals &mdash; you get gaps.</p>
+    </div>
+    <div style="background:var(--plate);border:1px solid var(--steel);padding:1.3rem">
+      <div style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:1.1rem;color:var(--ink);letter-spacing:0.03em;text-transform:uppercase;margin-bottom:0.6rem">Long &mdash; one row per reading</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.76rem;background:var(--ink);color:#E6E8E3;padding:0.8rem;margin-bottom:0.8rem;overflow-x:auto">timestamp;tag;value<br>10:00:00;L1_V;230,4<br>10:00:00;kW;12,7<br>10:00:03;L1_V;230,2</div>
+      <p style="margin:0;color:var(--body);font-size:0.9rem;line-height:1.7">Best for pivot tables, databases and mixed intervals. Nothing needs to line up, and adding a signal does not change the column layout. Harder to eyeball without pivoting first.</p>
+    </div>
+  </div>
+
+  <div style="max-width:860px;margin:2rem auto 0;color:var(--body);line-height:1.8">
+    <p>A practical rule: <strong>if the file is going to a person, export wide. If it is going into another system, export long.</strong> Deadband makes this decision sharper &mdash; once values are only written on change, signals no longer share timestamps, and the wide layout starts filling with blanks.</p>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- STEPS -->
+<section class="section" id="steps">
+  <div class="sec-label">// getting started</div>
+  <h2 class="sec-title">From device to spreadsheet</h2>
+
+  <div style="max-width:820px;margin:1.6rem auto 0;color:var(--body);line-height:1.8">
+    <ol style="line-height:2;padding-left:1.4rem">
+      <li><strong>Poll the registers you actually need.</strong> Confirm the values are scaled and decoded correctly on screen first. A CSV of wrong numbers is worse than no CSV, because it looks authoritative.</li>
+      <li><strong>Log to the Historian with a sensible interval.</strong> See <a href="/modbus-logging-interval-deadband.html" style="color:var(--amber-ink)">logging interval and deadband</a> for how to pick one that does not fill the disk.</li>
+      <li><strong>Pick a time range and export.</strong> Choose the window you want rather than dumping everything &mdash; a targeted export is what a report needs.</li>
+      <li><strong>Open with Data &rarr; From Text/CSV.</strong> Set delimiter, decimal separator and encoding. Import ID-like columns as Text.</li>
+      <li><strong>Check two rows against the device.</strong> Compare the first and last row with a live reading. This catches scaling and byte-order mistakes before the file leaves your hands.</li>
+    </ol>
+  </div>
+
+  <div style="max-width:820px;margin:2rem auto 0;background:var(--plate);border:1px solid var(--steel);padding:1.3rem 1.4rem">
+    <p style="margin:0;color:var(--body);line-height:1.8">If the devices sit on a shared serial line, the interval you can achieve is limited by the line rather than the software &mdash; see <a href="/modbus-rtu-rs485-data-logger.html" style="color:var(--amber-ink)">Modbus RTU data logger over RS-485</a>. For the logging features themselves, timestamps and database location, see <a href="/modbus-data-logger-software.html" style="color:var(--amber-ink)">Modbus data logger software</a>.</p>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="sec-label">// frequently asked questions</div>
+  <h2 class="sec-title">Modbus CSV export &mdash; FAQ</h2>
+  <div class="faq-list">
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Why does Excel open my Modbus CSV as a single column?<span class="icon">+</span></div><div class="faq-a">Excel does not read the delimiter from the file. On Windows it uses the list separator from your regional settings &mdash; a comma in the US and UK, a semicolon in most of continental Europe where the comma is the decimal separator. A comma-separated file therefore stays in one column on a European machine. Use <strong>Data &rarr; From Text/CSV</strong> instead of double-clicking: it asks for the delimiter and decimal separator and previews the result.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I export only part of the logged history?<span class="icon">+</span></div><div class="faq-a">Yes. Pick the series and the time range you want and export that. For a commissioning report a targeted window is usually more useful than the whole database, and the file stays small enough to email.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Should I export one column per signal or one row per reading?<span class="icon">+</span></div><div class="faq-a">One column per signal (wide) is easier for a person to read and to chart. One row per reading (long) is better for pivot tables, for loading into another system, and when signals are logged at different intervals or with a deadband &mdash; in those cases the wide layout fills with blanks because the timestamps no longer line up.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Why did leading zeros disappear from my unit IDs?<span class="icon">+</span></div><div class="faq-a">Excel treated the column as a number, so 0012 became 12. The value in the file is intact. In the From Text/CSV dialog set that column&rsquo;s type to Text before importing, and the padding is preserved.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does exporting require an internet connection or an account?<span class="icon">+</span></div><div class="faq-a">No. The history is stored in a local database on your own PC and the export writes a file to your disk. There is no cloud service, no account and no server component &mdash; which is also why the file remains readable long after any licence question is settled.</div></div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- CTA -->
+<div class="section" style="text-align:center">
+  <div class="sec-label" style="justify-content:center">// try it on your own devices</div>
+  <h2 class="sec-title">Log and export your Modbus data free for 14 days</h2>
+  <p style="max-width:640px;margin:0 auto 1.6rem;color:var(--muted);line-height:1.7">Full Pro edition, no credit card. Poll a device, log it, export the range and open the file &mdash; the whole round trip in a few minutes.</p>
+  <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.1/Modbus.Manager.Pro.Setup.1.8.1.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-CSV-CTA', 'product': 'pro', 'value': 1})">Download Pro trial &mdash; free 14 days</a>
+  <p style="margin-top:1rem;font-size:0.8rem;color:var(--steel)">Windows 10/11 &middot; 14-day trial &middot; Pro from $119 one-time</p>
+</div>
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">ModbusManager</div>
+  <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
+    <a href="/">Home</a>
+    <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
+    <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
+    <a href="/modbus-rtu-rs485-data-logger.html">RTU Logging</a>
+    <a href="/modbus-to-csv-logging.html">CSV Export</a>
+    <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
+        <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
+    <a href="/huawei-smartlogger-modbus.html">Guides</a>
+    <a href="/manual.html">Documentation</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/license-terms.html">License terms</a>
+    <a href="mailto:support@modbusmanager.com">Support</a>
+  </div>
+  <div>support@modbusmanager.com</div>
+</footer>
+
+<script>
+function toggleFaq(el) {
+  var item = el.parentElement;
+  item.classList.toggle('open');
+}
+</script>
+
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+<script src="/email-capture.js" defer></script>
+</body>
+</html>
