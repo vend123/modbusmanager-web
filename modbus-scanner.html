@@ -262,7 +262,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <li><a href="/#support">Support</a></li>
   </ul>
   <div style="display:flex;gap:12px;align-items:center">
-    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.2/Modbus.Manager.Pro.Setup.1.8.2.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-Scanner-NavText', 'product': 'pro', 'value': 1})" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em">Pro trial &darr;</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.3/Modbus.Manager.Pro.Setup.1.8.3.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-Scanner-NavText', 'product': 'pro', 'value': 1})" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em">Pro trial &darr;</a>
     <a href="/ModbusManager-Siemens-S7-1200-demo.zip" download class="nav-cta">Free demo &darr;</a>
   </div>
 </nav>
@@ -273,7 +273,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <h1>Modbus scanner:<br><span class="accent">find what won't answer</span></h1>
   <p class="hero-desc">A device on the bus and no documentation, or documentation that doesn't match? ModbusManager finds it. Scan slave IDs, sweep address ranges, and auto-detect baud rate and parity when the settings are unknown &mdash; for RTU and TCP. Then read the registers in the same tool, decoded in every word order at once.</p>
   <div class="hero-ctas">
-    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.2/Modbus.Manager.Pro.Setup.1.8.2.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-Scanner-Hero', 'product': 'pro', 'value': 1})">Download free trial</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.3/Modbus.Manager.Pro.Setup.1.8.3.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-Scanner-Hero', 'product': 'pro', 'value': 1})">Download free trial</a>
     <a href="/#pricing" class="btn-ghost">See pricing</a>
   </div>
   <p class="hero-note">Windows 10/11 &middot; RTU, ASCII &amp; TCP &middot; one-time license &middot; 14-day trial</p>
@@ -299,10 +299,18 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <div style="border-left:3px solid var(--safety);padding:4px 0 4px 18px;margin-bottom:26px">
       <h3 style="margin:0 0 6px;font-size:1.15rem;color:var(--ink)">&#128269; Slave Scan &mdash; which addresses answer</h3>
       <p style="margin:0;color:var(--body);line-height:1.65">You know the serial settings but not which slave IDs are live. Slave Scan walks the ID range (1&ndash;247) and reports every device that responds &mdash; even ones that only return an exception, which still proves they're there.</p>
+      <figure style="margin:1.1rem 0 0;max-width:820px;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
+        <img src="scan-01-slavescan.png" alt="Slave Scan tab in ModbusManager Pro finding a responding device on slave ID 50 within a scanned ID range" loading="lazy" style="display:block;width:100%;height:auto" onerror="this.closest('figure').style.display='none'">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);padding:0.6rem 0.9rem;border-top:1px solid var(--steel)">Scanning a slave ID range — one device found and read</figcaption>
+      </figure>
     </div>
     <div style="border-left:3px solid var(--safety);padding:4px 0 4px 18px;margin-bottom:26px">
       <h3 style="margin:0 0 6px;font-size:1.15rem;color:var(--ink)">&#128270; Address Scan &mdash; map an unknown register space</h3>
       <p style="margin:0;color:var(--body);line-height:1.65">The device answers, but you don't have its register map. Address Scan sweeps a range of registers and shows which hold data, so you can rebuild the map from the device itself when the manufacturer's PDF is lost or wrong.</p>
+      <figure style="margin:1.1rem 0 0;max-width:820px;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
+        <img src="scan-02-addrscan.png" alt="Address Scan tab in ModbusManager Pro showing decimal, hex and binary values for a swept range of holding registers" loading="lazy" style="display:block;width:100%;height:auto" onerror="this.closest('figure').style.display='none'">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);padding:0.6rem 0.9rem;border-top:1px solid var(--steel)">A completed address sweep — every register decoded three ways</figcaption>
+      </figure>
     </div>
     <div style="border-left:3px solid var(--safety);padding:4px 0 4px 18px">
       <h3 style="margin:0 0 6px;font-size:1.15rem;color:var(--ink)">&#9889; Auto-detect &mdash; find the serial settings</h3>
@@ -387,7 +395,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <h2 style="font-size:1.6rem;color:var(--ink);margin-bottom:10px">Find your device now</h2>
   <p class="sec-sub" style="margin:0 auto 22px;max-width:520px">Download the trial, plug in your USB-RS485 adapter, and hit Auto-detect. If it answers on the bus, ModbusManager will find it.</p>
   <div class="hero-ctas" style="justify-content:center">
-    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.2/Modbus.Manager.Pro.Setup.1.8.2.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-Scanner-CTA', 'product': 'pro', 'value': 1})">Download free trial</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.3/Modbus.Manager.Pro.Setup.1.8.3.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-Scanner-CTA', 'product': 'pro', 'value': 1})">Download free trial</a>
     <a href="/#pricing" class="btn-ghost">See pricing</a>
   </div>
 </section>

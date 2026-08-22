@@ -53,7 +53,7 @@
     "applicationCategory": "DeveloperApplication",
     "offers": {"@type": "Offer", "price": "119", "priceCurrency": "USD"},
     "url": "https://modbusmanager.com/#pro",
-    "downloadUrl": "https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.2/Modbus.Manager.Pro.Setup.1.8.2.exe"
+    "downloadUrl": "https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.3/Modbus.Manager.Pro.Setup.1.8.3.exe"
   }
 },
 {
@@ -313,8 +313,8 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <li><a href="/#support">Support</a></li>
   </ul>
   <div style="display:flex;gap:12px;align-items:center">
-    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.2/Modbus.Manager.Pro.Setup.1.8.2.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-HMI-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
-    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.2/Modbus.Manager.Pro.Setup.1.8.2.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-HMI-Nav', 'product': 'pro', 'value': 1})">Download Pro trial</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.3/Modbus.Manager.Pro.Setup.1.8.3.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-HMI-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.3/Modbus.Manager.Pro.Setup.1.8.3.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-HMI-Nav', 'product': 'pro', 'value': 1})">Download Pro trial</a>
   </div>
 </nav>
 
@@ -324,7 +324,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <h1>Modbus <span class="accent">HMI Dashboard</span><br>Software for Windows</h1>
   <p class="hero-desc">Build a live operator dashboard directly from your Modbus registers — without a SCADA server, OPC-UA license, or subscription. Drag-and-drop gauges, lamps, trend charts and run it fullscreen. Works with RTU and TCP devices on Windows 10/11.</p>
   <div class="hero-ctas">
-    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.2/Modbus.Manager.Pro.Setup.1.8.2.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-HMI-Hero', 'product': 'pro', 'value': 1})">Download Pro trial — free 14 days</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.3/Modbus.Manager.Pro.Setup.1.8.3.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-HMI-Hero', 'product': 'pro', 'value': 1})">Download Pro trial — free 14 days</a>
     <a href="/#pricing" class="btn-ghost">Buy Pro — $119</a>
   </div>
   <p class="hero-note">No credit card for trial · Windows 10/11 · One-time license</p>
@@ -445,6 +445,10 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
       <div class="step-text">Switch to Runtime mode to hide all editor controls. The dashboard fills the screen and updates live at your poll interval. Press Escape to return to the editor.</div>
     </div>
   </div>
+  <figure style="margin:2rem auto 0;max-width:960px;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
+    <img src="dash-01-overview.png" alt="ModbusManager Pro dashboard in runtime mode showing a live gauge, running-status lamp, analog bar and speed trend chart bound to real registers" loading="lazy" style="display:block;width:100%;height:auto" onerror="this.closest('figure').style.display='none'">
+    <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);padding:0.6rem 0.9rem;border-top:1px solid var(--steel)">Runtime mode — gauge, lamp, bar and trend, all bound to live registers</figcaption>
+  </figure>
 </section>
 
 <div class="divider-line"></div>
@@ -461,7 +465,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 <div class="divider-line"></div>
 
 <!-- ═══════════════════════════════════════════════════════════ TAG ENGINE -->
-<section class="section">
+<section class="section" id="tag-engine">
   <div class="sec-label">// tag engine &amp; structured text</div>
   <h2 class="sec-title">Computed values with the tag engine</h2>
   <div class="tag-block">
@@ -484,6 +488,10 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
       <div style="font-size:0.82rem;color:var(--muted);margin-top:0.7rem;font-family:'IBM Plex Mono',monospace">Dashboard gauge binds to <code style="color:var(--amber-ink)">active_power_kW</code></div>
     </div>
   </div>
+  <figure style="margin:2rem auto 0;max-width:960px;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
+    <img src="dash-02-tags.png" alt="Tags tab in ModbusManager Pro showing a register-linked tag and an internal tag driven by a Structured Text script" loading="lazy" style="display:block;width:100%;height:auto" onerror="this.closest('figure').style.display='none'">
+    <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);padding:0.6rem 0.9rem;border-top:1px solid var(--steel)">The tag engine — a register tag feeding a Structured Text condition</figcaption>
+  </figure>
 </section>
 
 <div class="divider-line"></div>
@@ -583,7 +591,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <h2>Try the HMI Dashboard free for 14 days</h2>
   <p>Download ModbusManager Pro and build your first Modbus dashboard today. No credit card, no cloud, no subscription.</p>
   <div class="ctas">
-    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.2/Modbus.Manager.Pro.Setup.1.8.2.exe" class="btn-cta-yellow" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-HMI-CTA', 'product': 'pro', 'value': 1})">Download Pro trial</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.3/Modbus.Manager.Pro.Setup.1.8.3.exe" class="btn-cta-yellow" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-HMI-CTA', 'product': 'pro', 'value': 1})">Download Pro trial</a>
     <a href="/#pricing" class="btn-cta-outline">See pricing</a>
   </div>
   <p style="margin-top:1rem;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--steel)">Windows 10/11 · 14-day trial · Pro from $119 one-time</p>
