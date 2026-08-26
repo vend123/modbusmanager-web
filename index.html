@@ -225,6 +225,13 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
       midError.textContent = 'Machine ID is required.';
       midError.style.display = 'block';
       valid = false;
+    } else if (machineId.toLowerCase() === 'a1b2c3d4e5f6a1b2') {
+      // That's the example value shown in the "where to find it" preview
+      // below the field, not a real Machine ID — a customer copying it
+      // instead of their own has already caused one failed activation.
+      midError.textContent = "That's the example ID from the picture below, not your real one — open Modbus Manager, click License, and copy the Machine ID shown there.";
+      midError.style.display = 'block';
+      valid = false;
     } else if (!/^[a-zA-Z0-9]{16}$/.test(machineId)) {
       midError.textContent = 'Machine ID must be exactly 16 letters or digits.';
       midError.style.display = 'block';
@@ -811,6 +818,7 @@ document.addEventListener('keydown', function(e){
           <span style="color:#F2A900"> Machine ID:</span>
           <span style="color:#C9CCC5"> a1b2c3d4e5f6a1b2</span><span class="buy-cursor" style="color:#F2A900">|</span>
         </div>
+        <div style="font-size:.68rem;color:#8A8E88;margin-top:3px;font-style:italic">That's just a picture of the window, not a real code — yours will look different.</div>
       </div>
     </div>
 
