@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.modbusmanager.com/sitemap.xml
+Sitemap: https://modbusmanager.com/sitemap.xml
