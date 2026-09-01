@@ -396,6 +396,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 <section id="scanning" class="doc-section">
 <h2>Scanning tools</h2>
 <p><b>Slave Scan</b> probes a range of slave / unit IDs and reports which ones respond &mdash; useful when a device is on the bus but its address is unknown. <b>Address Scan</b> sweeps a range of register addresses on a known slave to find which return data, helping you map an undocumented device.</p>
+<div class="callout note"><div class="c-label">Video</div><p>Watch <a class="inline-link" href="https://youtu.be/7PQM_slccgM" target="_blank" rel="noopener">Slave Scan &amp; Address Scan explained</a> for a walkthrough.</p></div>
 </section>
 <section id="slave" class="doc-section">
 <h2>Slave simulator</h2>
@@ -433,6 +434,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 <section id="licensing" class="doc-section">
 <h2>Licensing</h2>
 <ul class="body-list"><li><b>Trial:</b> 14 days with the full feature set, starting at first launch.</li><li><b>Machine ID:</b> a unique identifier for your computer, shown in the license dialog.</li><li><b>Activation:</b> enter the key issued for your Machine ID to unlock permanently. Keys are machine-bound, so a new computer needs a new key.</li><li><b>Reinstalling:</b> the trial start is recorded outside the application folder, so reinstalling does not reset it.</li></ul>
+<div class="callout note"><div class="c-label">Video</div><p>Watch <a class="inline-link" href="https://youtu.be/OG_EjQLwi1I" target="_blank" rel="noopener">How to activate your license</a> for a step-by-step walkthrough.</p></div>
 </section>
 <section id="languages" class="doc-section">
 <h2>Languages</h2>
@@ -441,6 +443,8 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 <section id="troubleshooting" class="doc-section">
 <h2>Troubleshooting</h2>
 <table class="doc-table"><thead><tr><th style='width:220px'>Symptom</th><th style='width:None'>Check</th></tr></thead><tbody><tr><td>No response from a TCP device</td><td>Confirm IP and port (502), network reachability, and the slave/unit ID.</td></tr><tr><td>Serial (RTU) connection fails</td><td>Verify COM port, baud rate, parity, data and stop bits; check adapter drivers and RS-485 A/B polarity.</td></tr><tr><td>Values look wrong or scaled oddly</td><td>Try the word-swap and byte-order toggles, the 32-bit float option, and confirm address base (0 vs 1).</td></tr><tr><td>A dashboard widget shows nothing</td><td>Open its properties / Edit channels and confirm the source, slave ID and address &mdash; or that the tag exists and updates.</td></tr><tr><td>Trial expired</td><td>Activate a license key for your Machine ID from the license dialog.</td></tr></tbody></table>
+<p>Two built-in tools can save you a support email: <b>Auto-detect</b> tries baud rates, parity settings and slave IDs until a device answers, then applies the working settings with one click. <b>Diagnose</b> reads the connection's recent error history and tells you whether it's a timeout, a protocol-level mismatch, or a bad port &mdash; instead of a generic error message.</p>
+<div class="callout note"><div class="c-label">Video</div><p>Watch <a class="inline-link" href="https://youtu.be/ra5-DnKZBgY" target="_blank" rel="noopener">Auto-Detect &amp; Connection Diagnostics explained</a> for a walkthrough.</p></div>
 </section>
 <section id="faq" class="doc-section">
 <h2>FAQ</h2>
