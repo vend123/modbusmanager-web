@@ -190,6 +190,20 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   gtag('config', 'G-42Q8HEKC0X');
 </script>
 <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": "Huawei SmartLogger Modbus: 24 inverters behind one device ID",
+  "description": "How a Huawei SmartLogger remaps 24 SUN2000 inverters into one sequential Modbus address space on logic device ID 0: the address formula 51000 + 25 x (N-1), reading a whole inverter in one FC03 request, the 32-bit pair that makes active power look plausible and wrong, status 0xB000, and the plant-level registers.",
+  "thumbnailUrl": "https://modbusmanager.com/smartlogger-video-thumb.jpg",
+  "uploadDate": "2026-09-14",
+  "duration": "PT4M48S",
+  "embedUrl": "https://www.youtube-nocookie.com/embed/ki6C6pywbcc",
+  "contentUrl": "https://www.youtube.com/watch?v=ki6C6pywbcc",
+  "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
+}
+</script>
+<script type="application/ld+json">
 {"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/#guides"},{"@type": "ListItem","position": 3,"name": "Huawei SmartLogger Guide","item": "https://modbusmanager.com/huawei-smartlogger-modbus.html"}]}
 </script>
 </head>
@@ -250,6 +264,40 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <h1>Huawei SmartLogger Modbus RTU Setup Guide</h1>
 
   <p class="lead">The Huawei SmartLogger uses a <strong>Modbus Remapped</strong> register scheme where each connected SUN2000 inverter is accessible at a calculated starting address — not at the inverter's own Modbus ID. This guide walks through the register layout, address formula, scaling rules, and how to poll a full solar plant using ModbusManager.</p>
+
+
+  <figure style="margin:1.8rem 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink)">
+    <div id="slVideo" style="position:relative;cursor:pointer;line-height:0" onclick="slPlayVideo()"
+         role="button" tabindex="0" aria-label="Play the Huawei SmartLogger Modbus walkthrough"
+         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();slPlayVideo();}">
+      <img src="/smartlogger-video-thumb.jpg" width="1280" height="800" loading="lazy" decoding="async"
+           alt="ModbusManager Pro showing a Huawei SmartLogger plant overview: total active power, today's yield and a status lamp for each of 24 inverters, one of them red"
+           style="width:100%;height:auto;display:block">
+      <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(22,24,26,.35)">
+        <span style="display:flex;align-items:center;justify-content:center;width:78px;height:78px;border-radius:50%;background:var(--safety);color:var(--ink);font-size:30px;padding-left:6px">&#9654;</span>
+      </span>
+      <span style="position:absolute;right:10px;bottom:10px;background:rgba(22,24,26,.85);color:#E6E8E3;font-family:'IBM Plex Mono',monospace;font-size:.72rem;padding:2px 7px;border-radius:2px">4:48</span>
+    </div>
+    <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">
+      The address formula, the 32-bit trap, status 0xB000 and the ready-made 24-inverter workspace &mdash; against a simulated SmartLogger.
+    </figcaption>
+  </figure>
+  <script>
+  function slPlayVideo() {
+    var box = document.getElementById('slVideo');
+    if (!box || box.dataset.loaded) return;
+    box.dataset.loaded = '1';
+    // nocookie, and only now — before this click the page has asked YouTube
+    // for nothing at all.
+    box.innerHTML = '<div style="position:relative;padding-top:62.5%">' +
+      '<iframe src="https://www.youtube-nocookie.com/embed/ki6C6pywbcc?autoplay=1&rel=0" ' +
+      'title="Huawei SmartLogger Modbus: 24 inverters behind one device ID" ' +
+      'style="position:absolute;inset:0;width:100%;height:100%;border:0" ' +
+      'allow="accelerometer; autoplay; encrypted-media; picture-in-picture" ' +
+      'allowfullscreen></iframe></div>';
+    if (typeof gtag === 'function') gtag('event', 'video_play', { event_category: 'Video', event_label: 'SmartLogger-Guide' });
+  }
+  </script>
 
   <h2>What is Modbus Remapped?</h2>
 
