@@ -34,6 +34,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": "The Modbus register your meter doesn't have: Tags and Structured Text",
+  "description": "A three-phase meter reports volts, amps and power factor but no power. Naming registers as tags, reading a 32-bit energy counter as one value instead of two signed words, and computing kilowatts with an IEC 61131-3 Structured Text loop in ModbusManager Pro.",
+  "thumbnailUrl": "https://modbusmanager.com/tags-video-thumb.jpg",
+  "uploadDate": "2026-09-15",
+  "duration": "PT5M34S",
+  "embedUrl": "https://www.youtube-nocookie.com/embed/igjH7twe3xM",
+  "contentUrl": "https://www.youtube.com/watch?v=igjH7twe3xM",
+  "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
+}
+</script>
+<script type="application/ld+json">
 [
 {
   "@context":"https://schema.org",
@@ -416,6 +430,39 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 <section id="tags" class="doc-section">
 <h2>Tags &amp; Structured Text</h2>
 <p>Tags give your data meaningful names and let you compute derived values &mdash; the bridge between raw registers and a readable dashboard.</p>
+
+<figure style="margin:1.6rem 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink)">
+  <div id="tagVideo" style="position:relative;cursor:pointer;line-height:0" onclick="tagPlayVideo()"
+       role="button" tabindex="0" aria-label="Play the Tags and Structured Text walkthrough"
+       onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tagPlayVideo();}">
+    <img src="/tags-video-thumb.jpg" width="1600" height="1000" loading="lazy" decoding="async"
+         alt="ModbusManager Pro Tags tab: eight tags with live values, a Structured Text script computing kilowatts, and the script log showing the two values it wrote"
+         style="width:100%;height:auto;display:block">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(22,24,26,.35)">
+      <span style="display:flex;align-items:center;justify-content:center;width:78px;height:78px;border-radius:50%;background:var(--safety);color:var(--ink);font-size:30px;padding-left:6px">&#9654;</span>
+    </span>
+    <span style="position:absolute;right:10px;bottom:10px;background:rgba(22,24,26,.85);color:#E6E8E3;font-family:'IBM Plex Mono',monospace;font-size:.72rem;padding:2px 7px;border-radius:2px">5:34</span>
+  </div>
+  <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">
+    Naming registers, the 32-bit energy counter read as one number instead of two, and a Structured Text loop producing kilowatts from a meter that reports none.
+  </figcaption>
+</figure>
+<script>
+function tagPlayVideo() {
+  var box = document.getElementById('tagVideo');
+  if (!box || box.dataset.loaded) return;
+  box.dataset.loaded = '1';
+  // nocookie, and only now &mdash; before this click the page has asked YouTube
+  // for nothing at all.
+  box.innerHTML = '<div style="position:relative;padding-top:62.5%">' +
+    '<iframe src="https://www.youtube-nocookie.com/embed/igjH7twe3xM?autoplay=1&rel=0" ' +
+    'title="Tags and Structured Text: the Modbus register your meter does not have" ' +
+    'style="position:absolute;inset:0;width:100%;height:100%;border:0" ' +
+    'allow="accelerometer; autoplay; encrypted-media; picture-in-picture" ' +
+    'allowfullscreen></iframe></div>';
+  if (typeof gtag === 'function') gtag('event', 'video_play', { event_category: 'Video', event_label: 'Manual-Tags' });
+}
+</script>
 <table class="doc-table"><thead><tr><th style='width:130px'>Type</th><th style='width:None'>Description</th></tr></thead><tbody><tr><td>Register (REG)</td><td>Bound to a real register (slave ID, register type, address). Its value tracks the live device.</td></tr><tr><td>Internal (INT)</td><td>A computed or stored value that lives only inside the tool, typically set from a Structured Text script.</td></tr></tbody></table>
 <p>The Tags tab includes a <b>Structured Text</b> editor (the IEC&nbsp;61131-3 style language used on PLCs). A script can read register tags, apply logic and write results to internal tags. Set a <b>loop interval</b> in milliseconds and start the loop to run it continuously.</p>
 <div class="code-box"><span class="cm">(* Structured Text example *)</span><br><span class="ck">IF</span> MotorSpeed &gt; 100 <span class="ck">THEN</span><br>&nbsp;&nbsp;AlarmActive := <span class="cv">TRUE</span>;<br><span class="ck">ELSIF</span> MotorSpeed &lt; 10 <span class="ck">THEN</span><br>&nbsp;&nbsp;AlarmActive := <span class="cv">FALSE</span>;<br><span class="ck">END_IF</span>;<br><br><span class="cm">(* Write to internal tag *)</span><br>OutputValue := MotorSpeed * 2;</div>
