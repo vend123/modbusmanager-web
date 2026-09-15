@@ -1427,7 +1427,7 @@
           "x": 40,
           "y": 176,
           "value": 0,
-          "text": "Inverter status (lamp lights up when status ≠ 0)",
+          "text": "Inverter status (red = SmartLogger reports the link to it is down, 0xB000)",
           "fontSize": 14,
           "color": "#8892a4",
           "w": 560,
@@ -1443,12 +1443,13 @@
           "slaveId": 0,
           "address": 51009,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 2
+          "openPopup": 2,
+          "cmp": "!="
         },
         {
           "id": 8,
@@ -1460,12 +1461,13 @@
           "slaveId": 0,
           "address": 51034,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 3
+          "openPopup": 3,
+          "cmp": "!="
         },
         {
           "id": 9,
@@ -1477,12 +1479,13 @@
           "slaveId": 0,
           "address": 51059,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 4
+          "openPopup": 4,
+          "cmp": "!="
         },
         {
           "id": 10,
@@ -1494,12 +1497,13 @@
           "slaveId": 0,
           "address": 51084,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 5
+          "openPopup": 5,
+          "cmp": "!="
         },
         {
           "id": 11,
@@ -1511,12 +1515,13 @@
           "slaveId": 0,
           "address": 51109,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 6
+          "openPopup": 6,
+          "cmp": "!="
         },
         {
           "id": 12,
@@ -1528,12 +1533,13 @@
           "slaveId": 0,
           "address": 51134,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 7
+          "openPopup": 7,
+          "cmp": "!="
         },
         {
           "id": 13,
@@ -1545,12 +1551,13 @@
           "slaveId": 0,
           "address": 51159,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 8
+          "openPopup": 8,
+          "cmp": "!="
         },
         {
           "id": 14,
@@ -1562,12 +1569,13 @@
           "slaveId": 0,
           "address": 51184,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 9
+          "openPopup": 9,
+          "cmp": "!="
         },
         {
           "id": 15,
@@ -1579,12 +1587,13 @@
           "slaveId": 0,
           "address": 51209,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 10
+          "openPopup": 10,
+          "cmp": "!="
         },
         {
           "id": 16,
@@ -1596,12 +1605,13 @@
           "slaveId": 0,
           "address": 51234,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 11
+          "openPopup": 11,
+          "cmp": "!="
         },
         {
           "id": 17,
@@ -1613,12 +1623,13 @@
           "slaveId": 0,
           "address": 51259,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 12
+          "openPopup": 12,
+          "cmp": "!="
         },
         {
           "id": 18,
@@ -1630,12 +1641,13 @@
           "slaveId": 0,
           "address": 51284,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 13
+          "openPopup": 13,
+          "cmp": "!="
         },
         {
           "id": 19,
@@ -1647,12 +1659,13 @@
           "slaveId": 0,
           "address": 51309,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 14
+          "openPopup": 14,
+          "cmp": "!="
         },
         {
           "id": 20,
@@ -1664,12 +1677,13 @@
           "slaveId": 0,
           "address": 51334,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 15
+          "openPopup": 15,
+          "cmp": "!="
         },
         {
           "id": 21,
@@ -1681,12 +1695,13 @@
           "slaveId": 0,
           "address": 51359,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 16
+          "openPopup": 16,
+          "cmp": "!="
         },
         {
           "id": 22,
@@ -1698,12 +1713,13 @@
           "slaveId": 0,
           "address": 51384,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 17
+          "openPopup": 17,
+          "cmp": "!="
         },
         {
           "id": 23,
@@ -1715,12 +1731,13 @@
           "slaveId": 0,
           "address": 51409,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 18
+          "openPopup": 18,
+          "cmp": "!="
         },
         {
           "id": 24,
@@ -1732,12 +1749,13 @@
           "slaveId": 0,
           "address": 51434,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 19
+          "openPopup": 19,
+          "cmp": "!="
         },
         {
           "id": 25,
@@ -1749,12 +1767,13 @@
           "slaveId": 0,
           "address": 51459,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 20
+          "openPopup": 20,
+          "cmp": "!="
         },
         {
           "id": 26,
@@ -1766,12 +1785,13 @@
           "slaveId": 0,
           "address": 51484,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 21
+          "openPopup": 21,
+          "cmp": "!="
         },
         {
           "id": 27,
@@ -1783,12 +1803,13 @@
           "slaveId": 0,
           "address": 51509,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 22
+          "openPopup": 22,
+          "cmp": "!="
         },
         {
           "id": 28,
@@ -1800,12 +1821,13 @@
           "slaveId": 0,
           "address": 51534,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 23
+          "openPopup": 23,
+          "cmp": "!="
         },
         {
           "id": 29,
@@ -1817,12 +1839,13 @@
           "slaveId": 0,
           "address": 51559,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 24
+          "openPopup": 24,
+          "cmp": "!="
         },
         {
           "id": 30,
@@ -1834,12 +1857,13 @@
           "slaveId": 0,
           "address": 51584,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#3a4252",
+          "colorOff": "#f85149",
           "w": 80,
           "h": 80,
-          "openPopup": 25
+          "openPopup": 25,
+          "cmp": "!="
         }
       ]
     },
@@ -1875,9 +1899,10 @@
           "slaveId": 0,
           "address": 51009,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 102,
@@ -1990,9 +2015,10 @@
           "slaveId": 0,
           "address": 51034,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 108,
@@ -2105,9 +2131,10 @@
           "slaveId": 0,
           "address": 51059,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 114,
@@ -2220,9 +2247,10 @@
           "slaveId": 0,
           "address": 51084,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 120,
@@ -2335,9 +2363,10 @@
           "slaveId": 0,
           "address": 51109,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 126,
@@ -2450,9 +2479,10 @@
           "slaveId": 0,
           "address": 51134,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 132,
@@ -2565,9 +2595,10 @@
           "slaveId": 0,
           "address": 51159,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 138,
@@ -2680,9 +2711,10 @@
           "slaveId": 0,
           "address": 51184,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 144,
@@ -2795,9 +2827,10 @@
           "slaveId": 0,
           "address": 51209,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 150,
@@ -2910,9 +2943,10 @@
           "slaveId": 0,
           "address": 51234,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 156,
@@ -3025,9 +3059,10 @@
           "slaveId": 0,
           "address": 51259,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 162,
@@ -3140,9 +3175,10 @@
           "slaveId": 0,
           "address": 51284,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 168,
@@ -3255,9 +3291,10 @@
           "slaveId": 0,
           "address": 51309,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 174,
@@ -3370,9 +3407,10 @@
           "slaveId": 0,
           "address": 51334,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 180,
@@ -3485,9 +3523,10 @@
           "slaveId": 0,
           "address": 51359,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 186,
@@ -3600,9 +3639,10 @@
           "slaveId": 0,
           "address": 51384,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 192,
@@ -3715,9 +3755,10 @@
           "slaveId": 0,
           "address": 51409,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 198,
@@ -3830,9 +3871,10 @@
           "slaveId": 0,
           "address": 51434,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 204,
@@ -3945,9 +3987,10 @@
           "slaveId": 0,
           "address": 51459,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 210,
@@ -4060,9 +4103,10 @@
           "slaveId": 0,
           "address": 51484,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 216,
@@ -4175,9 +4219,10 @@
           "slaveId": 0,
           "address": 51509,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 222,
@@ -4290,9 +4335,10 @@
           "slaveId": 0,
           "address": 51534,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 228,
@@ -4405,9 +4451,10 @@
           "slaveId": 0,
           "address": 51559,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 234,
@@ -4520,9 +4567,10 @@
           "slaveId": 0,
           "address": 51584,
           "regType": "holdingRegisters",
-          "threshold": 1,
+          "threshold": 45056,
           "colorOn": "#00d4aa",
-          "colorOff": "#f85149"
+          "colorOff": "#f85149",
+          "cmp": "!="
         },
         {
           "id": 240,
@@ -5301,5 +5349,5 @@
   ],
   "script": "(* Plant aggregate values: combine I32/U32 hi/lo words + apply gain *)\nplant_P_kW := (plant_P_hi * 65536 + plant_P_lo) / 1000;\nplant_Eday_kWh := (plant_Eday_hi * 65536 + plant_Eday_lo) / 10;\nplant_Etot_kWh := (plant_Etot_hi * 65536 + plant_Etot_lo) / 10;\n\n(* Reactive power is signed (I32) *)\nplant_Q_kVar := plant_Q_hi * 65536 + plant_Q_lo;\nIF plant_Q_kVar > 2147483647 THEN\n  plant_Q_kVar := plant_Q_kVar - 4294967296;\nEND_IF;\nplant_Q_kVar := plant_Q_kVar / 1000;\n\n(* Inverter active power: I32 hi/lo → kW *)\ninv01_P_kW := (inv01_P_hi * 65536 + inv01_P_lo) / 1000;\ninv02_P_kW := (inv02_P_hi * 65536 + inv02_P_lo) / 1000;\ninv03_P_kW := (inv03_P_hi * 65536 + inv03_P_lo) / 1000;\ninv04_P_kW := (inv04_P_hi * 65536 + inv04_P_lo) / 1000;\ninv05_P_kW := (inv05_P_hi * 65536 + inv05_P_lo) / 1000;\ninv06_P_kW := (inv06_P_hi * 65536 + inv06_P_lo) / 1000;\ninv07_P_kW := (inv07_P_hi * 65536 + inv07_P_lo) / 1000;\ninv08_P_kW := (inv08_P_hi * 65536 + inv08_P_lo) / 1000;\ninv09_P_kW := (inv09_P_hi * 65536 + inv09_P_lo) / 1000;\ninv10_P_kW := (inv10_P_hi * 65536 + inv10_P_lo) / 1000;\ninv11_P_kW := (inv11_P_hi * 65536 + inv11_P_lo) / 1000;\ninv12_P_kW := (inv12_P_hi * 65536 + inv12_P_lo) / 1000;\ninv13_P_kW := (inv13_P_hi * 65536 + inv13_P_lo) / 1000;\ninv14_P_kW := (inv14_P_hi * 65536 + inv14_P_lo) / 1000;\ninv15_P_kW := (inv15_P_hi * 65536 + inv15_P_lo) / 1000;\ninv16_P_kW := (inv16_P_hi * 65536 + inv16_P_lo) / 1000;\ninv17_P_kW := (inv17_P_hi * 65536 + inv17_P_lo) / 1000;\ninv18_P_kW := (inv18_P_hi * 65536 + inv18_P_lo) / 1000;\ninv19_P_kW := (inv19_P_hi * 65536 + inv19_P_lo) / 1000;\ninv20_P_kW := (inv20_P_hi * 65536 + inv20_P_lo) / 1000;\ninv21_P_kW := (inv21_P_hi * 65536 + inv21_P_lo) / 1000;\ninv22_P_kW := (inv22_P_hi * 65536 + inv22_P_lo) / 1000;\ninv23_P_kW := (inv23_P_hi * 65536 + inv23_P_lo) / 1000;\ninv24_P_kW := (inv24_P_hi * 65536 + inv24_P_lo) / 1000;\n",
   "scriptInterval": 2000,
-  "saved": "2026-06-09T14:03:50.473402+00:00"
+  "saved": "2026-09-13T19:00:49.264713Z"
 }
