@@ -231,6 +231,20 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 <script type="application/ld+json">
 {"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Features","item": "https://modbusmanager.com/#features"},{"@type": "ListItem","position": 3,"name": "Alarm Software","item": "https://modbusmanager.com/modbus-alarm-software.html"}]}
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": "The alarm that cried wolf: hysteresis on a Modbus threshold",
+  "description": "A drive running at its rated speed jitters a few rpm either side of 1500. A threshold at 1500 with no hysteresis trips 23 times in thirty seconds; one setting reduces the same signal to a single alarm. Then the other kind: a bearing temperature crossing a warning limit and escalating to critical, acknowledging, and the alarm history.",
+  "thumbnailUrl": "https://modbusmanager.com/alarms-video-thumb.jpg",
+  "uploadDate": "2026-09-16",
+  "duration": "PT3M59S",
+  "embedUrl": "https://www.youtube-nocookie.com/embed/2kxppR82puk",
+  "contentUrl": "https://www.youtube.com/watch?v=2kxppR82puk",
+  "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
+}
+</script>
 </head>
 <body>
 
@@ -301,6 +315,39 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <h2 class="sec-title">Know the moment something goes wrong</h2>
   <p class="sec-sub">Polling tells you the value now &mdash; but you cannot watch every register all the time. An alarm system watches for you and reacts the instant a limit is crossed.</p>
   <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.7">ModbusManager Pro evaluates the registers and tags you choose on every poll cycle. When a value breaches a threshold, the alarm is raised, shown in colour, optionally sounded, and recorded in history. With warning and critical levels, hysteresis and delay, you get meaningful alerts instead of a flood of noise &mdash; all inside the same application, with no separate SCADA or alarm server.</p>
+
+  <figure style="max-width:900px;margin:2rem auto 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink)">
+    <div id="alVideo" style="position:relative;cursor:pointer;line-height:0" onclick="alPlayVideo()"
+         role="button" tabindex="0" aria-label="Play the Modbus alarms walkthrough"
+         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();alPlayVideo();}">
+      <img src="/alarms-video-thumb.jpg" width="1600" height="1000" loading="lazy" decoding="async"
+           alt="ModbusManager Pro Alarms tab: a bearing temperature alarm active at critical and acknowledged, an overspeed warning below it, and both definitions with their warning and critical limits"
+           style="width:100%;height:auto;display:block">
+      <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(22,24,26,.35)">
+        <span style="display:flex;align-items:center;justify-content:center;width:78px;height:78px;border-radius:50%;background:var(--safety);color:var(--ink);font-size:30px;padding-left:6px">&#9654;</span>
+      </span>
+      <span style="position:absolute;right:10px;bottom:10px;background:rgba(22,24,26,.85);color:#E6E8E3;font-family:'IBM Plex Mono',monospace;font-size:.72rem;padding:2px 7px;border-radius:2px">3:59</span>
+    </div>
+    <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">
+      A threshold with no hysteresis trips 23 times in thirty seconds on a drive that is running perfectly normally &mdash; then one setting, and the same signal raises one alarm.
+    </figcaption>
+  </figure>
+  <script>
+  function alPlayVideo() {
+    var box = document.getElementById('alVideo');
+    if (!box || box.dataset.loaded) return;
+    box.dataset.loaded = '1';
+    // nocookie, and only now — before this click the page has asked YouTube
+    // for nothing at all.
+    box.innerHTML = '<div style="position:relative;padding-top:62.5%">' +
+      '<iframe src="https://www.youtube-nocookie.com/embed/2kxppR82puk?autoplay=1&rel=0" ' +
+      'title="The alarm that cried wolf: hysteresis on a Modbus threshold" ' +
+      'style="position:absolute;inset:0;width:100%;height:100%;border:0" ' +
+      'allow="accelerometer; autoplay; encrypted-media; picture-in-picture" ' +
+      'allowfullscreen></iframe></div>';
+    if (typeof gtag === 'function') gtag('event', 'video_play', { event_category: 'Video', event_label: 'Alarms-Feature' });
+  }
+  </script>
 </section>
 
 <div class="divider-line"></div>
