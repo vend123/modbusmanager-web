@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modbus Structured Text Scripting: Compute the Register You Don't Have | ModbusManager</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<meta name="description" content="Name Modbus registers as tags and compute values your device never reports — kilowatts from volts, amps and power factor — with IEC 61131-3 Structured Text in ModbusManager Pro. Exactly which ST syntax is supported.">
+<meta name="keywords" content="Modbus Structured Text, Modbus scripting, calculate power from Modbus registers, Modbus tags, IEC 61131-3 Structured Text, Modbus calculated value, Modbus formula, compute kW from Modbus, Modbus tag engine">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/modbus-structured-text-scripting.html">
+
+<meta property="og:title" content="The Modbus register your meter doesn't have">
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:description" content="A meter reports volts, amps and power factor but no kilowatts. Name registers as tags and compute the missing number with Structured Text.">
+<meta property="og:url" content="https://modbusmanager.com/modbus-structured-text-scripting.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://modbusmanager.com/og-structured-text.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Modbus register your meter doesn't have">
+<meta name="twitter:description" content="Compute kilowatts from volts, amps and power factor with Structured Text tags. ModbusManager Pro, $119 one-time.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-structured-text.png">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+[
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Modbus Structured Text Scripting: Computing the Register Your Device Doesn't Have",
+  "description": "How to name Modbus registers as tags and compute derived values with IEC 61131-3 Structured Text in ModbusManager Pro, including exactly which ST constructs the interpreter supports and which it does not.",
+  "url": "https://modbusmanager.com/modbus-structured-text-scripting.html",
+  "datePublished": "2026-09-21",
+  "dateModified": "2026-09-21",
+  "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
+  "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
+},
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "How do I calculate power from Modbus registers when the meter doesn't report it?", "acceptedAnswer": {"@type": "Answer", "text": "Name the registers you do have as tags, then write a Structured Text script that computes the value into an internal tag. A three-phase meter that reports line voltage, current and power factor gives you kilowatts as 1.732 * V * I * PF / 1000. The internal tag then behaves like any other tag: it can be shown on a dashboard, logged by the Historian and used in an alarm."}},
+    {"@type": "Question", "name": "Which Structured Text constructs does ModbusManager support?", "acceptedAnswer": {"@type": "Answer", "text": "Comments in (* *), assignment with :=, equality with a single = and inequality with <>, the comparison operators, TRUE and FALSE, AND, OR and NOT, the full IF / THEN / ELSIF / ELSE / END_IF chain, and FOR ... TO ... DO ... END_FOR. WHILE, REPEAT, CASE, MOD and XOR are reserved words but are not translated, so they will not run as Structured Text. The script box also accepts plain JavaScript, which is the practical way to use a while loop or a switch."}},
+    {"@type": "Question", "name": "What is the difference between a register tag and an internal tag?", "acceptedAnswer": {"@type": "Answer", "text": "A register tag (REG) is bound to a real register by slave ID, register type and address, and its value tracks the live device. An internal tag (INT) exists only inside the tool and holds a computed or stored value, normally written by a Structured Text script. Scripts read register tags and write internal tags."}},
+    {"@type": "Question", "name": "Can a script with an endless loop freeze the application?", "acceptedAnswer": {"@type": "Answer", "text": "No. Scripts run in a separate worker thread with a 2000 ms timeout. A loop that never exits is terminated and reported as a timeout, while polling, the dashboard and the rest of the application keep running. This was a real failure mode in an earlier design where the script ran on the main thread and a bad loop hung the whole tool."}},
+    {"@type": "Question", "name": "Why won't ModbusManager let me name a tag AND, TRUE or process?", "acceptedAnswer": {"@type": "Answer", "text": "Tag names are used directly as variable names in the compiled script, so a name that collides with a Structured Text keyword or with a shadowed global breaks compilation — and it breaks every script, not only the one using that tag. Names must be valid identifiers: they cannot contain spaces or hyphens, cannot start with a digit, and cannot be a reserved word."}},
+    {"@type": "Question", "name": "How often does the script run?", "acceptedAnswer": {"@type": "Answer", "text": "You set a loop interval in milliseconds and start the loop. The minimum is 100 ms; anything shorter is clamped. Pick an interval that matches how fast the underlying registers are actually polled — running the script ten times between two polls just recomputes the same inputs."}}
+  ]
+}
+]
+</script>
+<style>
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+.mono{font-family:'IBM Plex Mono',monospace}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+
+/* HAZARD STRIPE */
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+
+/* HERO */
+.hero{padding:4rem 3rem 3.5rem;max-width:1140px;margin:0 auto}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.9rem}
+.hero h1{font-family:'Saira Condensed',sans-serif;font-size:3rem;font-weight:700;line-height:1;color:var(--ink);margin-bottom:1rem;letter-spacing:0.01em;text-transform:uppercase;max-width:720px}
+.hero h1 .accent{color:var(--amber-ink)}
+.hero-desc{font-size:1rem;color:var(--body);line-height:1.7;margin-bottom:1.8rem;max-width:640px}
+.hero-ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn-primary{background:var(--run);color:#fff;padding:0.75rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-primary:hover{background:#186040}
+.btn-ghost{background:transparent;color:var(--ink);border:2px solid var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-ghost:hover{background:var(--ink);color:var(--safety)}
+.hero-note{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--muted);margin-top:0.7rem}
+
+/* SECTION */
+.section{padding:3.5rem 3rem;max-width:1140px;margin:0 auto}
+.sec-label{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem}
+.sec-title{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:0.6rem}
+.sec-sub{font-size:0.95rem;color:var(--body);line-height:1.7;margin-bottom:2rem;max-width:680px}
+.divider-line{border:none;border-top:2px solid var(--ink)}
+
+/* WHAT IS HMI */
+.explainer-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.explainer-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.definition-box{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem}
+.definition-box .def-label{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem}
+.definition-box p{font-size:0.9rem;color:var(--body);line-height:1.7}
+
+/* WIDGET GRID */
+.widget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.widget-card{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem}
+.widget-icon{font-size:1.6rem;margin-bottom:0.7rem}
+.widget-name{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem}
+.widget-desc{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;counter-reset:step}
+.step{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem;position:relative}
+.step::before{counter-increment:step;content:counter(step);font-family:'Saira Condensed',sans-serif;font-size:2.5rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.5rem;right:1rem;line-height:1}
+.step-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--amber-ink);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem}
+.step-title{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.5rem}
+.step-text{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* TAG ENGINE */
+.tag-block{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:start}
+.tag-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.code-box{background:var(--ink);color:#D4D8D0;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;line-height:1.7;padding:1.4rem 1.6rem;border-radius:3px;overflow-x:auto}
+.code-box .cm{color:#5F7A5F}
+.code-box .ck{color:var(--safety)}
+.code-box .cv{color:#8EC0B0}
+
+/* COMPARE TABLE */
+.compare-table{width:100%;border-collapse:collapse;font-size:0.88rem}
+.compare-table th{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.05em;text-transform:uppercase;padding:0.7rem 1rem;border-bottom:2px solid var(--ink);text-align:left;background:var(--enclosure2)}
+.compare-table td{padding:0.65rem 1rem;border-bottom:1px solid var(--steel)}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table .hl{background:rgba(30,122,79,0.06)}
+.yes{color:var(--run);font-weight:600}
+.no{color:var(--bad)}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:0}
+.faq-item{border-top:1px solid var(--steel)}
+.faq-item:last-child{border-bottom:1px solid var(--steel)}
+.faq-q{font-family:'Saira Condensed',sans-serif;font-size:1.05rem;font-weight:600;letter-spacing:0.02em;padding:1.1rem 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq-q:hover{color:var(--amber-ink)}
+.faq-q .icon{font-family:'IBM Plex Mono',monospace;font-size:1.1rem;flex-shrink:0;transition:transform 0.2s}
+.faq-a{font-size:0.9rem;color:var(--body);line-height:1.75;padding:0 0 1.1rem;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .icon{transform:rotate(45deg)}
+
+/* CTA STRIP */
+.cta-strip{background:var(--ink);color:var(--safety);padding:3.5rem 3rem;text-align:center}
+.cta-strip h2{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.6rem}
+.cta-strip p{font-size:0.95rem;color:var(--enclosure);margin-bottom:1.8rem;max-width:540px;margin-left:auto;margin-right:auto}
+.cta-strip .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-cta-yellow{background:var(--safety);color:var(--ink);padding:0.8rem 2rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-cta-yellow:hover{background:#e09800}
+.btn-cta-outline{background:transparent;color:var(--safety);border:2px solid var(--safety);padding:0.7rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+
+/* FOOTER */
+footer{background:var(--ink);color:var(--steel);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:0.75rem}
+.footer-logo{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:0.05em;text-transform:uppercase}
+footer a{color:var(--steel);text-decoration:none}
+footer a:hover{color:#fff}
+
+@media(max-width:768px){
+  nav{padding:0.75rem 1.2rem;flex-wrap:wrap;gap:0.5rem}
+  .nav-links{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  .hero h1{font-size:2.2rem}
+  .section{padding:2.5rem 1.2rem}
+  .explainer-grid,.tag-block{grid-template-columns:1fr}
+  .widget-grid{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .cta-strip{padding:2.5rem 1.2rem}
+  footer{padding:1.5rem 1.2rem;flex-direction:column;align-items:flex-start;gap:0.75rem}
+}
+@media(max-width:520px){
+  .widget-grid,.steps{grid-template-columns:1fr}
+}
+.dl-options{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.8rem}
+@media(max-width:768px){.dl-options{grid-template-columns:1fr}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;max-width:100%}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;background:transparent;border:none;min-width:190px;display:none;flex-direction:column;z-index:200}.nav-drop-menu>a{background:var(--enclosure2,#e8e9e4);border-left:1px solid var(--ink,#16181A);border-right:1px solid var(--ink,#16181A)}.nav-drop-menu>a:first-child{border-top:1px solid var(--ink,#16181A);border-radius:3px 3px 0 0;padding-top:0.5rem}.nav-drop-menu>a:last-child{border-bottom:1px solid var(--ink,#16181A);border-radius:0 0 3px 3px;padding-bottom:0.5rem;box-shadow:0 6px 20px rgba(0,0,0,0.18)}
+.nav-drop:hover .nav-drop-menu{display:flex}
+.nav-drop-menu a{padding:0.5rem 1rem;white-space:nowrap;text-transform:none;font-size:0.78rem;color:var(--ink,#16181A)}
+.nav-drop-menu a:hover{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+nav .nav-links.open .nav-drop-menu{position:static;display:flex;margin:0.3rem 0 0.3rem 0.8rem;border:none;box-shadow:none;padding:0;min-width:0;background:none}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+</style>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Features","item": "https://modbusmanager.com/#features"},{"@type": "ListItem","position": 3,"name": "Tags & Structured Text","item": "https://modbusmanager.com/modbus-structured-text-scripting.html"}]}
+</script>
+</head>
+<body><nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label">Features ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-scanner.html" style="color:#9A6700;font-weight:600">&#128269; Modbus Scanner</a>
+        <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
+        <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
+        <a href="/modbus-rtu-rs485-data-logger.html" style="padding-left:1.5rem">RTU / RS-485 Logging</a>
+        <a href="/modbus-logging-interval-deadband.html" style="padding-left:1.5rem">Interval &amp; Deadband</a>
+        <a href="/modbus-to-csv-logging.html" style="padding-left:1.5rem">CSV Export</a>
+        <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
+        <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
+        <a href="/modbus-structured-text-scripting.html">&#127991; Tags &amp; Structured Text</a>
+      </div>
+    </li>
+    <li class="nav-drop">
+      <span class="nav-drop-label">Guides ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200</a>
+        <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+        <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+        <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+        <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+        <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+        <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+        <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+        <a href="/powerflex-525-modbus.html">PowerFlex 525</a>
+        <a href="/durapulse-gs20-modbus.html">DURApulse GS20</a>
+        <a href="/yaskawa-v1000-modbus.html">Yaskawa V1000</a>
+        <a href="/modbus-vfd-speed-reference.html">VFD Speed Registers</a>
+        <a href="/wattnode-modbus.html">WattNode</a>
+        <a href="/manual.html">Documentation</a>
+      </div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.7/Modbus.Manager.Pro.Setup.1.8.7.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ST-NavText', 'product': 'pro', 'value': 1})" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em">Pro trial &darr;</a>
+    <a href="/ModbusManager-Siemens-S7-1200-demo.zip" download class="nav-cta">Free demo &darr;</a>
+  </div>
+</nav>
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow">// tags &amp; structured text</div>
+  <h1>The Modbus register<br><span class="accent">your meter doesn't have</span></h1>
+  <p class="hero-desc">A three-phase meter will happily give you line voltage, current and power factor. Ask it for kilowatts and there is no register to ask &mdash; the number was never stored, so no amount of polling will find it. ModbusManager Pro lets you name the registers you do have, compute the one you want in IEC&nbsp;61131-3 Structured Text, and then treat the result as if the device had reported it all along.</p>
+  <div class="hero-ctas">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.7/Modbus.Manager.Pro.Setup.1.8.7.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-ST-Hero', 'product': 'pro', 'value': 1})">Download free trial</a>
+    <a href="/#pricing" class="btn-ghost">See pricing</a>
+  </div>
+  <p class="hero-note">Windows 10/11 &middot; Pro edition &middot; one-time license &middot; 14-day trial</p>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- VIDEO -->
+<section class="section">
+  <div class="sec-label">// five minutes, on a real meter</div>
+  <h2 class="sec-title">Watch it happen</h2>
+  <figure style="margin:1.4rem 0 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink);max-width:900px">
+    <div id="tagVideo" style="position:relative;cursor:pointer;line-height:0" onclick="tagPlayVideo()"
+         role="button" tabindex="0" aria-label="Play the Tags and Structured Text walkthrough"
+         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tagPlayVideo();}">
+      <img src="/tags-video-thumb.jpg" width="1600" height="1000" loading="lazy" decoding="async"
+           alt="ModbusManager Pro Tags tab: eight tags with live values, a Structured Text script computing kilowatts, and the script log showing the two values it wrote"
+           style="width:100%;height:auto;display:block">
+      <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(22,24,26,.35)">
+        <span style="display:flex;align-items:center;justify-content:center;width:78px;height:78px;border-radius:50%;background:var(--safety);color:var(--ink);font-size:30px;padding-left:6px">&#9654;</span>
+      </span>
+      <span style="position:absolute;right:10px;bottom:10px;background:rgba(22,24,26,.85);color:#E6E8E3;font-family:'IBM Plex Mono',monospace;font-size:.72rem;padding:2px 7px;border-radius:2px">5:34</span>
+    </div>
+    <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">Naming registers, the 32-bit energy counter read as one number instead of two, and a Structured Text loop producing kilowatts from a meter that reports none.</figcaption>
+  </figure>
+  <p class="hero-note" style="margin-top:0.8rem">Nothing is requested from YouTube until you press play.</p>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- TWO TAG TYPES -->
+<section class="section">
+  <div class="sec-label">// the two kinds of tag</div>
+  <h2 class="sec-title">A name instead of an address</h2>
+  <p class="sec-sub">A register map is a list of numbers, and numbers are a poor thing to build on. Holding register 3928 on slave 12 is correct and unmemorable; <span class="mono">Line_Voltage</span> is neither ambiguous nor forgettable. Tags put a name on the address once, and everything downstream &mdash; scripts, dashboard elements, the Historian, alarms &mdash; refers to the name.</p>
+
+  <div class="explainer-grid" style="margin-top:22px">
+    <div class="definition-box">
+      <div class="def-label">// REG</div>
+      <p><strong>Register tag.</strong> Bound to a real register by slave ID, register type and address. Its value tracks the live device, and it is read-only as far as a script is concerned &mdash; it is whatever the last poll returned.</p>
+    </div>
+    <div class="definition-box">
+      <div class="def-label">// INT</div>
+      <p><strong>Internal tag.</strong> Exists only inside the tool. It holds a computed or stored value and is normally written by a Structured Text script. This is where the kilowatts end up.</p>
+    </div>
+  </div>
+
+  <p class="sec-sub" style="margin-top:22px">The division is the whole model: <strong>scripts read REG tags and write INT tags.</strong> An internal tag is then indistinguishable from a real one everywhere else in the application, which is the point &mdash; you can put computed kilowatts on a <a href="/modbus-hmi-dashboard.html" style="color:var(--amber-ink)">dashboard gauge</a>, <a href="/modbus-data-logger-software.html" style="color:var(--amber-ink)">log them to the Historian</a>, and <a href="/modbus-alarm-software.html" style="color:var(--amber-ink)">raise an alarm</a> on them, exactly as if the meter had a kW register.</p>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- WORKED EXAMPLE -->
+<section class="section">
+  <div class="sec-label">// the example everybody needs first</div>
+  <h2 class="sec-title">Kilowatts from a meter that reports none</h2>
+  <div class="tag-block">
+    <div class="tag-text">
+      <p>Three registers you have, one number you want. Power is not stored on most meters because it is derivable, and the derivation is cheap &mdash; so the meter's designer left it to you.</p>
+      <p>Name the three inputs as REG tags, add <span class="mono">Power_kW</span> and <span class="mono">Overload</span> as INT tags, set a loop interval, and start the loop. From that moment <span class="mono">Power_kW</span> updates like any polled value.</p>
+      <p>Note the two operators that catch out anyone arriving from C or JavaScript: <strong><span class="mono">:=</span> assigns, a single <span class="mono">=</span> compares.</strong> That is correct Structured Text and the interpreter follows it, so <span class="mono">A = B</span> in an IF is a comparison, not a mistake.</p>
+    </div>
+    <div class="code-box"><span class="cm">(* Three-phase power the meter        *)
+(* never reports. V is line-to-line,  *)
+(* PF is 0..1, not a percentage.      *)</span>
+
+Power_kW <span class="ck">:=</span> 1.732 * Line_V * Amps_Avg
+            * PF / 1000.0;
+
+<span class="cm">(* Latch an overload flag with a      *)
+(* deadband so it cannot chatter.     *)</span>
+<span class="ck">IF</span> Power_kW &gt; 75.0 <span class="ck">THEN</span>
+  Overload <span class="ck">:=</span> <span class="cv">TRUE</span>;
+<span class="ck">ELSIF</span> Power_kW &lt; 60.0 <span class="ck">THEN</span>
+  Overload <span class="ck">:=</span> <span class="cv">FALSE</span>;
+<span class="ck">END_IF</span>;</div>
+  </div>
+  <p class="sec-sub" style="margin-top:22px">The <span class="mono">ELSIF</span> at 60 rather than 75 is deliberate: a single threshold on a value that hovers around it produces an alarm that turns on and off several times a minute. Two thresholds with a gap between them is the same deadband idea as in <a href="/modbus-logging-interval-deadband.html" style="color:var(--amber-ink)">logging intervals and deadbands</a>, applied to a boolean.</p>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- WHAT IS SUPPORTED -->
+<section class="section">
+  <div class="sec-label">// what the interpreter actually does</div>
+  <h2 class="sec-title">The supported syntax, in full</h2>
+  <p class="sec-sub">Structured Text is a large language and this is a subset of it. Publishing the exact boundary is more useful than implying the whole standard is there and letting you find the edge with a script that silently fails, so here is the complete list.</p>
+
+  <div style="overflow-x:auto;margin-top:20px">
+  <table class="compare-table" style="min-width:560px">
+    <thead>
+      <tr><th style="width:42%">Construct</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="mono">(* comment *)</td><td class="yes">&#10003; supported</td></tr>
+      <tr><td class="mono">:=</td><td class="yes">&#10003; assignment</td></tr>
+      <tr><td class="mono">=</td><td class="yes">&#10003; equality (not assignment)</td></tr>
+      <tr><td class="mono">&lt;&gt; &nbsp; &lt;= &nbsp; &gt;= &nbsp; &lt; &nbsp; &gt;</td><td class="yes">&#10003; comparisons</td></tr>
+      <tr><td class="mono">TRUE &nbsp; FALSE</td><td class="yes">&#10003; supported</td></tr>
+      <tr><td class="mono">AND &nbsp; OR &nbsp; NOT</td><td class="yes">&#10003; supported</td></tr>
+      <tr class="hl"><td class="mono">IF / THEN / ELSIF / ELSE / END_IF</td><td class="yes">&#10003; the full chain</td></tr>
+      <tr><td class="mono">FOR &hellip; TO &hellip; DO / END_FOR</td><td class="yes">&#10003; supported</td></tr>
+      <tr><td class="mono">WHILE / END_WHILE</td><td class="no">&mdash; not translated</td></tr>
+      <tr><td class="mono">REPEAT / UNTIL / END_REPEAT</td><td class="no">&mdash; not translated</td></tr>
+      <tr><td class="mono">CASE / OF / END_CASE</td><td class="no">&mdash; not translated</td></tr>
+      <tr><td class="mono">MOD &nbsp; XOR</td><td class="no">&mdash; not translated</td></tr>
+      <tr><td class="mono">FOR &hellip; BY &lt;step&gt;</td><td class="no">&mdash; step not translated</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="definition-box" style="margin-top:24px">
+    <div class="def-label">// the escape hatch</div>
+    <p>The script box also accepts <strong>plain JavaScript</strong>, and the two mix freely in one script because Structured Text is translated into JavaScript before it runs. So a lower-case <span class="mono">while</span> loop, a <span class="mono">switch</span>, the <span class="mono">%</span> operator and the whole <span class="mono">Math</span> library all work, even though their ST spellings do not. If you need <span class="mono">MOD</span>, write <span class="mono">%</span>. If you need <span class="mono">CASE</span>, write <span class="mono">switch</span>. That is also why the reserved-word list below includes JavaScript keywords as well as ST ones.</p>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- SAFETY -->
+<section class="section">
+  <div class="sec-label">// what happens when a script misbehaves</div>
+  <h2 class="sec-title">A runaway loop cannot take the tool with it</h2>
+  <div class="explainer-grid">
+    <div class="explainer-text">
+      <p>Every script runs in a <strong>separate worker thread with a 2000 ms timeout</strong>. A loop whose exit condition is wrong gets terminated and reported as a timeout, and polling, the dashboard, the Historian and the user interface carry on untouched.</p>
+      <p>This is worth stating plainly because the obvious implementation does not behave that way. Running user script on the main thread means a bad loop blocks everything: polling stops, the connection to the interface dies, and the only way out is killing the process. Moving the script onto its own thread is what makes an endless loop a message in the log instead of a lost session.</p>
+      <p>Dangerous globals are also hidden from the script, which stops a formula from reaching out into the operating system by accident. Being straight about the limit: that is protection against mistakes, not a security sandbox, and it is not a reason to paste in a script from a stranger.</p>
+    </div>
+    <div class="code-box"><span class="cm"># what you get back</span>
+<span class="ck">timeout</span>  Script timed out after
+         2000 ms - check for a
+         loop that never exits
+
+<span class="cm"># and the line number, because a</span>
+<span class="cm"># stack trace of generated JS is</span>
+<span class="cm"># no use for finding ST errors</span>
+<span class="ck">error</span>    line 7</div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- NAMING -->
+<section class="section">
+  <div class="sec-label">// one rule that is stricter than it looks</div>
+  <h2 class="sec-title">Why some tag names are refused</h2>
+  <p class="sec-sub">A tag name becomes a variable name in the compiled script, so it has to be a valid identifier: <strong>no spaces, no hyphens, not starting with a digit</strong>, and not one of the reserved words. <span class="mono">Line Voltage</span> and <span class="mono">3PH-Amps</span> are rejected; <span class="mono">Line_Voltage</span> and <span class="mono">Amps_3PH</span> are fine.</p>
+  <p class="sec-sub">The reserved list covers Structured Text keywords (<span class="mono">AND</span>, <span class="mono">TRUE</span>, <span class="mono">END_IF</span>&hellip;), JavaScript keywords, and a set of global names the sandbox hides. The reason the rule is enforced at the point of naming rather than at the point of running is worth knowing: <strong>a colliding name does not break the one script that uses it, it breaks every script.</strong> Compilation fails for all of them at once, and the resulting error points at generated code rather than anything you typed. Refusing the name is much kinder than explaining that later.</p>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="sec-label">// frequently asked questions</div>
+  <h2 class="sec-title">Tags and Structured Text: common questions</h2>
+  <div class="faq-list" style="margin-top:18px">
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I calculate power from Modbus registers when the meter doesn't report it?<span class="icon">+</span></div><div class="faq-a">Name the registers you do have as tags, then write a Structured Text script that computes the value into an internal tag. A three-phase meter that reports line voltage, current and power factor gives you kilowatts as <span class="mono">1.732 * V * I * PF / 1000</span>. The internal tag then behaves like any other tag: it can be shown on a dashboard, logged by the Historian and used in an alarm.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Which Structured Text constructs are supported?<span class="icon">+</span></div><div class="faq-a">Comments in <span class="mono">(* *)</span>, assignment with <span class="mono">:=</span>, equality with a single <span class="mono">=</span> and inequality with <span class="mono">&lt;&gt;</span>, the comparison operators, <span class="mono">TRUE</span> and <span class="mono">FALSE</span>, <span class="mono">AND</span>, <span class="mono">OR</span> and <span class="mono">NOT</span>, the full <span class="mono">IF / THEN / ELSIF / ELSE / END_IF</span> chain, and <span class="mono">FOR &hellip; TO &hellip; DO &hellip; END_FOR</span>. <span class="mono">WHILE</span>, <span class="mono">REPEAT</span>, <span class="mono">CASE</span>, <span class="mono">MOD</span> and <span class="mono">XOR</span> are reserved words but are not translated, so they will not run as Structured Text. The script box also accepts plain JavaScript, which is the practical way to use a while loop or a switch.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the difference between a register tag and an internal tag?<span class="icon">+</span></div><div class="faq-a">A register tag (REG) is bound to a real register by slave ID, register type and address, and its value tracks the live device. An internal tag (INT) exists only inside the tool and holds a computed or stored value, normally written by a Structured Text script. Scripts read register tags and write internal tags.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can a script with an endless loop freeze the application?<span class="icon">+</span></div><div class="faq-a">No. Scripts run in a separate worker thread with a 2000 ms timeout. A loop that never exits is terminated and reported as a timeout, while polling, the dashboard and the rest of the application keep running. This was a real failure mode in an earlier design where the script ran on the main thread and a bad loop hung the whole tool.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Why won't it let me name a tag AND, TRUE or process?<span class="icon">+</span></div><div class="faq-a">Tag names are used directly as variable names in the compiled script, so a name that collides with a Structured Text keyword or with a hidden global breaks compilation — and it breaks every script, not only the one using that tag. Names must be valid identifiers: no spaces or hyphens, not starting with a digit, and not a reserved word.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How often does the script run?<span class="icon">+</span></div><div class="faq-a">You set a loop interval in milliseconds and start the loop. The minimum is 100 ms; anything shorter is clamped. Pick an interval that matches how fast the underlying registers are actually polled — running the script ten times between two polls just recomputes the same inputs.</div></div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- RELATED -->
+<section class="section">
+  <div class="sec-label">// where the computed value goes next</div>
+  <h2 class="sec-title">Once the number exists</h2>
+  <p class="sec-sub">An internal tag is a first-class value everywhere else in the tool. The usual next steps:</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:18px">
+    <a href="/modbus-hmi-dashboard.html" class="btn-ghost" style="font-size:0.9rem">Put it on a dashboard</a>
+    <a href="/modbus-data-logger-software.html" class="btn-ghost" style="font-size:0.9rem">Log it to the Historian</a>
+    <a href="/modbus-alarm-software.html" class="btn-ghost" style="font-size:0.9rem">Alarm on it</a>
+    <a href="/modbus-to-csv-logging.html" class="btn-ghost" style="font-size:0.9rem">Export to CSV</a>
+    <a href="/manual.html#tags" class="btn-ghost" style="font-size:0.9rem">Manual: Tags &amp; scripting</a>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- CTA -->
+<section class="section" style="text-align:center">
+  <h2 style="font-size:1.6rem;color:var(--ink);margin-bottom:10px">Compute the missing register</h2>
+  <p class="sec-sub" style="margin:0 auto 22px;max-width:560px">Tags and Structured Text are part of the Pro edition. The trial is the full thing for 14 days &mdash; long enough to find out whether the number you need was derivable all along.</p>
+  <div class="hero-ctas" style="justify-content:center">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.7/Modbus.Manager.Pro.Setup.1.8.7.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-ST-CTA', 'product': 'pro', 'value': 1})">Download free trial</a>
+    <a href="/#pricing" class="btn-ghost">See pricing</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">ModbusManager</div>
+  <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
+    <a href="/">Home</a>
+    <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
+    <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
+    <a href="/modbus-rtu-rs485-data-logger.html">RTU Logging</a>
+    <a href="/modbus-to-csv-logging.html">CSV Export</a>
+    <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
+        <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
+    <a href="/modbus-structured-text-scripting.html">&#127991; Tags &amp; scripting</a>
+    <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+    <a href="/modbus-vfd-speed-reference.html">VFD drives</a>
+    <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    <a href="/manual.html">Documentation</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/license-terms.html">License terms</a>
+    <a href="mailto:support@modbusmanager.com">Support</a>
+  </div>
+  <div>support@modbusmanager.com</div>
+</footer>
+
+
+
+<script>
+function tagPlayVideo() {
+  var box = document.getElementById("tagVideo");
+  if (!box || box.dataset.loaded) return;
+  box.dataset.loaded = "1";
+  box.innerHTML = '<div style="position:relative;padding-top:62.5%">' +
+    '<iframe src="https://www.youtube-nocookie.com/embed/igjH7twe3xM?autoplay=1&rel=0" ' +
+    'title="Tags and Structured Text: the Modbus register your meter does not have" ' +
+    'style="position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen ' +
+    'allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div>';
+}
+</script>
+<script>
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+</script>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+<script src="/email-capture.js" defer></script>
+</body>
+</html>
