@@ -40,7 +40,7 @@
   "description": "How to discover unknown Modbus devices: auto-detect baud rate and parity, scan slave IDs and address ranges, and map registers for RTU and TCP with ModbusManager Pro.",
   "url": "https://modbusmanager.com/modbus-scanner.html",
   "datePublished": "2026-07-01",
-  "dateModified": "2026-07-01",
+  "dateModified": "2026-09-21",
   "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
   "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
 },
@@ -52,7 +52,9 @@
     {"@type": "Question", "name": "Can I auto-detect the baud rate and parity of a Modbus device?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. ModbusManager Pro's auto-detect tries the common combinations of baud rate, parity and stop bits and reports which one the device answers on, in standard form such as 9600 8N1. This is useful when a device's serial settings are undocumented or were changed."}},
     {"@type": "Question", "name": "What is the difference from CAS Modbus Scanner?", "acceptedAnswer": {"@type": "Answer", "text": "CAS Modbus Scanner is a free discovery and debug tool. ModbusManager Pro does the same discovery, but can also decode 32-bit values in both big- and little-endian word order, save and export the register map you find as CSV, XLSX or PDF, and keep working with the device through dashboards, logging and slave simulation."}},
     {"@type": "Question", "name": "Does it work with Modbus TCP as well as RTU?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. ModbusManager Pro scans both Modbus RTU (serial, RS-485/RS-232) and Modbus TCP. On TCP it scans Unit IDs, which is useful for finding devices behind a TCP-to-RTU gateway."}},
-    {"@type": "Question", "name": "Why does a 32-bit float read as a wrong number?", "acceptedAnswer": {"@type": "Answer", "text": "A 32-bit float spans two registers and manufacturers differ on the byte and word order (ABCD, CDAB, BADC, DCBA). If the order is wrong the value looks like nonsense. ModbusManager Pro shows all four interpretations at once so you can pick the one that matches a real reading."}}
+    {"@type": "Question", "name": "Why does a 32-bit float read as a wrong number?", "acceptedAnswer": {"@type": "Answer", "text": "A 32-bit float spans two registers and manufacturers differ on the byte and word order (ABCD, CDAB, BADC, DCBA). If the order is wrong the value looks like nonsense. ModbusManager Pro shows all four interpretations at once so you can pick the one that matches a real reading."}},
+    {"@type":"Question","name":"My Modbus scan found nothing at all. Is the device dead?","acceptedAnswer":{"@type":"Answer","text":"Almost certainly not. Work through the physical causes first: A and B swapped is the single most common, followed by a USB RS-485 adapter that switches direction too slowly to hear the reply, a device left on slave ID 0 (the broadcast address, which never answers), an ID outside the range you scanned, and missing termination on a long run. Only after those is it worth suspecting the device itself."}},
+    {"@type":"Question","name":"Is it safe to scan a Modbus bus that is already running?","acceptedAnswer":{"@type":"Answer","text":"It adds traffic to a shared line, so treat it with care. On a segment a PLC is already polling, a full sweep can cause collisions and timeouts that look like new faults, and some devices raise a comms-loss alarm when their master polls are delayed. Narrow the ID range, slow the request rate, and never enable writes during discovery."}}
   ]
 }
 ]
@@ -230,6 +232,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <li class="nav-drop">
       <span class="nav-drop-label">Features ▾</span>
       <div class="nav-drop-menu">
+        <a href="/modbus-scanner.html" style="color:#9A6700;font-weight:600">&#128269; Modbus Scanner</a>
         <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
         <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
         <a href="/modbus-rtu-rs485-data-logger.html" style="padding-left:1.5rem">RTU / RS-485 Logging</a>
@@ -253,6 +256,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
         <a href="/powerflex-525-modbus.html">PowerFlex 525</a>
         <a href="/durapulse-gs20-modbus.html">DURApulse GS20</a>
         <a href="/yaskawa-v1000-modbus.html">Yaskawa V1000</a>
+        <a href="/modbus-vfd-speed-reference.html">VFD Speed Registers</a>
         <a href="/wattnode-modbus.html">WattNode</a>
         <a href="/manual.html">Documentation</a>
       </div>
@@ -343,6 +347,71 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 
 <div class="divider-line"></div>
 
+<!-- WHAT A RESPONSE MEANS -->
+<section class="section">
+  <div class="sec-label">// reading the result</div>
+  <h2 class="sec-title">Three outcomes, and only one is silence</h2>
+  <p class="sec-sub">A scan does not simply return "found" or "not found". Each address produces one of three results, and telling them apart is most of the diagnostic value &mdash; especially the middle one, which people routinely throw away.</p>
+
+  <div class="widget-grid" style="margin-top:22px">
+    <div class="widget-card">
+      <div class="widget-icon">&#9989;</div>
+      <div class="widget-name">Valid response</div>
+      <div class="widget-desc">The device answered with data. You have the right slave ID, the right serial settings, and a register that exists. This is the only outcome that confirms all three at once.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">&#9888;</div>
+      <div class="widget-name">Exception response</div>
+      <div class="widget-desc"><strong>The device is there.</strong> It received a well-formed request, understood it, and refused &mdash; usually because that register or function code does not exist on it. The slave ID and serial settings are correct. Only the address you asked for was wrong.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">&#9203;</div>
+      <div class="widget-name">Timeout</div>
+      <div class="widget-desc">Nothing came back. This is the ambiguous one: wrong slave ID, wrong baud or parity, wrong wiring, or simply nothing at that address. A timeout proves nothing except that this particular attempt failed.</div>
+    </div>
+  </div>
+
+  <p class="sec-sub" style="margin-top:24px">That middle column is the reason ModbusManager reports exception responses as finds rather than hiding them. An exception from slave 17 is a firm, verified answer: something is alive at 17, it speaks your baud rate, and your wiring is good. All that remains is to find a register it will give you &mdash; which is what an address scan is for. A scanner that only reports successful reads will tell you slave 17 is empty, and you will spend the afternoon re-checking the cable.</p>
+
+  <div class="definition-box" style="margin-top:22px">
+    <div class="def-label">// exception code 02 vs 03</div>
+    <p>Two exception codes come up constantly on a scan. <span class="mono">02</span>, illegal data address, means the register number is not implemented &mdash; keep scanning, you are close. <span class="mono">03</span>, illegal data value, usually means the register exists but you asked for a quantity it will not serve in one go, which is common on devices that cap a read at eight or sixteen registers. Different problems, different fix, and a scanner that reports only "error" loses the distinction.</p>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- HOW LONG -->
+<section class="section">
+  <div class="sec-label">// the arithmetic before you start</div>
+  <h2 class="sec-title">How long will this take?</h2>
+  <p class="sec-sub">Worth a moment's thought, because the naive settings can turn a two-minute job into an overnight one. A scan is dominated by timeouts, not by successful reads &mdash; a device that answers does so in milliseconds, while an empty address costs you the full timeout every time.</p>
+
+  <div style="overflow-x:auto;margin-top:20px">
+  <table class="compare-table" style="min-width:520px">
+    <thead>
+      <tr>
+        <th>Scan</th>
+        <th>Attempts</th>
+        <th>At 1000 ms timeout</th>
+        <th>At 300 ms timeout</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Slave IDs 1&ndash;247, one setting</td><td class="mono">247</td><td class="mono">~4 min</td><td class="mono">~75 s</td></tr>
+      <tr><td>Slave IDs 1&ndash;32, one setting</td><td class="mono">32</td><td class="mono">~32 s</td><td class="mono">~10 s</td></tr>
+      <tr class="hl"><td>Auto-detect: 6 bauds &times; 3 parities, IDs 1&ndash;32</td><td class="mono">576</td><td class="mono">~10 min</td><td class="mono">~3 min</td></tr>
+      <tr><td>Address sweep, 1000 registers, 1 at a time</td><td class="mono">1000</td><td class="mono">~17 min</td><td class="mono">~5 min</td></tr>
+      <tr><td>Address sweep, 1000 registers, blocks of 100</td><td class="mono">10</td><td class="mono">~10 s</td><td class="mono">~3 s</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p class="sec-sub" style="margin-top:20px">Three things follow from that table. <strong>Narrow the ID range first</strong> &mdash; most installations use single-digit or DIP-switch-set addresses, so 1&ndash;32 finds the device in a tenth of the time and you can always widen later. <strong>Drop the timeout</strong> to 300&ndash;500 ms for the discovery pass; a device on a healthy RS-485 segment replies far faster than that, and you can re-check any near-misses at a longer timeout afterwards. And <strong>sweep addresses in blocks</strong>, not one register at a time &mdash; the last two rows differ by a factor of a hundred for the same coverage.</p>
+
+  <p class="sec-sub">The one case for a long timeout is a device behind a TCP-to-RTU gateway, where the gateway serialises requests onto a slow serial segment and a reply can genuinely take a second or more. If a TCP scan comes back completely empty, raising the timeout before anything else is the cheapest test.</p>
+</section>
+
 <!-- VS CAS -->
 <section class="section">
   <div class="sec-label">// honest comparison</div>
@@ -386,6 +455,41 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 
 <div class="divider-line"></div>
 
+<!-- NOTHING ANSWERED -->
+<section class="section">
+  <div class="sec-label">// the scan came back empty</div>
+  <h2 class="sec-title">Nothing answered. Now what?</h2>
+  <p class="sec-sub">A completely silent scan is almost never a broken device. It is usually one of a short list of physical and configuration problems, and they are worth working through in this order &mdash; cheapest and most likely first.</p>
+
+  <div style="margin-top:22px">
+    <div style="border-left:3px solid var(--safety);padding:4px 0 4px 18px;margin-bottom:22px">
+      <h3 style="margin:0 0 6px;font-size:1.1rem;color:var(--ink)">A and B are swapped</h3>
+      <p style="margin:0;color:var(--body);line-height:1.65">Far and away the most common cause, because the labelling is genuinely inconsistent between manufacturers &mdash; A/B, D+/D&minus;, and the occasional vendor who has them the other way round. Swapping the two wires is free, takes ten seconds, and costs nothing if you are wrong. Do it before you touch any settings.</p>
+    </div>
+    <div style="border-left:3px solid var(--safety);padding:4px 0 4px 18px;margin-bottom:22px">
+      <h3 style="margin:0 0 6px;font-size:1.1rem;color:var(--ink)">The USB adapter is not releasing the line</h3>
+      <p style="margin:0;color:var(--body);line-height:1.65">RS-485 is half duplex: the master has to stop driving the bus before the slave can answer. Cheap adapters that switch direction too slowly talk fine and hear nothing, which looks exactly like a dead device. If a known-good device is silent on one adapter, try another one before suspecting the device.</p>
+    </div>
+    <div style="border-left:3px solid var(--safety);padding:4px 0 4px 18px;margin-bottom:22px">
+      <h3 style="margin:0 0 6px;font-size:1.1rem;color:var(--ink)">Slave ID 0, or an ID outside the scan</h3>
+      <p style="margin:0;color:var(--body);line-height:1.65">Address 0 is the broadcast address, and devices do not reply to it &mdash; a device left at 0 is unreachable by a normal scan. Equally, a scan of 1&ndash;32 will never find a device someone set to 100. If a narrow scan is empty, widen to the full 1&ndash;247 once before concluding anything.</p>
+    </div>
+    <div style="border-left:3px solid var(--safety);padding:4px 0 4px 18px;margin-bottom:22px">
+      <h3 style="margin:0 0 6px;font-size:1.1rem;color:var(--ink)">Termination and stub length</h3>
+      <p style="margin:0;color:var(--body);line-height:1.65">A long run with no termination resistors, or a device hung off a long spur, produces reflections that corrupt frames. The symptom is intermittent rather than total silence: some replies, some CRC errors, worse at higher baud. If a scan finds a device at 9600 but not at 38400, that is the signature.</p>
+    </div>
+    <div style="border-left:3px solid var(--safety);padding:4px 0 4px 18px">
+      <h3 style="margin:0 0 6px;font-size:1.1rem;color:var(--ink)">The device is answering a different function code</h3>
+      <p style="margin:0;color:var(--body);line-height:1.65">Some devices implement input registers (FC04) and not holding registers (FC03), or the reverse, and a scanner that only tries one will find nothing. Some go further: Yaskawa's MEMOBUS implementation rejects FC06 entirely and requires FC16 even for a single register. If a scan is silent, try the other read function before rewiring anything.</p>
+    </div>
+  </div>
+
+  <div class="definition-box" style="margin-top:24px">
+    <div class="def-label">// scanning a bus that is already in service</div>
+    <p>A scan is extra traffic on a shared line. On a segment a PLC is already polling, a full sweep can push the line into collisions and timeouts that look like new faults, and some devices raise a comms-loss alarm if their master's polls start being delayed. If you must scan a live bus, narrow the ID range, raise the interval between requests, and never enable writes during discovery &mdash; a scan that writes is not a scan.</p>
+  </div>
+</section>
+
 <!-- WHEN CAS IS ENOUGH -->
 <section class="section">
   <div class="sec-label">// when the free tool is enough</div>
@@ -395,6 +499,21 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 
 <div class="divider-line"></div>
 
+<!-- FAQ -->
+<section class="section">
+  <div class="sec-label">// frequently asked questions</div>
+  <h2 class="sec-title">Modbus scanning: common questions</h2>
+  <div class="faq-list" style="margin-top:18px">
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I find a Modbus device when I don't know its address?<span class="icon">+</span></div><div class="faq-a">Use a slave-ID scan. ModbusManager Pro walks the address range 1&ndash;247 and reports every device that responds, including ones that only return an exception. Modbus has no built-in discovery, so scanning the address range is the standard way to find an unknown slave ID. Narrow the range first if you can &mdash; most installations use low, DIP-switch-set addresses, and 1&ndash;32 finishes in a tenth of the time.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I auto-detect the baud rate and parity of a Modbus device?<span class="icon">+</span></div><div class="faq-a">Yes. ModbusManager Pro's auto-detect tries the common combinations of baud rate, parity and stop bits and reports which one the device answers on, in standard form such as 9600 8N1. This is useful when a device's serial settings are undocumented or were changed by someone who has since left.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the difference from CAS Modbus Scanner?<span class="icon">+</span></div><div class="faq-a">CAS Modbus Scanner is a free discovery and debug tool. ModbusManager Pro does the same discovery, but can also decode 32-bit values in both big- and little-endian word order, save and export the register map you find as CSV, XLSX or PDF, and keep working with the device through dashboards, logging and slave simulation. For a one-off look at a device, CAS is enough; the difference shows once discovery is the start of the job rather than the end of it.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does it work with Modbus TCP as well as RTU?<span class="icon">+</span></div><div class="faq-a">Yes. ModbusManager Pro scans both Modbus RTU (serial, RS-485/RS-232) and Modbus TCP. On TCP it scans Unit IDs, which is how you find devices sitting behind a TCP-to-RTU gateway. Allow a longer timeout for those &mdash; the gateway has to relay each request onto a slow serial segment, so a reply can take a second or more.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Why does a 32-bit float read as a wrong number?<span class="icon">+</span></div><div class="faq-a">A 32-bit float spans two registers and manufacturers differ on the byte and word order (ABCD, CDAB, BADC, DCBA). If the order is wrong the value looks like nonsense. ModbusManager Pro shows all four interpretations at once so you can pick the one that matches a real reading.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">My scan found nothing at all. Is the device dead?<span class="icon">+</span></div><div class="faq-a">Almost certainly not. Work through the physical causes first: A and B swapped is the single most common, followed by a USB RS-485 adapter that switches direction too slowly to hear the reply, a device left on slave ID 0 (the broadcast address, which never answers), an ID outside the range you scanned, and missing termination on a long run. Only after those is it worth suspecting the device itself.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is it safe to scan a bus that is already running?<span class="icon">+</span></div><div class="faq-a">It adds traffic to a shared line, so treat it with care. On a segment a PLC is already polling, a full sweep can cause collisions and timeouts that look like new faults, and some devices raise a comms-loss alarm when their master's polls are delayed. Narrow the ID range, slow the request rate, and never enable writes during discovery.</div></div>
+  </div>
+</section>
+
 <!-- RELATED -->
 <section class="section">
   <div class="sec-label">// related guides</div>
@@ -403,6 +522,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:18px">
     <a href="/eastron-sdm630-modbus.html" class="btn-ghost" style="font-size:0.9rem">Eastron SDM630 meter</a>
     <a href="/abb-acs580-modbus.html" class="btn-ghost" style="font-size:0.9rem">ABB ACS580 drive</a>
+    <a href="/modbus-vfd-speed-reference.html" class="btn-ghost" style="font-size:0.9rem">VFD speed reference registers</a>
     <a href="/powerflex-525-modbus.html" class="btn-ghost" style="font-size:0.9rem">PowerFlex 525</a>
     <a href="/wattnode-modbus.html" class="btn-ghost" style="font-size:0.9rem">WattNode meter</a>
     <a href="/schneider-powerlogic-pm5000-modbus.html" class="btn-ghost" style="font-size:0.9rem">Schneider PM5000</a>
@@ -439,7 +559,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
         <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
     <a href="/eastron-sdm630-modbus.html">Energy meters</a>
-    <a href="/abb-acs580-modbus.html">VFD drives</a>
+    <a href="/modbus-vfd-speed-reference.html">VFD drives</a>
     <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
     <a href="/manual.html">Documentation</a>
     <a href="/privacy.html">Privacy</a>

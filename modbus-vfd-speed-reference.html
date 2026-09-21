@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VFD Speed Reference Modbus Register: ABB, Yaskawa, PowerFlex, GS20 | ModbusManager</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<meta name="description" content="Which Modbus holding register sets a VFD frequency setpoint from a PLC: the speed reference and control word addresses for ABB ACS580/ACS880, Yaskawa V1000, PowerFlex 525 and DURApulse GS20 — and how to get the scaling right.">
+<meta name="keywords" content="VFD Modbus register, VFD speed reference register, Modbus frequency setpoint register, control VFD speed from PLC Modbus, VFD holding register address, Modbus RTU VFD control, drive speed reference Modbus, VFD frequency reference address">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/modbus-vfd-speed-reference.html">
+
+<meta property="og:title" content="Which Modbus register sets a VFD's speed?">
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:description" content="Speed reference and control word registers for ABB, Yaskawa, PowerFlex and GS20 drives — plus the scaling, which is the half that actually bites.">
+<meta property="og:url" content="https://modbusmanager.com/modbus-vfd-speed-reference.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://modbusmanager.com/og-vfd-speed.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Which Modbus register sets a VFD's speed?">
+<meta name="twitter:description" content="Speed reference registers for ABB, Yaskawa, PowerFlex and GS20 drives, and how to derive the scaling from the drive itself.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-vfd-speed.png">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+[
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Which Modbus Register Sets a VFD Speed Reference? A Cross-Brand Answer",
+  "description": "The speed reference and control word Modbus holding register addresses for ABB ACS580 and ACS880, Yaskawa V1000 and GA500, Allen-Bradley PowerFlex 525 and DURApulse GS20 drives, with the function code, addressing and scaling traps that stop a write from taking effect.",
+  "url": "https://modbusmanager.com/modbus-vfd-speed-reference.html",
+  "datePublished": "2026-09-21",
+  "dateModified": "2026-09-21",
+  "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
+  "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
+},
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "Which holding register do I write to set a VFD frequency setpoint over Modbus?", "acceptedAnswer": {"@type": "Answer", "text": "It depends on the drive family, and there is no cross-vendor standard. On ABB ACS580 and ACS880 the speed reference is holding register 40002 (Reference 1). On Yaskawa V1000 and GA500 it is 0002H. On DURApulse GS20 it is 0x2001, decimal 8193, called Control Word 2. On Allen-Bradley PowerFlex 525 the speed reference sits next to the Logic Command word at 8192/8193, but which number your master needs depends on whether it counts registers from 0 or from 1. Always confirm the address against the manual for your exact drive and firmware."}},
+    {"@type": "Question", "name": "Is there a standard Modbus register for VFD speed across brands?", "acceptedAnswer": {"@type": "Answer", "text": "No. Modbus defines how to read and write a register, not what any register means. Every drive manufacturer chooses its own addresses, scaling and bit meanings, so a speed reference address from one brand is meaningless on another. Two families can even share an address with different meanings: DURApulse GS20 and PowerFlex 525 both use 0x2000 and 0x2001, but the bit definitions and scaling differ."}},
+    {"@type": "Question", "name": "What value equals 50 Hz or 60 Hz in the speed reference register?", "acceptedAnswer": {"@type": "Answer", "text": "On ABB drives using the ABB Drives profile, Reference 1 is scaled so that 20000 equals 100 percent of the configured maximum. On most other families the scaling depends on the drive family, the maximum frequency setting and the firmware, and published sources contradict each other. The reliable method is to write one mid-range value, read the actual output frequency from the keypad, write a second value and read again. Two data points give the scale factor and any offset for that specific drive."}},
+    {"@type": "Question", "name": "Why does writing the speed reference not make the drive run?", "acceptedAnswer": {"@type": "Answer", "text": "The speed reference tells the drive how fast to go, not whether to go. A separate control or command word carries start, stop and reset. On ABB that is register 40001; on Yaskawa it is 0001H; on GS20 it is 0x2000; on PowerFlex it is the Logic Command word. The drive also has to be configured to take its command and reference from the fieldbus rather than the keypad or terminals, or it will accept the write and ignore it."}},
+    {"@type": "Question", "name": "My write is rejected with an exception. What is wrong?", "acceptedAnswer": {"@type": "Answer", "text": "Check the function code first. Yaskawa MEMOBUS supports 03H for reading, 08H for a loopback test and 10H for writing, and rejects function code 06 even at a valid address. Other common causes are a read-only register, a value outside the allowed range, a parameter that cannot be changed while the drive runs, or an active fault. The exception code in the response identifies which, so log the raw response rather than only the failure."}},
+    {"@type": "Question", "name": "Can I test the speed reference without a PLC?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, and it is usually faster. A Windows Modbus master on a USB RS-485 adapter can read the status word and write the reference directly, so the address, function code and scaling are all confirmed before any controller code exists. When the numbers are known to work, the PLC program is written once against values you have already seen move the drive."}}
+  ]
+}
+]
+</script>
+<style>
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+.mono{font-family:'IBM Plex Mono',monospace}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+
+/* HAZARD STRIPE */
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+
+/* HERO */
+.hero{padding:4rem 3rem 3.5rem;max-width:1140px;margin:0 auto}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.9rem}
+.hero h1{font-family:'Saira Condensed',sans-serif;font-size:3rem;font-weight:700;line-height:1;color:var(--ink);margin-bottom:1rem;letter-spacing:0.01em;text-transform:uppercase;max-width:720px}
+.hero h1 .accent{color:var(--amber-ink)}
+.hero-desc{font-size:1rem;color:var(--body);line-height:1.7;margin-bottom:1.8rem;max-width:640px}
+.hero-ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn-primary{background:var(--run);color:#fff;padding:0.75rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-primary:hover{background:#186040}
+.btn-ghost{background:transparent;color:var(--ink);border:2px solid var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-ghost:hover{background:var(--ink);color:var(--safety)}
+.hero-note{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--muted);margin-top:0.7rem}
+
+/* SECTION */
+.section{padding:3.5rem 3rem;max-width:1140px;margin:0 auto}
+.sec-label{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem}
+.sec-title{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:0.6rem}
+.sec-sub{font-size:0.95rem;color:var(--body);line-height:1.7;margin-bottom:2rem;max-width:680px}
+.divider-line{border:none;border-top:2px solid var(--ink)}
+
+/* WHAT IS HMI */
+.explainer-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.explainer-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.definition-box{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem}
+.definition-box .def-label{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem}
+.definition-box p{font-size:0.9rem;color:var(--body);line-height:1.7}
+
+/* WIDGET GRID */
+.widget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.widget-card{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem}
+.widget-icon{font-size:1.6rem;margin-bottom:0.7rem}
+.widget-name{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem}
+.widget-desc{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;counter-reset:step}
+.step{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem;position:relative}
+.step::before{counter-increment:step;content:counter(step);font-family:'Saira Condensed',sans-serif;font-size:2.5rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.5rem;right:1rem;line-height:1}
+.step-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--amber-ink);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem}
+.step-title{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.5rem}
+.step-text{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* TAG ENGINE */
+.tag-block{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:start}
+.tag-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.code-box{background:var(--ink);color:#D4D8D0;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;line-height:1.7;padding:1.4rem 1.6rem;border-radius:3px;overflow-x:auto}
+.code-box .cm{color:#5F7A5F}
+.code-box .ck{color:var(--safety)}
+.code-box .cv{color:#8EC0B0}
+
+/* COMPARE TABLE */
+.compare-table{width:100%;border-collapse:collapse;font-size:0.88rem}
+.compare-table th{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.05em;text-transform:uppercase;padding:0.7rem 1rem;border-bottom:2px solid var(--ink);text-align:left;background:var(--enclosure2)}
+.compare-table td{padding:0.65rem 1rem;border-bottom:1px solid var(--steel)}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table .hl{background:rgba(30,122,79,0.06)}
+.yes{color:var(--run);font-weight:600}
+.no{color:var(--bad)}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:0}
+.faq-item{border-top:1px solid var(--steel)}
+.faq-item:last-child{border-bottom:1px solid var(--steel)}
+.faq-q{font-family:'Saira Condensed',sans-serif;font-size:1.05rem;font-weight:600;letter-spacing:0.02em;padding:1.1rem 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq-q:hover{color:var(--amber-ink)}
+.faq-q .icon{font-family:'IBM Plex Mono',monospace;font-size:1.1rem;flex-shrink:0;transition:transform 0.2s}
+.faq-a{font-size:0.9rem;color:var(--body);line-height:1.75;padding:0 0 1.1rem;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .icon{transform:rotate(45deg)}
+
+/* CTA STRIP */
+.cta-strip{background:var(--ink);color:var(--safety);padding:3.5rem 3rem;text-align:center}
+.cta-strip h2{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.6rem}
+.cta-strip p{font-size:0.95rem;color:var(--enclosure);margin-bottom:1.8rem;max-width:540px;margin-left:auto;margin-right:auto}
+.cta-strip .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-cta-yellow{background:var(--safety);color:var(--ink);padding:0.8rem 2rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-cta-yellow:hover{background:#e09800}
+.btn-cta-outline{background:transparent;color:var(--safety);border:2px solid var(--safety);padding:0.7rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+
+/* FOOTER */
+footer{background:var(--ink);color:var(--steel);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:0.75rem}
+.footer-logo{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:0.05em;text-transform:uppercase}
+footer a{color:var(--steel);text-decoration:none}
+footer a:hover{color:#fff}
+
+@media(max-width:768px){
+  nav{padding:0.75rem 1.2rem;flex-wrap:wrap;gap:0.5rem}
+  .nav-links{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  .hero h1{font-size:2.2rem}
+  .section{padding:2.5rem 1.2rem}
+  .explainer-grid,.tag-block{grid-template-columns:1fr}
+  .widget-grid{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .cta-strip{padding:2.5rem 1.2rem}
+  footer{padding:1.5rem 1.2rem;flex-direction:column;align-items:flex-start;gap:0.75rem}
+}
+@media(max-width:520px){
+  .widget-grid,.steps{grid-template-columns:1fr}
+}
+.dl-options{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.8rem}
+@media(max-width:768px){.dl-options{grid-template-columns:1fr}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;max-width:100%}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;background:transparent;border:none;min-width:190px;display:none;flex-direction:column;z-index:200}.nav-drop-menu>a{background:var(--enclosure2,#e8e9e4);border-left:1px solid var(--ink,#16181A);border-right:1px solid var(--ink,#16181A)}.nav-drop-menu>a:first-child{border-top:1px solid var(--ink,#16181A);border-radius:3px 3px 0 0;padding-top:0.5rem}.nav-drop-menu>a:last-child{border-bottom:1px solid var(--ink,#16181A);border-radius:0 0 3px 3px;padding-bottom:0.5rem;box-shadow:0 6px 20px rgba(0,0,0,0.18)}
+.nav-drop:hover .nav-drop-menu{display:flex}
+.nav-drop-menu a{padding:0.5rem 1rem;white-space:nowrap;text-transform:none;font-size:0.78rem;color:var(--ink,#16181A)}
+.nav-drop-menu a:hover{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+nav .nav-links.open .nav-drop-menu{position:static;display:flex;margin:0.3rem 0 0.3rem 0.8rem;border:none;box-shadow:none;padding:0;min-width:0;background:none}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+</style>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Features","item": "https://modbusmanager.com/#features"},{"@type": "ListItem","position": 3,"name": "VFD Speed Reference Register","item": "https://modbusmanager.com/modbus-vfd-speed-reference.html"}]}
+</script>
+</head>
+<body><nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label">Features ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-scanner.html" style="color:#9A6700;font-weight:600">&#128269; Modbus Scanner</a>
+        <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
+        <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
+        <a href="/modbus-rtu-rs485-data-logger.html" style="padding-left:1.5rem">RTU / RS-485 Logging</a>
+        <a href="/modbus-logging-interval-deadband.html" style="padding-left:1.5rem">Interval &amp; Deadband</a>
+        <a href="/modbus-to-csv-logging.html" style="padding-left:1.5rem">CSV Export</a>
+        <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
+        <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
+      </div>
+    </li>
+    <li class="nav-drop">
+      <span class="nav-drop-label">Guides ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200</a>
+        <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+        <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+        <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+        <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+        <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+        <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+        <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+        <a href="/powerflex-525-modbus.html">PowerFlex 525</a>
+        <a href="/durapulse-gs20-modbus.html">DURApulse GS20</a>
+        <a href="/yaskawa-v1000-modbus.html">Yaskawa V1000</a>
+        <a href="/modbus-vfd-speed-reference.html">VFD Speed Registers</a>
+        <a href="/wattnode-modbus.html">WattNode</a>
+        <a href="/manual.html">Documentation</a>
+      </div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.7/Modbus.Manager.Pro.Setup.1.8.7.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-VFDSpeed-NavText', 'product': 'pro', 'value': 1})" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em">Pro trial &darr;</a>
+    <a href="/ModbusManager-Siemens-S7-1200-demo.zip" download class="nav-cta">Free demo &darr;</a>
+  </div>
+</nav>
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow">// drive control over Modbus</div>
+  <h1>Which register sets<br><span class="accent">a VFD's speed?</span></h1>
+  <p class="hero-desc">There is no standard answer, because Modbus does not define one. Every drive family picks its own speed reference register, its own scaling and its own control word. Here are the addresses for four families we document in detail &mdash; and the part nobody puts in the table, which is how to get the scaling right on the drive in front of you.</p>
+  <div class="hero-ctas">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.7/Modbus.Manager.Pro.Setup.1.8.7.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-VFDSpeed-Hero', 'product': 'pro', 'value': 1})">Download free trial</a>
+    <a href="/#pricing" class="btn-ghost">See pricing</a>
+  </div>
+  <p class="hero-note">Windows 10/11 &middot; RTU, ASCII &amp; TCP &middot; one-time license &middot; 14-day trial</p>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- THE TABLE -->
+<section class="section">
+  <div class="sec-label">// the short answer</div>
+  <h2 class="sec-title">Speed reference, by drive family</h2>
+  <p class="sec-sub">Each of these comes from the manufacturer's own documentation and is covered in full on our per-drive page, linked in the last column. Addresses are given the way that family's manual gives them &mdash; note that ABB uses 4xxxx reference numbering while the others print raw hex.</p>
+
+  <div style="overflow-x:auto;margin-top:22px">
+  <table style="width:100%;border-collapse:collapse;font-size:0.92rem">
+    <thead>
+      <tr style="border-bottom:2px solid var(--ink)">
+        <th style="text-align:left;padding:10px 8px">Drive family</th>
+        <th style="text-align:left;padding:10px 8px;color:var(--amber-ink)">Speed / frequency reference</th>
+        <th style="text-align:left;padding:10px 8px">Start&ndash;stop word</th>
+        <th style="text-align:left;padding:10px 8px">Scaling</th>
+        <th style="text-align:left;padding:10px 8px">Detail</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid var(--steel)">
+        <td style="padding:10px 8px"><strong>ABB ACS580</strong><br><span style="font-size:0.82rem;color:var(--muted)">ABB Drives profile</span></td>
+        <td style="padding:10px 8px"><span class="mono">40002</span><br><span style="font-size:0.82rem;color:var(--muted)">Reference 1</span></td>
+        <td style="padding:10px 8px"><span class="mono">40001</span><br><span style="font-size:0.82rem;color:var(--muted)">Control Word</span></td>
+        <td style="padding:10px 8px"><span class="mono">20000 = 100%</span><br><span style="font-size:0.82rem;color:var(--muted)">documented</span></td>
+        <td style="padding:10px 8px"><a href="/abb-acs580-modbus.html" style="color:var(--amber-ink)">ACS580 guide</a></td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--steel)">
+        <td style="padding:10px 8px"><strong>ABB ACS880</strong><br><span style="font-size:0.82rem;color:var(--muted)">ABB Drives profile</span></td>
+        <td style="padding:10px 8px"><span class="mono">40002</span><br><span style="font-size:0.82rem;color:var(--muted)">Reference 1</span></td>
+        <td style="padding:10px 8px"><span class="mono">40001</span><br><span style="font-size:0.82rem;color:var(--muted)">Control Word</span></td>
+        <td style="padding:10px 8px"><span class="mono">20000 = 100%</span><br><span style="font-size:0.82rem;color:var(--muted)">documented</span></td>
+        <td style="padding:10px 8px"><a href="/abb-acs880-modbus.html" style="color:var(--amber-ink)">ACS880 guide</a></td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--steel)">
+        <td style="padding:10px 8px"><strong>Yaskawa V1000</strong><br><span style="font-size:0.82rem;color:var(--muted)">also GA500, 1000-series</span></td>
+        <td style="padding:10px 8px"><span class="mono">0002H</span><br><span style="font-size:0.82rem;color:var(--muted)">Frequency reference</span></td>
+        <td style="padding:10px 8px"><span class="mono">0001H</span><br><span style="font-size:0.82rem;color:var(--muted)">Operation command</span></td>
+        <td style="padding:10px 8px;color:var(--muted)">derive it &mdash; see below</td>
+        <td style="padding:10px 8px"><a href="/yaskawa-v1000-modbus.html" style="color:var(--amber-ink)">V1000 guide</a></td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--steel)">
+        <td style="padding:10px 8px"><strong>DURApulse GS20</strong><br><span style="font-size:0.82rem;color:var(--muted)">also GS20X</span></td>
+        <td style="padding:10px 8px"><span class="mono">0x2001</span> <span style="font-size:0.82rem;color:var(--muted)">(8193)</span><br><span style="font-size:0.82rem;color:var(--muted)">Control Word 2</span></td>
+        <td style="padding:10px 8px"><span class="mono">0x2000</span> <span style="font-size:0.82rem;color:var(--muted)">(8192)</span><br><span style="font-size:0.82rem;color:var(--muted)">Control Word 1</span></td>
+        <td style="padding:10px 8px;color:var(--muted)">derive it &mdash; see below</td>
+        <td style="padding:10px 8px"><a href="/durapulse-gs20-modbus.html" style="color:var(--amber-ink)">GS20 guide</a></td>
+      </tr>
+      <tr>
+        <td style="padding:10px 8px"><strong>PowerFlex 525</strong><br><span style="font-size:0.82rem;color:var(--muted)">520-series</span></td>
+        <td style="padding:10px 8px" colspan="2"><span style="color:var(--bad);font-weight:600">Check 520-UM001 for your firmware.</span><br><span style="font-size:0.82rem;color:var(--muted)">Logic Command is 8192 or 8193 depending on whether your master counts from 0 or 1 &mdash; Rockwell documents both.</span></td>
+        <td style="padding:10px 8px;color:var(--muted)">derive it &mdash; see below</td>
+        <td style="padding:10px 8px"><a href="/powerflex-525-modbus.html" style="color:var(--amber-ink)">PowerFlex guide</a></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="definition-box" style="margin-top:26px">
+    <div class="def-label">// why the scaling column is mostly empty</div>
+    <p>We publish a scaling factor only where the manufacturer documents one plainly, as ABB does. For the rest, the figures circulating on forums and in scraped register tables contradict each other &mdash; including on the speed reference address itself. Two writes on your own drive settle it in about a minute, and that number is true for the drive you actually have. The method is below.</p>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- NO STANDARD -->
+<section class="section">
+  <div class="sec-label">// why there is no single answer</div>
+  <h2 class="sec-title">Modbus defines the envelope, not the letter</h2>
+  <div class="explainer-grid">
+    <div class="explainer-text">
+      <p>Modbus specifies how a master asks for register 8193 and how a slave answers. It says nothing whatsoever about what register 8193 <em>means</em>. That is left entirely to the device maker, which is why a VFD speed reference has no universal address and never will.</p>
+      <p>The consequence catches people out in mixed panels. <strong>DURApulse GS20 and Allen-Bradley PowerFlex drives both use <span class="mono">0x2000</span> and <span class="mono">0x2001</span></strong> for their command and reference words. The addresses are identical; the bit meanings and the scaling are not. A write that ramps one drive to half speed can do something quite different to the other.</p>
+      <p>So the only safe sequence is: get the address from the manual for your exact drive and firmware, then confirm on the drive that the address does what you think, before anything downstream depends on it.</p>
+    </div>
+    <div class="definition-box">
+      <div class="def-label">// same address, different drive</div>
+      <p style="margin-bottom:0.9rem"><span class="mono" style="color:var(--amber-ink)">0x2001</span> on a <strong>GS20</strong><br>&rarr; commanded frequency</p>
+      <p style="margin-bottom:0.9rem"><span class="mono" style="color:var(--amber-ink)">0x2001</span> on a <strong>PowerFlex</strong><br>&rarr; adjacent to Logic Command &mdash; and which of 8192/8193 you need depends on your master's numbering</p>
+      <p style="font-size:0.85rem;color:var(--muted)">In a panel that mixes families, read each drive's status word and watch it change before writing anything.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- SCALING -->
+<section class="section">
+  <div class="sec-label">// the half that actually bites</div>
+  <h2 class="sec-title">The address is the easy part</h2>
+  <p class="sec-sub">Finding the register takes one look at the manual. Working out what number to put in it is where commissioning days go. Is 6000 equal to 60.00 Hz, or 60 percent of maximum, or 6000 rpm? Published tables disagree, and the answer shifts with the drive's own maximum frequency setting. You do not have to guess: the drive will tell you.</p>
+
+  <div class="steps" style="grid-template-columns:repeat(3,1fr)">
+    <div class="step">
+      <div class="step-label">// step</div>
+      <div class="step-title">Write a mid value</div>
+      <div class="step-text">With the drive safely able to turn, write a mid-range number to the reference register &mdash; not near zero and not near the top. Read the actual output frequency off the keypad.</div>
+    </div>
+    <div class="step">
+      <div class="step-label">// step</div>
+      <div class="step-title">Write a second value</div>
+      <div class="step-text">Write a clearly different number and read the keypad again. One point tells you almost nothing; two points give you a line.</div>
+    </div>
+    <div class="step">
+      <div class="step-label">// step</div>
+      <div class="step-title">Solve for both</div>
+      <div class="step-text">Two pairs give you the scale factor <em>and</em> any offset with no ambiguity. Write that pair of numbers into the commissioning notes &mdash; they are worth more than any table.</div>
+    </div>
+  </div>
+
+  <p class="sec-sub" style="margin-top:26px">This works on every family, including the ones where the scaling <em>is</em> documented &mdash; on an ABB drive it simply confirms that Reference 1 is behaving as <span class="mono">20000 = 100%</span> and that the maximum is configured where you think it is. It costs two minutes and removes a whole class of "the drive runs at the wrong speed" call-outs.</p>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- WHY THE WRITE DOESN'T LAND -->
+<section class="section">
+  <div class="sec-label">// four reasons a correct address still fails</div>
+  <h2 class="sec-title">The write is accepted and nothing happens</h2>
+
+  <div style="margin-top:24px">
+    <div style="border-left:3px solid var(--safety);padding:4px 0 4px 18px;margin-bottom:26px">
+      <h3 style="margin:0 0 6px;font-size:1.15rem;color:var(--ink)">1. The reference is not the start command</h3>
+      <p style="margin:0;color:var(--body);line-height:1.65">The speed reference says how fast, not whether. Start, stop and fault reset live in a separate control word: <span class="mono">40001</span> on ABB, <span class="mono">0001H</span> on Yaskawa, <span class="mono">0x2000</span> on GS20, the Logic Command word on PowerFlex. On an ABB drive using the ABB Drives profile, <span class="mono">0x047F</span> in the control word is the value that has the drive accelerate to the reference. Write the reference all day and a stopped drive stays stopped.</p>
+    </div>
+
+    <div style="border-left:3px solid var(--safety);padding:4px 0 4px 18px;margin-bottom:26px">
+      <h3 style="margin:0 0 6px;font-size:1.15rem;color:var(--ink)">2. The drive is not listening to the fieldbus</h3>
+      <p style="margin:0;color:var(--body);line-height:1.65">Every family has a setting that selects where the command and the reference come from &mdash; keypad, terminals or fieldbus. On the ACS880 that is the embedded fieldbus configuration in parameter groups 19 and 20. Until it points at the fieldbus, the drive accepts your write into the register quite happily and then runs from the potentiometer. Reading the register back shows your value sitting there, which makes this failure especially convincing and especially wrong.</p>
+    </div>
+
+    <div style="border-left:3px solid var(--safety);padding:4px 0 4px 18px;margin-bottom:26px">
+      <h3 style="margin:0 0 6px;font-size:1.15rem;color:var(--ink)">3. The function code is wrong</h3>
+      <p style="margin:0;color:var(--body);line-height:1.65">Not every drive accepts every write function. Yaskawa's MEMOBUS implementation supports <span class="mono">03H</span> for reading, <span class="mono">08H</span> for a loopback test and <span class="mono">10H</span> for writing &mdash; and rejects <span class="mono">06H</span>, write-single-register, even at a perfectly valid address. Send it as function code 16 with a quantity of one and the same address accepts it. If your tool only offers FC06, that is a tool limitation showing up as a drive fault.</p>
+    </div>
+
+    <div style="border-left:3px solid var(--safety);padding:4px 0 4px 18px">
+      <h3 style="margin:0 0 6px;font-size:1.15rem;color:var(--ink)">4. You are one register out</h3>
+      <p style="margin:0;color:var(--body);line-height:1.65">Some masters number registers from 0 and some from 1, while the wire always carries the zero-based number. The same physical register is therefore legitimately called 8192 by one tool and 8193 by another. Rockwell states this plainly in the 520-series manual and gives exactly that example for the Logic Command word. If a value comes back that looks like it belongs to the neighbouring register, this is almost always why &mdash; the <a href="/powerflex-525-modbus.html" style="color:var(--amber-ink)">PowerFlex addressing page</a> works through it in full.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- BENCH -->
+<section class="section">
+  <div class="sec-label">// settle it before the PLC exists</div>
+  <h2 class="sec-title">Do this with a laptop, not a controller</h2>
+  <div class="tag-block">
+    <div class="tag-text">
+      <p>Every problem above &mdash; the address, the offset, the function code, the command source, the scaling &mdash; is far cheaper to settle with a Windows Modbus master and a USB RS-485 adapter than inside a PLC program. There is no download, no scan cycle to reason about, and you can see the raw request and response.</p>
+      <p>In ModbusManager Pro you read the status word and write the reference from the same window, with every value shown in decimal, hex and binary at once, and each request and response logged. Write a reference, watch the keypad, write another. When the numbers are confirmed, the PLC gets written once against values you have already seen move the drive.</p>
+      <p>If the drive's serial settings are unknown too, <a href="/modbus-scanner.html" style="color:var(--amber-ink)">auto-detect will find the baud rate, parity and slave ID</a> before you start. And for a line of several drives, the <a href="/modbus-gateway-software.html" style="color:var(--amber-ink)">gateway function</a> merges the registers you choose into one map the PLC reads over a single connection.</p>
+    </div>
+    <div class="code-box"><span class="cm"># confirm, in this order</span>
+<span class="ck">1</span> read status word     <span class="cv">&rarr; link is alive</span>
+<span class="ck">2</span> read reference reg   <span class="cv">&rarr; address is real</span>
+<span class="ck">3</span> set command source   <span class="cv">&rarr; fieldbus</span>
+<span class="ck">4</span> write control word   <span class="cv">&rarr; drive runs</span>
+<span class="ck">5</span> write ref value A    <span class="cv">&rarr; note keypad Hz</span>
+<span class="ck">6</span> write ref value B    <span class="cv">&rarr; note keypad Hz</span>
+
+<span class="cm"># two points give scale and offset</span>
+scale  = (HzB - HzA) / (B - A)
+offset = HzA - scale * A</div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="sec-label">// frequently asked questions</div>
+  <h2 class="sec-title">VFD speed over Modbus: common questions</h2>
+  <div class="faq-list" style="margin-top:18px">
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Which holding register do I write to set a VFD frequency setpoint over Modbus?<span class="icon">+</span></div><div class="faq-a">It depends on the drive family, and there is no cross-vendor standard. On ABB ACS580 and ACS880 the speed reference is holding register 40002, Reference 1. On Yaskawa V1000 and GA500 it is 0002H. On DURApulse GS20 it is 0x2001, decimal 8193, called Control Word 2. On PowerFlex 525 the speed reference sits next to the Logic Command word at 8192/8193, but which number your master needs depends on whether it counts registers from 0 or from 1. Always confirm against the manual for your exact drive and firmware.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is there a standard Modbus register for VFD speed across brands?<span class="icon">+</span></div><div class="faq-a">No. Modbus defines how to read and write a register, not what any register means. Every manufacturer chooses its own addresses, scaling and bit meanings, so an address from one brand is meaningless on another. Two families can even share an address with different meanings: GS20 and PowerFlex 525 both use 0x2000 and 0x2001, with different bit definitions and scaling.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What value equals 50 Hz or 60 Hz in the speed reference register?<span class="icon">+</span></div><div class="faq-a">On ABB drives using the ABB Drives profile, Reference 1 is scaled so that 20000 equals 100 percent of the configured maximum. On the other families the scaling depends on the drive family, the maximum frequency setting and the firmware, and published sources contradict each other. Write one mid-range value, read the actual output frequency from the keypad, write a second and read again. Two data points give the scale factor and any offset for that specific drive.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Why does writing the speed reference not make the drive run?<span class="icon">+</span></div><div class="faq-a">The reference tells the drive how fast, not whether. A separate control or command word carries start, stop and reset: 40001 on ABB, 0001H on Yaskawa, 0x2000 on GS20, the Logic Command word on PowerFlex. The drive also has to be configured to take its command and reference from the fieldbus rather than the keypad or terminals, or it will accept the write and ignore it.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">My write is rejected with an exception. What is wrong?<span class="icon">+</span></div><div class="faq-a">Check the function code first. Yaskawa MEMOBUS supports 03H for reading, 08H for a loopback test and 10H for writing, and rejects function code 06 even at a valid address. Other common causes are a read-only register, a value out of range, a parameter that cannot be changed while the drive runs, or an active fault. The exception code in the response identifies which, so log the raw response rather than only the failure.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I test the speed reference without a PLC?<span class="icon">+</span></div><div class="faq-a">Yes, and it is usually faster. A Windows Modbus master on a USB RS-485 adapter reads the status word and writes the reference directly, so the address, function code and scaling are confirmed before any controller code exists. When the numbers are known to work, the PLC program is written once against values you have already seen move the drive.</div></div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- RELATED -->
+<section class="section">
+  <div class="sec-label">// per-drive register guides</div>
+  <h2 class="sec-title">The full map for your drive</h2>
+  <p class="sec-sub">This page is the cross-brand summary. Each guide below goes through that family's addressing scheme, control word bits, function-code support and the traps specific to it:</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:18px">
+    <a href="/abb-acs580-modbus.html" class="btn-ghost" style="font-size:0.9rem">ABB ACS580</a>
+    <a href="/abb-acs880-modbus.html" class="btn-ghost" style="font-size:0.9rem">ABB ACS880</a>
+    <a href="/yaskawa-v1000-modbus.html" class="btn-ghost" style="font-size:0.9rem">Yaskawa V1000 / GA500</a>
+    <a href="/powerflex-525-modbus.html" class="btn-ghost" style="font-size:0.9rem">PowerFlex 525</a>
+    <a href="/durapulse-gs20-modbus.html" class="btn-ghost" style="font-size:0.9rem">DURApulse GS20</a>
+    <a href="/modbus-scanner.html" class="btn-ghost" style="font-size:0.9rem">Find an unknown drive</a>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- CTA -->
+<section class="section" style="text-align:center">
+  <h2 style="font-size:1.6rem;color:var(--ink);margin-bottom:10px">Confirm it on your own drive</h2>
+  <p class="sec-sub" style="margin:0 auto 22px;max-width:560px">Read the status word, write the reference, watch the keypad. Two values and you have the scaling for the drive in front of you &mdash; before a line of PLC code is written.</p>
+  <div class="hero-ctas" style="justify-content:center">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.8.7/Modbus.Manager.Pro.Setup.1.8.7.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-VFDSpeed-CTA', 'product': 'pro', 'value': 1})">Download free trial</a>
+    <a href="/#pricing" class="btn-ghost">See pricing</a>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section">
+  <p style="max-width:840px;margin:0 auto;text-align:center;color:var(--body);line-height:1.8">Take the address from the manual. Take the offset and the scaling from the drive. Never take either from a forum post &mdash; including this one.</p>
+</section>
+
+<footer>
+  <div class="footer-logo">ModbusManager</div>
+  <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
+    <a href="/">Home</a>
+    <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
+    <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
+    <a href="/modbus-rtu-rs485-data-logger.html">RTU Logging</a>
+    <a href="/modbus-to-csv-logging.html">CSV Export</a>
+    <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
+        <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
+    <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+    <a href="/modbus-vfd-speed-reference.html">VFD drives</a>
+    <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    <a href="/manual.html">Documentation</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/license-terms.html">License terms</a>
+    <a href="mailto:support@modbusmanager.com">Support</a>
+  </div>
+  <div>support@modbusmanager.com</div>
+</footer>
+
+
+<script>
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+</script>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+<script src="/email-capture.js" defer></script>
+</body>
+</html>
