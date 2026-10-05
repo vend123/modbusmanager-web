@@ -788,6 +788,61 @@
   "activePoll": 0,
   "condColors": {},
   "scaling": {
+    "40428": {
+      "mul": "0.1",
+      "add": "0",
+      "decimals": "1"
+    },
+    "40429": {
+      "mul": "0.001",
+      "add": "0",
+      "decimals": "3"
+    },
+    "40500": {
+      "mul": "0.1",
+      "add": "0",
+      "decimals": "1"
+    },
+    "40532": {
+      "mul": "0.001",
+      "add": "0",
+      "decimals": "3"
+    },
+    "40572": {
+      "mul": "1",
+      "add": "0",
+      "decimals": "0"
+    },
+    "40573": {
+      "mul": "1",
+      "add": "0",
+      "decimals": "0"
+    },
+    "40574": {
+      "mul": "1",
+      "add": "0",
+      "decimals": "0"
+    },
+    "40575": {
+      "mul": "0.1",
+      "add": "0",
+      "decimals": "1"
+    },
+    "40576": {
+      "mul": "0.1",
+      "add": "0",
+      "decimals": "1"
+    },
+    "40577": {
+      "mul": "0.1",
+      "add": "0",
+      "decimals": "1"
+    },
+    "40685": {
+      "mul": "0.01",
+      "add": "0",
+      "decimals": "2"
+    },
     "51004": {
       "mul": "0.01",
       "add": "0",
@@ -1147,64 +1202,13 @@
       "mul": "0.1",
       "add": "0",
       "decimals": "1"
-    },
-    "40500": {
-      "mul": "0.1",
-      "add": "0",
-      "decimals": "1"
-    },
-    "40532": {
-      "mul": "0.001",
-      "add": "0",
-      "decimals": "3"
-    },
-    "40572": {
-      "mul": "1",
-      "add": "0",
-      "decimals": "0"
-    },
-    "40573": {
-      "mul": "1",
-      "add": "0",
-      "decimals": "0"
-    },
-    "40574": {
-      "mul": "1",
-      "add": "0",
-      "decimals": "0"
-    },
-    "40575": {
-      "mul": "0.1",
-      "add": "0",
-      "decimals": "1"
-    },
-    "40576": {
-      "mul": "0.1",
-      "add": "0",
-      "decimals": "1"
-    },
-    "40577": {
-      "mul": "0.1",
-      "add": "0",
-      "decimals": "1"
-    },
-    "40685": {
-      "mul": "0.01",
-      "add": "0",
-      "decimals": "2"
-    },
-    "40429": {
-      "mul": "0.001",
-      "add": "0",
-      "decimals": "3"
-    },
-    "40428": {
-      "mul": "0.1",
-      "add": "0",
-      "decimals": "1"
     }
   },
   "valueNames": {
+    "40004": {
+      "0": "Keelatud",
+      "1": "Lubatud"
+    },
     "40543": {
       "1": "Unlimited operation",
       "2": "Limited operation",
@@ -1225,10 +1229,6 @@
     "40699": {
       "0": "Lukus",
       "1": "Avatud"
-    },
-    "40004": {
-      "0": "Keelatud",
-      "1": "Lubatud"
     },
     "51009": {
       "45056": "Comms interrupted",
@@ -1354,40 +1354,42 @@
           "fontSize": 22,
           "color": "#00d4aa",
           "bold": true,
-          "w": 620,
+          "w": 940,
           "h": 36
         },
         {
           "id": 2,
-          "type": "iconvalue",
           "x": 40,
           "y": 64,
-          "value": 0,
           "label": "Active power",
           "sourceType": "tag",
           "tagName": "plant_P_kW",
+          "regType": "holdingRegisters",
           "unit": "kW",
-          "icon": "⚡",
+          "value": 0,
+          "type": "kpi",
+          "decimals": 1,
+          "periodMin": 60,
           "color": "#f0c040",
-          "fontSize": 26,
           "w": 220,
-          "h": 92
+          "h": 104
         },
         {
           "id": 3,
-          "type": "iconvalue",
           "x": 280,
           "y": 64,
-          "value": 0,
           "label": "Energy today",
           "sourceType": "tag",
           "tagName": "plant_Eday_kWh",
+          "regType": "holdingRegisters",
           "unit": "kWh",
-          "icon": "☀️",
+          "value": 0,
+          "type": "kpi",
+          "decimals": 1,
+          "periodMin": 60,
           "color": "#00d4aa",
-          "fontSize": 26,
           "w": 220,
-          "h": 92
+          "h": 104
         },
         {
           "id": 4,
@@ -1403,7 +1405,7 @@
           "color": "#3b82f6",
           "fontSize": 26,
           "w": 220,
-          "h": 92
+          "h": 104
         },
         {
           "id": 5,
@@ -1419,7 +1421,7 @@
           "fontSize": 30,
           "color": "#a78bfa",
           "w": 220,
-          "h": 92
+          "h": 104
         },
         {
           "id": 6,
@@ -1429,8 +1431,8 @@
           "value": 0,
           "text": "Inverter status (lamp lights up when status ≠ 0)",
           "fontSize": 14,
-          "color": "#8892a4",
-          "w": 560,
+          "color": "#9fb3cc",
+          "w": 940,
           "h": 24
         },
         {
@@ -1855,7 +1857,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 1",
@@ -1970,7 +1972,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 2",
@@ -2085,7 +2087,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 3",
@@ -2200,7 +2202,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 4",
@@ -2315,7 +2317,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 5",
@@ -2430,7 +2432,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 6",
@@ -2545,7 +2547,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 7",
@@ -2660,7 +2662,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 8",
@@ -2775,7 +2777,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 9",
@@ -2890,7 +2892,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 10",
@@ -3005,7 +3007,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 11",
@@ -3120,7 +3122,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 12",
@@ -3235,7 +3237,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 13",
@@ -3350,7 +3352,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 14",
@@ -3465,7 +3467,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 15",
@@ -3580,7 +3582,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 16",
@@ -3695,7 +3697,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 17",
@@ -3810,7 +3812,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 18",
@@ -3925,7 +3927,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 19",
@@ -4040,7 +4042,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 20",
@@ -4155,7 +4157,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 21",
@@ -4270,7 +4272,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 22",
@@ -4385,7 +4387,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 23",
@@ -4500,7 +4502,7 @@
           "type": "statictext",
           "x": 16,
           "y": 12,
-          "w": 380,
+          "w": 440,
           "h": 30,
           "value": 0,
           "text": "☀ Inverter 24",
@@ -5301,5 +5303,7 @@
   ],
   "script": "(* Plant aggregate values: combine I32/U32 hi/lo words + apply gain *)\nplant_P_kW := (plant_P_hi * 65536 + plant_P_lo) / 1000;\nplant_Eday_kWh := (plant_Eday_hi * 65536 + plant_Eday_lo) / 10;\nplant_Etot_kWh := (plant_Etot_hi * 65536 + plant_Etot_lo) / 10;\n\n(* Reactive power is signed (I32) *)\nplant_Q_kVar := plant_Q_hi * 65536 + plant_Q_lo;\nIF plant_Q_kVar > 2147483647 THEN\n  plant_Q_kVar := plant_Q_kVar - 4294967296;\nEND_IF;\nplant_Q_kVar := plant_Q_kVar / 1000;\n\n(* Inverter active power: I32 hi/lo → kW *)\ninv01_P_kW := (inv01_P_hi * 65536 + inv01_P_lo) / 1000;\ninv02_P_kW := (inv02_P_hi * 65536 + inv02_P_lo) / 1000;\ninv03_P_kW := (inv03_P_hi * 65536 + inv03_P_lo) / 1000;\ninv04_P_kW := (inv04_P_hi * 65536 + inv04_P_lo) / 1000;\ninv05_P_kW := (inv05_P_hi * 65536 + inv05_P_lo) / 1000;\ninv06_P_kW := (inv06_P_hi * 65536 + inv06_P_lo) / 1000;\ninv07_P_kW := (inv07_P_hi * 65536 + inv07_P_lo) / 1000;\ninv08_P_kW := (inv08_P_hi * 65536 + inv08_P_lo) / 1000;\ninv09_P_kW := (inv09_P_hi * 65536 + inv09_P_lo) / 1000;\ninv10_P_kW := (inv10_P_hi * 65536 + inv10_P_lo) / 1000;\ninv11_P_kW := (inv11_P_hi * 65536 + inv11_P_lo) / 1000;\ninv12_P_kW := (inv12_P_hi * 65536 + inv12_P_lo) / 1000;\ninv13_P_kW := (inv13_P_hi * 65536 + inv13_P_lo) / 1000;\ninv14_P_kW := (inv14_P_hi * 65536 + inv14_P_lo) / 1000;\ninv15_P_kW := (inv15_P_hi * 65536 + inv15_P_lo) / 1000;\ninv16_P_kW := (inv16_P_hi * 65536 + inv16_P_lo) / 1000;\ninv17_P_kW := (inv17_P_hi * 65536 + inv17_P_lo) / 1000;\ninv18_P_kW := (inv18_P_hi * 65536 + inv18_P_lo) / 1000;\ninv19_P_kW := (inv19_P_hi * 65536 + inv19_P_lo) / 1000;\ninv20_P_kW := (inv20_P_hi * 65536 + inv20_P_lo) / 1000;\ninv21_P_kW := (inv21_P_hi * 65536 + inv21_P_lo) / 1000;\ninv22_P_kW := (inv22_P_hi * 65536 + inv22_P_lo) / 1000;\ninv23_P_kW := (inv23_P_hi * 65536 + inv23_P_lo) / 1000;\ninv24_P_kW := (inv24_P_hi * 65536 + inv24_P_lo) / 1000;\n",
   "scriptInterval": 2000,
-  "saved": "2026-06-09T14:03:50.473402+00:00"
+  "saved": "2026-06-09T14:03:50.473402+00:00",
+  "dashTheme": "modern",
+  "dashFx": true
 }

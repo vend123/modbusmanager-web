@@ -592,7 +592,7 @@
           "tagName": "r1_speed",
           "regType": "inputRegisters",
           "min": 0,
-          "max": 65535,
+          "max": 1100,
           "threshold": 1,
           "colorOn": "#00d4aa",
           "colorOff": "#5b6470"
@@ -625,8 +625,8 @@
           "sourceType": "tag",
           "tagName": "f1_ok",
           "threshold": 1,
-          "colorOn": "#1e7a4f",
-          "colorOff": "#cc3333"
+          "colorOn": "#3fd28a",
+          "colorOff": "#ff4d5e"
         },
         {
           "value": 0,
@@ -654,7 +654,7 @@
           "tagName": "r2_speed",
           "regType": "inputRegisters",
           "min": 0,
-          "max": 65535,
+          "max": 1100,
           "threshold": 1,
           "colorOn": "#00d4aa",
           "colorOff": "#5b6470"
@@ -687,8 +687,8 @@
           "sourceType": "tag",
           "tagName": "f2_ok",
           "threshold": 1,
-          "colorOn": "#1e7a4f",
-          "colorOff": "#cc3333"
+          "colorOn": "#3fd28a",
+          "colorOff": "#ff4d5e"
         },
         {
           "value": 0,
@@ -716,7 +716,7 @@
           "tagName": "r3_speed",
           "regType": "inputRegisters",
           "min": 0,
-          "max": 65535,
+          "max": 1100,
           "threshold": 1,
           "colorOn": "#00d4aa",
           "colorOff": "#5b6470"
@@ -749,8 +749,8 @@
           "sourceType": "tag",
           "tagName": "f3_ok",
           "threshold": 1,
-          "colorOn": "#1e7a4f",
-          "colorOff": "#cc3333"
+          "colorOn": "#3fd28a",
+          "colorOff": "#ff4d5e"
         },
         {
           "value": 0,
@@ -778,7 +778,7 @@
           "tagName": "r4_speed",
           "regType": "inputRegisters",
           "min": 0,
-          "max": 65535,
+          "max": 1100,
           "threshold": 1,
           "colorOn": "#00d4aa",
           "colorOff": "#5b6470"
@@ -811,8 +811,8 @@
           "sourceType": "tag",
           "tagName": "f4_ok",
           "threshold": 1,
-          "colorOn": "#1e7a4f",
-          "colorOff": "#cc3333"
+          "colorOn": "#3fd28a",
+          "colorOff": "#ff4d5e"
         },
         {
           "value": 0,
@@ -840,7 +840,7 @@
           "tagName": "r5_speed",
           "regType": "inputRegisters",
           "min": 0,
-          "max": 65535,
+          "max": 1100,
           "threshold": 1,
           "colorOn": "#00d4aa",
           "colorOff": "#5b6470"
@@ -873,8 +873,8 @@
           "sourceType": "tag",
           "tagName": "f5_ok",
           "threshold": 1,
-          "colorOn": "#1e7a4f",
-          "colorOff": "#cc3333"
+          "colorOn": "#3fd28a",
+          "colorOff": "#ff4d5e"
         },
         {
           "value": 0,
@@ -902,7 +902,7 @@
           "tagName": "r6_speed",
           "regType": "inputRegisters",
           "min": 0,
-          "max": 65535,
+          "max": 1100,
           "threshold": 1,
           "colorOn": "#00d4aa",
           "colorOff": "#5b6470"
@@ -935,8 +935,8 @@
           "sourceType": "tag",
           "tagName": "f6_ok",
           "threshold": 1,
-          "colorOn": "#1e7a4f",
-          "colorOff": "#cc3333"
+          "colorOn": "#3fd28a",
+          "colorOff": "#ff4d5e"
         },
         {
           "value": 0,
@@ -964,7 +964,7 @@
           "tagName": "r7_speed",
           "regType": "inputRegisters",
           "min": 0,
-          "max": 65535,
+          "max": 1100,
           "threshold": 1,
           "colorOn": "#00d4aa",
           "colorOff": "#5b6470"
@@ -997,8 +997,8 @@
           "sourceType": "tag",
           "tagName": "f7_ok",
           "threshold": 1,
-          "colorOn": "#1e7a4f",
-          "colorOff": "#cc3333"
+          "colorOn": "#3fd28a",
+          "colorOff": "#ff4d5e"
         },
         {
           "value": 0,
@@ -1026,7 +1026,7 @@
           "tagName": "r8_speed",
           "regType": "inputRegisters",
           "min": 0,
-          "max": 65535,
+          "max": 1100,
           "threshold": 1,
           "colorOn": "#00d4aa",
           "colorOff": "#5b6470"
@@ -1059,8 +1059,8 @@
           "sourceType": "tag",
           "tagName": "f8_ok",
           "threshold": 1,
-          "colorOn": "#1e7a4f",
-          "colorOff": "#cc3333"
+          "colorOn": "#3fd28a",
+          "colorOff": "#ff4d5e"
         },
         {
           "value": 0,
@@ -1088,7 +1088,7 @@
           "tagName": "r9_speed",
           "regType": "inputRegisters",
           "min": 0,
-          "max": 65535,
+          "max": 1100,
           "threshold": 1,
           "colorOn": "#00d4aa",
           "colorOff": "#5b6470"
@@ -1121,8 +1121,8 @@
           "sourceType": "tag",
           "tagName": "f9_ok",
           "threshold": 1,
-          "colorOn": "#1e7a4f",
-          "colorOff": "#cc3333"
+          "colorOn": "#3fd28a",
+          "colorOff": "#ff4d5e"
         },
         {
           "value": 0,
@@ -1150,7 +1150,7 @@
           "tagName": "r10_speed",
           "regType": "inputRegisters",
           "min": 0,
-          "max": 65535,
+          "max": 1100,
           "threshold": 1,
           "colorOn": "#00d4aa",
           "colorOff": "#5b6470"
@@ -1183,8 +1183,8 @@
           "sourceType": "tag",
           "tagName": "f10_ok",
           "threshold": 1,
-          "colorOn": "#1e7a4f",
-          "colorOff": "#cc3333"
+          "colorOn": "#3fd28a",
+          "colorOff": "#ff4d5e"
         },
         {
           "value": 0,
@@ -1212,7 +1212,7 @@
           "tagName": "r11_speed",
           "regType": "inputRegisters",
           "min": 0,
-          "max": 65535,
+          "max": 1100,
           "threshold": 1,
           "colorOn": "#00d4aa",
           "colorOff": "#5b6470"
@@ -1245,8 +1245,8 @@
           "sourceType": "tag",
           "tagName": "f11_ok",
           "threshold": 1,
-          "colorOn": "#1e7a4f",
-          "colorOff": "#cc3333"
+          "colorOn": "#3fd28a",
+          "colorOff": "#ff4d5e"
         },
         {
           "value": 0,
@@ -1274,7 +1274,7 @@
           "tagName": "r12_speed",
           "regType": "inputRegisters",
           "min": 0,
-          "max": 65535,
+          "max": 1100,
           "threshold": 1,
           "colorOn": "#00d4aa",
           "colorOff": "#5b6470"
@@ -1307,8 +1307,8 @@
           "sourceType": "tag",
           "tagName": "f12_ok",
           "threshold": 1,
-          "colorOn": "#1e7a4f",
-          "colorOff": "#cc3333"
+          "colorOn": "#3fd28a",
+          "colorOff": "#ff4d5e"
         },
         {
           "value": 0,
@@ -1336,7 +1336,7 @@
           "tagName": "r13_speed",
           "regType": "inputRegisters",
           "min": 0,
-          "max": 65535,
+          "max": 1100,
           "threshold": 1,
           "colorOn": "#00d4aa",
           "colorOff": "#5b6470"
@@ -1369,8 +1369,8 @@
           "sourceType": "tag",
           "tagName": "f13_ok",
           "threshold": 1,
-          "colorOn": "#1e7a4f",
-          "colorOff": "#cc3333"
+          "colorOn": "#3fd28a",
+          "colorOff": "#ff4d5e"
         },
         {
           "value": 0,
@@ -1398,7 +1398,7 @@
           "tagName": "r14_speed",
           "regType": "inputRegisters",
           "min": 0,
-          "max": 65535,
+          "max": 1100,
           "threshold": 1,
           "colorOn": "#00d4aa",
           "colorOff": "#5b6470"
@@ -1431,8 +1431,8 @@
           "sourceType": "tag",
           "tagName": "f14_ok",
           "threshold": 1,
-          "colorOn": "#1e7a4f",
-          "colorOff": "#cc3333"
+          "colorOn": "#3fd28a",
+          "colorOff": "#ff4d5e"
         },
         {
           "value": 0,
@@ -1460,7 +1460,7 @@
           "tagName": "r15_speed",
           "regType": "inputRegisters",
           "min": 0,
-          "max": 65535,
+          "max": 1100,
           "threshold": 1,
           "colorOn": "#00d4aa",
           "colorOff": "#5b6470"
@@ -1493,8 +1493,8 @@
           "sourceType": "tag",
           "tagName": "f15_ok",
           "threshold": 1,
-          "colorOn": "#1e7a4f",
-          "colorOff": "#cc3333"
+          "colorOn": "#3fd28a",
+          "colorOff": "#ff4d5e"
         },
         {
           "value": 0,
@@ -1522,7 +1522,7 @@
           "tagName": "r16_speed",
           "regType": "inputRegisters",
           "min": 0,
-          "max": 65535,
+          "max": 1100,
           "threshold": 1,
           "colorOn": "#00d4aa",
           "colorOff": "#5b6470"
@@ -1555,8 +1555,8 @@
           "sourceType": "tag",
           "tagName": "f16_ok",
           "threshold": 1,
-          "colorOn": "#1e7a4f",
-          "colorOff": "#cc3333"
+          "colorOn": "#3fd28a",
+          "colorOff": "#ff4d5e"
         }
       ]
     }
@@ -2141,5 +2141,7 @@
   ],
   "script": "(* ebm-papst EC fans - status OK flag *)\n(* Speed % is shown by the fan widget itself (rounded). D011 status: 0 = OK *)\n\nf1_ok := 0;\nIF r1_status = 0 THEN f1_ok := 1; END_IF;\nf2_ok := 0;\nIF r2_status = 0 THEN f2_ok := 1; END_IF;\nf3_ok := 0;\nIF r3_status = 0 THEN f3_ok := 1; END_IF;\nf4_ok := 0;\nIF r4_status = 0 THEN f4_ok := 1; END_IF;\nf5_ok := 0;\nIF r5_status = 0 THEN f5_ok := 1; END_IF;\nf6_ok := 0;\nIF r6_status = 0 THEN f6_ok := 1; END_IF;\nf7_ok := 0;\nIF r7_status = 0 THEN f7_ok := 1; END_IF;\nf8_ok := 0;\nIF r8_status = 0 THEN f8_ok := 1; END_IF;\nf9_ok := 0;\nIF r9_status = 0 THEN f9_ok := 1; END_IF;\nf10_ok := 0;\nIF r10_status = 0 THEN f10_ok := 1; END_IF;\nf11_ok := 0;\nIF r11_status = 0 THEN f11_ok := 1; END_IF;\nf12_ok := 0;\nIF r12_status = 0 THEN f12_ok := 1; END_IF;\nf13_ok := 0;\nIF r13_status = 0 THEN f13_ok := 1; END_IF;\nf14_ok := 0;\nIF r14_status = 0 THEN f14_ok := 1; END_IF;\nf15_ok := 0;\nIF r15_status = 0 THEN f15_ok := 1; END_IF;\nf16_ok := 0;\nIF r16_status = 0 THEN f16_ok := 1; END_IF;\n",
   "scriptInterval": "1000",
-  "saved": "2026-06-19T09:52:20.066Z"
+  "saved": "2026-06-19T09:52:20.066Z",
+  "dashTheme": "modern",
+  "dashFx": true
 }
