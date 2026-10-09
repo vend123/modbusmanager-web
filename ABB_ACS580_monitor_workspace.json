@@ -270,7 +270,7 @@
       "description": "Status: fault (bit 3)"
     }
   ],
-  "script": "(* ABB ACS580 read-only monitoring — scale + decode status word *)\n(* NB: scaling and actual-value mapping depend on drive parameters 53.10-53.17. *)\n(* Verify against your drive; adjust gains below if values look off.            *)\n\n(* Output frequency: ABB Drives reference scale 20000 = 100% of 50 Hz *)\nout_freq_hz := act_freq_raw / 20000 * 50;\n\n(* Motor current: typical scale 10 = 1 A *)\nmotor_curr_a := act_curr_raw / 10;\n\n(* Status word bit decode: bit N = (sw mod 2^(N+1) - sw mod 2^N) / 2^N *)\nst_ready := status_word % 2;\nst_running := (status_word % 8 - status_word % 4) / 4;\nst_fault := (status_word % 16 - status_word % 8) / 8;\n",
+  "script": "(* ABB ACS580 read-only monitoring — scale + decode status word *)\n(* NB: scaling and actual-value mapping depend on drive parameters 58.105/58.106 (EFB data I/O) and 58.28/58.29. *)\n(* Verify against your drive; adjust gains below if values look off.            *)\n\n(* Output frequency: ABB Drives reference scale 20000 = 100% of 50 Hz *)\nout_freq_hz := act_freq_raw / 20000 * 50;\n\n(* Motor current: typical scale 10 = 1 A *)\nmotor_curr_a := act_curr_raw / 10;\n\n(* Status word bit decode: bit N = (sw mod 2^(N+1) - sw mod 2^N) / 2^N *)\nst_ready := status_word % 2;\nst_running := (status_word % 8 - status_word % 4) / 4;\nst_fault := (status_word % 16 - status_word % 8) / 8;\n",
   "scriptInterval": "500",
   "saved": "2026-06-30T08:36:00.229451+00:00",
   "dashTheme": "modern",

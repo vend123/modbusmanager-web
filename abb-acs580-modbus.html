@@ -42,7 +42,7 @@
   "description": "How to read and control an ABB ACS580 variable frequency drive over Modbus RTU using ModbusManager: control word, status word, frequency reference, actual values and the ABB Drives profile.",
   "url": "https://modbusmanager.com/abb-acs580-modbus.html",
   "datePublished": "2026-06-30",
-  "dateModified": "2026-06-30",
+  "dateModified": "2026-10-09",
   "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
   "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
 },
@@ -289,6 +289,36 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 
 <div class="divider-line"></div>
 
+<!-- REGISTER MAP (first; corrected against the ACS580 firmware manual 2026-10-09) -->
+<section class="section">
+  <div class="sec-label">// register map</div>
+  <h2 class="sec-title">ABB Drives profile registers</h2>
+  <p class="sec-sub">The core control and feedback registers in the ABB Drives profile. All are 16-bit holding registers, read with FC03 and written with FC06/FC16.</p>
+  <style>#abb-regs td.hl{white-space:normal;min-width:12rem}</style>
+  <table class="compare-table" id="abb-regs">
+    <thead><tr><th>Register</th><th>Function</th><th>Access</th><th class="hl">Selected by / notes</th></tr></thead>
+    <tbody>
+      <tr><td>40001</td><td>Control Word</td><td>R/W</td><td class="hl">58.101 &middot; start/stop/reset bits (ABB Drives profile)</td></tr>
+      <tr><td>40002</td><td>Reference 1</td><td>R/W</td><td class="hl">58.102 &middot; speed/frequency setpoint, 20000 = 100%</td></tr>
+      <tr><td>40003</td><td>Reference 2</td><td>R/W</td><td class="hl">58.103 &middot; second reference (e.g. torque), if used</td></tr>
+      <tr><td>40004</td><td>Status Word</td><td>R</td><td class="hl">58.104 &middot; ready/running/fault bits</td></tr>
+      <tr><td>40005</td><td>Actual Value 1</td><td>R</td><td class="hl">58.105 &middot; type set by 58.28 (speed or frequency by default)</td></tr>
+      <tr><td>40006</td><td>Actual Value 2</td><td>R</td><td class="hl">58.106 &middot; type set by 58.29</td></tr>
+      <tr><td>40007&ndash;40014</td><td>Data I/O 7&ndash;14</td><td>R/W</td><td class="hl">58.107&ndash;58.114 &middot; empty (None) until you point them at a parameter</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:1.2rem;font-size:0.85rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;max-width:780px;margin-left:auto;margin-right:auto;text-align:center">
+    ABB&rsquo;s manual numbers these 400001&ndash;400014; it is the same registers. To read more values in one block, set 58.107&ndash;58.114 to the parameters you want &mdash; e.g. 01.06 Output frequency, 01.07 Motor current, 01.10 Motor torque &mdash; and they appear at 40007 onward.
+  </div>
+  <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.6;font-size:0.9rem">Any parameter can also be read directly. With 58.33 Addressing mode set to Mode 0, a 16-bit value sits at <strong>400000 + 100 &times; group + index</strong>: 01.06 Output frequency is 400106, i.e. register 40106 in the numbering on this page. The 32-bit value of the same parameter is at 420000 + 200 &times; group + 2 &times; index (01.06 &rarr; 420212), which needs six-digit addressing. Other modes of 58.33 use other formulas &mdash; check it on the drive before you trust an address.</p>
+  <div style="max-width:720px;margin:1.8rem auto 0;background:var(--ink,#16181A);color:var(--enclosure,#e8e9e4);border-radius:4px;padding:1.1rem 1.4rem;display:flex;gap:1.2rem;align-items:center;justify-content:space-between;flex-wrap:wrap">
+    <span style="line-height:1.5;font-size:0.92rem;flex:1;min-width:240px">Looking these up to actually read them off a drive? Poll the status word at 40004 live in about a minute &mdash; no PLC, no SCADA server.</span>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.0/Modbus.Manager.Pro.Setup.1.9.0.exe" class="btn-cta-yellow" style="white-space:nowrap" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ACS580-RegisterMap-Bridge', 'product': 'pro', 'value': 1})">Read it live &rarr;</a>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
 <!-- ABOUT -->
 <section class="section">
   <div class="sec-label">// about the ACS580 fieldbus</div>
@@ -306,7 +336,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <p class="sec-sub">A free ModbusManager Pro workspace that <strong>only reads</strong> the ACS580 &mdash; status word, output frequency and motor current &mdash; with ready/running/fault lamps on a dashboard. It writes nothing, so it cannot start the motor.</p>
   <div style="max-width:720px;margin:1.6rem auto 0;background:var(--enclosure2,#e8e9e4);border:1px solid var(--ink,#16181A);border-radius:4px;padding:1.4rem 1.6rem">
     <p style="margin:0 0 1rem;color:var(--ink,#16181A);line-height:1.7">The workspace polls holding registers from 40004 read-only (FC03), decodes the status word into ready / running / fault indicators and scales the actual values to frequency and current. There is no control word and no write poll &mdash; it is safe to load on a live drive for monitoring. Set your drive&rsquo;s slave address and connection, and you see its state at a glance.</p>
-    <div style="background:#fff4d6;border:1px solid #d4a72c;border-radius:4px;padding:0.7rem 1rem;margin:0 0 1rem;font-size:0.85rem;color:#6b5618;line-height:1.5">⚠ The actual-value registers (40005+) and their scaling depend on drive parameters 53.10&ndash;53.17. This workspace assumes a typical mapping (frequency, current). Verify against your drive and adjust the gains in the script if values look off.</p>
+    <div style="background:#fff4d6;border:1px solid #d4a72c;border-radius:4px;padding:0.7rem 1rem;margin:0 0 1rem;font-size:0.85rem;color:#6b5618;line-height:1.5">⚠ What 40005 and 40006 carry is set in the drive (Data I/O 58.105/58.106, type 58.28/58.29), and so is their scaling. This workspace assumes a typical setup (frequency, current). Verify against your drive and adjust the gains in the script if values look off.</p>
     <div class="hero-ctas">
       <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.0/Modbus.Manager.Pro.Setup.1.9.0.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ACS580-Workspace-Bridge', 'product': 'pro', 'value': 1})">Download ModbusManager Pro (free trial)</a>
       <a href="/ABB_ACS580_monitor_workspace.json" download style="background:transparent;color:var(--ink,#16181A);border:2px solid var(--ink,#16181A);padding:0.65rem 1.6rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none">+ ACS580 workspace (.json)</a>
@@ -344,34 +374,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 
 <div class="divider-line"></div>
 
-<!-- REGISTER MAP -->
-<section class="section">
-  <div class="sec-label">// register map</div>
-  <h2 class="sec-title">ABB Drives profile registers</h2>
-  <p class="sec-sub">The core control and feedback registers in the ABB Drives profile. All are 16-bit holding registers, read with FC03 and written with FC06/FC16.</p>
-  <table class="compare-table">
-    <thead><tr><th>Register</th><th>Function</th><th>Access</th><th class="hl">Notes</th></tr></thead>
-    <tbody>
-      <tr><td>40001</td><td>Control Word</td><td>R/W</td><td class="hl">Start/stop/reset bits (ABB Drives profile)</td></tr>
-      <tr><td>40002</td><td>Reference 1</td><td>R/W</td><td class="hl">Speed/frequency setpoint, 20000 = 100%</td></tr>
-      <tr><td>40003</td><td>Reference 2</td><td>R/W</td><td class="hl">Second reference (e.g. torque), if used</td></tr>
-      <tr><td>40004</td><td>Status Word</td><td>R</td><td class="hl">Ready/running/fault bits</td></tr>
-      <tr><td>40005</td><td>Actual Value 1</td><td>R</td><td class="hl">Mapped via par. 53.10 (e.g. output freq)</td></tr>
-      <tr><td>40006</td><td>Actual Value 2</td><td>R</td><td class="hl">Mapped via par. 53.11 (e.g. current)</td></tr>
-      <tr><td>40007&ndash;40012</td><td>Actual Values 3&ndash;8</td><td>R</td><td class="hl">Mapped via par. 53.12&ndash;53.17</td></tr>
-    </tbody>
-  </table>
-  <div style="margin-top:1.2rem;font-size:0.85rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;max-width:780px;margin-left:auto;margin-right:auto;text-align:center">
-    Tip: the actual-value registers (40005+) are user-mapped. Set par. 53.10&ndash;53.17 to the drive parameters you want to read &mdash; e.g. 01.06 Output frequency, 01.07 Motor current, 01.10 Motor torque.
-  </div>
-  <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.6;font-size:0.9rem">ABB also supports direct parameter access: register number = parameter number with a leading digit, e.g. parameter 01.06 maps to a register near 40106 in 16-bit mode. The exact mapping and 16/32-bit behaviour depend on par. 58.33 addressing mode &mdash; always confirm against the firmware manual for your drive.</p>
-  <div style="max-width:720px;margin:1.8rem auto 0;background:var(--ink,#16181A);color:var(--enclosure,#e8e9e4);border-radius:4px;padding:1.1rem 1.4rem;display:flex;gap:1.2rem;align-items:center;justify-content:space-between;flex-wrap:wrap">
-    <span style="line-height:1.5;font-size:0.92rem;flex:1;min-width:240px">Looking these up to actually read them off a drive? Poll the status word at 40004 live in about a minute &mdash; no PLC, no SCADA server.</span>
-    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.0/Modbus.Manager.Pro.Setup.1.9.0.exe" class="btn-cta-yellow" style="white-space:nowrap" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ACS580-RegisterMap-Bridge', 'product': 'pro', 'value': 1})">Read it live &rarr;</a>
-  </div>
-</section>
 
-<div class="divider-line"></div>
 
 <!-- CONTROL WORD -->
 <section class="section">

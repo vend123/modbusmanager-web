@@ -37,7 +37,7 @@
   "description": "How to read an Eastron SDM630 three-phase energy meter over Modbus RTU using ModbusManager: full register map, FLOAT32 decoding, FC04 input registers, serial settings and live data.",
   "url": "https://modbusmanager.com/eastron-sdm630-modbus.html",
   "datePublished": "2026-06-30",
-  "dateModified": "2026-06-30",
+  "dateModified": "2026-10-09",
   "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
   "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
 },
@@ -284,6 +284,83 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 
 <div class="divider-line"></div>
 
+<!-- REGISTER MAP (first: it is what people search for; corrected and extended 2026-10-09) -->
+<section class="section">
+  <div class="sec-label">// register map</div>
+  <h2 class="sec-title">SDM630 Modbus register list</h2>
+  <p class="sec-sub">Every measurement is a FLOAT32 (two registers), read with function code <strong>04</strong>. The left column is the 1-based number from the Eastron protocol; the second is the 0-based address that goes in the request frame.</p>
+  <table class="compare-table">
+    <thead><tr><th>Register</th><th>Address</th><th>Measurement</th><th class="hl">Unit</th></tr></thead>
+    <tbody>
+      <tr><td>30001</td><td>0x0000</td><td>Voltage L1-N</td><td class="hl">V</td></tr>
+      <tr><td>30003</td><td>0x0002</td><td>Voltage L2-N</td><td class="hl">V</td></tr>
+      <tr><td>30005</td><td>0x0004</td><td>Voltage L3-N</td><td class="hl">V</td></tr>
+      <tr><td>30007</td><td>0x0006</td><td>Current L1</td><td class="hl">A</td></tr>
+      <tr><td>30009</td><td>0x0008</td><td>Current L2</td><td class="hl">A</td></tr>
+      <tr><td>30011</td><td>0x000A</td><td>Current L3</td><td class="hl">A</td></tr>
+      <tr><td>30013</td><td>0x000C</td><td>Active power L1</td><td class="hl">W</td></tr>
+      <tr><td>30015</td><td>0x000E</td><td>Active power L2</td><td class="hl">W</td></tr>
+      <tr><td>30017</td><td>0x0010</td><td>Active power L3</td><td class="hl">W</td></tr>
+      <tr><td>30019</td><td>0x0012</td><td>Apparent power L1</td><td class="hl">VA</td></tr>
+      <tr><td>30021</td><td>0x0014</td><td>Apparent power L2</td><td class="hl">VA</td></tr>
+      <tr><td>30023</td><td>0x0016</td><td>Apparent power L3</td><td class="hl">VA</td></tr>
+      <tr><td>30025</td><td>0x0018</td><td>Reactive power L1</td><td class="hl">VAr</td></tr>
+      <tr><td>30027</td><td>0x001A</td><td>Reactive power L2</td><td class="hl">VAr</td></tr>
+      <tr><td>30029</td><td>0x001C</td><td>Reactive power L3</td><td class="hl">VAr</td></tr>
+      <tr><td>30031</td><td>0x001E</td><td>Power factor L1</td><td class="hl">&mdash;</td></tr>
+      <tr><td>30033</td><td>0x0020</td><td>Power factor L2</td><td class="hl">&mdash;</td></tr>
+      <tr><td>30035</td><td>0x0022</td><td>Power factor L3</td><td class="hl">&mdash;</td></tr>
+      <tr><td>30043</td><td>0x002A</td><td>Average voltage L-N</td><td class="hl">V</td></tr>
+      <tr><td>30049</td><td>0x0030</td><td>Sum of line currents</td><td class="hl">A</td></tr>
+      <tr><td>30053</td><td>0x0034</td><td>Total active power</td><td class="hl">W</td></tr>
+      <tr><td>30057</td><td>0x0038</td><td>Total apparent power</td><td class="hl">VA</td></tr>
+      <tr><td>30061</td><td>0x003C</td><td>Total reactive power</td><td class="hl">VAr</td></tr>
+      <tr><td>30063</td><td>0x003E</td><td>Total power factor</td><td class="hl">&mdash;</td></tr>
+      <tr><td>30071</td><td>0x0046</td><td>Frequency</td><td class="hl">Hz</td></tr>
+      <tr><td>30073</td><td>0x0048</td><td>Import active energy</td><td class="hl">kWh</td></tr>
+      <tr><td>30075</td><td>0x004A</td><td>Export active energy</td><td class="hl">kWh</td></tr>
+      <tr><td>30077</td><td>0x004C</td><td>Import reactive energy</td><td class="hl">kVArh</td></tr>
+      <tr><td>30079</td><td>0x004E</td><td>Export reactive energy</td><td class="hl">kVArh</td></tr>
+      <tr><td>30201</td><td>0x00C8</td><td>Voltage L1-L2</td><td class="hl">V</td></tr>
+      <tr><td>30203</td><td>0x00CA</td><td>Voltage L2-L3</td><td class="hl">V</td></tr>
+      <tr><td>30205</td><td>0x00CC</td><td>Voltage L3-L1</td><td class="hl">V</td></tr>
+      <tr><td>30225</td><td>0x00E0</td><td>Neutral current</td><td class="hl">A</td></tr>
+      <tr><td>30235</td><td>0x00EA</td><td>Voltage THD L1-N</td><td class="hl">%</td></tr>
+      <tr><td>30237</td><td>0x00EC</td><td>Voltage THD L2-N</td><td class="hl">%</td></tr>
+      <tr><td>30239</td><td>0x00EE</td><td>Voltage THD L3-N</td><td class="hl">%</td></tr>
+      <tr><td>30343</td><td>0x0156</td><td>Total active energy (import + export)</td><td class="hl">kWh</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:1.2rem;font-size:0.85rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;max-width:760px;margin-left:auto;margin-right:auto;text-align:center">
+    One request may ask for at most 40 values (80 registers), or the meter answers with an exception. 30001&ndash;30080 covers everything from voltage to reactive energy in two reads.
+  </div>
+  <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.6;font-size:0.9rem">The protocol document lists further demand, per-phase energy and current-THD registers; the table above is what installers and integrators poll in practice. Configuration (baud rate, address, CT ratio on the MCT) lives in holding registers, read with FC03 and written with FC16.</p>
+
+  <h3 style="text-align:center;margin:2.2rem 0 .6rem;color:var(--fg)">SDM630MCT &mdash; the CT-operated variant</h3>
+  <p style="max-width:760px;margin:0 auto;text-align:center;color:var(--muted);line-height:1.7;font-size:.92rem">The <strong>SDM630MCT</strong> measures through external current transformers instead of direct connection, but speaks the same Modbus: FC04, FLOAT32 pairs, and the measurement addresses above are identical. The practical differences are the CT ratio &mdash; set from the meter&rsquo;s set-up menu (or the holding registers listed in the MCT protocol document) so the reported currents and powers are already scaled to primary values &mdash; and slightly different energy-resolution behaviour on some firmware. If your SDM630MCT readings look off by a constant factor, the CT ratio is the first thing to check. The free workspace on this page works with the MCT unchanged.</p>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- WORKED EXAMPLE -->
+<section class="section">
+  <div class="sec-label">// one value, by hand</div>
+  <h2 class="sec-title">Decode an SDM630 reading yourself</h2>
+  <p class="sec-sub">What actually goes over the RS-485 line when you read the L1 voltage from meter address 1.</p>
+  <style>#sdm-frame td{white-space:normal}#sdm-frame code{white-space:nowrap}</style>
+  <table class="compare-table" id="sdm-frame">
+    <thead><tr><th>Bytes</th><th class="hl">Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>Request<br><code>01 04 00 00 00 02 71 CB</code></td><td class="hl">slave 1, FC04, address 0x0000 (register 30001), 2 registers, CRC</td></tr>
+      <tr><td>Response<br><code>01 04 04 43 66 66 66 A5 95</code></td><td class="hl">slave 1, FC04, 4 data bytes, value, CRC</td></tr>
+      <tr><td>Value<br><code>0x43666666</code></td><td class="hl">IEEE 754 float, high word first = <strong>230.4 V</strong></td></tr>
+    </tbody>
+  </table>
+  <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.7">Frequency works the same way at address 0x0046: request <code>01 04 00 46 00 02 90 1E</code>, a 50.00&nbsp;Hz answer is <code>01 04 04 42 48 00 00 6F EA</code>. If you get <code>42 48 00 00</code> where you expected a power factor, you are reading 30071 &mdash; frequency &mdash; instead of 30063. And if the four data bytes come back as <code>66 66 43 66</code>, your software has the word order the wrong way round: the SDM630 sends the high word first.</p>
+</section>
+
+<div class="divider-line"></div>
+
 <!-- ABOUT -->
 <section class="section">
   <div class="sec-label">// about the SDM630</div>
@@ -336,40 +413,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 
 <div class="divider-line"></div>
 
-<!-- REGISTER MAP -->
-<section class="section">
-  <div class="sec-label">// register map</div>
-  <h2 class="sec-title">SDM630 measurement registers</h2>
-  <p class="sec-sub">All values are FLOAT32 (two registers each), read with function code 04. Addresses use the 1-based 30001 input-register numbering from the Eastron protocol.</p>
-  <table class="compare-table">
-    <thead><tr><th>Register</th><th>Measurement</th><th>Unit</th><th class="hl">Type</th></tr></thead>
-    <tbody>
-      <tr><td>30001</td><td>Voltage L1-N</td><td>V</td><td class="hl">FLOAT32</td></tr>
-      <tr><td>30003</td><td>Voltage L2-N</td><td>V</td><td class="hl">FLOAT32</td></tr>
-      <tr><td>30005</td><td>Voltage L3-N</td><td>V</td><td class="hl">FLOAT32</td></tr>
-      <tr><td>30007</td><td>Current L1</td><td>A</td><td class="hl">FLOAT32</td></tr>
-      <tr><td>30009</td><td>Current L2</td><td>A</td><td class="hl">FLOAT32</td></tr>
-      <tr><td>30011</td><td>Current L3</td><td>A</td><td class="hl">FLOAT32</td></tr>
-      <tr><td>30013</td><td>Active Power L1</td><td>W</td><td class="hl">FLOAT32</td></tr>
-      <tr><td>30015</td><td>Active Power L2</td><td>W</td><td class="hl">FLOAT32</td></tr>
-      <tr><td>30017</td><td>Active Power L3</td><td>W</td><td class="hl">FLOAT32</td></tr>
-      <tr><td>30053</td><td>Total Active Power</td><td>W</td><td class="hl">FLOAT32</td></tr>
-      <tr><td>30071</td><td>Total Power Factor</td><td>&mdash;</td><td class="hl">FLOAT32</td></tr>
-      <tr><td>30077</td><td>Frequency</td><td>Hz</td><td class="hl">FLOAT32</td></tr>
-      <tr><td>30073</td><td>Total Import Active Energy</td><td>kWh</td><td class="hl">FLOAT32</td></tr>
-      <tr><td>30075</td><td>Total Export Active Energy</td><td>kWh</td><td class="hl">FLOAT32</td></tr>
-    </tbody>
-  </table>
-  <div style="margin-top:1.2rem;font-size:0.85rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;max-width:760px;margin-left:auto;margin-right:auto;text-align:center">
-    Note: in 0-based addressing, register 30001 = address 0x0000, 30007 = 0x0006, and so on. Each request must be 40 parameters or fewer, or the meter returns an exception.
-  </div>
-  <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.6;font-size:0.9rem">The SDM630 exposes around 100 registers in total, including per-phase apparent and reactive power, per-phase power factor, THD and demand values. The full list is in the Eastron SDM630 Modbus protocol document; the registers above are the most commonly polled.</p>
 
-  <h3 style="text-align:center;margin:2.2rem 0 .6rem;color:var(--fg)">SDM630MCT &mdash; the CT-operated variant</h3>
-  <p style="max-width:760px;margin:0 auto;text-align:center;color:var(--muted);line-height:1.7;font-size:.92rem">The <strong>SDM630MCT</strong> measures through external current transformers instead of direct connection, but speaks the same Modbus: FC04, FLOAT32 pairs, and the measurement addresses above are identical. The practical differences are the CT ratio &mdash; set from the meter&rsquo;s set-up menu (or the holding registers listed in the MCT protocol document) so the reported currents and powers are already scaled to primary values &mdash; and slightly different energy-resolution behaviour on some firmware. If your SDM630MCT readings look off by a constant factor, the CT ratio is the first thing to check. The free workspace on this page works with the MCT unchanged.</p>
-</section>
-
-<div class="divider-line"></div>
 
 <!-- HOW TO -->
 <section class="section">

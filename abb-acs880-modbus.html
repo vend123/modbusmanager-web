@@ -338,13 +338,13 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
       <tr><td>40002</td><td>Reference 1</td><td>R/W</td><td class="hl">Speed/frequency setpoint, 20000 = 100%</td></tr>
       <tr><td>40003</td><td>Reference 2</td><td>R/W</td><td class="hl">Second reference (e.g. torque), if used</td></tr>
       <tr><td>40004</td><td>Status Word</td><td>R</td><td class="hl">Ready/running/fault bits</td></tr>
-      <tr><td>40005</td><td>Actual Value 1</td><td>R</td><td class="hl">Mapped via par. 58.101+ (EFB data I/O) (e.g. output freq)</td></tr>
-      <tr><td>40006</td><td>Actual Value 2</td><td>R</td><td class="hl">Mapped via par. 53.11 (e.g. current)</td></tr>
-      <tr><td>40007&ndash;40012</td><td>Actual Values 3&ndash;8</td><td>R</td><td class="hl">Mapped via par. 53.12&ndash;53.17</td></tr>
+      <tr><td>40005</td><td>Actual Value 1</td><td>R</td><td class="hl">Selected by the EFB data I/O parameters 58.101+ (e.g. output freq)</td></tr>
+      <tr><td>40006</td><td>Actual Value 2</td><td>R</td><td class="hl">Selected by 58.101+ (e.g. current)</td></tr>
+      <tr><td>40007 onward</td><td>Further data words</td><td>R</td><td class="hl">Selected by 58.101+, if you assign them</td></tr>
     </tbody>
   </table>
   <div style="margin-top:1.2rem;font-size:0.85rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;max-width:780px;margin-left:auto;margin-right:auto;text-align:center">
-    Tip: the actual-value registers (40005+) are user-mapped. Set par. 58.101+ (EFB data I/O)&ndash;53.17 to the drive parameters you want to read &mdash; e.g. 01.06 Output frequency, 01.07 Motor current, 01.10 Motor torque.
+    Tip: what the registers from 40005 onward carry is chosen with the EFB data I/O parameters (58.101+) &mdash; e.g. 01.06 Output frequency, 01.07 Motor current, 01.10 Motor torque. Parameter group 53 is not it: on the ACS880 that is FBA A data out, for an optional fieldbus adapter.
   </div>
   <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.6;font-size:0.9rem">ABB also supports direct parameter access: register number = parameter number with a leading digit, e.g. parameter 01.06 maps to a register near 40106 in 16-bit mode. The exact mapping and 16/32-bit behaviour depend on par. 58.33 addressing mode &mdash; always confirm against the firmware manual for your drive.</p>
 </section>
