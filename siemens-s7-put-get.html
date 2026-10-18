@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Siemens S7-1200 / S7-1500 PUT/GET from a PC: No PLC Code</title>
+<meta name="description" content="Read and write Siemens S7-1200/1500 DBs, merkers and I/O from a PC over PUT/GET: TIA settings, address format, HMI, logging and an S7-Modbus gateway.">
+<meta name="keywords" content="S7-1200 PUT GET, S7-1500 PUT GET, Siemens S7 PC software, read S7-1200 data, S7 to Modbus gateway, optimized block access PUT GET, S7 HMI software, S7 data logger, Siemens S7 Modbus TCP converter, snap7 alternative">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/siemens-s7-put-get.html">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:title" content="Siemens S7-1200 / S7-1500 PUT/GET from a PC: No PLC Code">
+<meta property="og:description" content="Read and write an S7-1200 or S7-1500 from a Windows PC over PUT/GET without PLC code: two TIA Portal settings, the address format, dashboards and an S7 to Modbus gateway in both directions.">
+<meta property="og:url" content="https://modbusmanager.com/siemens-s7-put-get.html">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://modbusmanager.com/og-s7-putget.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:published_time" content="2026-10-18T00:00:00Z">
+<meta property="article:section" content="Guides">
+<meta property="article:tag" content="Siemens S7">
+<meta property="article:tag" content="S7-1200">
+<meta property="article:tag" content="S7-1500">
+<meta property="article:tag" content="PUT/GET">
+<meta property="article:tag" content="Modbus gateway">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Siemens S7-1200 / S7-1500 PUT/GET from a PC: No PLC Code">
+<meta name="twitter:description" content="Read and write an S7-1200 or S7-1500 from a Windows PC over PUT/GET without PLC code: two TIA Portal settings, the address format, dashboards and an S7 to Modbus gateway in both directions.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-s7-putget.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Siemens S7-1200 / S7-1500 PUT/GET from a PC",
+  "description": "Read and write an S7-1200 or S7-1500 from a Windows PC over PUT/GET without PLC code: two TIA Portal settings, the address format, dashboards and an S7 to Modbus gateway in both directions.",
+  "url": "https://modbusmanager.com/siemens-s7-put-get.html",
+  "image": "https://modbusmanager.com/og-s7-putget.png",
+  "datePublished": "2026-10-18",
+  "author": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "keywords": "S7-1200 PUT GET, S7-1500 PUT GET, Siemens S7 PC software, read S7-1200 data, S7 to Modbus gateway, optimized block access PUT GET, S7 HMI software, S7 data logger, Siemens S7 Modbus TCP converter, snap7 alternative"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do I need to change the PLC program to use PUT/GET?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. You permit PUT/GET in the CPU's protection settings, turn off optimized block access on the DBs you read, and download. No communication block is added to the program."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can PUT/GET read optimized data blocks?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. PUT/GET addresses data by absolute byte offset, which optimized DBs do not have. Turn off \"Optimized block access\" for each DB you want to read."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it work with the S7-300 and S7-400?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, over the same S7 communication. Use rack 0 and slot 2 for an S7-300/400 instead of slot 1."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can the PLC read data from ModbusManager?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The gateway's S7 server lets the PLC read virtual data blocks with GET and write them with PUT, with the values coming from Modbus devices or tags. Only PLC addresses on the allowed list can connect."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the Siemens S7 support finished?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is released as beta in ModbusManager Pro 1.9.2 and later, tested against a simulated S7 PLC. Feedback from real CPUs is welcome."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+.article-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 5rem}
+.breadcrumb{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--muted);margin-bottom:2rem}
+.breadcrumb a{color:var(--muted);text-decoration:none}
+.breadcrumb a:hover{color:var(--ink)}
+h1{font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;line-height:1.05;text-transform:uppercase;letter-spacing:0.01em;margin-bottom:1rem}
+h2{font-family:'Saira Condensed',sans-serif;font-size:1.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin:2.5rem 0 0.8rem;padding-top:0.5rem;border-top:2px solid var(--ink)}
+h3{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.03em;margin:1.5rem 0 0.5rem;color:var(--amber-ink)}
+p{font-size:0.93rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+ul{font-size:0.93rem;color:var(--body);line-height:1.75;margin:0 0 1rem 1.2rem;padding-left:0.6rem}
+li{margin-bottom:0.4rem}
+.lead{font-size:1.05rem;color:var(--ink);line-height:1.7;margin-bottom:2rem;border-left:3px solid var(--safety);padding-left:1rem}
+code{font-family:'IBM Plex Mono',monospace;font-size:0.82rem;background:#fff;border:1px solid var(--steel);padding:1px 5px;border-radius:2px}
+pre{font-family:'IBM Plex Mono',monospace;font-size:0.8rem;background:var(--ink);color:#E6E8E3;padding:1.2rem 1.4rem;border-radius:3px;overflow-x:auto;margin:1.2rem 0;line-height:1.6}
+pre .c{color:#888}
+pre .v{color:#F2A900}
+pre .k{color:#7ec8e3}
+table{width:100%;border-collapse:collapse;font-size:0.83rem;margin:1.2rem 0;background:var(--plate);border:2px solid var(--ink)}
+th{text-align:left;padding:0.65rem 0.9rem;border-bottom:2px solid var(--ink);background:var(--enclosure2);font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted)}
+td{padding:0.6rem 0.9rem;border-bottom:1px solid var(--steel);color:var(--body)}
+tr:hover td{background:#ECEEE9}
+td.mono{font-family:'IBM Plex Mono',monospace;font-size:0.78rem}
+td.formula{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--amber-ink)}
+.callout{background:var(--plate);border:1.5px solid var(--ink);border-left:4px solid var(--safety);padding:1rem 1.2rem;border-radius:2px;margin:1.5rem 0;font-size:0.88rem;color:var(--body);line-height:1.6}
+.callout strong{color:var(--ink)}
+.callout.tip{border-left-color:var(--run)}
+.callout.warn{border-left-color:var(--bad)}
+.step-num{display:inline-block;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.85rem;background:var(--ink);color:var(--safety);padding:2px 8px;border-radius:2px;margin-right:8px;letter-spacing:0.05em}
+.cta-box{background:var(--ink);color:var(--enclosure);padding:2rem 2.2rem;border-radius:3px;margin:3rem 0;display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
+.cta-box h3{color:var(--safety);margin:0 0 0.4rem;font-size:1.2rem;border:none;padding:0}
+.cta-box p{color:#B9BDB6;font-size:0.85rem;margin:0}
+.cta-box a{background:var(--safety);color:var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.cta-box a:hover{background:#fff}
+.download-box{border:2px solid var(--ink);background:var(--enclosure2);padding:1.4rem 1.8rem;border-radius:3px;margin:2rem 0;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.download-box h3{margin:0 0 0.3rem;font-size:1rem;border:none;padding:0;font-family:'IBM Plex Mono',monospace;color:var(--ink)}
+.download-box p{margin:0;font-size:0.82rem;color:var(--muted);max-width:46ch}
+.download-box a{background:var(--ink);color:var(--enclosure);padding:0.6rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.download-box a:hover{background:var(--safety);color:var(--ink)}
+footer{border-top:2px solid var(--ink);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;color:var(--muted);flex-wrap:wrap;gap:1rem;background:var(--enclosure2)}
+.footer-logo{font-family:'Saira Condensed',sans-serif;color:var(--ink);font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--ink)}
+@media(max-width:640px){nav .nav-links{display:none}.article-wrap{padding:2rem 1.2rem 4rem}h1{font-size:2rem}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}td,th{white-space:normal;word-break:break-word}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;background:transparent;border:none;min-width:190px;display:none;flex-direction:column;z-index:200}.nav-drop-menu>a{background:var(--enclosure2,#e8e9e4);border-left:1px solid var(--ink,#16181A);border-right:1px solid var(--ink,#16181A)}.nav-drop-menu>a:first-child{border-top:1px solid var(--ink,#16181A);border-radius:3px 3px 0 0;padding-top:0.5rem}.nav-drop-menu>a:last-child{border-bottom:1px solid var(--ink,#16181A);border-radius:0 0 3px 3px;padding-bottom:0.5rem;box-shadow:0 6px 20px rgba(0,0,0,0.18)}
+.nav-drop:hover .nav-drop-menu{display:flex}
+.nav-drop-menu a{padding:0.5rem 1rem;white-space:nowrap;text-transform:none;font-size:0.78rem;color:var(--ink,#16181A)}
+.nav-drop-menu a:hover{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+nav .nav-links.open .nav-drop-menu{position:static;display:flex;margin:0.3rem 0 0.3rem 0.8rem;border:none;box-shadow:none;padding:0;min-width:0;background:none}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+
+@media(max-width:680px){pre,code{white-space:pre-wrap;word-break:break-word;max-width:100%;overflow-x:auto}}
+</style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/#guides"},{"@type": "ListItem","position": 3,"name": "Siemens S7 PUT/GET Guide","item": "https://modbusmanager.com/siemens-s7-put-get.html"}]}
+</script>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label">Features ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-scanner.html" style="color:#9A6700;font-weight:600">&#128269; Modbus Scanner</a>
+        <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
+        <a href="/modbus-hmi-runtime.html" style="padding-left:1.5rem">HMI Runtime (OEM)</a>
+        <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
+        <a href="/modbus-rtu-rs485-data-logger.html" style="padding-left:1.5rem">RTU / RS-485 Logging</a>
+        <a href="/modbus-logging-interval-deadband.html" style="padding-left:1.5rem">Interval &amp; Deadband</a>
+        <a href="/modbus-to-csv-logging.html" style="padding-left:1.5rem">CSV Export</a>
+        <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
+        <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
+        <a href="/modbus-structured-text-scripting.html">&#127991; Tags &amp; Structured Text</a>
+      </div>
+    </li>
+    <li class="nav-drop">
+      <span class="nav-drop-label">Guides ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200</a>
+        <a href="/siemens-s7-put-get.html">Siemens S7 PUT/GET</a>
+        <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+        <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+        <a href="/huawei-sun2000-modbus.html">Huawei SUN2000</a>
+        <a href="/sungrow-inverter-modbus.html">Sungrow Inverters</a>
+        <a href="/sunspec-modbus-sma-fronius-solaredge.html">SunSpec: SMA, Fronius, SolarEdge</a>
+        <a href="/deye-sunsynk-growatt-modbus.html">Deye, Sunsynk &amp; Growatt</a>
+        <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+        <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+        <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+        <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+        <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+        <a href="/powerflex-525-modbus.html">PowerFlex 525</a>
+        <a href="/durapulse-gs20-modbus.html">DURApulse GS20</a>
+        <a href="/yaskawa-v1000-modbus.html">Yaskawa V1000</a>
+        <a href="/modbus-vfd-speed-reference.html">VFD Speed Registers</a>
+        <a href="/wattnode-modbus.html">WattNode</a>
+        <a href="/manual.html">Documentation</a>
+      </div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.3/Modbus.Manager.Pro.Setup.1.9.3.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-S7PutGet-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/v1.4.9/Modbus.Manager.Setup.1.4.9.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-S7PutGet-Nav', 'product': 'standard', 'value': 1})">Download free trial</a>
+  </div>
+</nav>
+<div class="hazard"></div>
+
+<div class="article-wrap">
+
+  <div class="breadcrumb">
+    <a href="/">ModbusManager</a> &rsaquo; Guides &rsaquo; Siemens S7 PUT/GET
+  </div>
+
+  <h1>Siemens S7-1200 / S7-1500 PUT/GET from a PC</h1>
+
+  <p class="lead">Read and write a Siemens S7 PLC's data blocks, merkers, inputs and outputs from a Windows PC <strong>without writing any PLC code</strong>: two settings in TIA Portal, and ModbusManager Pro talks to the CPU over S7 communication (PUT/GET, port 102). Use it for an HMI dashboard, logging, alarms, or as a <strong>gateway between S7 and Modbus</strong> &mdash; in both directions.</p>
+
+  <div class="callout">
+    <strong>Beta.</strong> Siemens S7 support is new in ModbusManager Pro 1.9.2 and has been tested against a simulated S7 PLC. It is marked beta in the application; please tell us how it works with your CPU.
+  </div>
+
+  <figure style="margin:1.8rem 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink)">
+    <img src="/s7-dashboard.png" width="1320" height="825" loading="lazy" decoding="async"
+         alt="ModbusManager Pro dashboard reading a Siemens S7 PLC over PUT/GET: a PID faceplate on DB1 with process value, setpoint, output and auto mode, the PLC heartbeat M0.0, a seconds counter MW2, value cards with their S7 addresses and a trend of process value and setpoint after a setpoint step"
+         style="width:100%;height:auto;display:block">
+    <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">
+      The free workspace below, reading a simulated S7 PLC. The setpoint step to 24 &deg;C was written from the faceplate over PUT; the PV follows it in the PLC.
+    </figcaption>
+  </figure>
+
+  <h2>PUT/GET or Modbus TCP?</h2>
+
+  <p>There are two ways to get data out of an S7-1200 or S7-1500 into a PC program:</p>
+  <table>
+    <tr><th></th><th>PUT/GET (this page)</th><th>Modbus TCP (MB_SERVER)</th></tr>
+    <tr><td>PLC program</td><td>None &mdash; two settings in the CPU and the DB</td><td>An MB_SERVER block and a register area mapped to your data</td></tr>
+    <tr><td>Addresses</td><td>The PLC's own: DB1.DBD4, M0.0, IW64</td><td>Holding registers you assign</td></tr>
+    <tr><td>Data types</td><td>BOOL, BYTE, WORD, INT, DWORD, DINT, REAL, LREAL as declared</td><td>16-bit registers you split and combine</td></tr>
+    <tr><td>Optimized DBs</td><td>Not accessible &mdash; turn optimization off</td><td>Accessible through the block you write</td></tr>
+    <tr><td>Best for</td><td>Reading an existing PLC without touching its program</td><td>A clean, documented interface you design</td></tr>
+  </table>
+  <p>For the Modbus route, see <a href="/modbus-hmi-siemens-s7-1200.html">Modbus HMI for the S7-1200</a>.</p>
+
+  <h2>Setting Up the CPU in TIA Portal</h2>
+
+  <p><span class="step-num">1</span> <strong>Permit PUT/GET.</strong> Device configuration &rsaquo; select the CPU &rsaquo; Properties &rsaquo; <em>Protection &amp; Security &rsaquo; Connection mechanisms</em> &rsaquo; tick <strong>Permit access with PUT/GET communication from remote partner</strong>.</p>
+  <p><span class="step-num">2</span> <strong>Access level.</strong> Under Protection &amp; Security, an access level that allows the access &mdash; <em>Full access</em> is simplest for commissioning. On an S7-1500 with a display, make sure the display does not demand a password for it.</p>
+  <p><span class="step-num">3</span> <strong>Turn off optimized access on each DB you read.</strong> Right-click the data block &rsaquo; Properties &rsaquo; Attributes &rsaquo; untick <strong>Optimized block access</strong>. After a compile, the DB shows an <em>Offset</em> column &mdash; those offsets are the byte addresses you read.</p>
+  <p><span class="step-num">4</span> <strong>Compile and download</strong> the hardware configuration and the changed blocks. No other program change is needed.</p>
+
+  <div class="callout warn">
+    <strong>Why "optimized" has to go:</strong> PUT/GET addresses data by absolute byte offset. In an optimized DB the CPU arranges the variables itself and there are no absolute offsets &mdash; the CPU answers the request with "object does not exist". Merkers (M), inputs (I) and outputs (Q) are always absolute.
+  </div>
+
+  <h2>Connecting ModbusManager Pro</h2>
+
+  <p><span class="step-num">1</span> <strong>Add the PLC.</strong> Tags &rsaquo; <em>Siemens S7&hellip;</em> &rsaquo; <em>+ Add PLC</em>: an ID (for example PLC1), the IP address, port 102, <strong>rack 0, slot 1</strong> for an S7-1200/1500 (rack 0, slot 2 for an S7-300/400), and a poll interval.</p>
+  <p><span class="step-num">2</span> <strong>Test read.</strong> Pick an area, DB, type and byte in the same dialog and press <em>Read</em> &mdash; a value means the CPU, the protection settings and the DB are right.</p>
+  <p><span class="step-num">3</span> <strong>Make tags.</strong> Tags &rsaquo; <em>+ New Tag</em> &rsaquo; type <em>Siemens S7</em>, choose the PLC and the address. Tags can be used everywhere a Modbus tag can: dashboard, trends, alarms, historian, scripts and the gateway.</p>
+  <p><span class="step-num">4</span> <strong>Or bind an element directly.</strong> Any dashboard element can take <em>Source = Siemens S7</em> with a PLC and an address; writable elements (setpoint, switch, slider, PID faceplate) write back to the PLC.</p>
+
+  <p>The ID ties tags to the PLC. A runtime package carries the ID, not the IP address, so each machine enters its own PLC's address once &mdash; one package fits every machine of a series.</p>
+
+  <h2>Address Format</h2>
+
+  <table>
+    <tr><th>Address</th><th>Means</th><th>Type</th></tr>
+    <tr><td class="mono">DB1,REAL4</td><td>DB1, byte 4 (DB1.DBD4)</td><td>REAL</td></tr>
+    <tr><td class="mono">DB1,INT2</td><td>DB1, byte 2 (DB1.DBW2)</td><td>INT</td></tr>
+    <tr><td class="mono">DB1,DINT8 / DB1,DWORD8</td><td>DB1, bytes 8&ndash;11</td><td>DINT / DWORD</td></tr>
+    <tr><td class="mono">DB1,X12.0</td><td>DB1, byte 12, bit 0 (DB1.DBX12.0)</td><td>BOOL</td></tr>
+    <tr><td class="mono">DB2,LREAL16</td><td>DB2, bytes 16&ndash;23</td><td>LREAL</td></tr>
+    <tr><td class="mono">MW2 / MD4 / MR8</td><td>Merker word / double word / REAL</td><td>WORD / DWORD / REAL</td></tr>
+    <tr><td class="mono">M0.0</td><td>Merker bit</td><td>BOOL</td></tr>
+    <tr><td class="mono">IW64 / I0.1</td><td>Input word / input bit (E works as I)</td><td>WORD / BOOL</td></tr>
+    <tr><td class="mono">QW64 / Q0.1</td><td>Output word / output bit (A works as Q)</td><td>WORD / BOOL</td></tr>
+  </table>
+  <p>The address fields in the application compose these for you; short forms such as <code>DB1,R4</code> or <code>DB1,DI8</code> are understood too. A bit is written as true/false, integers are rounded, REAL and LREAL keep their fraction.</p>
+
+  <h2>S7 &harr; Modbus Gateway</h2>
+
+  <h3>S7 to Modbus</h3>
+  <p>In the Gateway tab, <em>+ Siemens S7</em> adds the PLC as a source. Each row maps an S7 address to a register in the gateway's Modbus map, so a SCADA, a BMS or another PLC reads the S7 data with plain Modbus TCP &mdash; and a write to that register goes on to the PLC.</p>
+
+  <h3>The PLC reads and writes a DB in ModbusManager (S7 server)</h3>
+  <p>The other way round: the gateway can act as an <strong>S7 server</strong>. Rows with destination <em>S7 DB</em> form virtual data blocks that the PLC reads with <strong>GET</strong> and writes with <strong>PUT</strong> &mdash; and the values behind them come from Modbus devices or tags. A PUT goes on to the row's device when its value changes. In TIA Portal: a GET/PUT connection to an unspecified partner at the PC's IP address (port 102), and absolute addresses such as <code>P#DB100.DBX0.0 BYTE 16</code>. A virtual DB is as long as its rows reach, in steps of 16 bytes.</p>
+  <div class="callout warn">
+    <strong>Only the PLCs you allow.</strong> S7 communication has no password, and a PUT to the S7 server writes on to real devices. The server therefore accepts only the PLC addresses entered under <em>Allowed PLC addresses</em> &mdash; an empty list lets nobody in, and the log names any refused address. Port 102 must also be free on the PC: TIA Portal or PLCSIM running on the same machine may already use it.
+  </div>
+
+  <h2>Common Problems</h2>
+  <ul>
+    <li><strong>Every address reads BAD:</strong> PUT/GET is not permitted, or the protection level blocks it. Check step 1 and 2, and download.</li>
+    <li><strong>One DB reads BAD, the rest work:</strong> that DB is still optimized, or does not exist under that number.</li>
+    <li><strong>No connection at all:</strong> wrong IP or slot (1 for S7-1200/1500, 2 for S7-300/400), or port 102 blocked by a firewall.</li>
+    <li><strong>A value is nonsense:</strong> the byte offset is wrong &mdash; compare with the Offset column of the non-optimized DB, and check the type (REAL vs DINT on the same four bytes).</li>
+    <li><strong>The S7 server is not reachable from the PLC:</strong> port 102 is taken on the PC, or the PLC's IP is not in the allowed list.</li>
+  </ul>
+
+  <h2>Download a Ready-Made Workspace</h2>
+  <ul>
+    <li>Eight S7 tags on PLC <code>PLC1</code>: a control loop in DB1 (process value, setpoint, output, auto bit, cycle counter, outdoor temperature), the heartbeat M0.0 and the seconds word MW2</li>
+    <li>A dashboard: PID faceplate writing the setpoint and the auto/manual bit over PUT, heartbeat lamp, value cards and a PV/SP trend</li>
+  </ul>
+  <div class="callout">
+    <strong>Before you open it:</strong> the PLC list is not part of a workspace. Add a PLC with the ID <code>PLC1</code> and your CPU's IP address (Tags &rsaquo; Siemens S7&hellip;), then open the workspace &mdash; the tags find it by ID. Change the DB numbers and offsets to your own data. Requires ModbusManager Pro.
+  </div>
+  <div class="download-box">
+    <div>
+      <h3>Siemens_S7_PUT_GET.json</h3>
+      <p>S7 PLC workspace: tags, PID faceplate and trend over PUT/GET. Open via Workspace &rsaquo; Open in ModbusManager Pro.</p>
+    </div>
+    <a href="/Siemens_S7_PUT_GET.json" download>Download Workspace</a>
+  </div>
+
+  <div class="cta-box">
+    <div>
+      <h3>Try it with ModbusManager Pro</h3>
+      <p>Siemens S7 and Modbus in one program: HMI, logging, alarms and gateway. Free 14-day trial. No credit card. Windows 10/11.</p>
+    </div>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.3/Modbus.Manager.Pro.Setup.1.9.3.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-S7-Body', 'product': 'pro', 'value': 1})">Download Pro Trial</a>
+  </div>
+
+  <h2>Frequently Asked Questions</h2>
+
+  <h3>Do I need to change the PLC program to use PUT/GET?</h3>
+  <p>No. You permit PUT/GET in the CPU's protection settings, turn off optimized block access on the DBs you read, and download. No communication block is added to the program.</p>
+
+  <h3>Can PUT/GET read optimized data blocks?</h3>
+  <p>No. PUT/GET addresses data by absolute byte offset, which optimized DBs do not have. Turn off "Optimized block access" for each DB you want to read.</p>
+
+  <h3>Does it work with the S7-300 and S7-400?</h3>
+  <p>Yes, over the same S7 communication. Use rack 0 and slot 2 for an S7-300/400 instead of slot 1.</p>
+
+  <h3>Can the PLC read data from ModbusManager?</h3>
+  <p>Yes. The gateway's S7 server lets the PLC read virtual data blocks with GET and write them with PUT, with the values coming from Modbus devices or tags. Only PLC addresses on the allowed list can connect.</p>
+
+  <h3>Is the Siemens S7 support finished?</h3>
+  <p>It is released as beta in ModbusManager Pro 1.9.2 and later, tested against a simulated S7 PLC. Feedback from real CPUs is welcome.</p>
+
+</div>
+
+<div class="hazard"></div>
+<div class="divider-line"></div>
+
+<!-- GATEWAY CROSS-LINK -->
+<section class="section">
+  <div class="sec-label">// beyond one plc</div>
+  <h2 class="sec-title">The PLC plus the rest of the plant</h2>
+  <div style="max-width:820px;margin:0 auto;background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem">
+    <p style="color:var(--body);line-height:1.75;margin:0 0 1.1rem">A plant is rarely one PLC: there are meters, drives and controllers speaking Modbus RTU and TCP. ModbusManager Pro reads the S7 over PUT/GET and the Modbus devices at the same time, and republishes the values as one Modbus map &mdash; or as a data block the PLC itself reads with GET.</p>
+    <a href="/modbus-gateway-software.html" style="font-family:'IBM Plex Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">Modbus gateway software &rarr;</a>
+  </div>
+</section>
+<footer>
+  <div class="footer-logo">ModbusManager</div>
+  <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
+    <a href="/">Home</a>
+    <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
+    <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
+    <a href="/modbus-rtu-rs485-data-logger.html">RTU Logging</a>
+    <a href="/modbus-to-csv-logging.html">CSV Export</a>
+    <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
+        <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
+    <a href="/modbus-structured-text-scripting.html">&#127991; Tags &amp; scripting</a>
+    <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+    <a href="/modbus-vfd-speed-reference.html">VFD drives</a>
+    <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    <a href="/manual.html">Documentation</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/license-terms.html">License terms</a>
+    <a href="mailto:support@modbusmanager.com">Support</a>
+  </div>
+  <div>support@modbusmanager.com</div>
+</footer>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+<script src="/email-capture.js" defer></script>
+</body>
+</html>
