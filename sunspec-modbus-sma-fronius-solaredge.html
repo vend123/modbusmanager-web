@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SunSpec Modbus: SMA, Fronius &amp; SolarEdge Inverter Registers</title>
+<meta name="description" content="SunSpec Modbus explained for SMA, Fronius and SolarEdge: SunS marker at 40000, model 103 registers, scale factors, unit IDs and ports per brand, free workspace.">
+<meta name="keywords" content="SunSpec Modbus, SunSpec model 103, SMA Modbus TCP, SMA SunSpec unit ID 126, Fronius Modbus TCP, Fronius SunSpec, SolarEdge Modbus TCP, SolarEdge port 1502, SunSpec scale factor, inverter Modbus registers">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/sunspec-modbus-sma-fronius-solaredge.html">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:title" content="SunSpec Modbus: SMA, Fronius &amp; SolarEdge Inverter Registers">
+<meta property="og:description" content="Read SMA, Fronius and SolarEdge inverters over SunSpec Modbus: walk the model chain, apply the scale factors, and use the right unit ID and port for each brand.">
+<meta property="og:url" content="https://modbusmanager.com/sunspec-modbus-sma-fronius-solaredge.html">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://modbusmanager.com/og-sunspec.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:published_time" content="2026-10-18T00:00:00Z">
+<meta property="article:section" content="Guides">
+<meta property="article:tag" content="SunSpec">
+<meta property="article:tag" content="SMA">
+<meta property="article:tag" content="Fronius">
+<meta property="article:tag" content="SolarEdge">
+<meta property="article:tag" content="Modbus">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SunSpec Modbus: SMA, Fronius &amp; SolarEdge Inverter Registers">
+<meta name="twitter:description" content="Read SMA, Fronius and SolarEdge inverters over SunSpec Modbus: walk the model chain, apply the scale factors, and use the right unit ID and port for each brand.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-sunspec.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "SunSpec Modbus for SMA, Fronius and SolarEdge",
+  "description": "Read SMA, Fronius and SolarEdge inverters over SunSpec Modbus: walk the model chain, apply the scale factors, and use the right unit ID and port for each brand.",
+  "url": "https://modbusmanager.com/sunspec-modbus-sma-fronius-solaredge.html",
+  "image": "https://modbusmanager.com/og-sunspec.png",
+  "datePublished": "2026-10-18",
+  "author": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "keywords": "SunSpec Modbus, SunSpec model 103, SMA Modbus TCP, SMA SunSpec unit ID 126, Fronius Modbus TCP, Fronius SunSpec, SolarEdge Modbus TCP, SolarEdge port 1502, SunSpec scale factor, inverter Modbus registers"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is the SunSpec base address 40000 or 40001?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Both describe the same register: 40001 is the 1-based register number, 40000 the protocol address you put in the request. SMA, Fronius and SolarEdge all say to request 40000."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why are my SunSpec values off by a factor of 10 or 100?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The scale factor was not applied, or was read once and cached. Every value is raw × 10^SF, and the scale factor can change — read it in the same request as the value, every time."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which unit ID does an SMA inverter use for SunSpec?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "126 by default: SMA's own profile is on unit ID 3 and SunSpec on that ID plus 123."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which port does SolarEdge use for Modbus TCP?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "1502 by default on SetApp inverters, 502 on older inverters with an LCD menu. Modbus TCP is off until enabled, and only one connection is accepted at a time."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where is the inverter model if the addresses differ from this table?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Walk the chain: read the ID and length at 40002, jump 2 + length, and repeat until you reach ID 101, 102, 103 (integer) or 111–113 (float). The offsets inside the model are the same on every brand."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+.article-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 5rem}
+.breadcrumb{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--muted);margin-bottom:2rem}
+.breadcrumb a{color:var(--muted);text-decoration:none}
+.breadcrumb a:hover{color:var(--ink)}
+h1{font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;line-height:1.05;text-transform:uppercase;letter-spacing:0.01em;margin-bottom:1rem}
+h2{font-family:'Saira Condensed',sans-serif;font-size:1.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin:2.5rem 0 0.8rem;padding-top:0.5rem;border-top:2px solid var(--ink)}
+h3{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.03em;margin:1.5rem 0 0.5rem;color:var(--amber-ink)}
+p{font-size:0.93rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+ul{font-size:0.93rem;color:var(--body);line-height:1.75;margin:0 0 1rem 1.2rem;padding-left:0.6rem}
+li{margin-bottom:0.4rem}
+.lead{font-size:1.05rem;color:var(--ink);line-height:1.7;margin-bottom:2rem;border-left:3px solid var(--safety);padding-left:1rem}
+code{font-family:'IBM Plex Mono',monospace;font-size:0.82rem;background:#fff;border:1px solid var(--steel);padding:1px 5px;border-radius:2px}
+pre{font-family:'IBM Plex Mono',monospace;font-size:0.8rem;background:var(--ink);color:#E6E8E3;padding:1.2rem 1.4rem;border-radius:3px;overflow-x:auto;margin:1.2rem 0;line-height:1.6}
+pre .c{color:#888}
+pre .v{color:#F2A900}
+pre .k{color:#7ec8e3}
+table{width:100%;border-collapse:collapse;font-size:0.83rem;margin:1.2rem 0;background:var(--plate);border:2px solid var(--ink)}
+th{text-align:left;padding:0.65rem 0.9rem;border-bottom:2px solid var(--ink);background:var(--enclosure2);font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted)}
+td{padding:0.6rem 0.9rem;border-bottom:1px solid var(--steel);color:var(--body)}
+tr:hover td{background:#ECEEE9}
+td.mono{font-family:'IBM Plex Mono',monospace;font-size:0.78rem}
+td.formula{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--amber-ink)}
+.callout{background:var(--plate);border:1.5px solid var(--ink);border-left:4px solid var(--safety);padding:1rem 1.2rem;border-radius:2px;margin:1.5rem 0;font-size:0.88rem;color:var(--body);line-height:1.6}
+.callout strong{color:var(--ink)}
+.callout.tip{border-left-color:var(--run)}
+.callout.warn{border-left-color:var(--bad)}
+.step-num{display:inline-block;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.85rem;background:var(--ink);color:var(--safety);padding:2px 8px;border-radius:2px;margin-right:8px;letter-spacing:0.05em}
+.cta-box{background:var(--ink);color:var(--enclosure);padding:2rem 2.2rem;border-radius:3px;margin:3rem 0;display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
+.cta-box h3{color:var(--safety);margin:0 0 0.4rem;font-size:1.2rem;border:none;padding:0}
+.cta-box p{color:#B9BDB6;font-size:0.85rem;margin:0}
+.cta-box a{background:var(--safety);color:var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.cta-box a:hover{background:#fff}
+.download-box{border:2px solid var(--ink);background:var(--enclosure2);padding:1.4rem 1.8rem;border-radius:3px;margin:2rem 0;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.download-box h3{margin:0 0 0.3rem;font-size:1rem;border:none;padding:0;font-family:'IBM Plex Mono',monospace;color:var(--ink)}
+.download-box p{margin:0;font-size:0.82rem;color:var(--muted);max-width:46ch}
+.download-box a{background:var(--ink);color:var(--enclosure);padding:0.6rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.download-box a:hover{background:var(--safety);color:var(--ink)}
+footer{border-top:2px solid var(--ink);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;color:var(--muted);flex-wrap:wrap;gap:1rem;background:var(--enclosure2)}
+.footer-logo{font-family:'Saira Condensed',sans-serif;color:var(--ink);font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--ink)}
+@media(max-width:640px){nav .nav-links{display:none}.article-wrap{padding:2rem 1.2rem 4rem}h1{font-size:2rem}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}td,th{white-space:normal;word-break:break-word}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;background:transparent;border:none;min-width:190px;display:none;flex-direction:column;z-index:200}.nav-drop-menu>a{background:var(--enclosure2,#e8e9e4);border-left:1px solid var(--ink,#16181A);border-right:1px solid var(--ink,#16181A)}.nav-drop-menu>a:first-child{border-top:1px solid var(--ink,#16181A);border-radius:3px 3px 0 0;padding-top:0.5rem}.nav-drop-menu>a:last-child{border-bottom:1px solid var(--ink,#16181A);border-radius:0 0 3px 3px;padding-bottom:0.5rem;box-shadow:0 6px 20px rgba(0,0,0,0.18)}
+.nav-drop:hover .nav-drop-menu{display:flex}
+.nav-drop-menu a{padding:0.5rem 1rem;white-space:nowrap;text-transform:none;font-size:0.78rem;color:var(--ink,#16181A)}
+.nav-drop-menu a:hover{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+nav .nav-links.open .nav-drop-menu{position:static;display:flex;margin:0.3rem 0 0.3rem 0.8rem;border:none;box-shadow:none;padding:0;min-width:0;background:none}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+
+@media(max-width:680px){pre,code{white-space:pre-wrap;word-break:break-word;max-width:100%;overflow-x:auto}}
+</style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/#guides"},{"@type": "ListItem","position": 3,"name": "SunSpec Inverter Guide","item": "https://modbusmanager.com/sunspec-modbus-sma-fronius-solaredge.html"}]}
+</script>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label">Features ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-scanner.html" style="color:#9A6700;font-weight:600">&#128269; Modbus Scanner</a>
+        <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
+        <a href="/modbus-hmi-runtime.html" style="padding-left:1.5rem">HMI Runtime (OEM)</a>
+        <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
+        <a href="/modbus-rtu-rs485-data-logger.html" style="padding-left:1.5rem">RTU / RS-485 Logging</a>
+        <a href="/modbus-logging-interval-deadband.html" style="padding-left:1.5rem">Interval &amp; Deadband</a>
+        <a href="/modbus-to-csv-logging.html" style="padding-left:1.5rem">CSV Export</a>
+        <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
+        <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
+        <a href="/modbus-structured-text-scripting.html">&#127991; Tags &amp; Structured Text</a>
+      </div>
+    </li>
+    <li class="nav-drop">
+      <span class="nav-drop-label">Guides ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200</a>
+        <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+        <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+        <a href="/huawei-sun2000-modbus.html">Huawei SUN2000</a>
+        <a href="/sungrow-inverter-modbus.html">Sungrow Inverters</a>
+        <a href="/sunspec-modbus-sma-fronius-solaredge.html">SunSpec: SMA, Fronius, SolarEdge</a>
+        <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+        <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+        <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+        <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+        <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+        <a href="/powerflex-525-modbus.html">PowerFlex 525</a>
+        <a href="/durapulse-gs20-modbus.html">DURApulse GS20</a>
+        <a href="/yaskawa-v1000-modbus.html">Yaskawa V1000</a>
+        <a href="/modbus-vfd-speed-reference.html">VFD Speed Registers</a>
+        <a href="/wattnode-modbus.html">WattNode</a>
+        <a href="/manual.html">Documentation</a>
+      </div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.3/Modbus.Manager.Pro.Setup.1.9.3.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-SunSpec-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/v1.4.9/Modbus.Manager.Setup.1.4.9.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-SunSpec-Nav', 'product': 'standard', 'value': 1})">Download free trial</a>
+  </div>
+</nav>
+<div class="hazard"></div>
+
+<div class="article-wrap">
+
+  <div class="breadcrumb">
+    <a href="/">ModbusManager</a> &rsaquo; Guides &rsaquo; SunSpec Modbus (SMA, Fronius, SolarEdge)
+  </div>
+
+  <h1>SunSpec Modbus for SMA, Fronius and SolarEdge</h1>
+
+  <p class="lead">SMA, Fronius and SolarEdge inverters all speak <strong>SunSpec</strong>: one register layout, published by the SunSpec Alliance, in which every value travels with a <strong>scale factor</strong> and the data is organised in numbered <strong>models</strong> you find by walking a chain. Learn SunSpec once and you can read all three &mdash; provided you get each brand's own switch, unit ID and port right. This page covers the standard, the inverter model every one of them implements, and the brand-specific settings.</p>
+
+  <figure style="margin:1.8rem 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink)">
+    <img src="/sunspec-dashboard.png" width="1320" height="825" loading="lazy" decoding="async"
+         alt="ModbusManager Pro dashboard for a SunSpec three-phase inverter: AC power gauge, operating state MPPT, lifetime energy, power factor, the raw DC voltage register 7450 and its scale factor -1 giving 745.0 V, phase voltage, AC current, DC voltage and power, cabinet temperature, frequency and a DC versus AC power trend"
+         style="width:100%;height:auto;display:block">
+    <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">
+      The free workspace below, reading a simulated SunSpec inverter in SolarEdge's layout. The two middle cards show the raw DC voltage register (7450) and its scale factor (&minus;1): 745.0 V on the card beside them. Every value on the page is raw &times; 10<sup>SF</sup>.
+    </figcaption>
+  </figure>
+
+  <h2>How a SunSpec Device Is Laid Out</h2>
+
+  <ul>
+    <li><strong>Holding registers, function code 03.</strong></li>
+    <li><strong>The "SunS" marker.</strong> The map starts with the two registers <code>0x5375 0x6E53</code> &mdash; the ASCII text "SunS". The preferred location is protocol address <code>40000</code>, which is register number <code>40001</code> in 1-based notation. SMA, Fronius and SolarEdge all say the same: request address 40000. The standard also allows 0 and 50000; a client tries 40000 first.</li>
+    <li><strong>A chain of models.</strong> After the marker comes model 1 (the common model: manufacturer, model, serial). Each model starts with its <em>ID</em> and its <em>length L</em> (the number of registers that follow). The next model starts at <code>address + 2 + L</code>. The chain ends with ID <code>0xFFFF</code>.</li>
+    <li><strong>Walk the chain &mdash; do not hard-code addresses.</strong> The common model is 66 registers long in the specification, 65 on SolarEdge and Fronius; SMA inserts extra models before the inverter model; changing a Fronius setting moves everything after it. Reading the ID and L at each step tells you where the inverter model really is.</li>
+    <li><strong>Up to 125 registers per request</strong>, big-endian, 32-bit values high word first.</li>
+  </ul>
+
+  <h2>Scale Factors</h2>
+
+  <p>A SunSpec value is an integer with a scale factor (type <em>sunssf</em>, a signed 16-bit power of ten) beside it:</p>
+  <pre><span class="k">value</span> = raw &times; 10<sup>SF</sup>      <span class="c">// raw 2071, SF -2  &rarr;  20.71</span></pre>
+  <p>Read the value and its scale factor <strong>in the same request</strong>, and read the scale factor every time. Fronius states that its scale factors are not static: they can change with a firmware update and at runtime (auto-scaling). A program that caches the scale factor will one day be off by a factor of ten.</p>
+
+  <table>
+    <tr><th>Type</th><th>"Not implemented" value</th></tr>
+    <tr><td class="mono">int16, sunssf</td><td class="mono">0x8000</td></tr>
+    <tr><td class="mono">uint16, enum16, bitfield16</td><td class="mono">0xFFFF</td></tr>
+    <tr><td class="mono">int32</td><td class="mono">0x80000000</td></tr>
+    <tr><td class="mono">uint32, enum32, bitfield32</td><td class="mono">0xFFFFFFFF</td></tr>
+    <tr><td class="mono">acc16 / acc32 / acc64</td><td class="mono">0</td></tr>
+    <tr><td class="mono">float32</td><td class="mono">NaN (0x7FC00000)</td></tr>
+  </table>
+  <p>A point a device does not implement reads one of these &mdash; on a single-phase device, for example, phase B and C. Treat them as "no data", not as a reading.</p>
+
+  <h2>The Inverter Model (103, Three-Phase, Integer + SF)</h2>
+
+  <p>Models 101, 102 and 103 are the single-, split- and three-phase inverter models with integer values and scale factors; all three have length 50 and the same point layout. Offsets count from the model's ID register. The absolute column is SolarEdge's layout, confirmed in SolarEdge's technical note, with the model ID at <code>40069</code>.</p>
+
+  <table>
+    <tr><th>Offset</th><th>Point</th><th>Type</th><th>Units</th><th>SolarEdge address</th></tr>
+    <tr><td class="mono">0 / 1</td><td>Model ID (101/102/103) / length (50)</td><td class="mono">uint16</td><td>&mdash;</td><td class="mono">40069 / 40070</td></tr>
+    <tr><td class="mono">2</td><td>A &mdash; total AC current</td><td class="mono">uint16</td><td>A</td><td class="mono">40071</td></tr>
+    <tr><td class="mono">3 / 4 / 5</td><td>AphA / AphB / AphC</td><td class="mono">uint16</td><td>A</td><td class="mono">40072&ndash;40074</td></tr>
+    <tr><td class="mono">6</td><td>A_SF</td><td class="mono">sunssf</td><td>&mdash;</td><td class="mono">40075</td></tr>
+    <tr><td class="mono">7 / 8 / 9</td><td>PPVphAB / BC / CA &mdash; line voltages</td><td class="mono">uint16</td><td>V</td><td class="mono">40076&ndash;40078</td></tr>
+    <tr><td class="mono">10 / 11 / 12</td><td>PhVphA / B / C &mdash; phase voltages</td><td class="mono">uint16</td><td>V</td><td class="mono">40079&ndash;40081</td></tr>
+    <tr><td class="mono">13</td><td>V_SF</td><td class="mono">sunssf</td><td>&mdash;</td><td class="mono">40082</td></tr>
+    <tr><td class="mono">14</td><td><strong>W &mdash; AC power</strong></td><td class="mono">int16</td><td>W</td><td class="mono">40083</td></tr>
+    <tr><td class="mono">15</td><td>W_SF</td><td class="mono">sunssf</td><td>&mdash;</td><td class="mono">40084</td></tr>
+    <tr><td class="mono">16 / 17</td><td>Hz / Hz_SF</td><td class="mono">uint16 / sunssf</td><td>Hz</td><td class="mono">40085 / 40086</td></tr>
+    <tr><td class="mono">18 / 19</td><td>VA / VA_SF</td><td class="mono">int16 / sunssf</td><td>VA</td><td class="mono">40087 / 40088</td></tr>
+    <tr><td class="mono">20 / 21</td><td>VAr / VAr_SF</td><td class="mono">int16 / sunssf</td><td>var</td><td class="mono">40089 / 40090</td></tr>
+    <tr><td class="mono">22 / 23</td><td>PF / PF_SF</td><td class="mono">int16 / sunssf</td><td>%</td><td class="mono">40091 / 40092</td></tr>
+    <tr><td class="mono">24&ndash;25</td><td><strong>WH &mdash; lifetime energy</strong></td><td class="mono">acc32</td><td>Wh</td><td class="mono">40093&ndash;40094</td></tr>
+    <tr><td class="mono">26</td><td>WH_SF</td><td class="mono">sunssf</td><td>&mdash;</td><td class="mono">40095</td></tr>
+    <tr><td class="mono">27 / 28</td><td>DCA / DCA_SF</td><td class="mono">uint16 / sunssf</td><td>A</td><td class="mono">40096 / 40097</td></tr>
+    <tr><td class="mono">29 / 30</td><td>DCV / DCV_SF</td><td class="mono">uint16 / sunssf</td><td>V</td><td class="mono">40098 / 40099</td></tr>
+    <tr><td class="mono">31 / 32</td><td>DCW / DCW_SF</td><td class="mono">int16 / sunssf</td><td>W</td><td class="mono">40100 / 40101</td></tr>
+    <tr><td class="mono">33 / 34 / 35 / 36</td><td>TmpCab / TmpSnk / TmpTrns / TmpOt</td><td class="mono">int16</td><td>&deg;C</td><td class="mono">40102&ndash;40105</td></tr>
+    <tr><td class="mono">37</td><td>Tmp_SF</td><td class="mono">sunssf</td><td>&mdash;</td><td class="mono">40106</td></tr>
+    <tr><td class="mono">38</td><td><strong>St &mdash; operating state</strong></td><td class="mono">enum16</td><td>&mdash;</td><td class="mono">40107</td></tr>
+    <tr><td class="mono">39</td><td>StVnd &mdash; vendor state</td><td class="mono">enum16</td><td>&mdash;</td><td class="mono">40108</td></tr>
+    <tr><td class="mono">40&ndash;41</td><td>Evt1 &mdash; event flags</td><td class="mono">bitfield32</td><td>&mdash;</td><td class="mono">40109&ndash;40110</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>The same offsets, other addresses:</strong> on Fronius in int+SF mode the inverter model also usually starts at 40069, because its common model is 65 registers long &mdash; but Fronius warns that addresses are not constant. On SMA, extra models (11 and 12) come first, and with SMA's dynamic profile the start differs between devices. Find the model by walking the chain and add the offsets above.
+  </div>
+
+  <h3>Operating state (St)</h3>
+  <table>
+    <tr><th>Value</th><th>State</th><th>Value</th><th>State</th></tr>
+    <tr><td class="mono">1</td><td>OFF</td><td class="mono">5</td><td>THROTTLED</td></tr>
+    <tr><td class="mono">2</td><td>SLEEPING (night)</td><td class="mono">6</td><td>SHUTTING_DOWN</td></tr>
+    <tr><td class="mono">3</td><td>STARTING</td><td class="mono">7</td><td>FAULT</td></tr>
+    <tr><td class="mono">4</td><td><strong>MPPT (producing)</strong></td><td class="mono">8</td><td>STANDBY</td></tr>
+  </table>
+  <p>Evt1 sets one bit per event: bit 0 ground fault, 1 DC over-voltage, 2 AC disconnect, 3 DC disconnect, 4 grid disconnect, 5 cabinet open, 6 manual shutdown, 7 over-temperature, 8 over-frequency, 9 under-frequency, 10 AC over-voltage, 11 AC under-voltage, 12 blown string fuse, 13 under-temperature, 14 memory loss, 15 hardware test failure.</p>
+
+  <h3>Float models (111&ndash;113)</h3>
+  <p>Models 111, 112 and 113 carry the same quantities as float32 values with no scale factors (length 60). Fronius lets you choose between "float" and "int + SF"; switching it changes which model is present and shifts every model after it. In model 113, W is at offset 22 and WH at offset 32.</p>
+
+  <h2>Brand Settings</h2>
+
+  <h3>SMA (Sunny Boy, Sunny Tripower, Sunny Highpower)</h3>
+  <ul>
+    <li><strong>Modbus is off by default</strong> and a factory reset turns it off again. As Installer in the inverter's web interface: <em>Device Parameters &rsaquo; External Communication &rsaquo; Modbus &rsaquo; TCP Server &rsaquo; Activated = Yes</em>, port 502 (or through the installation assistant's network configuration).</li>
+    <li><strong>Two unit IDs:</strong> SMA's own register profile answers on unit ID <code>3</code> by default; the SunSpec profile on <strong>unit ID + 123, i.e. 126</strong>. Asking SunSpec questions on unit 3 is the most common SMA mistake.</li>
+    <li>Which SunSpec profile you get depends on the country data set; the newer profile is dynamic, so models a device does not support are left out and addresses can differ between devices &mdash; walk the chain.</li>
+    <li>SMA's own profile has its own register lists, for example <code>30775</code> AC active power (S32, W) and <code>30529</code> total yield (U32, Wh). A missing value reads <code>0x80000000</code>, typically at night.</li>
+    <li>SMA's guidance is not to poll more often than every 10 seconds.</li>
+  </ul>
+
+  <h3>Fronius (Symo GEN24, Primo GEN24, Datamanager)</h3>
+  <ul>
+    <li><strong>GEN24:</strong> web interface &rsaquo; <em>Communication &rsaquo; Modbus</em>, enable the TCP server, choose the SunSpec model type (float or int + SF) and port (502 or 1502). The inverter answers on unit ID <code>1</code>; smart meters start at an address offset of 200.</li>
+    <li><strong>Datamanager (Symo, Primo, Eco):</strong> <em>Settings &rsaquo; Modbus &rsaquo; Data output via Modbus = tcp</em>, port 502. The inverter's unit ID is its inverter number; the smart meter is at 240.</li>
+    <li>Optional "inverter control via Modbus" and an IP restriction for control.</li>
+    <li>Allow time: Fronius asks for sequential queries and timeouts of at least 1 s (GEN24) or 10 s (Datamanager).</li>
+  </ul>
+
+  <h3>SolarEdge</h3>
+  <ul>
+    <li><strong>Modbus TCP is off by default.</strong> On SetApp inverters: <em>Commissioning &rsaquo; Site Communication &rsaquo; Modbus TCP &rsaquo; Enable</em> &mdash; the default port is <strong>1502</strong>. On older inverters with an LCD menu: <em>Communication &rsaquo; LAN Conf &rsaquo; Modbus TCP</em>, default port 502.</li>
+    <li>Unit (device) ID <code>1</code> on Ethernet.</li>
+    <li><strong>One connection only.</strong> The inverter accepts a single Modbus TCP connection and drops an idle one after two minutes. A second program polling at the same time locks the first out.</li>
+    <li>Common model at 40000 (length 65), inverter model at 40069. Meters (models 201, 202, 203) follow the inverter model in the chain &mdash; their position depends on how many meters are configured, so walk the chain to find them.</li>
+    <li>RS485: device ID 1&ndash;247, baud rate settable from 9600 to 115200.</li>
+  </ul>
+
+  <h2>Power Limiting (Model 123)</h2>
+  <p>Model 123 (immediate controls) carries <code>WMaxLimPct</code> (offset 5, a percentage of rated power), <code>WMaxLim_Ena</code> (offset 9) and <code>OutPFSet</code> (offset 10), with <code>WMaxLimPct_SF</code> at offset 23. Each brand gates writes differently (SMA without a Grid Guard code in the current profiles, Fronius only with "inverter control via Modbus" enabled).</p>
+  <div class="callout warn">
+    <strong>Controls change how the plant runs.</strong> Export and power limits can be a condition of the grid connection. Agree changes with the installer, write only when a setpoint changes, and read it back.
+  </div>
+
+  <h2>Common Mistakes</h2>
+  <ul>
+    <li><strong>Off by one:</strong> 40001 is the register number, 40000 the address to request.</li>
+    <li><strong>Hard-coded addresses</strong> copied from another brand &mdash; or from the same brand with a different setting. Walk the chain.</li>
+    <li><strong>Scale factor ignored or cached:</strong> values off by 10&times; or 100&times;, sometimes only after a firmware update.</li>
+    <li><strong>SMA on unit 3:</strong> SunSpec is on 126.</li>
+    <li><strong>SolarEdge on port 502:</strong> SetApp inverters default to 1502.</li>
+    <li><strong>Second client:</strong> SolarEdge serves one connection; the second is refused.</li>
+    <li><strong>Fronius float vs int + SF:</strong> reading model 103 offsets while the inverter presents model 113, or the reverse.</li>
+    <li><strong>0x8000 / 0xFFFF taken as data:</strong> those are "not implemented".</li>
+  </ul>
+
+  <h2>Step-by-Step: Reading a SunSpec Inverter with ModbusManager</h2>
+  <p><span class="step-num">1</span> <strong>Connect</strong> &mdash; Modbus TCP with the brand's port and unit ID above.</p>
+  <p><span class="step-num">2</span> <strong>Find the inverter model</strong> &mdash; an FC03 window at 40000 shows the "SunS" marker and model 1's length; the inverter model starts at 40002 + 2 + L.</p>
+  <p><span class="step-num">3</span> <strong>Poll the model in one request</strong> &mdash; e.g. 40069, quantity 52, so every value arrives together with its scale factor.</p>
+  <p><span class="step-num">4</span> <strong>Apply the scale factors</strong> (Pro) &mdash; tag the raw value and its SF, and let a Structured Text line compute the result every cycle: <code>AC_Power := W_raw * Math.pow(10, W_SF) / 1000;</code>. Because the SF is read each time, the value stays right when the inverter changes it. A fixed Scale on a register tag is fine for devices with constant gains, but not for SunSpec.</p>
+
+  <h2>Download a Ready-Made Workspace</h2>
+  <ul>
+    <li>FC03 windows on the inverter model (40069, 52 registers) and on the SunS marker and common model</li>
+    <li>Register tags for the raw values and their scale factors &mdash; current, voltage, power, frequency, power factor, energy, DC values, temperature, state</li>
+    <li>A Structured Text script that applies the scale factors every second, into kW, kWh, V, A, Hz, % and &deg;C</li>
+    <li>A dashboard: AC power gauge, state lamp with the eight St values, energy, power factor, the raw DC voltage and its scale factor side by side, DC values and a DC vs AC power trend</li>
+  </ul>
+  <div class="callout">
+    <strong>Set for SolarEdge's layout</strong> (unit 1, model 103 at 40069). For SMA, change the unit ID to 126 and move the model window to where the chain puts model 103 on your inverter; for Fronius, set the model type to int + SF and check the start address. Tags, script and dashboard are ModbusManager Pro features.
+  </div>
+  <div class="download-box">
+    <div>
+      <h3>SunSpec_Inverter.json</h3>
+      <p>SunSpec three-phase inverter workspace with scale factors applied by script. Open via Workspace &rsaquo; Open in ModbusManager Pro.</p>
+    </div>
+    <a href="/SunSpec_Inverter.json" download>Download Workspace</a>
+  </div>
+
+  <div class="cta-box">
+    <div>
+      <h3>Try it with ModbusManager Pro</h3>
+      <p>Tags, Structured Text, dashboard and historian for your inverter. Free 14-day trial. No credit card. Windows 10/11.</p>
+    </div>
+    <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.3/Modbus.Manager.Pro.Setup.1.9.3.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-SunSpec-Body', 'product': 'pro', 'value': 1})">Download Pro Trial</a>
+  </div>
+
+  <h2>Frequently Asked Questions</h2>
+
+  <h3>Is the SunSpec base address 40000 or 40001?</h3>
+  <p>Both describe the same register: 40001 is the 1-based register number, 40000 the protocol address you put in the request. SMA, Fronius and SolarEdge all say to request 40000.</p>
+
+  <h3>Why are my SunSpec values off by a factor of 10 or 100?</h3>
+  <p>The scale factor was not applied, or was read once and cached. Every value is raw &times; 10<sup>SF</sup>, and the scale factor can change &mdash; read it in the same request as the value, every time.</p>
+
+  <h3>Which unit ID does an SMA inverter use for SunSpec?</h3>
+  <p>126 by default: SMA's own profile is on unit ID 3 and SunSpec on that ID plus 123.</p>
+
+  <h3>Which port does SolarEdge use for Modbus TCP?</h3>
+  <p>1502 by default on SetApp inverters, 502 on older inverters with an LCD menu. Modbus TCP is off until enabled, and only one connection is accepted at a time.</p>
+
+  <h3>Where is the inverter model if the addresses differ from this table?</h3>
+  <p>Walk the chain: read the ID and length at 40002, jump 2 + length, and repeat until you reach ID 101, 102, 103 (integer) or 111&ndash;113 (float). The offsets inside the model are the same on every brand.</p>
+
+  <h2>Sources</h2>
+  <p style="font-size:0.85rem">SunSpec Alliance model definitions (models 1, 101&ndash;103, 111&ndash;113, 123, 201&ndash;203), github.com/sunspec/models; SMA, <em>SunSpec Modbus</em> technical information (SunSpecModbus-TI-en-11) and <em>SMA and SunSpec Modbus Interface</em> (SMA-Modbus-general-TI-en-10); Fronius, <em>Fronius GEN24 Modbus TCP &amp; RTU</em> (42,0410,2649) and <em>Fronius Datamanager Modbus TCP &amp; RTU</em> (42,0410,2049); SolarEdge, <em>Technical Note &ndash; SunSpec Logging</em>, versions 3.2 (June 2025) and 3.3 (October 2026). Model positions vary by brand, firmware and settings; the offsets within a model do not.</p>
+
+</div>
+
+<div class="hazard"></div>
+<div class="divider-line"></div>
+
+<!-- GATEWAY CROSS-LINK -->
+<section class="section">
+  <div class="sec-label">// beyond one inverter</div>
+  <h2 class="sec-title">The inverters plus everything else on site</h2>
+  <div style="max-width:820px;margin:0 auto;background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem">
+    <p style="color:var(--body);line-height:1.75;margin:0 0 1.1rem">SolarEdge accepts one Modbus client and SMA and Fronius ask you to poll gently. ModbusManager Pro can be that one client &mdash; reading the inverters, the meters and any other RS-485 device on site &mdash; and republish the values as one Modbus map for the building management system, the EMS or a PLC.</p>
+    <a href="/modbus-gateway-software.html" style="font-family:'IBM Plex Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">Modbus gateway software &rarr;</a>
+  </div>
+</section>
+<footer>
+  <div class="footer-logo">ModbusManager</div>
+  <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
+    <a href="/">Home</a>
+    <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
+    <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
+    <a href="/modbus-rtu-rs485-data-logger.html">RTU Logging</a>
+    <a href="/modbus-to-csv-logging.html">CSV Export</a>
+    <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
+        <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
+    <a href="/modbus-structured-text-scripting.html">&#127991; Tags &amp; scripting</a>
+    <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+    <a href="/modbus-vfd-speed-reference.html">VFD drives</a>
+    <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    <a href="/manual.html">Documentation</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/license-terms.html">License terms</a>
+    <a href="mailto:support@modbusmanager.com">Support</a>
+  </div>
+  <div>support@modbusmanager.com</div>
+</footer>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+<script src="/email-capture.js" defer></script>
+</body>
+</html>
