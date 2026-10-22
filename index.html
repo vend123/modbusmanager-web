@@ -139,6 +139,14 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 @media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
 
 @media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+
+/* family slogan band (2026-10-22) */
+.slogan-band{background:var(--safety,#F2A900);border-bottom:3px solid var(--ink,#16181A);padding:1.1rem 1.2rem;text-align:center;color:var(--ink,#16181A)}
+.slogan-band .sb-main{font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:2.6rem;line-height:1;letter-spacing:0.04em;text-transform:uppercase}
+.slogan-band .sb-sub{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;letter-spacing:0.06em;text-transform:uppercase;margin-top:0.45rem}
+.slogan-band a{color:var(--ink,#16181A);font-weight:700}
+@media(max-width:768px){.slogan-band{padding:0.75rem 1rem}.slogan-band .sb-main{font-size:1.7rem}.slogan-band .sb-sub{font-size:0.64rem;letter-spacing:0.04em}}
+@media(max-width:420px){.slogan-band .sb-main{font-size:1.35rem}}
 </style>
 <!-- Paddle.js -->
 <script>
@@ -416,6 +424,10 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <a href="https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.4/Modbus.Manager.Pro.Setup.1.9.4.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-Nav', 'product': 'pro', 'value': 1})">Download free trial</a>
   </div>
 </nav>
+<div class="slogan-band">
+  <div class="sb-main">Every device. One tool. Pay once.</div>
+  <div class="sb-sub">Modbus &middot; BACnet &middot; Siemens S7 &middot; Windows &middot; one-time licence, no subscription &middot; also from us: <a href="https://bacmanager.com">BACManager&nbsp;&#8599;</a></div>
+</div>
 
 <section class="section">
   <div class="hero">
