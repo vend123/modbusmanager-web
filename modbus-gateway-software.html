@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modbus Gateway Software for Windows: Many Devices, One Map</title>
-<meta name="description" content="Read registers from many Modbus RTU and TCP devices and serve them as one register map your PLC reads with a single connection. Free 14-day trial.">
-<meta name="keywords" content="Modbus gateway software, Modbus data concentrator, Modbus aggregator, combine Modbus devices, Modbus register mapping software, Modbus RTU to TCP gateway software, Modbus slave simulator PLC, Modbus gateway Windows, Modbus concentrator software, Modbus Pro">
+<title>Modbus Gateway Software: One Map, Modbus to MQTT &amp; S7</title>
+<meta name="description" content="Poll many Modbus RTU and TCP devices, serve one register map to your PLC, publish the same values to MQTT and Home Assistant, or into a Siemens S7. Free trial.">
+<meta name="keywords" content="Modbus gateway software, Modbus data concentrator, Modbus aggregator, combine Modbus devices, Modbus register mapping software, Modbus RTU to TCP gateway software, Modbus slave simulator PLC, Modbus gateway Windows, Modbus concentrator software, Modbus to MQTT gateway, Modbus TCP to MQTT, Modbus RTU to MQTT, Modbus MQTT bridge, Modbus Home Assistant, Modbus to S7, Modbus Pro">
 <meta name="author" content="ModbusManager">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://modbusmanager.com/modbus-gateway-software.html">
@@ -13,7 +13,7 @@
 <!-- Open Graph -->
 <meta property="og:title" content="Modbus Gateway Software for Windows">
 <meta property="og:site_name" content="ModbusManager">
-<meta property="og:description" content="Combine registers from many Modbus RTU and TCP devices into one map your PLC reads with a single connection. Type and scale conversion both ways.">
+<meta property="og:description" content="Combine registers from many Modbus RTU and TCP devices into one map your PLC reads with a single connection, and publish the same values to MQTT and Home Assistant. Type and scale conversion both ways.">
 <meta property="og:url" content="https://modbusmanager.com/modbus-gateway-software.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://modbusmanager.com/og-gateway.png">
@@ -21,7 +21,7 @@
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Modbus Gateway Software for Windows">
-<meta name="twitter:description" content="Many Modbus devices, one register map for the PLC. Aggregation plus type and scale conversion, on Windows.">
+<meta name="twitter:description" content="Many Modbus devices, one register map for the PLC, plus Modbus to MQTT with Home Assistant discovery. On Windows.">
 <meta name="twitter:image" content="https://modbusmanager.com/og-gateway.png">
 
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -44,6 +44,7 @@
   "description": "How to combine registers from several Modbus RTU and TCP devices into a single common register map on Windows using ModbusManager Pro, including data type and scale conversion in both directions.",
   "url": "https://modbusmanager.com/modbus-gateway-software.html",
   "datePublished": "2026-07-25",
+  "dateModified": "2026-10-26",
   "author": {"@type": "Organization", "name": "ModbusManager"},
   "publisher": {"@type": "Organization", "name": "ModbusManager"}
 },
@@ -59,6 +60,8 @@
       "acceptedAnswer": {"@type": "Answer", "text": "Yes. The gateway keeps its own connection per endpoint, so Modbus RTU serial ports and multiple Modbus TCP IP addresses can be polled simultaneously and merged into the same common map."}},
     {"@type": "Question", "name": "Does it keep running when the window is closed?",
       "acceptedAnswer": {"@type": "Answer", "text": "Yes. The gateway runs in the background with a tray icon and can start automatically with Windows, so it keeps polling and forwarding writes without the window open."}},
+    {"@type": "Question", "name": "Can it send Modbus values to MQTT or Home Assistant?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Yes. Any mapping row can have MQTT as its destination. The gateway publishes the value to your broker as a retained topic, and with Home Assistant discovery switched on each row appears in Home Assistant as a sensor, binary sensor, switch or number with its unit and device class. Rows in write mode accept commands back from Home Assistant and forward them to the Modbus device."}},
     {"@type": "Question", "name": "Is PC-based gateway software suitable for permanent critical installations?",
       "acceptedAnswer": {"@type": "Answer", "text": "For commissioning, testing, temporary bridging and small non-critical systems it works well. For permanent installations on critical processes a DIN-rail hardware gateway with watchdog and redundancy remains the better choice."}}
   ]
@@ -309,7 +312,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 <section class="hero">
   <div class="eyebrow">// ModbusManager Pro — Gateway</div>
   <h1>Modbus <span class="accent">Gateway</span> Software<br>for Windows</h1>
-  <p class="hero-desc">Your PLC has one Modbus connection. Your devices are spread across a serial line and several IP addresses, and none of them store data the way the PLC wants it. ModbusManager Pro polls them all and republishes the registers you choose as <strong>one common register map</strong> — with data type and scale conversion in both directions. Siemens PLCs join too: <a href="/siemens-s7-put-get.html">S7 to Modbus over PUT/GET</a>, and an S7 server the PLC reads with GET.</p>
+  <p class="hero-desc">Your PLC has one Modbus connection. Your devices are spread across a serial line and several IP addresses, and none of them store data the way the PLC wants it. ModbusManager Pro polls them all and republishes the registers you choose as <strong>one common register map</strong> — with data type and scale conversion in both directions. Siemens PLCs join too: <a href="/siemens-s7-put-get.html">S7 to Modbus over PUT/GET</a>, and an S7 server the PLC reads with GET. The same rows can also go <strong>Modbus to MQTT</strong>, with Home Assistant discovery &mdash; see the <a href="/huawei-sun2000-home-assistant.html">SUN2000 to Home Assistant guide</a>.</p>
   <div class="hero-ctas">
     <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.5/Modbus.Manager.Pro.Setup.1.9.5.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-Gateway-Hero', 'product': 'pro', 'value': 1})">Download Pro trial — free 14 days</a>
     <a href="/#pricing" class="btn-ghost">Buy Pro — $119</a>
@@ -413,6 +416,21 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
       <div class="widget-icon">📋</div>
       <div class="widget-name">CSV import and diagnostics</div>
       <div class="widget-desc">Build large mappings in a spreadsheet and import them, or download the template to start from. Connection state, per-row errors and every forwarded write appear in the TX/RX log with automatic retry back-off.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">📡</div>
+      <div class="widget-name">Modbus to MQTT</div>
+      <div class="widget-desc">Set a row's destination to MQTT and its value is published to your broker (Mosquitto, Home Assistant, Node-RED, any cloud). Retained topics, TLS, user and password, an online/offline status topic. Rows in write mode take commands back on a <code class="mono">/set</code> topic.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">🏠</div>
+      <div class="widget-name">Home Assistant discovery</div>
+      <div class="widget-desc">Tick one box and every MQTT row appears in Home Assistant by itself &mdash; sensor, binary sensor, switch or number, with unit and device class. Energy rows are ready for the Energy dashboard. No YAML, no cloud, no extra add-on.</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">🔩</div>
+      <div class="widget-name">Siemens S7 and tags as sources</div>
+      <div class="widget-desc">Read an S7-1200/1500 data block over PUT/GET into the Modbus map, or put values into an S7 data block the PLC reads with GET. Calculated tags &mdash; kW from volts and amps, a Structured Text result &mdash; can be a source too.</div>
     </div>
   </div>
 </section>
@@ -554,8 +572,12 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
       <div class="faq-a">Yes. Download the CSV template from the Gateway tab, fill it in a spreadsheet — one row per value, with source and common columns — and import it. Existing rows are kept, so you can import in batches. Endpoint names in the CSV are matched to the endpoints you have defined.</div>
     </div>
     <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Can it send Modbus values to MQTT or Home Assistant?<span class="icon">+</span></div>
+      <div class="faq-a">Yes. Set a mapping row's destination to <em>MQTT</em>, enter the broker address, and the gateway publishes the value as a retained topic under your base topic. Switch on <em>Home Assistant discovery</em> and each row appears in Home Assistant with its unit and device class &mdash; no YAML. Rows in write mode accept commands from Home Assistant and forward them to the Modbus device. The <a href="/huawei-sun2000-home-assistant.html">SUN2000 to Home Assistant guide</a> walks through a complete setup with a free workspace.</div>
+    </div>
+    <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">Is this the same as an OPC server?<span class="icon">+</span></div>
-      <div class="faq-a">No. An OPC server exposes data to OPC clients over OPC DA or UA. This gateway stays inside the Modbus world: Modbus in, Modbus out. That is deliberately narrower, and it is why a PLC that speaks nothing but Modbus TCP can use it with no extra software, drivers or licenses on either side.</div>
+      <div class="faq-a">No. An OPC server exposes data to OPC clients over OPC DA or UA. This gateway speaks what field equipment and PLCs already speak: Modbus RTU and TCP, Siemens S7 over PUT/GET, and MQTT. That is deliberately narrower, and it is why a PLC that speaks nothing but Modbus TCP can use it with no extra software, drivers or licenses on either side.</div>
     </div>
   </div>
 </section>
