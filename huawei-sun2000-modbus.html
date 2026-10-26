@@ -247,6 +247,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
         <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
         <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
         <a href="/huawei-sun2000-modbus.html">Huawei SUN2000</a>
+        <a href="/huawei-sun2000-home-assistant.html">SUN2000 &rarr; Home Assistant</a>
         <a href="/sungrow-inverter-modbus.html">Sungrow Inverters</a>
         <a href="/sunspec-modbus-sma-fronius-solaredge.html">SunSpec: SMA, Fronius, SolarEdge</a>
         <a href="/deye-sunsynk-growatt-modbus.html">Deye, Sunsynk &amp; Growatt</a>
@@ -268,7 +269,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <li><a href="/#support">Support</a></li>
   </ul>
   <div style="display:flex;gap:12px;align-items:center">
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.4/Modbus.Manager.Pro.Setup.1.9.4.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-SUN2000-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.5/Modbus.Manager.Pro.Setup.1.9.5.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-SUN2000-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
     <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/v1.4.10/Modbus.Manager.Setup.1.4.10.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-SUN2000-Nav', 'product': 'standard', 'value': 1})">Download free trial</a>
   </div>
 </nav>
@@ -504,7 +505,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
       <h3>Try it with ModbusManager Pro</h3>
       <p>Scaled tags, dashboard and historian for your inverter. Free 14-day trial. No credit card. Windows 10/11.</p>
     </div>
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.4/Modbus.Manager.Pro.Setup.1.9.4.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-SUN2000-Body', 'product': 'pro', 'value': 1})">Download Pro Trial</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.5/Modbus.Manager.Pro.Setup.1.9.5.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-SUN2000-Body', 'product': 'pro', 'value': 1})">Download Pro Trial</a>
   </div>
 
   <h2>Frequently Asked Questions</h2>
@@ -519,7 +520,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <p>The request covers an address Huawei does not define, and the SUN2000 refuses the whole request. Read the defined blocks separately, e.g. 32064&ndash;32095 for the AC values and 32106&ndash;32117 for the energy counters.</p>
 
   <h3>Can two programs read the inverter at the same time?</h3>
-  <p>Not through the SDongle: it serves one Modbus TCP client at a time, even in Unrestricted mode. Let one program poll and share the values &mdash; ModbusManager's <a href="/modbus-gateway-software.html">gateway</a> can republish them as a Modbus map for other systems.</p>
+  <p>Not through the SDongle: it serves one Modbus TCP client at a time, even in Unrestricted mode. Let one program poll and share the values &mdash; ModbusManager's <a href="/modbus-gateway-software.html">gateway</a> can republish them as a Modbus map for other systems, and to Home Assistant over MQTT: see <a href="/huawei-sun2000-home-assistant.html">SUN2000 to Home Assistant</a>.</p>
 
   <h3>Is this the same register map as through a SmartLogger?</h3>
   <p>No. A SmartLogger remaps each inverter into its own address block (51000 + 25 &times; (N &minus; 1)) on unit 0. Use this page for a direct connection and the <a href="/huawei-smartlogger-modbus.html">SmartLogger guide</a> behind a logger.</p>

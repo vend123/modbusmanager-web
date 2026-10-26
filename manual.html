@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ModbusManager User Manual &amp; Documentation</title>
-<meta name="description" content="ModbusManager 1.9.4 manual: connect over Modbus TCP and RTU, poll and write, simulate slaves, tags, HMI dashboards, Historian, alarms, gateway and Siemens S7.">
+<meta name="description" content="ModbusManager 1.9.5 manual: Modbus TCP and RTU, poll and write, slave simulator, tags, HMI dashboards, Historian, alarms, gateway, MQTT and Siemens S7.">
 <meta name="keywords" content="Modbus software manual, ModbusManager documentation, how to poll Modbus registers, Modbus TCP RTU ASCII guide, Modbus slave simulator, Modbus Structured Text, Modbus FC03 holding register, Modbus address base, Modbus HMI dashboard, Modbus gateway, Modbus historian, Siemens S7 PUT GET, Modbus HMI runtime">
 <meta name="author" content="ModbusManager">
 <meta name="robots" content="index, follow">
@@ -13,7 +13,7 @@
 <!-- Open Graph -->
 <meta property="og:title" content="ModbusManager User Manual &amp; Documentation">
 <meta property="og:site_name" content="ModbusManager">
-<meta property="og:description" content="The complete ModbusManager 1.9.4 manual: connecting, polling, writing, slave simulator, tags and Structured Text, HMI dashboards, Runtime, Historian, alarms, gateway and Siemens S7.">
+<meta property="og:description" content="The complete ModbusManager 1.9.5 manual: connecting, polling, writing, slave simulator, tags and Structured Text, HMI dashboards, Runtime, Historian, alarms, gateway with MQTT and Home Assistant, and Siemens S7.">
 <meta property="og:url" content="https://modbusmanager.com/manual.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://modbusmanager.com/og-hmi.png">
@@ -53,10 +53,10 @@
   "@context":"https://schema.org",
   "@type":"TechArticle",
   "headline":"ModbusManager User Manual",
-  "description":"Complete user manual for ModbusManager Pro 1.9.4 and Standard 1.4.10: connecting, polling and writing registers, the slave simulator, tags with Structured Text, HMI dashboards, Runtime packages, Historian, alarms, gateway and Siemens S7 (beta).",
+  "description":"Complete user manual for ModbusManager Pro 1.9.5 and Standard 1.4.10: connecting, polling and writing registers, the slave simulator, tags with Structured Text, HMI dashboards, Runtime packages, Historian, alarms, gateway with MQTT and Home Assistant discovery, and Siemens S7 (beta).",
   "url":"https://modbusmanager.com/manual.html",
   "datePublished":"2026-06-01",
-  "dateModified":"2026-10-18",
+  "dateModified":"2026-10-26",
   "author":{"@type":"Organization","name":"ModbusManager","url":"https://modbusmanager.com"},
   "publisher":{"@type":"Organization","name":"ModbusManager","url":"https://modbusmanager.com"},
   "about":{
@@ -66,7 +66,7 @@
     "applicationCategory":"DeveloperApplication",
     "offers":{"@type":"Offer","price":"119","priceCurrency":"USD"},
     "url":"https://modbusmanager.com/#pro",
-    "downloadUrl":"https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.4/Modbus.Manager.Pro.Setup.1.9.4.exe"
+    "downloadUrl":"https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.5/Modbus.Manager.Pro.Setup.1.9.5.exe"
   }
 },
 {
@@ -350,6 +350,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
         <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
         <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
         <a href="/huawei-sun2000-modbus.html">Huawei SUN2000</a>
+        <a href="/huawei-sun2000-home-assistant.html">SUN2000 &rarr; Home Assistant</a>
         <a href="/sungrow-inverter-modbus.html">Sungrow Inverters</a>
         <a href="/sunspec-modbus-sma-fronius-solaredge.html">SunSpec: SMA, Fronius, SolarEdge</a>
         <a href="/deye-sunsynk-growatt-modbus.html">Deye, Sunsynk &amp; Growatt</a>
@@ -371,8 +372,8 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <li><a href="/#support">Support</a></li>
   </ul>
   <div style="display:flex;gap:12px;align-items:center">
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.4/Modbus.Manager.Pro.Setup.1.9.4.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-NavText','product':'pro','value':1})">Pro trial &darr;</a>
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.4/Modbus.Manager.Pro.Setup.1.9.4.exe" class="nav-cta" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-Nav','product':'pro','value':1})">Download Pro trial</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.5/Modbus.Manager.Pro.Setup.1.9.5.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-NavText','product':'pro','value':1})">Pro trial &darr;</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.5/Modbus.Manager.Pro.Setup.1.9.5.exe" class="nav-cta" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-Nav','product':'pro','value':1})">Download Pro trial</a>
   </div>
 </nav>
 <div class="slogan-band slim">
@@ -381,12 +382,12 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 </div>
 
 <header class="hero">
-  <div class="eyebrow">Documentation &mdash; ModbusManager Pro v1.9.4 &middot; Standard v1.4.10 &middot; updated 18 October 2026</div>
+  <div class="eyebrow">Documentation &mdash; ModbusManager Pro v1.9.5 &middot; Standard v1.4.10 &middot; updated 26 October 2026</div>
   <h1>ModbusManager <span class="accent">User Manual</span></h1>
   <p class="hero-desc">How to connect, poll, write, simulate, script, log, alarm, bridge and visualise Modbus data &mdash; and read Siemens S7 PLCs &mdash; with ModbusManager on Windows. Use the contents to jump to a topic, or download the whole manual as a printable PDF.</p>
   <div class="hero-ctas">
     <a href="/ModbusManagerPro_UserManual.pdf" class="btn-primary">Download PDF manual</a>
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.4/Modbus.Manager.Pro.Setup.1.9.4.exe" class="btn-ghost" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-Hero','product':'pro','value':1})">Download Pro trial</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.5/Modbus.Manager.Pro.Setup.1.9.5.exe" class="btn-ghost" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-Hero','product':'pro','value':1})">Download Pro trial</a>
   </div>
   <p class="hero-note">Free 14-day trial &bull; Standard &#36;49 &bull; Pro &#36;119 &bull; Runtime &#36;39 per machine &bull; one-time licences &bull; Windows 10 / 11</p>
 </header>
@@ -406,7 +407,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 <li><a href="#runtime">Runtime edition</a></li>
 <li><a href="#history">History (Historian)</a></li>
 <li><a href="#alarms">Alarms</a></li>
-<li><a href="#gateway">Gateway</a></li>
+<li><a href="#gateway">Gateway</a><ul><li><a href="#mqtt">MQTT &amp; Home Assistant</a></li></ul></li>
 <li><a href="#s7">Siemens S7 (beta)</a></li>
 <li><a href="#workspaces">Workspaces &amp; templates</a></li>
 <li><a href="#licensing">Licensing</a></li>
@@ -667,18 +668,29 @@ function tagPlayVideo() {
 
 <section id="gateway" class="doc-section">
 <h2>Gateway <span class="ed pro">Pro</span></h2>
-<p>The gateway polls several devices as a master and republishes the values you choose as one <b>common Modbus TCP map</b> &mdash; or as a data block an S7 PLC reads with GET &mdash; with type and scale conversion both ways. Writes from the PLC are forwarded to the device.</p>
+<p>The gateway polls several devices as a master and republishes the values you choose as one <b>common Modbus TCP map</b> &mdash; or as a data block an S7 PLC reads with GET, or to an <b>MQTT</b> broker such as Home Assistant&rsquo;s &mdash; with type and scale conversion both ways. Writes from the PLC (or from Home Assistant) are forwarded to the device.</p>
 <figure class="shot"><img src="/manual-gateway.jpg" width="1210" height="820" loading="lazy" alt="Gateway tab: PLC side slave TCP port 5602, Siemens side S7 server with port 102 and allowed PLC addresses, source endpoints PS-02 station over TCP and Calculated tags, and five mapping rows from the station registers and a tag into the common map"><figcaption>Two endpoints (a TCP device and this application&rsquo;s tags) mapped into one common register map.</figcaption></figure>
 <ol class="body-list">
 <li><b>PLC side</b>: the <b>Slave TCP port</b> the PLC or SCADA connects to (502 by default).</li>
 <li><b>Source endpoints</b>: <b>+ TCP</b> (host, port), <b>+ RTU</b> (COM port, baud, parity), <b>+ Siemens S7 (beta)</b> (a PLC from the S7 list) and <b>+ Tags</b> (this application&rsquo;s tags, including script results).</li>
-<li><b>Mapping rows</b>: name, endpoint, mode (<b>read</b> device &rarr; map, or <b>write</b> map &rarr; device), source slave ID, type and address (an S7 address or a tag for those endpoints), data type, scale and offset, then the destination: <b>Modbus map</b> (common slave ID, type, address, data type) or <b>S7 DB (beta)</b> (DB, byte, bit, S7 type).</li>
+<li><b>Mapping rows</b>: name, endpoint, mode (<b>read</b> device &rarr; map, or <b>write</b> map &rarr; device), source slave ID, type and address (an S7 address or a tag for those endpoints), data type, scale and offset, then the destination: <b>Modbus map</b> (common slave ID, type, address, data type), <b>S7 DB (beta)</b> (DB, byte, bit, S7 type) or <b>MQTT</b> (topic, unit, Home Assistant device class).</li>
 <li><b>Start gateway</b>. Each endpoint and row shows its state; a row with an error says why.</li>
 </ol>
 <p><b>&#11014; Import CSV</b> and <b>&#11015; Export CSV</b> move rows and endpoints to and from a spreadsheet. <b>Start gateway automatically</b> plus the tray options <i>Keep running when window is closed</i> and <i>Start with Windows</i> run it unattended. The gateway configuration is saved with the workspace.</p>
 <h3>S7 server: the PLC reads a DB from ModbusManager <span class="ed beta">beta</span></h3>
 <p>With <b>Serve the rows whose Dest is &ldquo;S7 DB&rdquo; to Siemens PLCs</b> the gateway also answers as an S7 server (port 102): an S7-1200/1500 reads the rows with a <b>GET</b> block and writes them with <b>PUT</b> &mdash; no Modbus program in the PLC. In TIA Portal create a GET/PUT connection to an unspecified partner at this PC&rsquo;s IP address and use absolute addresses such as <code>P#DB100.DBX0.0 BYTE 16</code>. A DB is as long as its rows reach, in steps of 16 bytes; a PUT is forwarded to the row&rsquo;s source when its value changes.</p>
 <div class="callout warn"><div class="c-label">Allowed PLC addresses</div><p>Only PLCs listed in <b>Allowed PLC addresses</b> (comma-separated IPs) can connect. An empty list refuses everyone, and the panel warns about it. The list applies at once; removing an address drops that PLC.</p></div>
+<h3 id="mqtt">MQTT and Home Assistant</h3>
+<p>A row with Dest <b>MQTT</b> publishes its value to an MQTT broker &mdash; Home Assistant&rsquo;s Mosquitto add-on or any other &mdash; as <code>&lt;base topic&gt;/&lt;topic&gt;/state</code>, retained. The row keeps its own source, scale and offset; only the destination differs, so a device can feed the common map, an S7 DB and MQTT at the same time from one connection.</p>
+<figure class="shot"><img src="/sun2000-ha-gateway.png" width="1320" height="825" loading="lazy" alt="Gateway tab: MQTT panel connected to a Home Assistant broker with discovery on, a SUN2000 endpoint, and mapping rows with Dest MQTT, unit and Home Assistant device class"><figcaption>The MQTT panel connected to Home Assistant, and rows with Dest MQTT.</figcaption></figure>
+<ol class="body-list">
+<li>In the <b>MQTT</b> panel tick <b>Publish the rows whose Dest is &ldquo;MQTT&rdquo;</b>, then set the <b>Broker</b> address and port (1883; 8883 with <b>TLS</b>), <b>User</b>, <b>Password</b> and the <b>Base topic</b>.</li>
+<li>Set a row&rsquo;s <b>Dest</b> to <b>MQTT</b>. Its columns become the topic (empty: made from the name), the unit and the Home Assistant device class; the last column shows what the row becomes in Home Assistant.</li>
+<li><b>Start gateway</b>. The panel says <i>connected</i>, or why not: user name or password refused, no broker at this address, broker not reachable, certificate not trusted.</li>
+</ol>
+<p>With <b>Home Assistant discovery</b> on, each MQTT row appears in Home Assistant by itself, all under one device, with its name, unit and device class: a value as a <i>sensor</i> (a coil or discrete input as a <i>binary sensor</i>), a write row as a <i>number</i> (a coil as a <i>switch</i>). Rows with device class <i>energy</i> are published as growing totals for the Energy dashboard. A write row also takes commands from <code>&lt;base&gt;/&lt;topic&gt;/set</code>: the value goes to the device and is read back. <code>&lt;base&gt;/status</code> says <i>online</i> or <i>offline</i>, so Home Assistant shows the entities as unavailable when the gateway stops or the PC drops off. A row deleted here is removed from Home Assistant too.</p>
+<div class="callout"><div class="c-label">The password stays on this PC</div><p>The broker password is stored apart from the gateway configuration and is never written to a workspace or a CSV export. A workspace moved to another PC asks for it again. Home Assistant&rsquo;s Mosquitto add-on accepts a Home Assistant user name and password.</p></div>
+<p>Full example with a free workspace: <a class="inline-link" href="/huawei-sun2000-home-assistant.html">Huawei SUN2000 to Home Assistant over Modbus and MQTT</a>.</p>
 <a class="vid" href="https://youtu.be/ulX6KnXWPto" target="_blank" rel="noopener"><div class="th"><img src="https://i.ytimg.com/vi/ulX6KnXWPto/hqdefault.jpg" alt="Gateway tutorial" loading="lazy"><span>&#9654;</span></div><div class="lb">&#9654; Watch: several devices behind one PLC connection</div></a>
 </section>
 
@@ -756,7 +768,7 @@ function tagPlayVideo() {
   <h2>Start with the 14-day trial</h2>
   <p>Install ModbusManager Pro on Windows and follow this manual to connect, poll and build your first dashboard.</p>
   <div class="ctas">
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.4/Modbus.Manager.Pro.Setup.1.9.4.exe" class="btn-cta-yellow" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-CTA','product':'pro','value':1})">Download Pro trial</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.5/Modbus.Manager.Pro.Setup.1.9.5.exe" class="btn-cta-yellow" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-CTA','product':'pro','value':1})">Download Pro trial</a>
     <a href="/ModbusManagerPro_UserManual.pdf" class="btn-cta-outline">Download PDF manual</a>
   </div>
 </section>

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Huawei SUN2000 to Home Assistant via Modbus &amp; MQTT (No Cloud)</title>
+<meta name="description" content="Get a Huawei SUN2000 and DTSU666-H meter into Home Assistant locally: one Modbus TCP connection, MQTT discovery, Energy dashboard ready. Free workspace.">
+<meta name="keywords" content="Huawei SUN2000 Home Assistant, SUN2000 Modbus Home Assistant, Huawei inverter MQTT, SDongle Home Assistant, Huawei solar Home Assistant without cloud, SUN2000 energy dashboard, DTSU666-H Home Assistant, Modbus to MQTT Windows, Home Assistant MQTT discovery Modbus">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/huawei-sun2000-home-assistant.html">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:title" content="Huawei SUN2000 to Home Assistant via Modbus &amp; MQTT (No Cloud)">
+<meta property="og:description" content="Read a Huawei SUN2000 inverter locally over Modbus TCP and publish it to Home Assistant through MQTT discovery: units, device classes and Energy dashboard ready, with one connection to the SDongle that a PLC or wallbox can share.">
+<meta property="og:url" content="https://modbusmanager.com/huawei-sun2000-home-assistant.html">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://modbusmanager.com/og-sun2000-ha.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:published_time" content="2026-10-26T00:00:00Z">
+<meta property="article:section" content="Guides">
+<meta property="article:tag" content="Huawei">
+<meta property="article:tag" content="SUN2000">
+<meta property="article:tag" content="Home Assistant">
+<meta property="article:tag" content="MQTT">
+<meta property="article:tag" content="Modbus">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Huawei SUN2000 to Home Assistant via Modbus &amp; MQTT (No Cloud)">
+<meta name="twitter:description" content="Read a Huawei SUN2000 inverter locally over Modbus TCP and publish it to Home Assistant through MQTT discovery: units, device classes and Energy dashboard ready, with one connection to the SDongle that a PLC or wallbox can share.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-sun2000-ha.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Huawei SUN2000 to Home Assistant over Modbus and MQTT, Without the Cloud",
+  "description": "Read a Huawei SUN2000 inverter locally over Modbus TCP and publish it to Home Assistant through MQTT discovery: units, device classes and Energy dashboard ready, with one connection to the SDongle that a PLC or wallbox can share.",
+  "url": "https://modbusmanager.com/huawei-sun2000-home-assistant.html",
+  "image": "https://modbusmanager.com/og-sun2000-ha.png",
+  "datePublished": "2026-10-26",
+  "author": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "keywords": "Huawei SUN2000 Home Assistant, SUN2000 Modbus Home Assistant, Huawei inverter MQTT, SDongle Home Assistant, Huawei solar Home Assistant without cloud, SUN2000 energy dashboard, DTSU666-H Home Assistant, Modbus to MQTT Windows, Home Assistant MQTT discovery Modbus"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does this need the FusionSolar cloud or an internet connection?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. ModbusManager reads the inverter over your own network and publishes to Home Assistant's own broker. Nothing leaves the building, and it keeps working when the internet does not."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can Home Assistant and another system read the SUN2000 at the same time?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not both directly through the SDongle: it serves one Modbus TCP client at a time. Let ModbusManager's gateway be that client and share the values: MQTT for Home Assistant, a Modbus TCP map or an S7 data block for the rest."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to write YAML in Home Assistant?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The gateway announces each value through MQTT discovery with its name, unit, device class and state class, and Home Assistant creates the entities itself, all under one device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens when the PC or the gateway stops?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The gateway's last will marks the device unavailable in Home Assistant, so no stale values are shown. When it starts again it reconnects and publishes fresh values; it also announces itself again whenever Home Assistant restarts."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which ModbusManager edition do I need?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "ModbusManager Pro 1.9.5 or newer (the gateway and the MQTT output are Pro features), or BACManager for BACnet and Modbus devices. The free 14-day trial includes everything."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+.article-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 5rem}
+.breadcrumb{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--muted);margin-bottom:2rem}
+.breadcrumb a{color:var(--muted);text-decoration:none}
+.breadcrumb a:hover{color:var(--ink)}
+h1{font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;line-height:1.05;text-transform:uppercase;letter-spacing:0.01em;margin-bottom:1rem}
+h2{font-family:'Saira Condensed',sans-serif;font-size:1.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin:2.5rem 0 0.8rem;padding-top:0.5rem;border-top:2px solid var(--ink)}
+h3{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.03em;margin:1.5rem 0 0.5rem;color:var(--amber-ink)}
+p{font-size:0.93rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+ul{font-size:0.93rem;color:var(--body);line-height:1.75;margin:0 0 1rem 1.2rem;padding-left:0.6rem}
+li{margin-bottom:0.4rem}
+.lead{font-size:1.05rem;color:var(--ink);line-height:1.7;margin-bottom:2rem;border-left:3px solid var(--safety);padding-left:1rem}
+code{font-family:'IBM Plex Mono',monospace;font-size:0.82rem;background:#fff;border:1px solid var(--steel);padding:1px 5px;border-radius:2px}
+pre{font-family:'IBM Plex Mono',monospace;font-size:0.8rem;background:var(--ink);color:#E6E8E3;padding:1.2rem 1.4rem;border-radius:3px;overflow-x:auto;margin:1.2rem 0;line-height:1.6}
+pre .c{color:#888}
+pre .v{color:#F2A900}
+pre .k{color:#7ec8e3}
+table{width:100%;border-collapse:collapse;font-size:0.83rem;margin:1.2rem 0;background:var(--plate);border:2px solid var(--ink)}
+th{text-align:left;padding:0.65rem 0.9rem;border-bottom:2px solid var(--ink);background:var(--enclosure2);font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted)}
+td{padding:0.6rem 0.9rem;border-bottom:1px solid var(--steel);color:var(--body)}
+tr:hover td{background:#ECEEE9}
+td.mono{font-family:'IBM Plex Mono',monospace;font-size:0.78rem}
+td.formula{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--amber-ink)}
+.callout{background:var(--plate);border:1.5px solid var(--ink);border-left:4px solid var(--safety);padding:1rem 1.2rem;border-radius:2px;margin:1.5rem 0;font-size:0.88rem;color:var(--body);line-height:1.6}
+.callout strong{color:var(--ink)}
+.callout.tip{border-left-color:var(--run)}
+.callout.warn{border-left-color:var(--bad)}
+.step-num{display:inline-block;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.85rem;background:var(--ink);color:var(--safety);padding:2px 8px;border-radius:2px;margin-right:8px;letter-spacing:0.05em}
+.cta-box{background:var(--ink);color:var(--enclosure);padding:2rem 2.2rem;border-radius:3px;margin:3rem 0;display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
+.cta-box h3{color:var(--safety);margin:0 0 0.4rem;font-size:1.2rem;border:none;padding:0}
+.cta-box p{color:#B9BDB6;font-size:0.85rem;margin:0}
+.cta-box a{background:var(--safety);color:var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.cta-box a:hover{background:#fff}
+.download-box{border:2px solid var(--ink);background:var(--enclosure2);padding:1.4rem 1.8rem;border-radius:3px;margin:2rem 0;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.download-box h3{margin:0 0 0.3rem;font-size:1rem;border:none;padding:0;font-family:'IBM Plex Mono',monospace;color:var(--ink)}
+.download-box p{margin:0;font-size:0.82rem;color:var(--muted);max-width:46ch}
+.download-box a{background:var(--ink);color:var(--enclosure);padding:0.6rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.download-box a:hover{background:var(--safety);color:var(--ink)}
+footer{border-top:2px solid var(--ink);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;color:var(--muted);flex-wrap:wrap;gap:1rem;background:var(--enclosure2)}
+.footer-logo{font-family:'Saira Condensed',sans-serif;color:var(--ink);font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--ink)}
+@media(max-width:640px){nav .nav-links{display:none}.article-wrap{padding:2rem 1.2rem 4rem}h1{font-size:2rem}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}td,th{white-space:normal;word-break:break-word}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;background:transparent;border:none;min-width:190px;display:none;flex-direction:column;z-index:200}.nav-drop-menu>a{background:var(--enclosure2,#e8e9e4);border-left:1px solid var(--ink,#16181A);border-right:1px solid var(--ink,#16181A)}.nav-drop-menu>a:first-child{border-top:1px solid var(--ink,#16181A);border-radius:3px 3px 0 0;padding-top:0.5rem}.nav-drop-menu>a:last-child{border-bottom:1px solid var(--ink,#16181A);border-radius:0 0 3px 3px;padding-bottom:0.5rem;box-shadow:0 6px 20px rgba(0,0,0,0.18)}
+.nav-drop:hover .nav-drop-menu{display:flex}
+.nav-drop-menu a{padding:0.5rem 1rem;white-space:nowrap;text-transform:none;font-size:0.78rem;color:var(--ink,#16181A)}
+.nav-drop-menu a:hover{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+nav .nav-links.open .nav-drop-menu{position:static;display:flex;margin:0.3rem 0 0.3rem 0.8rem;border:none;box-shadow:none;padding:0;min-width:0;background:none}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+
+@media(max-width:680px){pre,code{white-space:pre-wrap;word-break:break-word;max-width:100%;overflow-x:auto}}
+
+/* family slogan band, slim (2026-10-22) */
+.slogan-band.slim{background:var(--safety,#F2A900);border-bottom:2px solid var(--ink,#16181A);padding:0.5rem 1rem;text-align:center;color:var(--ink,#16181A);display:flex;gap:0.3rem 1rem;justify-content:center;align-items:baseline;flex-wrap:wrap}
+.slogan-band.slim .sb-main{font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.3rem;line-height:1.1;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim .sb-sub{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim a{color:var(--ink,#16181A);font-weight:700}
+@media(max-width:768px){.slogan-band.slim .sb-main{font-size:1.05rem}.slogan-band.slim .sb-sub{display:none}}
+</style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/#guides"},{"@type": "ListItem","position": 3,"name": "Huawei SUN2000 to Home Assistant","item": "https://modbusmanager.com/huawei-sun2000-home-assistant.html"}]}
+</script>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label">Features ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-scanner.html" style="color:#9A6700;font-weight:600">&#128269; Modbus Scanner</a>
+        <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
+        <a href="/modbus-hmi-runtime.html" style="padding-left:1.5rem">HMI Runtime (OEM)</a>
+        <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
+        <a href="/modbus-rtu-rs485-data-logger.html" style="padding-left:1.5rem">RTU / RS-485 Logging</a>
+        <a href="/modbus-logging-interval-deadband.html" style="padding-left:1.5rem">Interval &amp; Deadband</a>
+        <a href="/modbus-to-csv-logging.html" style="padding-left:1.5rem">CSV Export</a>
+        <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
+        <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
+        <a href="/modbus-structured-text-scripting.html">&#127991; Tags &amp; Structured Text</a>
+      </div>
+    </li>
+    <li class="nav-drop">
+      <span class="nav-drop-label">Guides ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200</a>
+        <a href="/siemens-s7-put-get.html">Siemens S7 PUT/GET</a>
+        <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+        <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+        <a href="/huawei-sun2000-modbus.html">Huawei SUN2000</a>
+        <a href="/huawei-sun2000-home-assistant.html">SUN2000 &rarr; Home Assistant</a>
+        <a href="/sungrow-inverter-modbus.html">Sungrow Inverters</a>
+        <a href="/sunspec-modbus-sma-fronius-solaredge.html">SunSpec: SMA, Fronius, SolarEdge</a>
+        <a href="/deye-sunsynk-growatt-modbus.html">Deye, Sunsynk &amp; Growatt</a>
+        <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+        <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+        <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+        <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+        <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+        <a href="/powerflex-525-modbus.html">PowerFlex 525</a>
+        <a href="/durapulse-gs20-modbus.html">DURApulse GS20</a>
+        <a href="/yaskawa-v1000-modbus.html">Yaskawa V1000</a>
+        <a href="/modbus-vfd-speed-reference.html">VFD Speed Registers</a>
+        <a href="/wattnode-modbus.html">WattNode</a>
+        <a href="/manual.html">Documentation</a>
+      </div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.5/Modbus.Manager.Pro.Setup.1.9.5.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-SUN2000HA-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/v1.4.10/Modbus.Manager.Setup.1.4.10.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-SUN2000HA-Nav', 'product': 'standard', 'value': 1})">Download free trial</a>
+  </div>
+</nav>
+<div class="slogan-band slim">
+  <span class="sb-main">Every device. One tool. Pay once.</span>
+  <span class="sb-sub">Modbus &middot; BACnet &middot; Siemens S7 &middot; one-time licence &middot; also from us: <a href="https://bacmanager.com">BACManager&nbsp;&#8599;</a></span>
+</div>
+<div class="hazard"></div>
+
+<div class="article-wrap">
+
+  <div class="breadcrumb">
+    <a href="/">ModbusManager</a> &rsaquo; Guides &rsaquo; Huawei SUN2000 to Home Assistant
+  </div>
+
+  <h1>Huawei SUN2000 to Home Assistant over Modbus &mdash; No Cloud</h1>
+
+  <p class="lead">Read a Huawei SUN2000 inverter and its DTSU666-H meter <strong>locally</strong> over Modbus TCP and publish the values to Home Assistant through MQTT. They appear by themselves, as one device with units and device classes, ready for the Energy dashboard &mdash; no FusionSolar cloud, no custom integration, no YAML. And because the SDongle serves only one Modbus client at a time, the same single connection can also feed a PLC, an EMS or a wallbox.</p>
+
+  <figure style="margin:1.8rem 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink)">
+    <img src="/sun2000-ha-device.png" width="1030" height="680" loading="lazy" decoding="async"
+         alt="Home Assistant device page for a Huawei SUN2000 published by ModbusManager Pro over MQTT: PV power, active power, yield today and total, grid power, imported and exported energy, phase voltage, frequency, inverter temperature, efficiency and status"
+         style="width:100%;height:auto;display:block">
+    <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">
+      The free workspace below, publishing a simulated SUN2000-10KTL-M1 to Home Assistant. Every entity was created by MQTT discovery &mdash; nothing was typed into Home Assistant.
+    </figcaption>
+  </figure>
+
+  <h2>Why Not the Cloud, or a Second Modbus Client?</h2>
+
+  <p>There are three usual ways to get a SUN2000 into Home Assistant, and each has a catch:</p>
+  <table>
+    <tr><th>Way</th><th>Catch</th></tr>
+    <tr><td>FusionSolar cloud</td><td>Values arrive minutes late and stop when the internet does. Not good enough to switch a heater or a battery on surplus.</td></tr>
+    <tr><td>Home Assistant reads the inverter itself</td><td>Works &mdash; until anything else needs the inverter too. Huawei's <em>SDongleA-05 Modbus TCP Guide</em> allows <strong>one client at a time</strong>, even in Unrestricted mode. A wallbox, an EMS or a PLC on the same dongle means dropped connections.</td></tr>
+    <tr><td>A gateway between them</td><td>Holds the one connection and shares the values. That is what this page sets up &mdash; on a Windows PC, with no Raspberry Pi and no Docker.</td></tr>
+  </table>
+
+  <h2>How It Works</h2>
+
+  <figure style="margin:1.4rem 0">
+    <svg viewBox="0 0 760 230" role="img" aria-label="SUN2000 and DTSU666-H meter, one Modbus TCP connection to ModbusManager Pro's gateway, which publishes over MQTT to Mosquitto in Home Assistant and serves the same values as a Modbus TCP map to a PLC, EMS or wallbox" style="width:100%;height:auto;display:block;font-family:'IBM Plex Mono',monospace">
+      <rect x="10" y="70" width="170" height="90" rx="3" fill="#FAFAF7" stroke="#16181A" stroke-width="2"/>
+      <text x="95" y="103" text-anchor="middle" font-size="15" font-weight="700" fill="#16181A">SUN2000</text>
+      <text x="95" y="124" text-anchor="middle" font-size="11" fill="#4A4F55">+ DTSU666-H meter</text>
+      <text x="95" y="143" text-anchor="middle" font-size="11" fill="#4A4F55">SDongle, port 502</text>
+      <line x1="180" y1="115" x2="290" y2="115" stroke="#16181A" stroke-width="2"/>
+      <polygon points="290,115 280,109 280,121" fill="#16181A"/>
+      <text x="235" y="104" text-anchor="middle" font-size="11" fill="#16181A">Modbus TCP</text>
+      <text x="235" y="134" text-anchor="middle" font-size="10" fill="#B07A00">one connection</text>
+      <rect x="290" y="55" width="190" height="120" rx="3" fill="#F2A900" stroke="#16181A" stroke-width="2"/>
+      <text x="385" y="92" text-anchor="middle" font-size="15" font-weight="700" fill="#16181A">ModbusManager Pro</text>
+      <text x="385" y="114" text-anchor="middle" font-size="12" fill="#16181A">Gateway</text>
+      <text x="385" y="140" text-anchor="middle" font-size="10" fill="#16181A">scales registers:</text>
+      <text x="385" y="155" text-anchor="middle" font-size="10" fill="#16181A">kW, kWh, V, Hz, &#176;C</text>
+      <line x1="480" y1="90" x2="585" y2="55" stroke="#16181A" stroke-width="2"/>
+      <polygon points="585,55 573,54 577,65" fill="#16181A"/>
+      <text x="520" y="58" text-anchor="middle" font-size="11" fill="#16181A">MQTT</text>
+      <line x1="480" y1="145" x2="585" y2="180" stroke="#16181A" stroke-width="2" stroke-dasharray="5 4"/>
+      <polygon points="585,180 577,170 573,181" fill="#16181A"/>
+      <text x="522" y="190" text-anchor="middle" font-size="11" fill="#4A4F55">Modbus TCP</text>
+      <rect x="585" y="15" width="165" height="80" rx="3" fill="#FAFAF7" stroke="#16181A" stroke-width="2"/>
+      <text x="667" y="45" text-anchor="middle" font-size="14" font-weight="700" fill="#16181A">Home Assistant</text>
+      <text x="667" y="65" text-anchor="middle" font-size="11" fill="#4A4F55">Mosquitto add-on</text>
+      <text x="667" y="82" text-anchor="middle" font-size="11" fill="#4A4F55">MQTT discovery</text>
+      <rect x="585" y="140" width="165" height="80" rx="3" fill="#FAFAF7" stroke="#16181A" stroke-width="2" stroke-dasharray="5 4"/>
+      <text x="667" y="172" text-anchor="middle" font-size="13" font-weight="700" fill="#16181A">PLC / EMS / wallbox</text>
+      <text x="667" y="192" text-anchor="middle" font-size="11" fill="#4A4F55">optional, same values</text>
+    </svg>
+  </figure>
+
+  <p>ModbusManager Pro's <a href="/modbus-gateway-software.html">gateway</a> polls the inverter on its own, in the background, with no window open. Each mapping row reads one register, applies Huawei's gain and publishes the result to <code>sun2000/&lt;name&gt;/state</code>. With Home Assistant discovery on, it also tells Home Assistant what each value is &mdash; power in kW, energy in kWh as a growing total &mdash; so the entities need no configuration. When the gateway stops, Home Assistant shows them as unavailable instead of keeping old numbers.</p>
+
+  <h2>What You Need</h2>
+  <ul>
+    <li><strong>Home Assistant</strong> with the <strong>Mosquitto broker</strong> add-on and the MQTT integration (Settings &rsaquo; Add-ons &rsaquo; Mosquitto broker; Home Assistant then offers the MQTT integration by itself).</li>
+    <li><strong>A Windows 10/11 PC</strong> on the same network that stays on &mdash; an office PC, a mini PC, a virtual machine.</li>
+    <li><strong>ModbusManager Pro 1.9.5 or newer</strong> &mdash; the MQTT output is part of the gateway. The 14-day trial has everything.</li>
+    <li><strong>Modbus TCP enabled on the SDongle</strong> &mdash; in the FusionSolar app as installer, see <a href="/huawei-sun2000-modbus.html">Enabling Modbus TCP on the SDongle</a>.</li>
+  </ul>
+
+  <h2>Step by Step</h2>
+
+  <p><span class="step-num">1</span> <strong>Download the workspace</strong> below and open it in ModbusManager Pro (Workspace &rsaquo; Open). Confirm when it asks to apply the gateway configuration.</p>
+  <p><span class="step-num">2</span> <strong>Point it at the inverter</strong> &mdash; on the Gateway tab, set the <em>SUN2000</em> endpoint's IP address to your dongle's (port 502). The rows use unit ID 1, the inverter's usual RS485 address behind the dongle.</p>
+  <p><span class="step-num">3</span> <strong>Point it at Home Assistant</strong> &mdash; in the MQTT panel, enter Home Assistant's IP address as the broker (port 1883) and a Home Assistant user name and password. The password stays on this PC: it is not saved in the workspace.</p>
+  <p><span class="step-num">4</span> <strong>Start the gateway</strong>. The MQTT panel says <em>connected</em>. Tick <em>Start gateway automatically</em> and it starts by itself whenever ModbusManager starts.</p>
+  <p><span class="step-num">5</span> <strong>In Home Assistant</strong>, open Settings &rsaquo; Devices &amp; services &rsaquo; MQTT: the device <em>ModbusManager sun2000</em> is there with its entities.</p>
+
+  <figure style="margin:1.8rem 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink)">
+    <img src="/sun2000-ha-gateway.png" width="1320" height="825" loading="lazy" decoding="async"
+         alt="ModbusManager Pro Gateway tab: the SUN2000 endpoint, the MQTT panel connected to Home Assistant's broker with discovery on, and mapping rows with Dest MQTT, unit and Home Assistant device class"
+         style="width:100%;height:auto;display:block">
+    <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">
+      The Gateway tab after step 4: one endpoint, the MQTT panel connected, and a row per value with its unit and Home Assistant class.
+    </figcaption>
+  </figure>
+
+  <h2>What Appears in Home Assistant</h2>
+
+  <table>
+    <tr><th>Entity</th><th>Register</th><th>Type, gain</th><th>Unit</th><th>Device class</th></tr>
+    <tr><td>PV power</td><td class="mono">32064</td><td class="mono">I32 &divide;1000</td><td>kW</td><td>power</td></tr>
+    <tr><td>Active power</td><td class="mono">32080</td><td class="mono">I32 &divide;1000</td><td>kW</td><td>power</td></tr>
+    <tr><td>Yield today</td><td class="mono">32114</td><td class="mono">U32 &divide;100</td><td>kWh</td><td>energy</td></tr>
+    <tr><td>Yield total</td><td class="mono">32106</td><td class="mono">U32 &divide;100</td><td>kWh</td><td>energy</td></tr>
+    <tr><td>Phase A voltage</td><td class="mono">32069</td><td class="mono">U16 &divide;10</td><td>V</td><td>voltage</td></tr>
+    <tr><td>Grid frequency</td><td class="mono">32085</td><td class="mono">U16 &divide;100</td><td>Hz</td><td>frequency</td></tr>
+    <tr><td>Inverter temperature</td><td class="mono">32087</td><td class="mono">I16 &divide;10</td><td>&deg;C</td><td>temperature</td></tr>
+    <tr><td>Efficiency</td><td class="mono">32086</td><td class="mono">U16 &divide;100</td><td>%</td><td>&mdash;</td></tr>
+    <tr><td>Device status</td><td class="mono">32089</td><td class="mono">U16</td><td>&mdash;</td><td>&mdash; (512 = on-grid)</td></tr>
+    <tr><td>Grid power (export +)</td><td class="mono">37113</td><td class="mono">I32</td><td>W</td><td>power</td></tr>
+    <tr><td>Grid exported</td><td class="mono">37119</td><td class="mono">I32 &divide;100</td><td>kWh</td><td>energy</td></tr>
+    <tr><td>Grid imported</td><td class="mono">37121</td><td class="mono">I32 &divide;100</td><td>kWh</td><td>energy</td></tr>
+  </table>
+  <p>Energy entities are published as growing totals (<code>total_increasing</code>), which is what the Energy dashboard asks for. Registers, types and gains are Huawei's &mdash; the full map with the rest of the registers is on the <a href="/huawei-sun2000-modbus.html">SUN2000 Modbus register map</a> page.</p>
+
+  <h2>The Energy Dashboard</h2>
+
+  <p>In Home Assistant, Settings &rsaquo; Dashboards &rsaquo; Energy:</p>
+  <table>
+    <tr><th>Energy dashboard field</th><th>Entity</th></tr>
+    <tr><td>Grid consumption</td><td>Grid imported</td></tr>
+    <tr><td>Return to grid</td><td>Grid exported</td></tr>
+    <tr><td>Solar production energy</td><td>Yield total</td></tr>
+    <tr><td>Solar production power</td><td>PV power</td></tr>
+  </table>
+  <p>Use <em>Yield total</em> rather than <em>Yield today</em> for the dashboard: Home Assistant works out the hours and days from the growing total itself. The first bars appear after the first full hour.</p>
+
+  <div class="callout">
+    <strong>Grid power sign:</strong> Huawei's meter register 37113 is positive when exporting and negative when importing, so the entity is named <em>Grid power (export +)</em>. If you want import positive, set the row's <strong>Scale</strong> to <code>-1</code> and rename it.
+  </div>
+
+  <h2>Battery (LUNA2000)</h2>
+
+  <p>The workspace has four battery rows switched off: state of charge (37760, &divide;10, %), charge/discharge power (37765, W) and the total charged and discharged energy (37780 and 37782, &divide;100, kWh). With a LUNA2000 fitted, tick them on the Gateway tab and they appear in Home Assistant on the next start &mdash; the totals fit the Energy dashboard's battery fields. Check the power sign on your system once; Huawei's document does not state it.</p>
+
+  <h2>Share the Connection with a PLC, EMS or Wallbox</h2>
+
+  <p>The dongle's one-client limit is where the gateway pays off. Add rows with <strong>Dest: Modbus map</strong> next to the MQTT ones and ModbusManager serves those values as an ordinary Modbus TCP slave on this PC &mdash; a PLC, an energy manager or a charger reads them there, in whatever register layout and data type it expects, while Home Assistant keeps its MQTT feed. A Siemens S7-1200/1500 can also <a href="/siemens-s7-put-get.html">GET them as a data block</a>. Still one connection to the inverter.</p>
+
+  <h2>Writing Back</h2>
+
+  <p>A row in <strong>write</strong> mode becomes a <em>number</em> (or a <em>switch</em> for a coil) in Home Assistant, and what you set there is written to the register and read back. The workspace has none: SUN2000 control registers such as active power control (47415, 47416, 47418) change how the inverter feeds the grid, and Huawei's own app may need installer settings for them to take effect. Add them deliberately, one at a time, and check the result on the inverter.</p>
+
+  <h2>Compared with the huawei_solar Integration</h2>
+
+  <p>The <a href="https://github.com/wlcrs/huawei_solar" rel="nofollow noopener">huawei_solar</a> custom integration (installed through HACS) reads the SUN2000 from inside Home Assistant and is free. Which one fits depends on what else is on the inverter:</p>
+  <table>
+    <tr><th></th><th>huawei_solar (HACS)</th><th>ModbusManager Pro gateway</th></tr>
+    <tr><td>Runs on</td><td>Home Assistant itself</td><td>A Windows PC</td></tr>
+    <tr><td>Install</td><td>HACS custom integration</td><td>A Windows program, MQTT to Home Assistant's standard broker</td></tr>
+    <tr><td>Other systems on the same dongle</td><td>No &mdash; it is the one client</td><td>Yes &mdash; Modbus TCP map and S7 data block from the same connection</td></tr>
+    <tr><td>Other devices</td><td>Huawei only</td><td>Any Modbus RTU/TCP device, Siemens S7, BACnet (BACManager)</td></tr>
+    <tr><td>Battery control</td><td>Built in</td><td>Write rows you add yourself</td></tr>
+    <tr><td>Price</td><td>Free</td><td>One-time licence, 14-day free trial</td></tr>
+  </table>
+  <p>If Home Assistant is the only thing that will ever talk to the inverter, huawei_solar is the simpler choice. If a wallbox, an EMS, a PLC or a commissioning laptop needs the inverter too &mdash; or the same PC already reads meters and drives over Modbus &mdash; one gateway in front of everything is the setup that keeps working.</p>
+
+  <h2>Deye, Sungrow, SMA and Other Inverters</h2>
+
+  <p>Nothing in the gateway is Huawei-specific: any register a row can read can go to Home Assistant the same way. The register maps for <a href="/sungrow-inverter-modbus.html">Sungrow</a>, <a href="/deye-sunsynk-growatt-modbus.html">Deye, Sunsynk and Growatt</a> and <a href="/sunspec-modbus-sma-fronius-solaredge.html">SMA, Fronius and SolarEdge (SunSpec)</a> give the addresses, types and gains to put in the rows. A Deye on RS485 needs an RS485 port on the PC or an RS485-to-Ethernet gateway &mdash; its Wi-Fi logger does not speak Modbus TCP.</p>
+
+  <h2>Download the Workspace</h2>
+
+  <ul>
+    <li>A gateway with one Modbus TCP endpoint for the SUN2000 (unit ID 1, port 502)</li>
+    <li>12 rows for the inverter and the DTSU666-H meter, with Huawei's types and gains, units and Home Assistant device classes</li>
+    <li>4 LUNA2000 battery rows, switched off</li>
+    <li>MQTT on, base topic <code>sun2000</code>, Home Assistant discovery on &mdash; only the broker address, user and password are left to fill in</li>
+  </ul>
+
+  <div class="download-box">
+    <div>
+      <h3>Huawei_SUN2000_HomeAssistant.json</h3>
+      <p>SUN2000 + DTSU666-H to Home Assistant over MQTT. Open via Workspace &rsaquo; Open in ModbusManager Pro 1.9.5 or newer.</p>
+    </div>
+    <a href="/Huawei_SUN2000_HomeAssistant.json" download>Download Workspace</a>
+  </div>
+
+  <div class="cta-box">
+    <div>
+      <h3>Try it with ModbusManager Pro</h3>
+      <p>Gateway, MQTT and Home Assistant discovery included. Free 14-day trial. No credit card. Windows 10/11.</p>
+    </div>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.5/Modbus.Manager.Pro.Setup.1.9.5.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-SUN2000HA-Body', 'product': 'pro', 'value': 1})">Download Pro Trial</a>
+  </div>
+
+  <h2>Frequently Asked Questions</h2>
+
+  <h3>Does this need the FusionSolar cloud or an internet connection?</h3>
+  <p>No. ModbusManager reads the inverter over your own network and publishes to Home Assistant's own broker. Nothing leaves the building, and it keeps working when the internet does not.</p>
+
+  <h3>Can Home Assistant and another system read the SUN2000 at the same time?</h3>
+  <p>Not both directly through the SDongle: it serves one Modbus TCP client at a time. Let ModbusManager's gateway be that client and share the values &mdash; MQTT for Home Assistant, a Modbus TCP map or an S7 data block for the rest.</p>
+
+  <h3>Do I need to write YAML in Home Assistant?</h3>
+  <p>No. The gateway announces each value through MQTT discovery with its name, unit, device class and state class, and Home Assistant creates the entities itself, all under one device.</p>
+
+  <h3>What happens when the PC or the gateway stops?</h3>
+  <p>The gateway's last will marks the device unavailable in Home Assistant, so no stale values are shown. When it starts again it reconnects and publishes fresh values; it also announces itself again whenever Home Assistant restarts.</p>
+
+  <h3>Which ModbusManager edition do I need?</h3>
+  <p>ModbusManager Pro 1.9.5 or newer (the gateway and the MQTT output are Pro features), or BACManager for BACnet and Modbus devices. The free 14-day trial includes everything.</p>
+
+  <h2>Sources</h2>
+  <p style="font-size:0.85rem">Huawei, <em>SUN2000MA V200R024C00SPC106 Modbus Interface Definitions (V3.0)</em>, Issue 06, 2025-06-12 (<a href="https://support.huawei.com/enterprise/en/doc/EDOC1100480297" rel="nofollow noopener">support.huawei.com, EDOC1100480297</a>), and <em>SDongleA-05 Modbus TCP Guide</em>, Issue 01, 2021-11-07 &mdash; registers, gains and the one-client limit, as on the <a href="/huawei-sun2000-modbus.html">SUN2000 register map</a> page. Home Assistant, <a href="https://www.home-assistant.io/integrations/mqtt/" rel="nofollow noopener">MQTT integration and discovery</a>. Register availability differs by model and firmware &mdash; check the document for your inverter.</p>
+
+</div>
+
+<div class="hazard"></div>
+<div class="divider-line"></div>
+
+<!-- GATEWAY CROSS-LINK -->
+<section class="section">
+  <div class="sec-label">// one connection, many readers</div>
+  <h2 class="sec-title">Home Assistant and everything else on the same inverter</h2>
+  <div style="max-width:820px;margin:0 auto;background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem">
+    <p style="color:var(--body);line-height:1.75;margin:0 0 1.1rem">The SDongle lets one Modbus client in. ModbusManager Pro's gateway can be that client &mdash; and hand the same values to Home Assistant over MQTT, to a PLC as a Modbus TCP map or a Siemens data block, and to anything else that speaks Modbus.</p>
+    <a href="/modbus-gateway-software.html" style="font-family:'IBM Plex Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">Modbus gateway software &rarr;</a>
+  </div>
+</section>
+<footer>
+  <div class="footer-logo">ModbusManager</div>
+  <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
+    <a href="/">Home</a>
+    <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
+    <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
+    <a href="/modbus-rtu-rs485-data-logger.html">RTU Logging</a>
+    <a href="/modbus-to-csv-logging.html">CSV Export</a>
+    <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
+        <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
+    <a href="/modbus-structured-text-scripting.html">&#127991; Tags &amp; scripting</a>
+    <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+    <a href="/modbus-vfd-speed-reference.html">VFD drives</a>
+    <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    <a href="/manual.html">Documentation</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/license-terms.html">License terms</a>
+    <a href="mailto:support@modbusmanager.com">Support</a>
+  </div>
+  <div>support@modbusmanager.com</div>
+</footer>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+<script src="/email-capture.js" defer></script>
+
+<script>
+/* Download buttons (2026-10-26): the installer is fetched on a click, not
+   through the link's href, so crawlers that follow every link no longer count
+   as downloads on GitHub. data-dl is the address without https://.
+   Each click is also counted in our own Google Sheet (Apps Script), cookie
+   consent or not: site, product, version, page, referrer, language, time
+   zone. No cookies, no IP address. The download never waits for it.
+   A workspace (.json or .zip on this site) is counted as product "Workspace" with
+   the file name as its version, a manual (.pdf) as product "Manual"; both
+   download as before. */
+function dlCount(product, version) {
+  try {
+    navigator.sendBeacon('https://script.google.com/macros/s/AKfycbyx9RacY_l5KDK0RBBmLk41uKv3McyR_UJmCTWqnRqklh6fYgeXvYecddcQDGzRx5-F/exec', JSON.stringify({
+      site: location.hostname, product: product, version: version,
+      page: location.pathname, referrer: document.referrer, lang: navigator.language,
+      tz: (window.Intl && Intl.DateTimeFormat().resolvedOptions().timeZone) || ''
+    }));
+  } catch (err) {}
+}
+document.addEventListener('click', function (e) {
+  if (!e.target.closest) return;
+  var w = e.target.closest('a[href$=".json"], a[href$=".zip"]');
+  if (w) { dlCount('Workspace', (w.getAttribute('href').match(/([^\/]+)\.(?:json|zip)$/) || [])[1] || ''); return; }
+  var m = e.target.closest('a[href$=".pdf"]');
+  if (m) { dlCount('Manual', (m.getAttribute('href').match(/([^\/]+)\.pdf$/) || [])[1] || ''); return; }
+  var a = e.target.closest('a[data-dl]');
+  if (!a || e.defaultPrevented) return;
+  e.preventDefault();
+  var dl = a.getAttribute('data-dl');
+  dlCount(/bacmanager/i.test(dl) ? 'BACManager' : (/Pro\.Setup|pro-v/i.test(dl) ? 'ModbusManager Pro' : 'ModbusManager Standard'),
+    (dl.match(/(\d+(?:\.\d+)+)\.exe$/) || [])[1] || '');
+  window.location.href = 'https://' + dl;
+});
+</script>
+</body>
+</html>
