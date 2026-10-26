@@ -588,12 +588,24 @@ function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
 <script>
 /* Download buttons (2026-10-26): the installer is fetched on a click, not
    through the link's href, so crawlers that follow every link no longer count
-   as downloads on GitHub. data-dl is the address without https://. */
+   as downloads on GitHub. data-dl is the address without https://.
+   Each click is also counted in our own Google Sheet (Apps Script), cookie
+   consent or not: site, product, page, referrer, language, time zone. No
+   cookies, no IP address. The download never waits for it. */
 document.addEventListener('click', function (e) {
   var a = e.target.closest && e.target.closest('a[data-dl]');
   if (!a || e.defaultPrevented) return;
   e.preventDefault();
-  window.location.href = 'https://' + a.getAttribute('data-dl');
+  var dl = a.getAttribute('data-dl');
+  try {
+    navigator.sendBeacon('https://script.google.com/macros/s/AKfycbyx9RacY_l5KDK0RBBmLk41uKv3McyR_UJmCTWqnRqklh6fYgeXvYecddcQDGzRx5-F/exec', JSON.stringify({
+      site: location.hostname,
+      product: /bacmanager/i.test(dl) ? 'BACManager' : (/Pro\.Setup|pro-v/i.test(dl) ? 'ModbusManager Pro' : 'ModbusManager Standard'),
+      page: location.pathname, referrer: document.referrer, lang: navigator.language,
+      tz: (window.Intl && Intl.DateTimeFormat().resolvedOptions().timeZone) || ''
+    }));
+  } catch (err) {}
+  window.location.href = 'https://' + dl;
 });
 </script>
 </body>
