@@ -10,10 +10,12 @@
   var WEBHOOK = 'https://hook.eu1.make.com/gaspnwphnxp8cvufudbb1rmcd266jgix';
   var SHOWN_KEY = 'mm_email_panel_shown';
 
-  // Tuvasta allalaadimislingid (GitHub releases .exe)
+  // Tuvasta allalaadimislingid (GitHub releases .exe). Since 2026-10-26 the
+  // address is in data-dl (the click starts the download, see the page's
+  // script), href is only "#download"; an old href is still understood.
+  function linkUrl(a) { return a.getAttribute('data-dl') || a.getAttribute('href') || ''; }
   function isDownloadLink(a) {
-    var h = a.getAttribute('href') || '';
-    return /modbusmanager-downloads\/releases\/.*\.exe$/i.test(h);
+    return /modbusmanager-downloads\/releases\/.*\.exe$/i.test(linkUrl(a));
   }
 
   // Milline toode? (pealkirja jaoks)
@@ -149,7 +151,7 @@
     var a = e.target.closest ? e.target.closest('a') : null;
     if (!a || !isDownloadLink(a)) return;
     // ära preventDefault — allalaadimine algab normaalselt
-    var product = productFromHref(a.getAttribute('href'));
+    var product = productFromHref(linkUrl(a));
     track('download_click', product);
     setTimeout(function () { showPanel(product); }, 800);
   }, true);
