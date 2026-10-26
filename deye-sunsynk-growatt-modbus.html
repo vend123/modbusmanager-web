@@ -598,22 +598,29 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
    through the link's href, so crawlers that follow every link no longer count
    as downloads on GitHub. data-dl is the address without https://.
    Each click is also counted in our own Google Sheet (Apps Script), cookie
-   consent or not: site, product, page, referrer, language, time zone. No
-   cookies, no IP address. The download never waits for it. */
-document.addEventListener('click', function (e) {
-  var a = e.target.closest && e.target.closest('a[data-dl]');
-  if (!a || e.defaultPrevented) return;
-  e.preventDefault();
-  var dl = a.getAttribute('data-dl');
+   consent or not: site, product, version, page, referrer, language, time
+   zone. No cookies, no IP address. The download never waits for it.
+   A workspace (.json on this site) is counted as product "Workspace" with
+   the file name as its version, and downloads as before. */
+function dlCount(product, version) {
   try {
     navigator.sendBeacon('https://script.google.com/macros/s/AKfycbyx9RacY_l5KDK0RBBmLk41uKv3McyR_UJmCTWqnRqklh6fYgeXvYecddcQDGzRx5-F/exec', JSON.stringify({
-      site: location.hostname,
-      product: /bacmanager/i.test(dl) ? 'BACManager' : (/Pro\.Setup|pro-v/i.test(dl) ? 'ModbusManager Pro' : 'ModbusManager Standard'),
-      version: (dl.match(/(\d+(?:\.\d+)+)\.exe$/) || [])[1] || '',
+      site: location.hostname, product: product, version: version,
       page: location.pathname, referrer: document.referrer, lang: navigator.language,
       tz: (window.Intl && Intl.DateTimeFormat().resolvedOptions().timeZone) || ''
     }));
   } catch (err) {}
+}
+document.addEventListener('click', function (e) {
+  if (!e.target.closest) return;
+  var w = e.target.closest('a[href$=".json"]');
+  if (w) { dlCount('Workspace', (w.getAttribute('href').match(/([^\/]+)\.json$/) || [])[1] || ''); return; }
+  var a = e.target.closest('a[data-dl]');
+  if (!a || e.defaultPrevented) return;
+  e.preventDefault();
+  var dl = a.getAttribute('data-dl');
+  dlCount(/bacmanager/i.test(dl) ? 'BACManager' : (/Pro\.Setup|pro-v/i.test(dl) ? 'ModbusManager Pro' : 'ModbusManager Standard'),
+    (dl.match(/(\d+(?:\.\d+)+)\.exe$/) || [])[1] || '');
   window.location.href = 'https://' + dl;
 });
 </script>
