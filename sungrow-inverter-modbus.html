@@ -560,7 +560,8 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
    consent or not: site, product, version, page, referrer, language, time
    zone. No cookies, no IP address. The download never waits for it.
    A workspace (.json or .zip on this site) is counted as product "Workspace" with
-   the file name as its version, and downloads as before. */
+   the file name as its version, a manual (.pdf) as product "Manual"; both
+   download as before. */
 function dlCount(product, version) {
   try {
     navigator.sendBeacon('https://script.google.com/macros/s/AKfycbyx9RacY_l5KDK0RBBmLk41uKv3McyR_UJmCTWqnRqklh6fYgeXvYecddcQDGzRx5-F/exec', JSON.stringify({
@@ -574,6 +575,8 @@ document.addEventListener('click', function (e) {
   if (!e.target.closest) return;
   var w = e.target.closest('a[href$=".json"], a[href$=".zip"]');
   if (w) { dlCount('Workspace', (w.getAttribute('href').match(/([^\/]+)\.(?:json|zip)$/) || [])[1] || ''); return; }
+  var m = e.target.closest('a[href$=".pdf"]');
+  if (m) { dlCount('Manual', (m.getAttribute('href').match(/([^\/]+)\.pdf$/) || [])[1] || ''); return; }
   var a = e.target.closest('a[data-dl]');
   if (!a || e.defaultPrevented) return;
   e.preventDefault();
