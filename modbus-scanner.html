@@ -240,6 +240,8 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
       <span class="nav-drop-label">Features ▾</span>
       <div class="nav-drop-menu">
         <a href="/modbus-scanner.html" style="color:#9A6700;font-weight:600">&#128269; Modbus Scanner</a>
+        <a href="/modbus-rtu-over-tcp.html" style="padding-left:1.5rem">RTU over TCP</a>
+        <a href="/modbus-tcp-security-tls.html" style="padding-left:1.5rem">Modbus TCP Security (TLS)</a>
         <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
         <a href="/modbus-hmi-runtime.html" style="padding-left:1.5rem">HMI Runtime (OEM)</a>
         <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
@@ -248,6 +250,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
         <a href="/modbus-to-csv-logging.html" style="padding-left:1.5rem">CSV Export</a>
         <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
         <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
+        <a href="/modbus-to-mqtt.html" style="padding-left:1.5rem">Modbus to MQTT</a>
         <a href="/modbus-structured-text-scripting.html">&#127991; Tags &amp; Structured Text</a>
       </div>
     </li>
@@ -281,7 +284,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <li><a href="/#support">Support</a></li>
   </ul>
   <div style="display:flex;gap:12px;align-items:center">
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.5/Modbus.Manager.Pro.Setup.1.9.5.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-Scanner-NavText', 'product': 'pro', 'value': 1})" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em">Pro trial &darr;</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.6/Modbus.Manager.Pro.Setup.1.9.6.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-Scanner-NavText', 'product': 'pro', 'value': 1})" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em">Pro trial &darr;</a>
     <a href="/ModbusManager-Siemens-S7-1200-demo.zip" download class="nav-cta">Free demo &darr;</a>
   </div>
 </nav>
@@ -296,7 +299,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <h1>Modbus scanner:<br><span class="accent">find what won't answer</span></h1>
   <p class="hero-desc">A device on the bus and no documentation, or documentation that doesn't match? ModbusManager finds it. Scan slave IDs, sweep address ranges, and auto-detect baud rate and parity when the settings are unknown &mdash; for RTU and TCP. Then read the registers in the same tool, decoded in every word order at once.</p>
   <div class="hero-ctas">
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.5/Modbus.Manager.Pro.Setup.1.9.5.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-Scanner-Hero', 'product': 'pro', 'value': 1})">Download free trial</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.6/Modbus.Manager.Pro.Setup.1.9.6.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-Scanner-Hero', 'product': 'pro', 'value': 1})">Download free trial</a>
     <a href="/#pricing" class="btn-ghost">See pricing</a>
   </div>
   <p class="hero-note">Windows 10/11 &middot; RTU, ASCII &amp; TCP &middot; one-time license &middot; 14-day trial</p>
@@ -428,7 +431,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
 
   <p class="sec-sub" style="margin-top:20px">Three things follow from that table. <strong>Narrow the ID range first</strong> &mdash; most installations use single-digit or DIP-switch-set addresses, so 1&ndash;32 finds the device in a tenth of the time and you can always widen later. <strong>Drop the timeout</strong> to 300&ndash;500 ms for the discovery pass; a device on a healthy RS-485 segment replies far faster than that, and you can re-check any near-misses at a longer timeout afterwards. And <strong>sweep addresses in blocks</strong>, not one register at a time &mdash; the last two rows differ by a factor of a hundred for the same coverage.</p>
 
-  <p class="sec-sub">The one case for a long timeout is a device behind a TCP-to-RTU gateway, where the gateway serialises requests onto a slow serial segment and a reply can genuinely take a second or more. If a TCP scan comes back completely empty, raising the timeout before anything else is the cheapest test.</p>
+  <p class="sec-sub">The one case for a long timeout is a device behind a TCP-to-RTU gateway, where the gateway serialises requests onto a slow serial segment and a reply can genuinely take a second or more. If a TCP scan comes back completely empty, raising the timeout before anything else is the cheapest test &mdash; and if the converter is a transparent serial device server rather than a Modbus gateway, scan in <a href="/modbus-rtu-over-tcp.html">RTU over TCP</a> mode instead.</p>
 </section>
 
 <!-- VS CAS -->
@@ -556,7 +559,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <h2 style="font-size:1.6rem;color:var(--ink);margin-bottom:10px">Find your device now</h2>
   <p class="sec-sub" style="margin:0 auto 22px;max-width:520px">Download the trial, plug in your USB-RS485 adapter, and hit Auto-detect. If it answers on the bus, ModbusManager will find it.</p>
   <div class="hero-ctas" style="justify-content:center">
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.5/Modbus.Manager.Pro.Setup.1.9.5.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-Scanner-CTA', 'product': 'pro', 'value': 1})">Download free trial</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.6/Modbus.Manager.Pro.Setup.1.9.6.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-Scanner-CTA', 'product': 'pro', 'value': 1})">Download free trial</a>
     <a href="/#pricing" class="btn-ghost">See pricing</a>
   </div>
 </section>
@@ -577,6 +580,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <a href="/modbus-to-csv-logging.html">CSV Export</a>
     <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
         <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
+        <a href="/modbus-to-mqtt.html" style="padding-left:1.5rem">Modbus to MQTT</a>
     <a href="/modbus-structured-text-scripting.html">&#127991; Tags &amp; scripting</a>
     <a href="/eastron-sdm630-modbus.html">Energy meters</a>
     <a href="/modbus-vfd-speed-reference.html">VFD drives</a>

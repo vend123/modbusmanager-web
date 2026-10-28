@@ -309,6 +309,8 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
       <span class="nav-drop-label">Features ▾</span>
       <div class="nav-drop-menu">
         <a href="/modbus-scanner.html" style="color:#9A6700;font-weight:600">&#128269; Modbus Scanner</a>
+        <a href="/modbus-rtu-over-tcp.html" style="padding-left:1.5rem">RTU over TCP</a>
+        <a href="/modbus-tcp-security-tls.html" style="padding-left:1.5rem">Modbus TCP Security (TLS)</a>
         <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
         <a href="/modbus-hmi-runtime.html" style="padding-left:1.5rem">HMI Runtime (OEM)</a>
         <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
@@ -317,6 +319,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
         <a href="/modbus-to-csv-logging.html" style="padding-left:1.5rem">CSV Export</a>
         <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
         <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
+        <a href="/modbus-to-mqtt.html" style="padding-left:1.5rem">Modbus to MQTT</a>
         <a href="/modbus-structured-text-scripting.html">&#127991; Tags &amp; Structured Text</a>
       </div>
     </li>
@@ -350,8 +353,8 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <li><a href="/#support">Support</a></li>
   </ul>
   <div style="display:flex;gap:12px;align-items:center">
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.5/Modbus.Manager.Pro.Setup.1.9.5.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-RTULogger-NavText', 'product': 'pro', 'value': 1})">Pro trial &#8595;</a>
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.5/Modbus.Manager.Pro.Setup.1.9.5.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-RTULogger-Nav', 'product': 'pro', 'value': 1})">Download Pro trial</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.6/Modbus.Manager.Pro.Setup.1.9.6.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-RTULogger-NavText', 'product': 'pro', 'value': 1})">Pro trial &#8595;</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.6/Modbus.Manager.Pro.Setup.1.9.6.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-RTULogger-Nav', 'product': 'pro', 'value': 1})">Download Pro trial</a>
   </div>
 </nav>
 <div class="slogan-band slim">
@@ -365,7 +368,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <h1>Modbus RTU <span class="accent">Data Logger</span><br>for RS-485 Lines</h1>
   <p class="hero-desc">Most plant data still arrives on two wires, not Ethernet. A serial Modbus logger has limits an Ethernet one does not &mdash; and those limits, not the software, decide how often you can actually sample. This page covers the arithmetic, the realistic intervals, and how to read the line when a device goes quiet.</p>
   <div class="hero-ctas">
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.5/Modbus.Manager.Pro.Setup.1.9.5.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-RTULogger-Hero', 'product': 'pro', 'value': 1})">Download Pro trial &mdash; free 14 days</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.6/Modbus.Manager.Pro.Setup.1.9.6.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-RTULogger-Hero', 'product': 'pro', 'value': 1})">Download Pro trial &mdash; free 14 days</a>
     <a href="/modbus-data-logger-software.html" class="btn-ghost">All logging features</a>
   </div>
   <p class="hero-note">Modbus RTU, ASCII and TCP &middot; Windows 10/11 &middot; One-time license</p>
@@ -558,7 +561,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <div class="sec-label" style="justify-content:center">// try it on your own line</div>
   <h2 class="sec-title">Log your RS-485 devices free for 14 days</h2>
   <p style="max-width:640px;margin:0 auto 1.6rem;color:var(--muted);line-height:1.7">Full Pro edition, no credit card. If the line is difficult, the Serial Monitor will tell you why before you commit to anything.</p>
-  <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.5/Modbus.Manager.Pro.Setup.1.9.5.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-RTULogger-CTA', 'product': 'pro', 'value': 1})">Download Pro trial &mdash; free 14 days</a>
+  <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.6/Modbus.Manager.Pro.Setup.1.9.6.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-RTULogger-CTA', 'product': 'pro', 'value': 1})">Download Pro trial &mdash; free 14 days</a>
   <p style="margin-top:1rem;font-size:0.8rem;color:var(--steel)">Windows 10/11 &middot; 14-day trial &middot; Pro from $119 one-time</p>
 </div>
 
@@ -574,6 +577,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <a href="/modbus-to-csv-logging.html">CSV Export</a>
     <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
         <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
+        <a href="/modbus-to-mqtt.html" style="padding-left:1.5rem">Modbus to MQTT</a>
     <a href="/modbus-structured-text-scripting.html">&#127991; Tags &amp; scripting</a>
     <a href="/huawei-smartlogger-modbus.html">Guides</a>
     <a href="/manual.html">Documentation</a>

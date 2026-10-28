@@ -101,7 +101,7 @@
       "name": "Which ModbusManager edition do I need?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "ModbusManager Pro 1.9.5 or newer (the gateway and the MQTT output are Pro features), or BACManager for BACnet and Modbus devices. The free 14-day trial includes everything."
+        "text": "ModbusManager Pro 1.9.6 or newer (the gateway and the MQTT output are Pro features), or BACManager for BACnet and Modbus devices. The free 14-day trial includes everything."
       }
     }
   ]
@@ -230,6 +230,8 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
       <span class="nav-drop-label">Features ▾</span>
       <div class="nav-drop-menu">
         <a href="/modbus-scanner.html" style="color:#9A6700;font-weight:600">&#128269; Modbus Scanner</a>
+        <a href="/modbus-rtu-over-tcp.html" style="padding-left:1.5rem">RTU over TCP</a>
+        <a href="/modbus-tcp-security-tls.html" style="padding-left:1.5rem">Modbus TCP Security (TLS)</a>
         <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
         <a href="/modbus-hmi-runtime.html" style="padding-left:1.5rem">HMI Runtime (OEM)</a>
         <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
@@ -238,6 +240,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
         <a href="/modbus-to-csv-logging.html" style="padding-left:1.5rem">CSV Export</a>
         <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
         <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
+        <a href="/modbus-to-mqtt.html" style="padding-left:1.5rem">Modbus to MQTT</a>
         <a href="/modbus-structured-text-scripting.html">&#127991; Tags &amp; Structured Text</a>
       </div>
     </li>
@@ -271,8 +274,8 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <li><a href="/#support">Support</a></li>
   </ul>
   <div style="display:flex;gap:12px;align-items:center">
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.5/Modbus.Manager.Pro.Setup.1.9.5.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-SUN2000HA-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/v1.4.10/Modbus.Manager.Setup.1.4.10.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-SUN2000HA-Nav', 'product': 'standard', 'value': 1})">Download free trial</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.6/Modbus.Manager.Pro.Setup.1.9.6.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-SUN2000HA-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/v1.4.11/Modbus.Manager.Setup.1.4.11.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-SUN2000HA-Nav', 'product': 'standard', 'value': 1})">Download free trial</a>
   </div>
 </nav>
 <div class="slogan-band slim">
@@ -349,7 +352,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <ul>
     <li><strong>Home Assistant</strong> with the <strong>Mosquitto broker</strong> add-on and the MQTT integration (Settings &rsaquo; Add-ons &rsaquo; Mosquitto broker; Home Assistant then offers the MQTT integration by itself).</li>
     <li><strong>A Windows 10/11 PC</strong> on the same network that stays on &mdash; an office PC, a mini PC, a virtual machine.</li>
-    <li><strong>ModbusManager Pro 1.9.5 or newer</strong> &mdash; the MQTT output is part of the gateway. The 14-day trial has everything.</li>
+    <li><strong>ModbusManager Pro 1.9.6 or newer</strong> &mdash; the MQTT output is part of the gateway. The 14-day trial has everything.</li>
     <li><strong>Modbus TCP enabled on the SDongle</strong> &mdash; in the FusionSolar app as installer, see <a href="/huawei-sun2000-modbus.html">Enabling Modbus TCP on the SDongle</a>.</li>
   </ul>
 
@@ -447,7 +450,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <div class="download-box">
     <div>
       <h3>Huawei_SUN2000_HomeAssistant.json</h3>
-      <p>SUN2000 + DTSU666-H to Home Assistant over MQTT. Open via Workspace &rsaquo; Open in ModbusManager Pro 1.9.5 or newer.</p>
+      <p>SUN2000 + DTSU666-H to Home Assistant over MQTT. Open via Workspace &rsaquo; Open in ModbusManager Pro 1.9.6 or newer.</p>
     </div>
     <a href="/Huawei_SUN2000_HomeAssistant.json" download>Download Workspace</a>
   </div>
@@ -457,7 +460,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
       <h3>Try it with ModbusManager Pro</h3>
       <p>Gateway, MQTT and Home Assistant discovery included. Free 14-day trial. No credit card. Windows 10/11.</p>
     </div>
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.5/Modbus.Manager.Pro.Setup.1.9.5.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-SUN2000HA-Body', 'product': 'pro', 'value': 1})">Download Pro Trial</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.6/Modbus.Manager.Pro.Setup.1.9.6.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-SUN2000HA-Body', 'product': 'pro', 'value': 1})">Download Pro Trial</a>
   </div>
 
   <h2>Frequently Asked Questions</h2>
@@ -475,7 +478,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
   <p>The gateway's last will marks the device unavailable in Home Assistant, so no stale values are shown. When it starts again it reconnects and publishes fresh values; it also announces itself again whenever Home Assistant restarts.</p>
 
   <h3>Which ModbusManager edition do I need?</h3>
-  <p>ModbusManager Pro 1.9.5 or newer (the gateway and the MQTT output are Pro features), or BACManager for BACnet and Modbus devices. The free 14-day trial includes everything.</p>
+  <p>ModbusManager Pro 1.9.6 or newer (the gateway and the MQTT output are Pro features), or BACManager for BACnet and Modbus devices. The free 14-day trial includes everything.</p>
 
   <h2>Sources</h2>
   <p style="font-size:0.85rem">Huawei, <em>SUN2000MA V200R024C00SPC106 Modbus Interface Definitions (V3.0)</em>, Issue 06, 2025-06-12 (<a href="https://support.huawei.com/enterprise/en/doc/EDOC1100480297" rel="nofollow noopener">support.huawei.com, EDOC1100480297</a>), and <em>SDongleA-05 Modbus TCP Guide</em>, Issue 01, 2021-11-07 &mdash; registers, gains and the one-client limit, as on the <a href="/huawei-sun2000-modbus.html">SUN2000 register map</a> page. Home Assistant, <a href="https://www.home-assistant.io/integrations/mqtt/" rel="nofollow noopener">MQTT integration and discovery</a>. Register availability differs by model and firmware &mdash; check the document for your inverter.</p>
@@ -504,6 +507,7 @@ nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
     <a href="/modbus-to-csv-logging.html">CSV Export</a>
     <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
         <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
+        <a href="/modbus-to-mqtt.html" style="padding-left:1.5rem">Modbus to MQTT</a>
     <a href="/modbus-structured-text-scripting.html">&#127991; Tags &amp; scripting</a>
     <a href="/eastron-sdm630-modbus.html">Energy meters</a>
     <a href="/modbus-vfd-speed-reference.html">VFD drives</a>

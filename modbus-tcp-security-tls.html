@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modbus TCP Security (TLS, Port 802): Certificates and Testing</title>
+<meta name="description" content="Modbus/TCP Security wraps Modbus in TLS on port 802 with X.509 certificates on both sides. What you need, test certificates with OpenSSL, how to connect.">
+<meta name="keywords" content="Modbus TCP Security, Modbus TLS, Modbus/TCP Security, Modbus secure, Modbus port 802, Modbus TCP secure port, Modbus TLS certificate, Modbus TLS client, secure Modbus TCP, Modbus TCP SSL">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/modbus-tcp-security-tls.html">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:title" content="Modbus TCP Security (TLS, Port 802): Certificates and Testing">
+<meta property="og:description" content="Modbus/TCP Security puts Modbus TCP inside TLS on port 802, with X.509v3 certificates for device and client. What each side needs, test certificates with OpenSSL, and how to check a secure device from Windows.">
+<meta property="og:url" content="https://modbusmanager.com/modbus-tcp-security-tls.html">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://modbusmanager.com/og-modbus-tls.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:published_time" content="2026-10-27T00:00:00Z">
+<meta property="article:section" content="Guides">
+<meta property="article:tag" content="Modbus">
+<meta property="article:tag" content="Modbus TCP">
+<meta property="article:tag" content="TLS">
+<meta property="article:tag" content="Cybersecurity">
+<meta property="article:tag" content="Certificates">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Modbus TCP Security (TLS, Port 802): Certificates and Testing">
+<meta name="twitter:description" content="Modbus/TCP Security puts Modbus TCP inside TLS on port 802, with X.509v3 certificates for device and client. What each side needs, test certificates with OpenSSL, and how to check a secure device from Windows.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-modbus-tls.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Modbus TCP Security: Modbus over TLS on Port 802, Tested from Windows",
+  "description": "Modbus/TCP Security puts Modbus TCP inside TLS on port 802, with X.509v3 certificates for device and client. What each side needs, test certificates with OpenSSL, and how to check a secure device from Windows.",
+  "url": "https://modbusmanager.com/modbus-tcp-security-tls.html",
+  "image": "https://modbusmanager.com/og-modbus-tls.png",
+  "datePublished": "2026-10-27",
+  "author": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "keywords": "Modbus TCP Security, Modbus TLS, Modbus/TCP Security, Modbus secure, Modbus port 802, Modbus TCP secure port, Modbus TLS certificate, Modbus TLS client, secure Modbus TCP, Modbus TCP SSL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which port does Modbus TCP Security use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Port 802, registered with IANA for Modbus over TLS. Plain Modbus TCP stays on 502."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Modbus over TLS a different protocol from Modbus TCP?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Modbus messages are identical — same MBAP header, function codes and data. Modbus/TCP Security only puts them inside a TLS connection and adds certificate-based authentication of both sides."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What certificates do I need to connect?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A client certificate and its private key that the device's CA trusts, and the CA certificate that signed the device's certificate, so you can verify the device. ModbusManager loads all three as PEM files."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the role in a Modbus/TCP Security certificate?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An X.509v3 extension in the client certificate that the device can use to decide what that client may do, for example read only or read and write. The device enforces it; the client only presents the certificate it was issued."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which ModbusManager edition supports TLS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Both: ModbusManager Standard and Pro have the TCP-SEC connection, and so does BACManager for its Modbus side."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+.article-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 5rem}
+.breadcrumb{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--muted);margin-bottom:2rem}
+.breadcrumb a{color:var(--muted);text-decoration:none}
+.breadcrumb a:hover{color:var(--ink)}
+h1{font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;line-height:1.05;text-transform:uppercase;letter-spacing:0.01em;margin-bottom:1rem}
+h2{font-family:'Saira Condensed',sans-serif;font-size:1.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin:2.5rem 0 0.8rem;padding-top:0.5rem;border-top:2px solid var(--ink)}
+h3{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.03em;margin:1.5rem 0 0.5rem;color:var(--amber-ink)}
+p{font-size:0.93rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+ul{font-size:0.93rem;color:var(--body);line-height:1.75;margin:0 0 1rem 1.2rem;padding-left:0.6rem}
+li{margin-bottom:0.4rem}
+.lead{font-size:1.05rem;color:var(--ink);line-height:1.7;margin-bottom:2rem;border-left:3px solid var(--safety);padding-left:1rem}
+code{font-family:'IBM Plex Mono',monospace;font-size:0.82rem;background:#fff;border:1px solid var(--steel);padding:1px 5px;border-radius:2px}
+pre{font-family:'IBM Plex Mono',monospace;font-size:0.8rem;background:var(--ink);color:#E6E8E3;padding:1.2rem 1.4rem;border-radius:3px;overflow-x:auto;margin:1.2rem 0;line-height:1.6}
+pre .c{color:#888}
+pre .v{color:#F2A900}
+pre .k{color:#7ec8e3}
+table{width:100%;border-collapse:collapse;font-size:0.83rem;margin:1.2rem 0;background:var(--plate);border:2px solid var(--ink)}
+th{text-align:left;padding:0.65rem 0.9rem;border-bottom:2px solid var(--ink);background:var(--enclosure2);font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted)}
+td{padding:0.6rem 0.9rem;border-bottom:1px solid var(--steel);color:var(--body)}
+tr:hover td{background:#ECEEE9}
+td.mono{font-family:'IBM Plex Mono',monospace;font-size:0.78rem}
+td.formula{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--amber-ink)}
+.callout{background:var(--plate);border:1.5px solid var(--ink);border-left:4px solid var(--safety);padding:1rem 1.2rem;border-radius:2px;margin:1.5rem 0;font-size:0.88rem;color:var(--body);line-height:1.6}
+.callout strong{color:var(--ink)}
+.callout.tip{border-left-color:var(--run)}
+.callout.warn{border-left-color:var(--bad)}
+.step-num{display:inline-block;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.85rem;background:var(--ink);color:var(--safety);padding:2px 8px;border-radius:2px;margin-right:8px;letter-spacing:0.05em}
+.cta-box{background:var(--ink);color:var(--enclosure);padding:2rem 2.2rem;border-radius:3px;margin:3rem 0;display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
+.cta-box h3{color:var(--safety);margin:0 0 0.4rem;font-size:1.2rem;border:none;padding:0}
+.cta-box p{color:#B9BDB6;font-size:0.85rem;margin:0}
+.cta-box a{background:var(--safety);color:var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.cta-box a:hover{background:#fff}
+.download-box{border:2px solid var(--ink);background:var(--enclosure2);padding:1.4rem 1.8rem;border-radius:3px;margin:2rem 0;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.download-box h3{margin:0 0 0.3rem;font-size:1rem;border:none;padding:0;font-family:'IBM Plex Mono',monospace;color:var(--ink)}
+.download-box p{margin:0;font-size:0.82rem;color:var(--muted);max-width:46ch}
+.download-box a{background:var(--ink);color:var(--enclosure);padding:0.6rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.download-box a:hover{background:var(--safety);color:var(--ink)}
+footer{border-top:2px solid var(--ink);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;color:var(--muted);flex-wrap:wrap;gap:1rem;background:var(--enclosure2)}
+.footer-logo{font-family:'Saira Condensed',sans-serif;color:var(--ink);font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--ink)}
+@media(max-width:640px){nav .nav-links{display:none}.article-wrap{padding:2rem 1.2rem 4rem}h1{font-size:2rem}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}td,th{white-space:normal;word-break:break-word}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;background:transparent;border:none;min-width:190px;display:none;flex-direction:column;z-index:200}.nav-drop-menu>a{background:var(--enclosure2,#e8e9e4);border-left:1px solid var(--ink,#16181A);border-right:1px solid var(--ink,#16181A)}.nav-drop-menu>a:first-child{border-top:1px solid var(--ink,#16181A);border-radius:3px 3px 0 0;padding-top:0.5rem}.nav-drop-menu>a:last-child{border-bottom:1px solid var(--ink,#16181A);border-radius:0 0 3px 3px;padding-bottom:0.5rem;box-shadow:0 6px 20px rgba(0,0,0,0.18)}
+.nav-drop:hover .nav-drop-menu{display:flex}
+.nav-drop-menu a{padding:0.5rem 1rem;white-space:nowrap;text-transform:none;font-size:0.78rem;color:var(--ink,#16181A)}
+.nav-drop-menu a:hover{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+nav .nav-links.open .nav-drop-menu{position:static;display:flex;margin:0.3rem 0 0.3rem 0.8rem;border:none;box-shadow:none;padding:0;min-width:0;background:none}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu a{padding:0.35rem 0;font-size:0.8rem}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+
+@media(max-width:680px){pre,code{white-space:pre-wrap;word-break:break-word;max-width:100%;overflow-x:auto}}
+
+/* family slogan band, slim (2026-10-22) */
+.slogan-band.slim{background:var(--safety,#F2A900);border-bottom:2px solid var(--ink,#16181A);padding:0.5rem 1rem;text-align:center;color:var(--ink,#16181A);display:flex;gap:0.3rem 1rem;justify-content:center;align-items:baseline;flex-wrap:wrap}
+.slogan-band.slim .sb-main{font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.3rem;line-height:1.1;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim .sb-sub{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim a{color:var(--ink,#16181A);font-weight:700}
+@media(max-width:768px){.slogan-band.slim .sb-main{font-size:1.05rem}.slogan-band.slim .sb-sub{display:none}}
+</style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/#guides"},{"@type": "ListItem","position": 3,"name": "Modbus TCP Security (TLS)","item": "https://modbusmanager.com/modbus-tcp-security-tls.html"}]}
+</script>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label">Features ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-scanner.html" style="color:#9A6700;font-weight:600">&#128269; Modbus Scanner</a>
+        <a href="/modbus-rtu-over-tcp.html" style="padding-left:1.5rem">RTU over TCP</a>
+        <a href="/modbus-tcp-security-tls.html" style="padding-left:1.5rem">Modbus TCP Security (TLS)</a>
+        <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
+        <a href="/modbus-hmi-runtime.html" style="padding-left:1.5rem">HMI Runtime (OEM)</a>
+        <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
+        <a href="/modbus-rtu-rs485-data-logger.html" style="padding-left:1.5rem">RTU / RS-485 Logging</a>
+        <a href="/modbus-logging-interval-deadband.html" style="padding-left:1.5rem">Interval &amp; Deadband</a>
+        <a href="/modbus-to-csv-logging.html" style="padding-left:1.5rem">CSV Export</a>
+        <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
+        <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
+        <a href="/modbus-to-mqtt.html" style="padding-left:1.5rem">Modbus to MQTT</a>
+        <a href="/modbus-structured-text-scripting.html">&#127991; Tags &amp; Structured Text</a>
+      </div>
+    </li>
+    <li class="nav-drop">
+      <span class="nav-drop-label">Guides ▾</span>
+      <div class="nav-drop-menu">
+        <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200</a>
+        <a href="/siemens-s7-put-get.html">Siemens S7 PUT/GET</a>
+        <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+        <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+        <a href="/huawei-sun2000-modbus.html">Huawei SUN2000</a>
+        <a href="/huawei-sun2000-home-assistant.html">SUN2000 &rarr; Home Assistant</a>
+        <a href="/sungrow-inverter-modbus.html">Sungrow Inverters</a>
+        <a href="/sunspec-modbus-sma-fronius-solaredge.html">SunSpec: SMA, Fronius, SolarEdge</a>
+        <a href="/deye-sunsynk-growatt-modbus.html">Deye, Sunsynk &amp; Growatt</a>
+        <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+        <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+        <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+        <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+        <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+        <a href="/powerflex-525-modbus.html">PowerFlex 525</a>
+        <a href="/durapulse-gs20-modbus.html">DURApulse GS20</a>
+        <a href="/yaskawa-v1000-modbus.html">Yaskawa V1000</a>
+        <a href="/modbus-vfd-speed-reference.html">VFD Speed Registers</a>
+        <a href="/wattnode-modbus.html">WattNode</a>
+        <a href="/manual.html">Documentation</a>
+      </div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.6/Modbus.Manager.Pro.Setup.1.9.6.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ModbusTLS-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/v1.4.11/Modbus.Manager.Setup.1.4.11.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-ModbusTLS-Nav', 'product': 'standard', 'value': 1})">Download free trial</a>
+  </div>
+</nav>
+<div class="slogan-band slim">
+  <span class="sb-main">Every device. One tool. Pay once.</span>
+  <span class="sb-sub">Modbus &middot; BACnet &middot; Siemens S7 &middot; one-time licence &middot; also from us: <a href="https://bacmanager.com">BACManager&nbsp;&#8599;</a></span>
+</div>
+<div class="hazard"></div>
+
+<div class="article-wrap">
+
+  <div class="breadcrumb">
+    <a href="/">ModbusManager</a> &rsaquo; Guides &rsaquo; Modbus TCP Security (TLS)
+  </div>
+
+  <h1>Modbus TCP Security: Modbus over TLS on Port 802, Tested from Windows</h1>
+
+  <p class="lead">Plain Modbus TCP has no authentication and no encryption: anyone who can reach port 502 can read and write. <strong>Modbus/TCP Security</strong>, published by the Modbus Organization in 2018, wraps the same Modbus TCP messages in TLS on port 802, and both sides prove who they are with X.509v3 certificates. This page explains what a device and a client need, how to make test certificates, and how to check a secure device from a Windows PC with ModbusManager before it goes on site.</p>
+
+  <figure style="margin:1.8rem 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink)">
+    <img src="/modbus-tls-registers.png" width="1320" height="480" loading="lazy" decoding="async"
+         alt="ModbusManager connected in TCP-SEC mode (Modbus/TCP Security), status Connected (TCP-SEC), reading 20 holding registers over TLS"
+         style="width:100%;height:auto;display:block">
+    <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">
+      ModbusManager reading a device over Modbus/TCP Security: <em>Connected (TCP-SEC)</em>, TLS 1.3 negotiated, client certificate accepted.
+    </figcaption>
+  </figure>
+
+  <h2>What Modbus/TCP Security Changes</h2>
+  <table>
+    <tr><th></th><th>Modbus TCP</th><th>Modbus/TCP Security</th></tr>
+    <tr><td>Port</td><td>502</td><td>802 (IANA-registered)</td></tr>
+    <tr><td>Transport</td><td>TCP</td><td>TLS over TCP</td></tr>
+    <tr><td>Messages</td><td>MBAP header + request</td><td>The same MBAP header + request, inside TLS</td></tr>
+    <tr><td>Who is talking</td><td>Unknown</td><td>Server and client each present an X.509v3 certificate</td></tr>
+    <tr><td>Integrity, privacy</td><td>None</td><td>TLS: tampering is detected, traffic is encrypted</td></tr>
+    <tr><td>What a client may do</td><td>Everything</td><td>The device can authorise by a <strong>role</strong> carried in the client certificate</td></tr>
+  </table>
+  <p>The Modbus messages themselves do not change: function codes, addresses and data are exactly as in Modbus TCP. Everything new happens in the TLS handshake &mdash; which is why most problems with secure Modbus are certificate problems, not Modbus problems.</p>
+
+  <h2>The Three Files a Client Needs</h2>
+  <table>
+    <tr><th>File</th><th>What it is</th><th>Who issues it</th></tr>
+    <tr><td>Client certificate (<code>.crt</code>/<code>.pem</code>)</td><td>Identifies your PC or tool to the device; may carry the role</td><td>The CA the device trusts &mdash; usually the plant's or the integrator's</td></tr>
+    <tr><td>Private key (<code>.key</code>)</td><td>Proves the certificate is yours; never leaves the PC</td><td>Made together with the certificate request</td></tr>
+    <tr><td>CA certificate</td><td>Lets the client check that the <em>device's</em> certificate is genuine</td><td>The CA that signed the device certificate</td></tr>
+  </table>
+  <p>The device holds the mirror image: its own certificate and key, and the CA it trusts for clients. If the device does not trust the CA that signed your client certificate, it ends the handshake &mdash; there is no Modbus error, the connection simply closes.</p>
+
+  <h2>Connect with ModbusManager</h2>
+
+  <figure style="margin:1.4rem 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink);max-width:620px">
+    <img src="/modbus-tls-connect.png" width="620" height="386" loading="lazy" decoding="async"
+         alt="ModbusManager Connection settings, TCP-SEC tab: IP address, port 802, connect timeout, client certificate engineering-pc.crt, private key engineering-pc.key, CA certificate plant-ca.crt, Verify device certificate checked"
+         style="width:100%;height:auto;display:block">
+  </figure>
+  <ol>
+    <li>Open <strong>Connect</strong> and choose the <strong>TCP-SEC</strong> tab.</li>
+    <li>Enter the device's IP address; the port is 802 unless the device uses another.</li>
+    <li>Load the <strong>client certificate</strong>, the <strong>private key</strong> and the <strong>CA certificate</strong> (PEM files). ModbusManager checks that each file is what it claims to be and keeps them in its data folder, not in workspaces.</li>
+    <li>Leave <strong>Verify device certificate</strong> on. It checks the device's certificate against the CA, and its name against the address you typed.</li>
+    <li>Connect and read as with any Modbus TCP device. ModbusManager requires TLS 1.2 or newer.</li>
+  </ol>
+
+  <h2>When the Connection Fails</h2>
+  <table>
+    <tr><th>Symptom</th><th>Usual cause</th></tr>
+    <tr><td>Refused at once, the device's log mentions the client</td><td>No client certificate loaded, or it was signed by a CA the device does not trust</td></tr>
+    <tr><td>"Self-signed certificate" / "unable to verify"</td><td>The CA file is not the one that signed the device's certificate</td></tr>
+    <tr><td>Host name / IP mismatch</td><td>The device certificate's Subject Alternative Name does not contain the address you connect to</td></tr>
+    <tr><td>Certificate expired or not yet valid</td><td>Check the dates &mdash; and the device's clock</td></tr>
+    <tr><td>Connected, but writes return an exception</td><td>The role in your certificate does not allow writes on that device</td></tr>
+    <tr><td>Times out with no handshake</td><td>Wrong port, a firewall in between, or the device has secure Modbus switched off</td></tr>
+  </table>
+  <p>Switching <em>Verify device certificate</em> off shows whether the problem is on the device side of the handshake: if it then connects, the CA or the name is wrong. Use it for diagnosis only &mdash; without verification you are no longer sure who you are talking to.</p>
+
+  <h2>Test Certificates with OpenSSL</h2>
+  <p>To try secure Modbus on a bench before the plant's CA is involved, a test CA and two certificates are enough. These are the commands ModbusManager's own automated test uses:</p>
+<pre># a test CA
+openssl req -x509 -newkey rsa:2048 -nodes -keyout ca.key -out ca.pem -days 365 -subj "/CN=Test CA"
+
+# the device: its address in subjectAltName, server use
+echo "subjectAltName=IP:192.168.1.100" &gt; dev.ext
+echo "extendedKeyUsage=serverAuth" &gt;&gt; dev.ext
+openssl req -newkey rsa:2048 -nodes -keyout dev.key -out dev.csr -subj "/CN=device"
+openssl x509 -req -in dev.csr -CA ca.pem -CAkey ca.key -CAcreateserial -out dev.pem -days 365 -extfile dev.ext
+
+# the client (ModbusManager): client use
+echo "extendedKeyUsage=clientAuth" &gt; cli.ext
+openssl req -newkey rsa:2048 -nodes -keyout cli.key -out cli.csr -subj "/CN=engineering PC"
+openssl x509 -req -in cli.csr -CA ca.pem -CAkey ca.key -CAcreateserial -out cli.pem -days 365 -extfile cli.ext</pre>
+  <p>Load <code>cli.pem</code>, <code>cli.key</code> and <code>ca.pem</code> into ModbusManager; give the device <code>dev.pem</code>, <code>dev.key</code> and <code>ca.pem</code>. Role-based authorisation needs the role extension in the client certificate as the device vendor specifies it; the Modbus Organization's role OIDs sit under its private enterprise number 50316. For production, certificates come from the site's CA and the private keys stay on the machines they belong to.</p>
+
+  <div class="callout">
+    <strong>Port 502 still open?</strong> A device that offers secure Modbus on 802 but still answers plain Modbus on 502 is only as secure as 502. Check the device's settings for a way to switch the unsecured port off once the secure one works.
+  </div>
+
+  <div class="cta-box">
+    <div>
+      <h3>Check a secure Modbus device from your PC</h3>
+      <p>Modbus/TCP Security in both editions, from $49 one-time. Free 14-day trial. No credit card. Windows 10/11.</p>
+    </div>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/v1.4.11/Modbus.Manager.Setup.1.4.11.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-ModbusTLS-Body', 'product': 'standard', 'value': 1})">Download Free Trial</a>
+  </div>
+
+  <h2>Frequently Asked Questions</h2>
+
+  <h3>Which port does Modbus TCP Security use?</h3>
+  <p>Port 802, registered with IANA for Modbus over TLS. Plain Modbus TCP stays on 502.</p>
+
+  <h3>Is Modbus over TLS a different protocol from Modbus TCP?</h3>
+  <p>The Modbus messages are identical &mdash; same MBAP header, function codes and data. Modbus/TCP Security only puts them inside a TLS connection and adds certificate-based authentication of both sides.</p>
+
+  <h3>What certificates do I need to connect?</h3>
+  <p>A client certificate and its private key that the device's CA trusts, and the CA certificate that signed the device's certificate, so you can verify the device. ModbusManager loads all three as PEM files.</p>
+
+  <h3>What is the role in a Modbus/TCP Security certificate?</h3>
+  <p>An X.509v3 extension in the client certificate that the device can use to decide what that client may do, for example read only or read and write. The device enforces it; the client only presents the certificate it was issued.</p>
+
+  <h3>Which ModbusManager edition supports TLS?</h3>
+  <p>Both: ModbusManager Standard and Pro have the TCP-SEC connection, and so does BACManager for its Modbus side.</p>
+
+  <h2>Sources</h2>
+  <p style="font-size:0.85rem">Modbus Organization, <a href="https://www.modbus.org/news/modbus-security-new-protocol-to-improve-control-system-security" rel="nofollow noopener">Modbus Security: New Protocol to Improve Control System Security</a> (2018-10-29) and <em>MODBUS/TCP Security Protocol Specification</em> v2.1 (2018-07-24): TLS encapsulation, X.509v3 authentication of server and client, roles in an X.509v3 extension, port 802. Connection behaviour and certificate checks: ModbusManager's automated test <em>test-net-framings</em> against a TLS device that requires a client certificate.</p>
+
+</div>
+
+<div class="hazard"></div>
+<div class="divider-line"></div>
+
+<!-- GATEWAY CROSS-LINK -->
+<section class="section">
+  <div class="sec-label">// all the ways in</div>
+  <h2 class="sec-title">One tool for every Modbus connection</h2>
+  <div style="max-width:820px;margin:0 auto;background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem">
+    <p style="color:var(--body);line-height:1.75;margin:0 0 1.1rem">The same connection dialog has Modbus TCP, RTU and ASCII on serial ports, RTU and ASCII over TCP and UDP, and TCP-SEC &mdash; so a site with old RS-485 meters and new secure controllers is still one program on one laptop.</p>
+    <a href="/modbus-rtu-over-tcp.html" style="font-family:'IBM Plex Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">RTU over TCP vs Modbus TCP &rarr;</a>
+  </div>
+</section>
+<footer>
+  <div class="footer-logo">ModbusManager</div>
+  <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
+    <a href="/">Home</a>
+    <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
+    <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
+    <a href="/modbus-rtu-rs485-data-logger.html">RTU Logging</a>
+    <a href="/modbus-to-csv-logging.html">CSV Export</a>
+    <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
+        <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
+        <a href="/modbus-to-mqtt.html" style="padding-left:1.5rem">Modbus to MQTT</a>
+    <a href="/modbus-structured-text-scripting.html">&#127991; Tags &amp; scripting</a>
+    <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+    <a href="/modbus-vfd-speed-reference.html">VFD drives</a>
+    <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    <a href="/manual.html">Documentation</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/license-terms.html">License terms</a>
+    <a href="mailto:support@modbusmanager.com">Support</a>
+  </div>
+  <div>support@modbusmanager.com</div>
+</footer>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+<script src="/email-capture.js" defer></script>
+
+<script>
+/* Download buttons (2026-10-26): the installer is fetched on a click, not
+   through the link's href, so crawlers that follow every link no longer count
+   as downloads on GitHub. data-dl is the address without https://.
+   Each click is also counted in our own Google Sheet (Apps Script), cookie
+   consent or not: site, product, version, page, referrer, language, time
+   zone. No cookies, no IP address. The download never waits for it.
+   A workspace (.json or .zip on this site) is counted as product "Workspace" with
+   the file name as its version, a manual (.pdf) as product "Manual"; both
+   download as before. */
+function dlCount(product, version) {
+  try {
+    navigator.sendBeacon('https://script.google.com/macros/s/AKfycbyx9RacY_l5KDK0RBBmLk41uKv3McyR_UJmCTWqnRqklh6fYgeXvYecddcQDGzRx5-F/exec', JSON.stringify({
+      site: location.hostname, product: product, version: version,
+      page: location.pathname, referrer: document.referrer, lang: navigator.language,
+      tz: (window.Intl && Intl.DateTimeFormat().resolvedOptions().timeZone) || ''
+    }));
+  } catch (err) {}
+}
+document.addEventListener('click', function (e) {
+  if (!e.target.closest) return;
+  var w = e.target.closest('a[href$=".json"], a[href$=".zip"]');
+  if (w) { dlCount('Workspace', (w.getAttribute('href').match(/([^\/]+)\.(?:json|zip)$/) || [])[1] || ''); return; }
+  var m = e.target.closest('a[href$=".pdf"]');
+  if (m) { dlCount('Manual', (m.getAttribute('href').match(/([^\/]+)\.pdf$/) || [])[1] || ''); return; }
+  var a = e.target.closest('a[data-dl]');
+  if (!a || e.defaultPrevented) return;
+  e.preventDefault();
+  var dl = a.getAttribute('data-dl');
+  dlCount(/bacmanager/i.test(dl) ? 'BACManager' : (/Pro\.Setup|pro-v/i.test(dl) ? 'ModbusManager Pro' : 'ModbusManager Standard'),
+    (dl.match(/(\d+(?:\.\d+)+)\.exe$/) || [])[1] || '');
+  window.location.href = 'https://' + dl;
+});
+</script>
+</body>
+</html>
