@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ModbusManager User Manual &amp; Documentation</title>
-<meta name="description" content="ModbusManager 1.9.6 manual: Modbus TCP and RTU, poll and write, slave simulator, tags, HMI dashboards, Historian, alarms, gateway, MQTT and Siemens S7.">
+<meta name="description" content="ModbusManager 1.9.7 manual: Modbus TCP and RTU, poll and write, slave simulator, tags, HMI dashboards, Historian, alarms, gateway, MQTT and Siemens S7.">
 <meta name="keywords" content="Modbus software manual, ModbusManager documentation, how to poll Modbus registers, Modbus TCP RTU ASCII guide, Modbus slave simulator, Modbus Structured Text, Modbus FC03 holding register, Modbus address base, Modbus HMI dashboard, Modbus gateway, Modbus historian, Siemens S7 PUT GET, Modbus HMI runtime">
 <meta name="author" content="ModbusManager">
 <meta name="robots" content="index, follow">
@@ -13,7 +13,7 @@
 <!-- Open Graph -->
 <meta property="og:title" content="ModbusManager User Manual &amp; Documentation">
 <meta property="og:site_name" content="ModbusManager">
-<meta property="og:description" content="The complete ModbusManager 1.9.6 manual: connecting, polling, writing, slave simulator, tags and Structured Text, HMI dashboards, Runtime, Historian, alarms, gateway with MQTT and Home Assistant, and Siemens S7.">
+<meta property="og:description" content="The complete ModbusManager 1.9.7 manual: connecting, polling, writing, slave simulator, tags and Structured Text, HMI dashboards, Runtime, Historian, alarms, gateway with MQTT and Home Assistant, and Siemens S7.">
 <meta property="og:url" content="https://modbusmanager.com/manual.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://modbusmanager.com/og-hmi.png">
@@ -53,10 +53,10 @@
   "@context":"https://schema.org",
   "@type":"TechArticle",
   "headline":"ModbusManager User Manual",
-  "description":"Complete user manual for ModbusManager Pro 1.9.6 and Standard 1.4.11: connecting, polling and writing registers, the slave simulator, tags with Structured Text, HMI dashboards, Runtime packages, Historian, alarms, gateway with MQTT and Home Assistant discovery, and Siemens S7 (beta).",
+  "description":"Complete user manual for ModbusManager Pro 1.9.7 and Standard 1.4.12: connecting, polling and writing registers, the slave simulator, tags with Structured Text, HMI dashboards, Runtime packages, Historian, alarms, gateway with MQTT and Home Assistant discovery, and Siemens S7 (beta).",
   "url":"https://modbusmanager.com/manual.html",
   "datePublished":"2026-06-01",
-  "dateModified":"2026-10-28",
+  "dateModified":"2026-11-02",
   "author":{"@type":"Organization","name":"ModbusManager","url":"https://modbusmanager.com"},
   "publisher":{"@type":"Organization","name":"ModbusManager","url":"https://modbusmanager.com"},
   "about":{
@@ -66,7 +66,7 @@
     "applicationCategory":"DeveloperApplication",
     "offers":{"@type":"Offer","price":"119","priceCurrency":"USD"},
     "url":"https://modbusmanager.com/#pro",
-    "downloadUrl":"https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.6/Modbus.Manager.Pro.Setup.1.9.6.exe"
+    "downloadUrl":"https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.7/Modbus.Manager.Pro.Setup.1.9.7.exe"
   }
 },
 {
@@ -84,7 +84,7 @@
     {"@type":"Question","name":"How do I connect ModbusManager to a Modbus TCP device?",
      "acceptedAnswer":{"@type":"Answer","text":"Press Connect, stay on the TCP/IP tab, enter the device IP address and port (502 by default) and connect; then set the slave/unit ID in the poll window and press Start."}},
     {"@type":"Question","name":"Which Modbus function codes does ModbusManager support?",
-     "acceptedAnswer":{"@type":"Answer","text":"Reading uses FC01, FC02, FC03 and FC04. Writing uses FC05, FC06, FC15, FC16, FC22 and FC23. The Test Center also sends FC08 diagnostics, FC11, FC17 and FC43/14 device identification."}},
+     "acceptedAnswer":{"@type":"Answer","text":"Reading uses FC01, FC02, FC03 and FC04. The Write tab writes FC05, FC06 and FC16. The Test Center sends any single request, including FC15, FC22 mask write, FC23 read/write, FC08 diagnostics, FC11, FC17 and FC43/14 device identification."}},
     {"@type":"Question","name":"What is the difference between address base 0 and base 1?",
      "acceptedAnswer":{"@type":"Answer","text":"Base 0 uses raw protocol addresses where the first register is 0. Base 1 uses documentation addresses where the first register is 1. Choose the base that matches your device manual."}},
     {"@type":"Question","name":"Is there a free trial?",
@@ -426,8 +426,8 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
     <li><a href="https://bacmanager.com">BACManager &#8599;</a></li>
   </ul>
   <div style="display:flex;gap:12px;align-items:center">
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.6/Modbus.Manager.Pro.Setup.1.9.6.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-NavText','product':'pro','value':1})">Pro trial &darr;</a>
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.6/Modbus.Manager.Pro.Setup.1.9.6.exe" class="nav-cta" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-Nav','product':'pro','value':1})">Download Pro trial</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.7/Modbus.Manager.Pro.Setup.1.9.7.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-NavText','product':'pro','value':1})">Pro trial &darr;</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.7/Modbus.Manager.Pro.Setup.1.9.7.exe" class="nav-cta" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-Nav','product':'pro','value':1})">Download Pro trial</a>
   </div>
 </nav>
 <div class="slogan-band slim">
@@ -436,12 +436,12 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
 </div>
 
 <header class="hero">
-  <div class="eyebrow">Documentation &mdash; ModbusManager Pro v1.9.6 &middot; Standard v1.4.11 &middot; updated 28 October 2026</div>
+  <div class="eyebrow">Documentation &mdash; ModbusManager Pro v1.9.7 &middot; Standard v1.4.12 &middot; updated 2 November 2026</div>
   <h1>ModbusManager <span class="accent">User Manual</span></h1>
   <p class="hero-desc">How to connect, poll, write, simulate, script, log, alarm, bridge and visualise Modbus data &mdash; and read Siemens S7 PLCs &mdash; with ModbusManager on Windows. Use the contents to jump to a topic, or download the whole manual as a printable PDF.</p>
   <div class="hero-ctas">
     <a href="/ModbusManagerPro_UserManual.pdf" class="btn-primary">Download PDF manual</a>
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.6/Modbus.Manager.Pro.Setup.1.9.6.exe" class="btn-ghost" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-Hero','product':'pro','value':1})">Download Pro trial</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.7/Modbus.Manager.Pro.Setup.1.9.7.exe" class="btn-ghost" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-Hero','product':'pro','value':1})">Download Pro trial</a>
   </div>
   <p class="hero-note">Free 14-day trial &bull; Standard &#36;49 &bull; Pro &#36;119 &bull; Runtime &#36;39 per machine &bull; one-time licences &bull; Windows 10 / 11</p>
 </header>
@@ -554,7 +554,7 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
 
 <section id="writing" class="doc-section">
 <h2>Writing values <span class="ed both">Std + Pro</span></h2>
-<p>The <b>Write</b> tab sends any write function: <b>FC05</b> single coil, <b>FC06</b> single register, <b>FC16</b> multiple registers, <b>FC22</b> mask write and <b>FC23</b> read/write multiple. Choose the <b>Format</b> (16-bit, 32-bit signed/unsigned/float, 64-bit signed/unsigned/float) and the tool splits the value into registers in the word order you selected. Enter the register address, value (or comma-separated values) and slave ID, then <b>Send command &rarr;</b>. The reply or the exception is reported at once.</p>
+<p>The <b>Write</b> tab writes <b>FC05</b> single coil, <b>FC06</b> single register and <b>FC16</b> multiple registers. <b>FC22</b> mask write and <b>FC23</b> read/write are in the <a class="inline-link" href="#monitoring">Test Center</a>, which shows the reply. Choose the <b>Format</b> (16-bit, 32-bit signed/unsigned/float, 64-bit signed/unsigned/float) and the tool splits the value into registers in the word order you selected. Enter the register address, value (or comma-separated values) and slave ID, then <b>Send command &rarr;</b>. The reply or the exception is reported at once.</p>
 <p>For a quick change, double-click a value in the register table: the <b>Write Register</b> dialog opens with the address filled in.</p>
 <div class="callout warn"><div class="c-label">Warning</div><p>A write changes the controller. Check the slave ID, the address base and the value before sending &mdash; especially on running machinery.</p></div>
 </section>
@@ -563,14 +563,14 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
 <h2>Chart, Serial Monitor &amp; Test Center <span class="ed both">Std + Pro</span></h2>
 <ul class="body-list">
 <li><b>Chart</b>: up to three charts, each one register with its slave, format, name and Y range. <b>Cursor</b> reads values off the line, and <b>Log</b> records the series to a file you can download.</li>
-<li><b>Serial Monitor</b>: the raw bytes on the connection, as HEX or ASCII with timestamps; <b>Download</b> saves the capture.</li>
-<li><b>Test Center</b>: compose one request by hand &mdash; FC01&ndash;06, 15, 16, 22, 23, 08 (diagnostics, with sub-codes), 11 (comm event counter), 17 (report server ID) and 43/14 (device identification) &mdash; and inspect the exact reply. A history keeps the last requests.</li>
+<li><b>Serial Monitor</b>: the bytes on the wire, as HEX or ASCII with timestamps &mdash; on Modbus TCP the whole MBAP frame (transaction ID, unit ID), on RTU one line per frame even when the adapter delivers it in pieces. It keeps running across a reconnect. <b>Download</b> saves the capture.</li>
+<li><b>Test Center</b>: compose one request by hand &mdash; FC01&ndash;06, 15, 16, 22, 23, 08 (diagnostics, with sub-codes), 11 (comm event counter), 17 (report server ID) and 43/14 (device identification) &mdash; and inspect the exact reply. FC22 has AND and OR mask fields, FC23 a write address beside the read address and quantity, FC08 a data word next to the sub-code, FC43 the read code (basic, regular, extended or one object) and an object ID; FC17 shows the run status. A value that is not a number is refused, not sent as 0. Without a connection <b>Send</b> is off and its tooltip says why. A history keeps the last requests.</li>
 </ul>
 </section>
 
 <section id="scanning" class="doc-section">
 <h2>Scanning &amp; diagnostics</h2>
-<p><b>Slave Scan</b> <span class="ed both">Std + Pro</span> probes a range of slave IDs (From ID / To ID) with one read and lists who answers &mdash; for a device on the bus whose address is unknown. <b>Address Scan</b> sweeps a register range on one slave in blocks and lists which addresses return data &mdash; for mapping an undocumented device; the result exports to CSV.</p>
+<p><b>Slave Scan</b> <span class="ed both">Std + Pro</span> probes a range of slave IDs (From ID / To ID) with one read and lists who answers &mdash; for a device on the bus whose address is unknown. A device that answers with a Modbus exception counts as found &mdash; it is there, and the register or function code is what to change. <b>Address Scan</b> sweeps a register range on one slave in blocks and lists which addresses return data, reading address by address where a block has a gap &mdash; for mapping an undocumented device; the result exports to CSV.</p>
 <p><b>&#9889; Auto-detect</b> <span class="ed pro">Pro</span>, in the Slave Scan tab, tries baud rates, parity settings and slave IDs on a COM port (or unit IDs behind a TCP gateway) until a device answers, then <b>Use these settings</b> applies them.</p>
 <p><b>&#128269; Diagnose</b> <span class="ed pro">Pro</span>, in the status bar, reads the recent error history and says what kind of failure it is: no reply, timeouts now and then, a Modbus exception, refused or reset TCP, garbled frames, port not found or port busy &mdash; with what to check for each.</p>
 <a class="vid" href="https://youtu.be/7PQM_slccgM" target="_blank" rel="noopener"><div class="th"><img src="https://i.ytimg.com/vi/7PQM_slccgM/hqdefault.jpg" alt="Slave Scan and Address Scan explained" loading="lazy"><span>&#9654;</span></div><div class="lb">&#9654; Watch: Slave Scan &amp; Address Scan</div></a>
@@ -764,7 +764,7 @@ function tagPlayVideo() {
 <h2>Workspaces &amp; templates</h2>
 <p>A <b>workspace</b> <span class="ed both">Std + Pro</span> is one JSON file with your setup. <b>&#128190; Workspace</b> saves it to Documents; the folder button opens one from the list or by <b>Browse&hellip;</b>. On quit the application asks whether to save.</p>
 <table class="doc-table"><thead><tr><th style="width:50%">Saved in the workspace</th><th>Not in the workspace</th></tr></thead><tbody><tr><td>Poll windows and their descriptions, Value Names, conditional colours, chart series, slave blocks; in Pro also the dashboard (pages, theme, effects, background), tags, the script and its interval, which series the Historian logs, and the gateway configuration (opening asks before applying it).</td><td>Connection settings (each PC keeps its own), alarm definitions and the S7 PLC list (kept by the application), simulations on slave registers, and recorded history.</td></tr></tbody></table>
-<p><b>Device templates</b> <span class="ed pro">Pro</span> load ready poll windows for a device &mdash; ebm-papst EC fan, Huawei SmartLogger, Siemens S7-1200 (as Modbus TCP server), a generic energy meter and a generic VFD &mdash; and <b>Save template</b> stores your own. Templates carry poll windows only; use a workspace to move a complete setup.</p>
+<p><b>Device templates</b> <span class="ed pro">Pro</span> load ready poll windows for a device &mdash; ebm-papst EC fan, Huawei SmartLogger, Siemens S7-1200 (as Modbus TCP server), a generic energy meter and a generic VFD &mdash; and <b>Save template</b> stores your own. Saving under a name that exists asks, then replaces that template. A templates file that cannot be read is set aside as <code>device-templates.damaged-&lt;time&gt;.json</code> and reported, never overwritten. Templates carry poll windows only; use a workspace to move a complete setup.</p>
 <figure class="shot narrow" style="max-width:580px"><img src="/manual-templates.jpg" width="576" height="735" loading="lazy" alt="Device templates dialog listing built-in templates and the save current polls as a template field"><figcaption>Device templates.</figcaption></figure>
 <p>Ready workspaces for many devices are on the device guide pages (Guides menu), e.g. <a class="inline-link" href="/eastron-sdm630-modbus.html">Eastron SDM630</a> or <a class="inline-link" href="/huawei-sun2000-modbus.html">Huawei SUN2000</a>.</p>
 </section>
@@ -806,7 +806,7 @@ function tagPlayVideo() {
 <h2>FAQ</h2>
 <div class="faq-list">
 <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I connect to a Modbus TCP device?<span class="icon">+</span></div><div class="faq-a">Press Connect, stay on TCP/IP, enter the IP address and port (502 by default) and connect; then set the slave/unit ID in the poll window and press Start.</div></div>
-<div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Which function codes are supported?<span class="icon">+</span></div><div class="faq-a">Reading: FC01, FC02, FC03, FC04. Writing: FC05, FC06, FC15, FC16, FC22 and FC23. The Test Center also sends FC08 diagnostics, FC11, FC17 and FC43/14 device identification.</div></div>
+<div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Which function codes are supported?<span class="icon">+</span></div><div class="faq-a">Reading: FC01, FC02, FC03, FC04. The Write tab writes FC05, FC06 and FC16. The Test Center sends any single request, including FC15, FC22 mask write, FC23 read/write, FC08 diagnostics, FC11, FC17 and FC43/14 device identification.</div></div>
 <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the difference between address base 0 and base 1?<span class="icon">+</span></div><div class="faq-a">Base 0 uses protocol addresses (first register = 0); Base 1 uses documentation addresses (first register = 1). Pick the one your device manual uses.</div></div>
 <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I test without hardware?<span class="icon">+</span></div><div class="faq-a">Yes. The Slave tab simulates one or more devices over TCP or RTU, with counters, sine waves, ramps, random values and a simulated PID process.</div></div>
 <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the difference between Standard and Pro?<span class="icon">+</span></div><div class="faq-a">Standard ($49) is the master/slave test tool. Pro ($119) adds the HMI dashboard, tags and Structured Text, Historian, alarms, gateway, Siemens S7 and Runtime packages.</div></div>
@@ -822,7 +822,7 @@ function tagPlayVideo() {
   <h2>Start with the 14-day trial</h2>
   <p>Install ModbusManager Pro on Windows and follow this manual to connect, poll and build your first dashboard.</p>
   <div class="ctas">
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.6/Modbus.Manager.Pro.Setup.1.9.6.exe" class="btn-cta-yellow" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-CTA','product':'pro','value':1})">Download Pro trial</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.7/Modbus.Manager.Pro.Setup.1.9.7.exe" class="btn-cta-yellow" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-CTA','product':'pro','value':1})">Download Pro trial</a>
     <a href="/ModbusManagerPro_UserManual.pdf" class="btn-cta-outline">Download PDF manual</a>
   </div>
 </section>
