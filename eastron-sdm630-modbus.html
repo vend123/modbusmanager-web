@@ -37,7 +37,7 @@
   "description": "How to read an Eastron SDM630 three-phase energy meter over Modbus RTU using ModbusManager: full register map, FLOAT32 decoding, FC04 input registers, serial settings and live data.",
   "url": "https://modbusmanager.com/eastron-sdm630-modbus.html",
   "datePublished": "2026-06-30",
-  "dateModified": "2026-10-09",
+  "dateModified": "2026-11-03",
   "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
   "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
 },
@@ -449,7 +449,7 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
   <h2 class="sec-title">Ready-made SDM630 workspace</h2>
   <p class="sec-sub">A free ModbusManager Pro workspace with the SDM630 register map already set up: Float32 tags and an energy-meter dashboard. Open it and point it at your meter.</p>
   <div style="max-width:720px;margin:1.6rem auto 0;background:var(--enclosure2,#e8e9e4);border:1px solid var(--ink,#16181A);border-radius:4px;padding:1.4rem 1.6rem">
-    <p style="margin:0 0 1rem;color:var(--ink,#16181A);line-height:1.7">The workspace polls input registers from 30001 (FC04) and decodes voltage, current, power, power factor and frequency as 32-bit floats &mdash; no scripting, no manual word-pairing. Every value lands on a clean dashboard ready to read. Set your meter&rsquo;s slave ID and connection, and you have live data in seconds.</p>
+    <p style="margin:0 0 1rem;color:var(--ink,#16181A);line-height:1.7">The workspace polls input registers from 30001 (address 0, FC04) and decodes voltage, current, power, power factor and frequency as 32-bit floats &mdash; no scripting, no manual word-pairing. Every value lands on a clean dashboard ready to read. Set your meter&rsquo;s slave ID and connection, and you have live data in seconds.</p>
     <div class="hero-ctas">
       <a href="/SDM630_workspace.json" download class="btn-primary">Download workspace (.json)</a>
     </div>
@@ -494,7 +494,7 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
   <p class="sec-sub">From wiring to live values in a few minutes.</p>
   <div class="steps">
     <div class="step"><div class="step-label">Step 1</div><div class="step-title">Connect</div><div class="step-text">Wire RS-485 A (+) and B (-) to the meter&rsquo;s comm terminals with 120&nbsp;&Omega; shielded twisted pair. In ModbusManager pick RTU with the meter&rsquo;s baud rate (default 9600), parity and slave address.</div></div>
-    <div class="step"><div class="step-label">Step 2</div><div class="step-title">Poll &amp; decode</div><div class="step-text">Add a poll on <strong>input registers (FC04)</strong> starting at 30001. Set the display type to FLOAT32 so each register pair becomes a real value. Using FC03 here returns an exception &mdash; measurements are input registers.</div></div>
+    <div class="step"><div class="step-label">Step 2</div><div class="step-title">Poll &amp; decode</div><div class="step-text">Add a poll on <strong>input registers (FC04)</strong> starting at address 0 (register 30001). Set the display type to FLOAT32 so each register pair becomes a real value. Using FC03 here returns an exception &mdash; measurements are input registers.</div></div>
     <div class="step"><div class="step-label">Step 3</div><div class="step-title">Visualise &amp; log</div><div class="step-text">Map the values to a <a href="/modbus-hmi-dashboard.html">dashboard</a> for a live panel, log them to the <a href="/modbus-data-logger-software.html">Historian</a> for energy studies, or set <a href="/modbus-alarm-software.html">alarms</a> on over-voltage or over-current.</div></div>
   </div>
 </section>

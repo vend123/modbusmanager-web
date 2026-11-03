@@ -42,7 +42,7 @@
   "description": "How to read and control an ABB ACS580 variable frequency drive over Modbus RTU using ModbusManager: control word, status word, frequency reference, actual values and the ABB Drives profile.",
   "url": "https://modbusmanager.com/abb-acs580-modbus.html",
   "datePublished": "2026-06-30",
-  "dateModified": "2026-10-09",
+  "dateModified": "2026-11-03",
   "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
   "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
 },
@@ -380,11 +380,11 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
     </tbody>
   </table>
   <div style="margin-top:1.2rem;font-size:0.85rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;max-width:780px;margin-left:auto;margin-right:auto;text-align:center">
-    ABB&rsquo;s manual numbers these 400001&ndash;400014; it is the same registers. To read more values in one block, set 58.107&ndash;58.114 to the parameters you want &mdash; e.g. 01.06 Output frequency, 01.07 Motor current, 01.10 Motor torque &mdash; and they appear at 40007 onward.
+    ABB&rsquo;s manual numbers these 400001&ndash;400014; it is the same registers. To read more values in one block, set 58.107&ndash;58.114 to the parameters you want &mdash; e.g. 01.06 Output frequency, 01.07 Motor current, 01.10 Motor torque &mdash; and they appear at 40007 onward. ModbusManager takes the address on the wire, which is the register number minus 40001: the control word 40001 is address 0, the status word 40004 is address 3.
   </div>
   <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.6;font-size:0.9rem">Any parameter can also be read directly. With 58.33 Addressing mode set to Mode 0, a 16-bit value sits at <strong>400000 + 100 &times; group + index</strong>: 01.06 Output frequency is 400106, i.e. register 40106 in the numbering on this page. The 32-bit value of the same parameter is at 420000 + 200 &times; group + 2 &times; index (01.06 &rarr; 420212), which needs six-digit addressing. Other modes of 58.33 use other formulas &mdash; check it on the drive before you trust an address.</p>
   <div style="max-width:720px;margin:1.8rem auto 0;background:var(--ink,#16181A);color:var(--enclosure,#e8e9e4);border-radius:4px;padding:1.1rem 1.4rem;display:flex;gap:1.2rem;align-items:center;justify-content:space-between;flex-wrap:wrap">
-    <span style="line-height:1.5;font-size:0.92rem;flex:1;min-width:240px">Looking these up to actually read them off a drive? Poll the status word at 40004 live in about a minute &mdash; no PLC, no SCADA server.</span>
+    <span style="line-height:1.5;font-size:0.92rem;flex:1;min-width:240px">Looking these up to actually read them off a drive? Poll the status word (40004, address 3) live in about a minute &mdash; no PLC, no SCADA server.</span>
     <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.7/Modbus.Manager.Pro.Setup.1.9.7.exe" class="btn-cta-yellow" style="white-space:nowrap" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ACS580-RegisterMap-Bridge', 'product': 'pro', 'value': 1})">Read it live &rarr;</a>
   </div>
 </section>
@@ -407,7 +407,7 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
   <h2 class="sec-title">Read-only monitoring workspace</h2>
   <p class="sec-sub">A free ModbusManager Pro workspace that <strong>only reads</strong> the ACS580 &mdash; status word, output frequency and motor current &mdash; with ready/running/fault lamps on a dashboard. It writes nothing, so it cannot start the motor.</p>
   <div style="max-width:720px;margin:1.6rem auto 0;background:var(--enclosure2,#e8e9e4);border:1px solid var(--ink,#16181A);border-radius:4px;padding:1.4rem 1.6rem">
-    <p style="margin:0 0 1rem;color:var(--ink,#16181A);line-height:1.7">The workspace polls holding registers from 40004 read-only (FC03), decodes the status word into ready / running / fault indicators and scales the actual values to frequency and current. There is no control word and no write poll &mdash; it is safe to load on a live drive for monitoring. Set your drive&rsquo;s slave address and connection, and you see its state at a glance.</p>
+    <p style="margin:0 0 1rem;color:var(--ink,#16181A);line-height:1.7">The workspace polls holding registers from 40004 (address 3) read-only (FC03), decodes the status word into ready / running / fault indicators and scales the actual values to frequency and current. There is no control word and no write poll &mdash; it is safe to load on a live drive for monitoring. Set your drive&rsquo;s slave address and connection, and you see its state at a glance.</p>
     <div style="background:#fff4d6;border:1px solid #d4a72c;border-radius:4px;padding:0.7rem 1rem;margin:0 0 1rem;font-size:0.85rem;color:#6b5618;line-height:1.5">⚠ What 40005 and 40006 carry is set in the drive (Data I/O 58.105/58.106, type 58.28/58.29), and so is their scaling. This workspace assumes a typical setup (frequency, current). Verify against your drive and adjust the gains in the script if values look off.</p>
     <div class="hero-ctas">
       <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.7/Modbus.Manager.Pro.Setup.1.9.7.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ACS580-Workspace-Bridge', 'product': 'pro', 'value': 1})">Download ModbusManager Pro (free trial)</a>
@@ -474,8 +474,8 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
   <p class="sec-sub">From wiring to a running drive without a PLC.</p>
   <div class="steps">
     <div class="step"><div class="step-label">Step 1</div><div class="step-title">Connect</div><div class="step-text">Wire RS-485 A/B/ground to the drive&rsquo;s EFB terminals. Set par. group 58 to Modbus RTU with a node address and baud rate, and set the command source to embedded fieldbus. In ModbusManager pick RTU with matching baud, parity and the drive&rsquo;s slave address.</div></div>
-    <div class="step"><div class="step-label">Step 2</div><div class="step-title">Monitor</div><div class="step-text">Read holding register 40004 (status word) and the mapped actual values from 40005 to confirm communication. You should see the drive&rsquo;s ready/running state and live feedback before you try to control it.</div></div>
-    <div class="step"><div class="step-label">Step 3</div><div class="step-title">Control &amp; log</div><div class="step-text">Write the control word sequence to 40001 with a reference in 40002 to start the drive, sending periodically. Log feedback to the <a href="/modbus-data-logger-software.html">Historian</a>, build a <a href="/modbus-hmi-dashboard.html">dashboard</a>, or set <a href="/modbus-alarm-software.html">alarms</a> on overcurrent or faults.</div></div>
+    <div class="step"><div class="step-label">Step 2</div><div class="step-title">Monitor</div><div class="step-text">Read holding register 40004 (status word, address 3) and the mapped actual values from 40005 (address 4) to confirm communication. You should see the drive&rsquo;s ready/running state and live feedback before you try to control it.</div></div>
+    <div class="step"><div class="step-label">Step 3</div><div class="step-title">Control &amp; log</div><div class="step-text">Write the control word sequence to 40001 (address 0) with a reference in 40002 (address 1) to start the drive, sending periodically. Log feedback to the <a href="/modbus-data-logger-software.html">Historian</a>, build a <a href="/modbus-hmi-dashboard.html">dashboard</a>, or set <a href="/modbus-alarm-software.html">alarms</a> on overcurrent or faults.</div></div>
   </div>
 </section>
 

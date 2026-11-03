@@ -4,7 +4,7 @@
     {
       "name": "ACS580 — status (read-only)",
       "fc": 3,
-      "addr": 40004,
+      "addr": 3,
       "qty": 9,
       "slaveId": 1,
       "interval": 500,
@@ -25,7 +25,7 @@
         "count": 0
       },
       "chartReg": 0,
-      "chartName": "ACS580 [40004]",
+      "chartName": "ACS580 [3]",
       "logFile": "log_ACS580.txt"
     }
   ],
@@ -35,7 +35,7 @@
   "valueNames": {},
   "chartSeries": [
     {
-      "reg": 40005,
+      "reg": 4,
       "name": "Output frequency (raw)",
       "color": "#4ec9b0"
     }
@@ -44,7 +44,7 @@
     {
       "unitId": 1,
       "regType": "holdingRegisters",
-      "start": 40004,
+      "start": 3,
       "count": 9
     }
   ],
@@ -175,8 +175,8 @@
       "type": "register",
       "slaveId": 1,
       "regType": "holdingRegisters",
-      "address": 40004,
-      "dataType": "int16",
+      "address": 3,
+      "dataType": "uint16",
       "wordOrder": "big",
       "value": 0,
       "description": "Status word (raw)"
@@ -186,7 +186,7 @@
       "type": "register",
       "slaveId": 1,
       "regType": "holdingRegisters",
-      "address": 40005,
+      "address": 4,
       "dataType": "int16",
       "wordOrder": "big",
       "value": 0,
@@ -197,7 +197,7 @@
       "type": "register",
       "slaveId": 1,
       "regType": "holdingRegisters",
-      "address": 40006,
+      "address": 5,
       "dataType": "int16",
       "wordOrder": "big",
       "value": 0,
@@ -208,7 +208,7 @@
       "type": "register",
       "slaveId": 1,
       "regType": "holdingRegisters",
-      "address": 40007,
+      "address": 6,
       "dataType": "int16",
       "wordOrder": "big",
       "value": 0,

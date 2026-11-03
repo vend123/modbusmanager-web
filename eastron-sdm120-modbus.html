@@ -37,7 +37,7 @@
   "description": "How to read an Eastron SDM120 single-phase energy meter over Modbus RTU using ModbusManager: full register map, FLOAT32 decoding, FC04 input registers, default 2400 baud settings and live data.",
   "url": "https://modbusmanager.com/eastron-sdm630-modbus.html",
   "datePublished": "2026-06-30",
-  "dateModified": "2026-06-30",
+  "dateModified": "2026-11-03",
   "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
   "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
 },
@@ -419,7 +419,7 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
   <h2 class="sec-title">Read an SDM120 in three steps</h2>
   <div class="steps">
     <div class="step"><div class="step-num">1</div><h3>Connect RS-485</h3><p>Wire A/B from your USB-RS485 adapter to terminals 9 (B-) and 10 (A+), open ModbusManager &rsaquo; Connect &rsaquo; RTU, pick the COM port and set <strong>2400 baud, 8N1</strong>, slave ID 1 (or your meter&rsquo;s settings).</p></div>
-    <div class="step"><div class="step-num">2</div><h3>Poll FC04</h3><p>Create a poll window: function code 04, start address 30001 (Base&nbsp;1) or 0 (Base&nbsp;0), quantity 80. The grid fills with raw registers &mdash; select the <strong>Float32</strong> display column and real voltages and watts appear.</p></div>
+    <div class="step"><div class="step-num">2</div><h3>Poll FC04</h3><p>Create a poll window: function code 04, start address 0 (register 30001; enter 1 if you switch the window to Base&nbsp;1), quantity 80. The grid fills with raw registers &mdash; select the <strong>Float32</strong> display column and real voltages and watts appear.</p></div>
     <div class="step"><div class="step-num">3</div><h3>Or load the workspace</h3><p>Skip the setup: open the free SDM120 workspace above. Polls, FLOAT32 tags and a live dashboard with gauges and a power trend are pre-configured &mdash; just match the slave ID and serial settings.</p></div>
   </div>
 </section>

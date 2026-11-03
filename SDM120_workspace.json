@@ -4,7 +4,7 @@
     {
       "name": "SDM120 — measurements",
       "fc": 4,
-      "addr": 30001,
+      "addr": 0,
       "qty": 80,
       "slaveId": 1,
       "interval": 1000,
@@ -25,13 +25,13 @@
         "count": 0
       },
       "chartReg": 0,
-      "chartName": "SDM630 [30001]",
+      "chartName": "SDM120 [0]",
       "logFile": "log_SDM630.txt"
     },
     {
       "name": "SDM120 — total energy",
       "fc": 4,
-      "addr": 30343,
+      "addr": 342,
       "qty": 4,
       "slaveId": 1,
       "interval": 5000,
@@ -52,7 +52,7 @@
         "count": 0
       },
       "chartReg": 0,
-      "chartName": "SDM630 [30001]",
+      "chartName": "SDM120 [342]",
       "logFile": "log_SDM630.txt"
     }
   ],
@@ -62,16 +62,18 @@
   "valueNames": {},
   "chartSeries": [
     {
-      "reg": 30053,
-      "name": "Total Active Power",
-      "color": "#00ffcc"
+      "reg": 12,
+      "name": "Active Power",
+      "color": "#00ffcc",
+      "fc": 4,
+      "fmt": "f32"
     }
   ],
   "slaveBlocks": [
     {
       "unitId": 1,
       "regType": "inputRegisters",
-      "start": 30001,
+      "start": 0,
       "count": 80
     }
   ],
@@ -274,7 +276,7 @@
       "type": "register",
       "slaveId": 1,
       "regType": "inputRegisters",
-      "address": 30001,
+      "address": 0,
       "dataType": "float32",
       "wordOrder": "big",
       "value": 0,
@@ -285,7 +287,7 @@
       "type": "register",
       "slaveId": 1,
       "regType": "inputRegisters",
-      "address": 30007,
+      "address": 6,
       "dataType": "float32",
       "wordOrder": "big",
       "value": 0,
@@ -296,7 +298,7 @@
       "type": "register",
       "slaveId": 1,
       "regType": "inputRegisters",
-      "address": 30013,
+      "address": 12,
       "dataType": "float32",
       "wordOrder": "big",
       "value": 0,
@@ -307,7 +309,7 @@
       "type": "register",
       "slaveId": 1,
       "regType": "inputRegisters",
-      "address": 30019,
+      "address": 18,
       "dataType": "float32",
       "wordOrder": "big",
       "value": 0,
@@ -318,7 +320,7 @@
       "type": "register",
       "slaveId": 1,
       "regType": "inputRegisters",
-      "address": 30025,
+      "address": 24,
       "dataType": "float32",
       "wordOrder": "big",
       "value": 0,
@@ -329,7 +331,7 @@
       "type": "register",
       "slaveId": 1,
       "regType": "inputRegisters",
-      "address": 30031,
+      "address": 30,
       "dataType": "float32",
       "wordOrder": "big",
       "value": 0,
@@ -340,7 +342,7 @@
       "type": "register",
       "slaveId": 1,
       "regType": "inputRegisters",
-      "address": 30071,
+      "address": 70,
       "dataType": "float32",
       "wordOrder": "big",
       "value": 0,
@@ -351,7 +353,7 @@
       "type": "register",
       "slaveId": 1,
       "regType": "inputRegisters",
-      "address": 30073,
+      "address": 72,
       "dataType": "float32",
       "wordOrder": "big",
       "value": 0,
@@ -362,7 +364,7 @@
       "type": "register",
       "slaveId": 1,
       "regType": "inputRegisters",
-      "address": 30075,
+      "address": 74,
       "dataType": "float32",
       "wordOrder": "big",
       "value": 0,
@@ -373,7 +375,7 @@
       "type": "register",
       "slaveId": 1,
       "regType": "inputRegisters",
-      "address": 30343,
+      "address": 342,
       "dataType": "float32",
       "wordOrder": "big",
       "value": 0,
