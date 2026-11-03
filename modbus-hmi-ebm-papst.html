@@ -40,7 +40,7 @@
   "description": "Monitor and control a bank of ebm-papst EC fans over Modbus RTU on one ModbusManager Pro dashboard. Free 16-fan demo workspace you can download and run on the built-in simulator or real fans.",
   "url": "https://modbusmanager.com/modbus-hmi-ebm-papst.html",
   "datePublished": "2026-06-19",
-  "dateModified": "2026-06-19",
+  "dateModified": "2026-11-03",
   "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
   "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
   "about": {
@@ -462,7 +462,7 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
 <section class="section">
   <div class="sec-label">// register map</div>
   <h2 class="sec-title">What each fan exposes</h2>
-  <p class="sec-sub">ebm-papst uses decimal register addresses. The demo reads the feedback block (D010&ndash;D021) as input registers with function code 04; the speed setpoint is a holding register written with function code 06.</p>
+  <p class="sec-sub">ebm-papst uses decimal register addresses. The demo reads the feedback block (D010&ndash;D027) as input registers with function code 04; the speed setpoint is a holding register written with function code 06.</p>
   <table class="compare-table">
     <thead>
       <tr><th>Addr</th><th>Value</th><th>Access</th><th>Range / scale</th><th>Unit</th></tr>
@@ -471,11 +471,12 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
       <tr><td class="mono">53264 (D010)</td><td>Actual speed</td><td>FC04 read</td><td>0&ndash;65535 = 0&ndash;100%</td><td>%</td></tr>
       <tr><td class="mono">53265 (D011)</td><td>Motor status (0 = OK)</td><td>FC04 read</td><td>bitfield</td><td>&mdash;</td></tr>
       <tr><td class="mono">53269 (D015)</td><td>Module temperature</td><td>FC04 read</td><td>signed</td><td>&deg;C</td></tr>
-      <tr><td class="mono">53281 (D021)</td><td>Current power</td><td>FC04 read</td><td>&divide;1</td><td>W</td></tr>
+      <tr><td class="mono">53287 (D027)</td><td>Current power</td><td>FC04 read</td><td>&divide;1</td><td>W</td></tr>
       <tr class="hl"><td class="mono">53249 (D001)</td><td>Speed setpoint</td><td>FC06 write</td><td>0&ndash;65535 = 0&ndash;100%</td><td>%</td></tr>
     </tbody>
   </table>
   <div style="margin-top:1rem;font-size:0.85rem;color:var(--muted);font-family:'IBM Plex Mono',monospace">Bus: Modbus RTU, 19200 baud, 8E1, up to 247 fans. The setpoint is stored in EEPROM &mdash; write it on change, not continuously. Full map and steps are in the README inside the zip.</div>
+  <div style="margin-top:0.6rem;font-size:0.85rem;color:var(--muted);font-family:'IBM Plex Mono',monospace">Power: D027 is the power in W from MODBUS parameter spec V6.00 on &mdash; the version that raised the telegram limit from 23 to 80 bytes, so a fan that answers the demo&rsquo;s 24-register read has it. D021 is not watts but relative: P = D021 / 65535 &times; (D1A0 &times; 0.02 V) &times; (D1A1 &times; 0.002 A), where D1A0 and D1A1 are holding registers (FC03).</div>
 </section>
 
 <div class="divider-line"></div>

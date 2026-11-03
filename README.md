@@ -15,7 +15,7 @@ Run it with NO hardware (built-in slave simulator) or against real ebm-papst fan
 ebm-papst EC fans use Modbus and decimal register addresses (the parameter "D"
 numbers are hexadecimal, e.g. D010 = 53264). The feedback parameters below are
 read with function code 04 (input registers); the speed setpoint is written with
-function code 06 (holding register). The demo uses the four highlighted rows.
+function code 06 (holding register). The demo uses the highlighted rows.
 
 | Addr (dec) | Param | Value                         | Access     | Notes                         |
 |------------|-------|-------------------------------|------------|-------------------------------|
@@ -31,7 +31,15 @@ function code 06 (holding register). The demo uses the four highlighted rows.
 | 53272      | D018  | Direction of rotation         | FC04 read  | -                             |
 | 53273      | D019  | Modulation level              | FC04 read  | -                             |
 | 53274      | D01A  | Current set value             | FC04 read  | speed or other, by mode       |
-| 53281      | D021  | **Current power**             | FC04 read  | W                             |
+| 53281      | D021  | Current power (relative)      | FC04 read  | not W - see below             |
+| 53287      | D027  | **Current power**             | FC04 read  | W (spec V6.00+)               |
+
+D027 is the power in W. It exists from MODBUS parameter spec V6.00 on, the
+version that raised the telegram limit from 23 to 80 bytes, so a fan that
+answers the demo's 24-register read (D010-D027) has it. D021 is not W but
+relative: P [W] = D021 / 65535 x (D1A0 x 0.02 V) x (D1A1 x 0.002 A), where
+D1A0 (DC-link voltage reference) and D1A1 (DC-link current reference) are
+holding registers, read with function code 03.
 
 ### Motor-status bits (D011) - 0 means healthy
 A set bit means that fault is active:
@@ -68,7 +76,7 @@ only when it changes, never continuously.
 
 2. Pick a source:
    - No fans: open the Slave tab. The workspace defines 16 input-register blocks
-     (53264-53281) on slave IDs 1-16. Start the TCP server and drive the speed
+     (53264-53287) on slave IDs 1-16. Start the TCP server and drive the speed
      register (53264) on a fan - e.g. add a Simulate counter (Min 0, Max 64000,
      Step 1) so the dashboard looks alive.
    - Real fans: wire the fans on RS-485 and skip the simulator.

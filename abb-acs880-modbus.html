@@ -376,7 +376,7 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
   <div style="text-align:center;margin-top:1.6rem">
     <a href="/ABB_ACS880_monitor_workspace.json" download class="btn-primary">Download ACS880 workspace</a>
   </div>
-  <p style="max-width:700px;margin:1.2rem auto 0;text-align:center;color:var(--muted);font-size:.85rem;line-height:1.6">&#9888; The actual-value registers (40005+) and their scaling depend on the drive&rsquo;s EFB data I/O mapping (parameters 58.101+). The workspace assumes a typical mapping (frequency, current) &mdash; verify against your drive and adjust the gains if values look off. Open via File &rsaquo; Open Workspace in ModbusManager Pro.</p>
+  <p style="max-width:700px;margin:1.2rem auto 0;text-align:center;color:var(--muted);font-size:.85rem;line-height:1.6">&#9888; The actual-value registers (40005+) and their scaling depend on the drive&rsquo;s EFB data I/O mapping (parameters 58.101+). The workspace assumes a typical mapping (frequency, current) &mdash; verify against your drive and adjust the gains if values look off. Its <span class="mono">dio7_power_raw</span> tag reads 40007 (address 6), which stays 0 until 58.107 Data I/O 7 points at a parameter such as 01.14 Output power. Open via File &rsaquo; Open Workspace in ModbusManager Pro.</p>
 </section>
 
 <section class="section">
@@ -416,7 +416,7 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
     </tbody>
   </table>
   <div style="margin-top:1.2rem;font-size:0.85rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;max-width:780px;margin-left:auto;margin-right:auto;text-align:center">
-    Tip: what the registers from 40005 onward carry is chosen with the EFB data I/O parameters (58.101+) &mdash; e.g. 01.06 Output frequency, 01.07 Motor current, 01.10 Motor torque. Parameter group 53 is not it: on the ACS880 that is FBA A data out, for an optional fieldbus adapter. ModbusManager takes the address on the wire, the register number minus 40001: 40001 is address 0, the status word 40004 is address 3.
+    Tip: what the registers from 40005 onward carry is chosen with the EFB data I/O parameters (58.101+) &mdash; e.g. 01.06 Output frequency, 01.07 Motor current, 01.10 Motor torque, 01.14 Output power. Parameter group 53 is not it: on the ACS880 that is FBA A data out, for an optional fieldbus adapter. ModbusManager takes the address on the wire, the register number minus 40001: 40001 is address 0, the status word 40004 is address 3.
   </div>
   <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.6;font-size:0.9rem">ABB also supports direct parameter access: register number = parameter number with a leading digit, e.g. parameter 01.06 maps to a register near 40106 in 16-bit mode. The exact mapping and 16/32-bit behaviour depend on par. 58.33 addressing mode &mdash; always confirm against the firmware manual for your drive.</p>
 </section>

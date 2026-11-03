@@ -173,8 +173,8 @@
           "type": "text",
           "x": 590,
           "y": 20,
-          "value": 231.4,
-          "label": "Phase A",
+          "value": 400.8,
+          "label": "Voltage AB",
           "regType": "holdingRegisters",
           "unit": "V",
           "decimals": 1,
@@ -183,7 +183,7 @@
           "w": 130,
           "h": 70,
           "sourceType": "tag",
-          "tagName": "Voltage_A"
+          "tagName": "Voltage_AB"
         },
         {
           "id": 9,
@@ -242,7 +242,7 @@
           "x": 590,
           "y": 180,
           "value": 46.25,
-          "label": "Cabinet temp",
+          "label": "Heat sink temp",
           "regType": "holdingRegisters",
           "unit": "°C",
           "decimals": 1,
@@ -251,7 +251,7 @@
           "w": 130,
           "h": 70,
           "sourceType": "tag",
-          "tagName": "Cabinet_Temp"
+          "tagName": "Heatsink_Temp"
         },
         {
           "id": 13,
@@ -334,14 +334,14 @@
       "_pollGap": 2010.0150185033303
     },
     {
-      "name": "PhVphA_raw",
+      "name": "PPVphAB_raw",
       "type": "register",
       "slaveId": 1,
       "regType": "holdingRegisters",
-      "address": 40079,
+      "address": 40076,
       "dataType": "uint16",
       "wordOrder": "big",
-      "description": "phase A voltage",
+      "description": "line voltage AB (SolarEdge fills phase voltages 40079-40081 only on split-phase grids)",
       "scale": 1,
       "offset": 0,
       "_pollAt": 1792308458388,
@@ -544,14 +544,14 @@
       "_pollGap": 2010.0150185033303
     },
     {
-      "name": "TmpCab_raw",
+      "name": "TmpSnk_raw",
       "type": "register",
       "slaveId": 1,
       "regType": "holdingRegisters",
-      "address": 40102,
+      "address": 40103,
       "dataType": "int16",
       "wordOrder": "big",
-      "description": "cabinet temperature",
+      "description": "heat sink temperature (SolarEdge has no TmpCab)",
       "scale": 1,
       "offset": 0,
       "_pollAt": 1792308458388,
@@ -617,14 +617,14 @@
       "offset": 0
     },
     {
-      "name": "Voltage_A",
+      "name": "Voltage_AB",
       "type": "internal",
       "slaveId": 1,
       "regType": "holdingRegisters",
       "address": 0,
       "dataType": "int16",
       "wordOrder": "big",
-      "value": 231.4,
+      "value": 400.8,
       "_read": true,
       "description": "V (script)",
       "scale": 1,
@@ -701,7 +701,7 @@
       "offset": 0
     },
     {
-      "name": "Cabinet_Temp",
+      "name": "Heatsink_Temp",
       "type": "internal",
       "slaveId": 1,
       "regType": "holdingRegisters",
@@ -715,7 +715,7 @@
       "offset": 0
     }
   ],
-  "script": "(* SunSpec: value = raw x 10^SF. A scale factor can change with firmware\n   or at runtime (Fronius auto-scales), so it is read every cycle, not assumed. *)\nAC_Power := W_raw * Math.pow(10, W_SF) / 1000;\nAC_Current := A_raw * Math.pow(10, A_SF);\nVoltage_A := PhVphA_raw * Math.pow(10, V_SF);\nFrequency := Hz_raw * Math.pow(10, Hz_SF);\nPower_Factor := PF_raw * Math.pow(10, PF_SF);\nEnergy_Total := WH_raw * Math.pow(10, WH_SF) / 1000;\nDC_Voltage := DCV_raw * Math.pow(10, DCV_SF);\nDC_Power := DCW_raw * Math.pow(10, DCW_SF) / 1000;\nCabinet_Temp := TmpCab_raw * Math.pow(10, Tmp_SF);\n",
+  "script": "(* SunSpec: value = raw x 10^SF. A scale factor can change with firmware\n   or at runtime (Fronius auto-scales), so it is read every cycle, not assumed. *)\n(* SolarEdge fills the heat sink temperature (TmpSnk), not TmpCab, and the phase\n   voltages only on split-phase grids, so this reads line voltage AB. *)\nAC_Power := W_raw * Math.pow(10, W_SF) / 1000;\nAC_Current := A_raw * Math.pow(10, A_SF);\nVoltage_AB := PPVphAB_raw * Math.pow(10, V_SF);\nFrequency := Hz_raw * Math.pow(10, Hz_SF);\nPower_Factor := PF_raw * Math.pow(10, PF_SF);\nEnergy_Total := WH_raw * Math.pow(10, WH_SF) / 1000;\nDC_Voltage := DCV_raw * Math.pow(10, DCV_SF);\nDC_Power := DCW_raw * Math.pow(10, DCW_SF) / 1000;\nHeatsink_Temp := TmpSnk_raw * Math.pow(10, Tmp_SF);\n",
   "scriptInterval": "1000",
   "historianLogging": {
     "registers": [],

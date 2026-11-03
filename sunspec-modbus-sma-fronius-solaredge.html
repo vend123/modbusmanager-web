@@ -45,6 +45,7 @@
   "url": "https://modbusmanager.com/sunspec-modbus-sma-fronius-solaredge.html",
   "image": "https://modbusmanager.com/og-sunspec.png",
   "datePublished": "2026-10-18",
+  "dateModified": "2026-11-03",
   "author": {
     "@type": "Organization",
     "name": "ModbusManager",
@@ -383,7 +384,7 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
 
   <h2>The Inverter Model (103, Three-Phase, Integer + SF)</h2>
 
-  <p>Models 101, 102 and 103 are the single-, split- and three-phase inverter models with integer values and scale factors; all three have length 50 and the same point layout. Offsets count from the model's ID register. The absolute column is SolarEdge's layout, confirmed in SolarEdge's technical note, with the model ID at <code>40069</code>.</p>
+  <p>Models 101, 102 and 103 are the single-, split- and three-phase inverter models with integer values and scale factors; all three have length 50 and the same point layout. Offsets count from the model's ID register. The absolute column is SolarEdge's layout, confirmed in SolarEdge's technical note, with the model ID at <code>40069</code>. Points SolarEdge does not fill are marked.</p>
 
   <table>
     <tr><th>Offset</th><th>Point</th><th>Type</th><th>Units</th><th>SolarEdge address</th></tr>
@@ -392,7 +393,7 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
     <tr><td class="mono">3 / 4 / 5</td><td>AphA / AphB / AphC</td><td class="mono">uint16</td><td>A</td><td class="mono">40072&ndash;40074</td></tr>
     <tr><td class="mono">6</td><td>A_SF</td><td class="mono">sunssf</td><td>&mdash;</td><td class="mono">40075</td></tr>
     <tr><td class="mono">7 / 8 / 9</td><td>PPVphAB / BC / CA &mdash; line voltages</td><td class="mono">uint16</td><td>V</td><td class="mono">40076&ndash;40078</td></tr>
-    <tr><td class="mono">10 / 11 / 12</td><td>PhVphA / B / C &mdash; phase voltages</td><td class="mono">uint16</td><td>V</td><td class="mono">40079&ndash;40081</td></tr>
+    <tr><td class="mono">10 / 11 / 12</td><td>PhVphA / B / C &mdash; phase voltages</td><td class="mono">uint16</td><td>V</td><td class="mono">40079&ndash;40081 (split-phase only)</td></tr>
     <tr><td class="mono">13</td><td>V_SF</td><td class="mono">sunssf</td><td>&mdash;</td><td class="mono">40082</td></tr>
     <tr><td class="mono">14</td><td><strong>W &mdash; AC power</strong></td><td class="mono">int16</td><td>W</td><td class="mono">40083</td></tr>
     <tr><td class="mono">15</td><td>W_SF</td><td class="mono">sunssf</td><td>&mdash;</td><td class="mono">40084</td></tr>
@@ -405,12 +406,16 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
     <tr><td class="mono">27 / 28</td><td>DCA / DCA_SF</td><td class="mono">uint16 / sunssf</td><td>A</td><td class="mono">40096 / 40097</td></tr>
     <tr><td class="mono">29 / 30</td><td>DCV / DCV_SF</td><td class="mono">uint16 / sunssf</td><td>V</td><td class="mono">40098 / 40099</td></tr>
     <tr><td class="mono">31 / 32</td><td>DCW / DCW_SF</td><td class="mono">int16 / sunssf</td><td>W</td><td class="mono">40100 / 40101</td></tr>
-    <tr><td class="mono">33 / 34 / 35 / 36</td><td>TmpCab / TmpSnk / TmpTrns / TmpOt</td><td class="mono">int16</td><td>&deg;C</td><td class="mono">40102&ndash;40105</td></tr>
+    <tr><td class="mono">33</td><td>TmpCab &mdash; cabinet temperature</td><td class="mono">int16</td><td>&deg;C</td><td class="mono">40102 (not implemented)</td></tr>
+    <tr><td class="mono">34</td><td>TmpSnk &mdash; heat sink temperature</td><td class="mono">int16</td><td>&deg;C</td><td class="mono">40103</td></tr>
+    <tr><td class="mono">35 / 36</td><td>TmpTrns / TmpOt &mdash; transformer / other</td><td class="mono">int16</td><td>&deg;C</td><td class="mono">40104 / 40105 (not implemented)</td></tr>
     <tr><td class="mono">37</td><td>Tmp_SF</td><td class="mono">sunssf</td><td>&mdash;</td><td class="mono">40106</td></tr>
     <tr><td class="mono">38</td><td><strong>St &mdash; operating state</strong></td><td class="mono">enum16</td><td>&mdash;</td><td class="mono">40107</td></tr>
     <tr><td class="mono">39</td><td>StVnd &mdash; vendor state</td><td class="mono">enum16</td><td>&mdash;</td><td class="mono">40108</td></tr>
-    <tr><td class="mono">40&ndash;41</td><td>Evt1 &mdash; event flags</td><td class="mono">bitfield32</td><td>&mdash;</td><td class="mono">40109&ndash;40110</td></tr>
+    <tr><td class="mono">40&ndash;41</td><td>Evt1 &mdash; event flags</td><td class="mono">bitfield32</td><td>&mdash;</td><td class="mono">40109&ndash;40110 (not implemented)</td></tr>
   </table>
+
+  <p>SolarEdge's technical note lists one temperature, TmpSnk (heat sink) at <code>40103</code> with Tmp_SF at <code>40106</code>, and no TmpCab, TmpTrns, TmpOt or Evt1: those read the "not implemented" value. It fills the phase voltages PhVphA/B/C only on split-phase grids (Japan, 240 V in North America), so on a three-phase inverter read the line voltages PPVphAB/BC/CA at <code>40076</code>&ndash;<code>40078</code>.</p>
 
   <div class="callout">
     <strong>The same offsets, other addresses:</strong> on Fronius in int+SF mode the inverter model also usually starts at 40069, because its common model is 65 registers long &mdash; but Fronius warns that addresses are not constant. On SMA, extra models (11 and 12) come first, and with SMA's dynamic profile the start differs between devices. Find the model by walking the chain and add the offsets above.
@@ -484,12 +489,12 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
   <h2>Download a Ready-Made Workspace</h2>
   <ul>
     <li>FC03 windows on the inverter model (40069, 52 registers) and on the SunS marker and common model</li>
-    <li>Register tags for the raw values and their scale factors &mdash; current, voltage, power, frequency, power factor, energy, DC values, temperature, state</li>
+    <li>Register tags for the raw values and their scale factors &mdash; current, line voltage AB, power, frequency, power factor, energy, DC values, heat sink temperature, state</li>
     <li>A Structured Text script that applies the scale factors every second, into kW, kWh, V, A, Hz, % and &deg;C</li>
     <li>A dashboard: AC power gauge, state lamp with the eight St values, energy, power factor, the raw DC voltage and its scale factor side by side, DC values and a DC vs AC power trend</li>
   </ul>
   <div class="callout">
-    <strong>Set for SolarEdge's layout</strong> (unit 1, model 103 at 40069). For SMA, change the unit ID to 126 and move the model window to where the chain puts model 103 on your inverter; for Fronius, set the model type to int + SF and check the start address. Tags, script and dashboard are ModbusManager Pro features.
+    <strong>Set for SolarEdge's layout</strong> (unit 1, model 103 at 40069). For SMA, change the unit ID to 126 and move the model window to where the chain puts model 103 on your inverter; for Fronius, set the model type to int + SF and check the start address. The voltage and temperature cards read PPVphAB (40076) and TmpSnk (40103), the points SolarEdge fills on a three-phase inverter; on another brand, check which voltage and temperature points it fills. Tags, script and dashboard are ModbusManager Pro features.
   </div>
   <div class="download-box">
     <div>

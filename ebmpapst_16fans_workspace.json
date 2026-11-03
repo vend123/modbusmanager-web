@@ -5,7 +5,7 @@
       "name": "Fan 1",
       "fc": 4,
       "addr": 53264,
-      "qty": 18,
+      "qty": 24,
       "slaveId": 1,
       "interval": 1000,
       "disabled": false,
@@ -32,7 +32,7 @@
       "name": "Fan 2",
       "fc": 4,
       "addr": 53264,
-      "qty": 18,
+      "qty": 24,
       "slaveId": 2,
       "interval": 1000,
       "disabled": false,
@@ -59,7 +59,7 @@
       "name": "Fan 3",
       "fc": 4,
       "addr": 53264,
-      "qty": 18,
+      "qty": 24,
       "slaveId": 3,
       "interval": 1000,
       "disabled": false,
@@ -86,7 +86,7 @@
       "name": "Fan 4",
       "fc": 4,
       "addr": 53264,
-      "qty": 18,
+      "qty": 24,
       "slaveId": 4,
       "interval": 1000,
       "disabled": false,
@@ -113,7 +113,7 @@
       "name": "Fan 5",
       "fc": 4,
       "addr": 53264,
-      "qty": 18,
+      "qty": 24,
       "slaveId": 5,
       "interval": 1000,
       "disabled": false,
@@ -140,7 +140,7 @@
       "name": "Fan 6",
       "fc": 4,
       "addr": 53264,
-      "qty": 18,
+      "qty": 24,
       "slaveId": 6,
       "interval": 1000,
       "disabled": false,
@@ -167,7 +167,7 @@
       "name": "Fan 7",
       "fc": 4,
       "addr": 53264,
-      "qty": 18,
+      "qty": 24,
       "slaveId": 7,
       "interval": 1000,
       "disabled": false,
@@ -194,7 +194,7 @@
       "name": "Fan 8",
       "fc": 4,
       "addr": 53264,
-      "qty": 18,
+      "qty": 24,
       "slaveId": 8,
       "interval": 1000,
       "disabled": false,
@@ -221,7 +221,7 @@
       "name": "Fan 9",
       "fc": 4,
       "addr": 53264,
-      "qty": 18,
+      "qty": 24,
       "slaveId": 9,
       "interval": 1000,
       "disabled": false,
@@ -248,7 +248,7 @@
       "name": "Fan 10",
       "fc": 4,
       "addr": 53264,
-      "qty": 18,
+      "qty": 24,
       "slaveId": 10,
       "interval": 1000,
       "disabled": false,
@@ -275,7 +275,7 @@
       "name": "Fan 11",
       "fc": 4,
       "addr": 53264,
-      "qty": 18,
+      "qty": 24,
       "slaveId": 11,
       "interval": 1000,
       "disabled": false,
@@ -302,7 +302,7 @@
       "name": "Fan 12",
       "fc": 4,
       "addr": 53264,
-      "qty": 18,
+      "qty": 24,
       "slaveId": 12,
       "interval": 1000,
       "disabled": false,
@@ -329,7 +329,7 @@
       "name": "Fan 13",
       "fc": 4,
       "addr": 53264,
-      "qty": 18,
+      "qty": 24,
       "slaveId": 13,
       "interval": 1000,
       "disabled": false,
@@ -356,7 +356,7 @@
       "name": "Fan 14",
       "fc": 4,
       "addr": 53264,
-      "qty": 18,
+      "qty": 24,
       "slaveId": 14,
       "interval": 1000,
       "disabled": false,
@@ -383,7 +383,7 @@
       "name": "Fan 15",
       "fc": 4,
       "addr": 53264,
-      "qty": 18,
+      "qty": 24,
       "slaveId": 15,
       "interval": 1000,
       "disabled": false,
@@ -410,7 +410,7 @@
       "name": "Fan 16",
       "fc": 4,
       "addr": 53264,
-      "qty": 18,
+      "qty": 24,
       "slaveId": 16,
       "interval": 1000,
       "disabled": false,
@@ -455,97 +455,97 @@
       "unitId": 1,
       "regType": "inputRegisters",
       "start": 53264,
-      "count": 18
+      "count": 24
     },
     {
       "unitId": 2,
       "regType": "inputRegisters",
       "start": 53264,
-      "count": 18
+      "count": 24
     },
     {
       "unitId": 3,
       "regType": "inputRegisters",
       "start": 53264,
-      "count": 18
+      "count": 24
     },
     {
       "unitId": 4,
       "regType": "inputRegisters",
       "start": 53264,
-      "count": 18
+      "count": 24
     },
     {
       "unitId": 5,
       "regType": "inputRegisters",
       "start": 53264,
-      "count": 18
+      "count": 24
     },
     {
       "unitId": 6,
       "regType": "inputRegisters",
       "start": 53264,
-      "count": 18
+      "count": 24
     },
     {
       "unitId": 7,
       "regType": "inputRegisters",
       "start": 53264,
-      "count": 18
+      "count": 24
     },
     {
       "unitId": 8,
       "regType": "inputRegisters",
       "start": 53264,
-      "count": 18
+      "count": 24
     },
     {
       "unitId": 9,
       "regType": "inputRegisters",
       "start": 53264,
-      "count": 18
+      "count": 24
     },
     {
       "unitId": 10,
       "regType": "inputRegisters",
       "start": 53264,
-      "count": 18
+      "count": 24
     },
     {
       "unitId": 11,
       "regType": "inputRegisters",
       "start": 53264,
-      "count": 18
+      "count": 24
     },
     {
       "unitId": 12,
       "regType": "inputRegisters",
       "start": 53264,
-      "count": 18
+      "count": 24
     },
     {
       "unitId": 13,
       "regType": "inputRegisters",
       "start": 53264,
-      "count": 18
+      "count": 24
     },
     {
       "unitId": 14,
       "regType": "inputRegisters",
       "start": 53264,
-      "count": 18
+      "count": 24
     },
     {
       "unitId": 15,
       "regType": "inputRegisters",
       "start": 53264,
-      "count": 18
+      "count": 24
     },
     {
       "unitId": 16,
       "regType": "inputRegisters",
       "start": 53264,
-      "count": 18
+      "count": 24
     }
   ],
   "dashPages": [
@@ -1585,9 +1585,9 @@
       "type": "register",
       "slaveId": 1,
       "regType": "inputRegisters",
-      "address": 53281,
+      "address": 53287,
       "value": 0,
-      "description": "Fan 1 current power W (D021)"
+      "description": "Fan 1 current power W (D027)"
     },
     {
       "name": "r2_speed",
@@ -1612,9 +1612,9 @@
       "type": "register",
       "slaveId": 2,
       "regType": "inputRegisters",
-      "address": 53281,
+      "address": 53287,
       "value": 0,
-      "description": "Fan 2 current power W (D021)"
+      "description": "Fan 2 current power W (D027)"
     },
     {
       "name": "r3_speed",
@@ -1639,9 +1639,9 @@
       "type": "register",
       "slaveId": 3,
       "regType": "inputRegisters",
-      "address": 53281,
+      "address": 53287,
       "value": 0,
-      "description": "Fan 3 current power W (D021)"
+      "description": "Fan 3 current power W (D027)"
     },
     {
       "name": "r4_speed",
@@ -1666,9 +1666,9 @@
       "type": "register",
       "slaveId": 4,
       "regType": "inputRegisters",
-      "address": 53281,
+      "address": 53287,
       "value": 0,
-      "description": "Fan 4 current power W (D021)"
+      "description": "Fan 4 current power W (D027)"
     },
     {
       "name": "r5_speed",
@@ -1693,9 +1693,9 @@
       "type": "register",
       "slaveId": 5,
       "regType": "inputRegisters",
-      "address": 53281,
+      "address": 53287,
       "value": 0,
-      "description": "Fan 5 current power W (D021)"
+      "description": "Fan 5 current power W (D027)"
     },
     {
       "name": "r6_speed",
@@ -1720,9 +1720,9 @@
       "type": "register",
       "slaveId": 6,
       "regType": "inputRegisters",
-      "address": 53281,
+      "address": 53287,
       "value": 0,
-      "description": "Fan 6 current power W (D021)"
+      "description": "Fan 6 current power W (D027)"
     },
     {
       "name": "r7_speed",
@@ -1747,9 +1747,9 @@
       "type": "register",
       "slaveId": 7,
       "regType": "inputRegisters",
-      "address": 53281,
+      "address": 53287,
       "value": 0,
-      "description": "Fan 7 current power W (D021)"
+      "description": "Fan 7 current power W (D027)"
     },
     {
       "name": "r8_speed",
@@ -1774,9 +1774,9 @@
       "type": "register",
       "slaveId": 8,
       "regType": "inputRegisters",
-      "address": 53281,
+      "address": 53287,
       "value": 0,
-      "description": "Fan 8 current power W (D021)"
+      "description": "Fan 8 current power W (D027)"
     },
     {
       "name": "r9_speed",
@@ -1801,9 +1801,9 @@
       "type": "register",
       "slaveId": 9,
       "regType": "inputRegisters",
-      "address": 53281,
+      "address": 53287,
       "value": 0,
-      "description": "Fan 9 current power W (D021)"
+      "description": "Fan 9 current power W (D027)"
     },
     {
       "name": "r10_speed",
@@ -1828,9 +1828,9 @@
       "type": "register",
       "slaveId": 10,
       "regType": "inputRegisters",
-      "address": 53281,
+      "address": 53287,
       "value": 0,
-      "description": "Fan 10 current power W (D021)"
+      "description": "Fan 10 current power W (D027)"
     },
     {
       "name": "r11_speed",
@@ -1855,9 +1855,9 @@
       "type": "register",
       "slaveId": 11,
       "regType": "inputRegisters",
-      "address": 53281,
+      "address": 53287,
       "value": 0,
-      "description": "Fan 11 current power W (D021)"
+      "description": "Fan 11 current power W (D027)"
     },
     {
       "name": "r12_speed",
@@ -1882,9 +1882,9 @@
       "type": "register",
       "slaveId": 12,
       "regType": "inputRegisters",
-      "address": 53281,
+      "address": 53287,
       "value": 0,
-      "description": "Fan 12 current power W (D021)"
+      "description": "Fan 12 current power W (D027)"
     },
     {
       "name": "r13_speed",
@@ -1909,9 +1909,9 @@
       "type": "register",
       "slaveId": 13,
       "regType": "inputRegisters",
-      "address": 53281,
+      "address": 53287,
       "value": 0,
-      "description": "Fan 13 current power W (D021)"
+      "description": "Fan 13 current power W (D027)"
     },
     {
       "name": "r14_speed",
@@ -1936,9 +1936,9 @@
       "type": "register",
       "slaveId": 14,
       "regType": "inputRegisters",
-      "address": 53281,
+      "address": 53287,
       "value": 0,
-      "description": "Fan 14 current power W (D021)"
+      "description": "Fan 14 current power W (D027)"
     },
     {
       "name": "r15_speed",
@@ -1963,9 +1963,9 @@
       "type": "register",
       "slaveId": 15,
       "regType": "inputRegisters",
-      "address": 53281,
+      "address": 53287,
       "value": 0,
-      "description": "Fan 15 current power W (D021)"
+      "description": "Fan 15 current power W (D027)"
     },
     {
       "name": "r16_speed",
@@ -1990,9 +1990,9 @@
       "type": "register",
       "slaveId": 16,
       "regType": "inputRegisters",
-      "address": 53281,
+      "address": 53287,
       "value": 0,
-      "description": "Fan 16 current power W (D021)"
+      "description": "Fan 16 current power W (D027)"
     },
     {
       "name": "f1_ok",
@@ -2139,7 +2139,7 @@
       "description": "Fan 16 status OK (status=0)"
     }
   ],
-  "script": "(* ebm-papst EC fans - status OK flag *)\n(* Speed % is shown by the fan widget itself (rounded). D011 status: 0 = OK *)\n\nf1_ok := 0;\nIF r1_status = 0 THEN f1_ok := 1; END_IF;\nf2_ok := 0;\nIF r2_status = 0 THEN f2_ok := 1; END_IF;\nf3_ok := 0;\nIF r3_status = 0 THEN f3_ok := 1; END_IF;\nf4_ok := 0;\nIF r4_status = 0 THEN f4_ok := 1; END_IF;\nf5_ok := 0;\nIF r5_status = 0 THEN f5_ok := 1; END_IF;\nf6_ok := 0;\nIF r6_status = 0 THEN f6_ok := 1; END_IF;\nf7_ok := 0;\nIF r7_status = 0 THEN f7_ok := 1; END_IF;\nf8_ok := 0;\nIF r8_status = 0 THEN f8_ok := 1; END_IF;\nf9_ok := 0;\nIF r9_status = 0 THEN f9_ok := 1; END_IF;\nf10_ok := 0;\nIF r10_status = 0 THEN f10_ok := 1; END_IF;\nf11_ok := 0;\nIF r11_status = 0 THEN f11_ok := 1; END_IF;\nf12_ok := 0;\nIF r12_status = 0 THEN f12_ok := 1; END_IF;\nf13_ok := 0;\nIF r13_status = 0 THEN f13_ok := 1; END_IF;\nf14_ok := 0;\nIF r14_status = 0 THEN f14_ok := 1; END_IF;\nf15_ok := 0;\nIF r15_status = 0 THEN f15_ok := 1; END_IF;\nf16_ok := 0;\nIF r16_status = 0 THEN f16_ok := 1; END_IF;\n",
+  "script": "(* ebm-papst EC fans - status OK flag *)\n(* Speed % is shown by the fan widget itself (rounded). D011 status: 0 = OK *)\n(* Power: D027 is W directly (MODBUS spec V6.00+). D021 is relative coding, not W. *)\n\nf1_ok := 0;\nIF r1_status = 0 THEN f1_ok := 1; END_IF;\nf2_ok := 0;\nIF r2_status = 0 THEN f2_ok := 1; END_IF;\nf3_ok := 0;\nIF r3_status = 0 THEN f3_ok := 1; END_IF;\nf4_ok := 0;\nIF r4_status = 0 THEN f4_ok := 1; END_IF;\nf5_ok := 0;\nIF r5_status = 0 THEN f5_ok := 1; END_IF;\nf6_ok := 0;\nIF r6_status = 0 THEN f6_ok := 1; END_IF;\nf7_ok := 0;\nIF r7_status = 0 THEN f7_ok := 1; END_IF;\nf8_ok := 0;\nIF r8_status = 0 THEN f8_ok := 1; END_IF;\nf9_ok := 0;\nIF r9_status = 0 THEN f9_ok := 1; END_IF;\nf10_ok := 0;\nIF r10_status = 0 THEN f10_ok := 1; END_IF;\nf11_ok := 0;\nIF r11_status = 0 THEN f11_ok := 1; END_IF;\nf12_ok := 0;\nIF r12_status = 0 THEN f12_ok := 1; END_IF;\nf13_ok := 0;\nIF r13_status = 0 THEN f13_ok := 1; END_IF;\nf14_ok := 0;\nIF r14_status = 0 THEN f14_ok := 1; END_IF;\nf15_ok := 0;\nIF r15_status = 0 THEN f15_ok := 1; END_IF;\nf16_ok := 0;\nIF r16_status = 0 THEN f16_ok := 1; END_IF;\n",
   "scriptInterval": "1000",
   "saved": "2026-06-19T09:52:20.066Z",
   "dashTheme": "modern",
