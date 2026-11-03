@@ -648,7 +648,7 @@ function tagPlayVideo() {
 </ul>
 <h3>Elements</h3>
 <table class="doc-table"><thead><tr><th style="width:140px">Group</th><th>Elements</th></tr></thead><tbody>
-<tr><td>Standard Objects</td><td>Rectangle, Rounded Rect, Circle, Ellipse, Polygon, Polyline, Circular Arc, Ellipse Arc, Pie Segment, Ellipse Segment, Static Text, Connector</td></tr>
+<tr><td>Standard Objects</td><td>Rectangle, Rounded Rect, Group Frame, Circle, Ellipse, Polygon, Polyline, Circular Arc, Ellipse Arc, Pie Segment, Ellipse Segment, Static Text, Connector</td></tr>
 <tr><td>Basic</td><td>Gauge, Image, Multi-State, Lamp, Bar, Value, KPI Card, Button, Toggle, Line</td></tr>
 <tr><td>Solar / Energy</td><td>Semi Gauge, Battery, Trend, Flow Arrow, Icon + Value, Progress Bar, Status Badge</td></tr>
 <tr><td>Process</td><td>Tank, Motor, Valve, Pump, Pipe, Silo, Conveyor</td></tr>
@@ -669,6 +669,8 @@ function tagPlayVideo() {
 <h3>PID Loop faceplate</h3>
 <p>The <b>PID Loop</b> element shows a controller: PV, setpoint, output bar, a small trend, auto/manual and the P, I and D values. Each role &mdash; Process value, Setpoint, Output, Auto/Manual, Manual output, P, I, D &mdash; is bound to a register or a tag, with a raw-divisor for PV/SP and for the output (e.g. 10 when the register holds &times;10). In Runtime the operator can change the setpoint, switch auto/manual and set the manual output, each after a confirmation. P, I and D are only displayed.</p>
 <figure class="shot"><img src="/s7-dashboard.png" loading="lazy" alt="Dashboard with a PID faceplate for a supply temperature loop in an S7 PLC, values of DB1 and a multi trend of PV, SP and output read over PUT/GET"><figcaption>A PID faceplate and a Multi Trend bound to a loop in a Siemens S7 PLC.</figcaption></figure>
+<h3>Group Frame</h3>
+<p>A <b>Group Frame</b> draws a frame with a title around the elements of one unit (&ldquo;AHU-1 supply&rdquo;, &ldquo;Pump 1&rdquo;). It is always behind the other elements and only its title takes the mouse, so the elements inside stay clickable. Drag it by the title and every element wholly inside it moves along. The title sits on the border or on a bar, left or centred; line, fill, colour and corner radius are yours. An optional <b>alarm point</b> &mdash; a register bit, a register compared with a value, a tag or one of the app&rsquo;s alarms &mdash; turns the frame red with ALARM (or amber with WARN) next to the title, so you see from across the room which unit has the problem; without a reading the chip shows &ldquo;?&rdquo;.</p>
 <h3>Device Table</h3>
 <p>The <b>Device Table</b> shows many devices of one kind, one row each: 24 inverters behind a data logger, 16 fans on one bus. Set the <b>rows</b> once (how many, the first number, a name such as <code>Inverter {n}</code>) and how the unit ID and the address move from one row to the next (<b>Unit ID step</b>, <b>Address step</b>: a Huawei SmartLogger keeps every inverter on unit 0, one block every 25 registers). <b>Edit columns&hellip;</b> sets each column: register or tag (a tag name with <code>{n}</code> or <code>{nn}</code> takes the row number), data type (U16, I16, U32, I32, F32, also word-swapped), gain, decimals, shown as a number, a number with a bar or a status text, and a total under the column (sum, average, min or max). A fault and a warning rule colour the row; a row whose device stops answering is dimmed. A click on a header sorts, a click on a row opens that device&rsquo;s details. The table only reads.</p>
 <h3>Status Bits</h3>
