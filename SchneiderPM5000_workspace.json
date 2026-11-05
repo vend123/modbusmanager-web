@@ -656,7 +656,7 @@
       "description": "Apparent Power Total"
     },
     {
-      "name": "pf_total",
+      "name": "pf_total_4q",
       "type": "register",
       "slaveId": 1,
       "regType": "holdingRegisters",
@@ -664,7 +664,20 @@
       "dataType": "float32",
       "wordOrder": "big",
       "value": 0,
-      "description": "Power Factor Total"
+      "description": "Power Factor Total, 4Q FP PF (register 3084); decoded by the script into pf_total"
+    },
+    {
+      "name": "pf_total",
+      "type": "internal",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "Power Factor Total, -1..1, leading or lagging (script)",
+      "scale": 1,
+      "offset": 0
     },
     {
       "name": "frequency",
@@ -678,7 +691,7 @@
       "description": "Frequency"
     }
   ],
-  "script": "",
+  "script": "(* Schneider PM5000: Power Factor Total (register 3084) is \"4Q FP PF\", -2..2. *)\n(* Above 1 or below -1 the power factor is leading: 2 - x or -2 - x.       *)\n(* (PM51xx/PM53xx register list, Data Types)                                *)\nIF pf_total_4q > 1 THEN\n  pf_total := 2 - pf_total_4q;\nELSIF pf_total_4q < -1 THEN\n  pf_total := -2 - pf_total_4q;\nELSE\n  pf_total := pf_total_4q;\nEND_IF;\n",
   "scriptInterval": "1000",
   "saved": "2026-06-29T15:08:53.485660Z",
   "dashTheme": "modern",
