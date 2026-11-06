@@ -248,6 +248,17 @@ nav .nav-links.open .nd-group.open .nd-arrow{transform:rotate(90deg)}
 nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
 }
 </style>
+<style id="sf-css">
+footer.sf{display:block;text-align:left;padding:2.2rem 3rem 1.6rem;border-top:2px solid var(--ink,#16181A);background:var(--enclosure2,#E8EAE5);color:var(--muted,#5F5E5A);font-family:'Archivo',sans-serif;font-size:.92rem}
+footer.sf a{color:var(--muted,#5F5E5A);text-decoration:none}
+footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
+.sf-cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.6rem 2rem;max-width:1100px}
+.sf-col{display:flex;flex-direction:column;gap:.45rem;min-width:0}
+.sf-h{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink,#16181A);font-weight:600;margin-bottom:.2rem}
+.sf-bot{display:flex;flex-wrap:wrap;gap:.6rem 1.6rem;align-items:baseline;justify-content:space-between;border-top:1px solid var(--steel,#B9BDB6);margin-top:1.8rem;padding-top:1rem;font-size:.85rem}
+.sf-logo{font-family:'Saira Condensed',sans-serif;color:var(--ink,#16181A);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+@media(max-width:768px){footer.sf{padding:1.8rem 1.2rem}.sf-cols{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
 </head>
 <body>
 
@@ -451,27 +462,37 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
     <a href="/modbus-scanner.html" style="font-family:'IBM Plex Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">Modbus scanner &rarr;</a>
   </div>
 </section>
-<footer>
-  <div class="footer-logo">ModbusManager</div>
-  <div style="display:flex;gap:1.4rem;flex-wrap:wrap">
-    <a href="/">Home</a>
-    <a href="/modbus-hmi-dashboard.html">&#128202; HMI Dashboard</a>
-    <a href="/modbus-data-logger-software.html">&#128200; Data Logger</a>
-    <a href="/modbus-rtu-rs485-data-logger.html">RTU Logging</a>
-    <a href="/modbus-to-csv-logging.html">CSV Export</a>
-    <a href="/modbus-alarm-software.html">&#128276; Alarms</a>
-        <a href="/modbus-gateway-software.html">&#128256; Gateway</a>
-        <a href="/modbus-to-mqtt.html" style="padding-left:1.5rem">Modbus to MQTT</a>
-    <a href="/modbus-structured-text-scripting.html">&#127991; Tags &amp; scripting</a>
-    <a href="/eastron-sdm630-modbus.html">Energy meters</a>
-    <a href="/modbus-vfd-speed-reference.html">VFD drives</a>
-    <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
-    <a href="/manual.html">Documentation</a>
-    <a href="/privacy.html">Privacy</a>
-    <a href="/license-terms.html">License terms</a>
-    <a href="mailto:support@modbusmanager.com">Support</a>
+<footer class="sf" id="support">
+  <div class="sf-cols">
+    <div class="sf-col"><div class="sf-h">Features</div>
+      <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+      <a href="/modbus-data-logger-software.html">Data Logger</a>
+      <a href="/modbus-rtu-rs485-data-logger.html">RTU logging</a>
+      <a href="/modbus-to-csv-logging.html">CSV export</a>
+      <a href="/modbus-alarm-software.html">Alarms</a>
+      <a href="/modbus-gateway-software.html">Gateway</a>
+      <a href="/modbus-to-mqtt.html">Modbus to MQTT</a>
+      <a href="/modbus-structured-text-scripting.html">Tags &amp; scripting</a>
+    </div>
+    <div class="sf-col"><div class="sf-h">Devices</div>
+      <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+      <a href="/modbus-vfd-speed-reference.html">VFD drives</a>
+      <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    </div>
+    <div class="sf-col"><div class="sf-h">Help</div>
+      <a href="/manual.html">Documentation</a>
+      <a href="/#install">Install notes</a>
+      <a href="/linux-mac.html">Linux / Pi / Mac waitlist</a>
+      <a href="mailto:support@modbusmanager.com">Support</a>
+    </div>
+    <div class="sf-col"><div class="sf-h">Company</div>
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/license-terms.html">License terms</a>
+      <a href="https://bacmanager.com">BACManager (BACnet) &#8599;</a>
+    </div>
   </div>
-  <div>support@modbusmanager.com</div>
+  <div class="sf-bot"><span class="sf-logo">ModbusManager</span><span>Every device. One tool. Pay once.</span><span>&copy; 2026 E-Netter O&Uuml;</span><a href="mailto:support@modbusmanager.com">support@modbusmanager.com</a></div>
 </footer>
 
 
