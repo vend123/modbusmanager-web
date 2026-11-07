@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ModbusManager User Manual &amp; Documentation</title>
-<meta name="description" content="ModbusManager 1.9.7 manual: Modbus TCP and RTU, poll and write, slave simulator, tags, HMI dashboards, Historian, alarms, gateway, MQTT and Siemens S7.">
+<meta name="description" content="ModbusManager 1.9.8 manual: Modbus TCP and RTU, poll and write, slave simulator, tags, HMI dashboards, Historian, alarms, gateway, MQTT and Siemens S7.">
 <meta name="keywords" content="Modbus software manual, ModbusManager documentation, how to poll Modbus registers, Modbus TCP RTU ASCII guide, Modbus slave simulator, Modbus Structured Text, Modbus FC03 holding register, Modbus address base, Modbus HMI dashboard, Modbus gateway, Modbus historian, Siemens S7 PUT GET, Modbus HMI runtime">
 <meta name="author" content="ModbusManager">
 <meta name="robots" content="index, follow">
@@ -13,7 +13,7 @@
 <!-- Open Graph -->
 <meta property="og:title" content="ModbusManager User Manual &amp; Documentation">
 <meta property="og:site_name" content="ModbusManager">
-<meta property="og:description" content="The complete ModbusManager 1.9.7 manual: connecting, polling, writing, slave simulator, tags and Structured Text, HMI dashboards, Runtime, Historian, alarms, gateway with MQTT and Home Assistant, and Siemens S7.">
+<meta property="og:description" content="The complete ModbusManager 1.9.8 manual: connecting, polling, writing, slave simulator, tags and Structured Text, HMI dashboards, Runtime, Historian, alarms, gateway with MQTT and Home Assistant, and Siemens S7.">
 <meta property="og:url" content="https://modbusmanager.com/manual.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://modbusmanager.com/og-hmi.png">
@@ -53,10 +53,10 @@
   "@context":"https://schema.org",
   "@type":"TechArticle",
   "headline":"ModbusManager User Manual",
-  "description":"Complete user manual for ModbusManager Pro 1.9.7 and Standard 1.4.12: connecting, polling and writing registers, the slave simulator, tags with Structured Text, HMI dashboards, Runtime packages, Historian, alarms, gateway with MQTT and Home Assistant discovery, and Siemens S7 (beta).",
+  "description":"Complete user manual for ModbusManager Pro 1.9.8 and Standard 1.4.13: connecting, polling and writing registers, the slave simulator, tags with Structured Text, HMI dashboards, Runtime packages, Historian, alarms, gateway with MQTT and Home Assistant discovery, and Siemens S7.",
   "url":"https://modbusmanager.com/manual.html",
   "datePublished":"2026-06-01",
-  "dateModified":"2026-11-02",
+  "dateModified":"2026-11-07",
   "author":{"@type":"Organization","name":"ModbusManager","url":"https://modbusmanager.com"},
   "publisher":{"@type":"Organization","name":"ModbusManager","url":"https://modbusmanager.com"},
   "about":{
@@ -66,7 +66,7 @@
     "applicationCategory":"DeveloperApplication",
     "offers":{"@type":"Offer","price":"119","priceCurrency":"USD"},
     "url":"https://modbusmanager.com/#pro",
-    "downloadUrl":"https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.7/Modbus.Manager.Pro.Setup.1.9.7.exe"
+    "downloadUrl":"https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.8/Modbus.Manager.Pro.Setup.1.9.8.exe"
   }
 },
 {
@@ -437,8 +437,8 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
     <li><a href="https://bacmanager.com">BACManager &#8599;</a></li>
   </ul>
   <div style="display:flex;gap:12px;align-items:center">
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.7/Modbus.Manager.Pro.Setup.1.9.7.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-NavText','product':'pro','value':1})">Pro trial &darr;</a>
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.7/Modbus.Manager.Pro.Setup.1.9.7.exe" class="nav-cta" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-Nav','product':'pro','value':1})">Download Pro trial</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.8/Modbus.Manager.Pro.Setup.1.9.8.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-NavText','product':'pro','value':1})">Pro trial &darr;</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.8/Modbus.Manager.Pro.Setup.1.9.8.exe" class="nav-cta" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-Nav','product':'pro','value':1})">Download Pro trial</a>
   </div>
 </nav>
 <div class="slogan-band slim">
@@ -447,12 +447,12 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 </div>
 
 <header class="hero">
-  <div class="eyebrow">Documentation &mdash; ModbusManager Pro v1.9.7 &middot; Standard v1.4.12 &middot; updated 2 November 2026</div>
+  <div class="eyebrow">Documentation &mdash; ModbusManager Pro v1.9.8 &middot; Standard v1.4.13 &middot; updated 7 November 2026</div>
   <h1>ModbusManager <span class="accent">User Manual</span></h1>
   <p class="hero-desc">How to connect, poll, write, simulate, script, log, alarm, bridge and visualise Modbus data &mdash; and read Siemens S7 PLCs &mdash; with ModbusManager on Windows. Use the contents to jump to a topic, or download the whole manual as a printable PDF.</p>
   <div class="hero-ctas">
     <a href="/ModbusManagerPro_UserManual.pdf" class="btn-primary">Download PDF manual</a>
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.7/Modbus.Manager.Pro.Setup.1.9.7.exe" class="btn-ghost" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-Hero','product':'pro','value':1})">Download Pro trial</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.8/Modbus.Manager.Pro.Setup.1.9.8.exe" class="btn-ghost" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-Hero','product':'pro','value':1})">Download Pro trial</a>
   </div>
   <p class="hero-note">Free 14-day trial &bull; Standard &#36;49 &bull; Pro &#36;119 &bull; Runtime &#36;39 per machine &bull; one-time licences &bull; Windows 10 / 11</p>
 </header>
@@ -473,7 +473,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 <li><a href="#history">History (Historian)</a></li>
 <li><a href="#alarms">Alarms</a></li>
 <li><a href="#gateway">Gateway</a><ul><li><a href="#mqtt">MQTT &amp; Home Assistant</a></li></ul></li>
-<li><a href="#s7">Siemens S7 (beta)</a></li>
+<li><a href="#s7">Siemens S7</a></li>
 <li><a href="#workspaces">Workspaces &amp; templates</a></li>
 <li><a href="#licensing">Licensing</a></li>
 <li><a href="#languages">Languages</a></li>
@@ -488,7 +488,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 <h3>Editions</h3>
 <table class="doc-table"><thead><tr><th style="width:150px">Edition</th><th>What it includes</th></tr></thead><tbody>
 <tr><td><b>Standard</b> &mdash; &#36;49</td><td>Connecting (all modes), poll windows and the register table, Write, Chart, Serial Monitor, Test Center, Slave Scan, Address Scan, the slave simulator, workspaces. Sections marked <span class="ed both">Std + Pro</span> apply to it.</td></tr>
-<tr><td><b>Pro</b> &mdash; &#36;119</td><td>Everything in Standard, plus Dashboard, Tags &amp; Structured Text, History, Alarms, Gateway, Siemens S7 (beta), Runtime packages, device templates, Auto-detect, Diagnose, register snapshots and the PDF commissioning report. Marked <span class="ed pro">Pro</span>.</td></tr>
+<tr><td><b>Pro</b> &mdash; &#36;119</td><td>Everything in Standard, plus Dashboard, Tags &amp; Structured Text, History, Alarms, Gateway, Siemens S7, Runtime packages, device templates, Auto-detect, Diagnose, register snapshots and the PDF commissioning report. Marked <span class="ed pro">Pro</span>.</td></tr>
 <tr><td><b>Runtime</b> &mdash; &#36;39 / machine</td><td>Runs a dashboard package made in Pro full screen on an OEM or panel PC, with no editor. See <a class="inline-link" href="#runtime">Runtime edition</a>.</td></tr>
 </tbody></table>
 <div class="steps"><div class="step"><div class="step-label">Install</div><div class="step-title">Run the installer</div><div class="step-text">Download the installer and start ModbusManager from the Start menu.</div></div><div class="step"><div class="step-label">Trial</div><div class="step-title">14 days, full features</div><div class="step-text">The licence button in the toolbar shows the days left, e.g. &ldquo;Trial: 12d&rdquo;.</div></div><div class="step"><div class="step-label">Connect</div><div class="step-title">Add your device</div><div class="step-text">Press <b>Connect</b> (or <span class="kbd">F3</span>), choose the mode, enter the parameters.</div></div><div class="step"><div class="step-label">Build</div><div class="step-title">Poll &amp; visualise</div><div class="step-text">Read registers, name them as tags, then build an operator screen.</div></div></div>
@@ -611,7 +611,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 <table class="doc-table"><thead><tr><th style="width:150px">Type</th><th>Description</th></tr></thead><tbody>
 <tr><td>Register (REG)</td><td>A Modbus value: Slave ID, Reg Type, Address, Data type (Int16, UInt16, Int32, UInt32, Float32), Word order (High word first / Low word first), <b>Scale &times;</b> and <b>Offset +</b>.</td></tr>
 <tr><td>Internal (INT)</td><td>A value that lives in the application, usually set by a script.</td></tr>
-<tr><td>Siemens S7 (S7) <span class="ed beta">beta</span></td><td>A value in an S7 PLC: PLC, area (DB, M, I, Q), DB number, byte, bit and type. See <a class="inline-link" href="#s7">Siemens S7</a>.</td></tr>
+<tr><td>Siemens S7 (S7)</td><td>A value in an S7 PLC: PLC, area (DB, M, I, Q), DB number, byte, bit and type. See <a class="inline-link" href="#s7">Siemens S7</a>.</td></tr>
 </tbody></table>
 <figure class="shot"><img src="/manual-tag-new.jpg" width="1170" height="118" loading="lazy" alt="New Tag editor: name Energy_kWh, type Register, slave ID 1, holding register 40, UInt32, high word first, scale 0.1, offset 0"><figcaption>A 32-bit energy counter in 0.1 kWh counts, shown in kWh: Scale 0.1.</figcaption></figure>
 <p><b>Scale and offset</b>: value = raw &times; scale + offset. A write to a scaled tag (from the dashboard, a script or the gateway) is converted back to the raw register value. Names start with a letter and contain letters, digits and <code>_</code>; they are not case-sensitive in scripts. Renaming a tag carries its dashboard bindings, alarms and history with it; deleting one tells you first where it is used.</p>
@@ -672,7 +672,7 @@ function tagPlayVideo() {
 <tr><td>Charts</td><td>Bar Graph, Value Table, Device Table, Status Bits, Indoor Unit, Motor / Drive, Annunciator, Multi Trend, Alarm List, Alarm Banner</td></tr>
 </tbody></table>
 <h3>Properties and binding</h3>
-<p>Select an element to open <b>Properties</b>. <b>Source</b> is <b>Register</b> (slave ID, register type, address &mdash; polled in the background while polling runs, even without a poll window), <b>Tag</b>, or <b>Siemens S7 (beta)</b>. The other fields follow the element: label, min/max, unit, decimals, font size, compare and threshold, on/off colours and labels, states (<code>0=Off:#8892a4,1=On:#00d4aa</code>), options for Enum Write, write value for a Button, flow and spin direction, image file, size, layer order. In the Modern theme a <b>Style (Modern)</b> block adds main and second colour, alarm and warning levels, arc span, glow and glass card. A <b>KPI Card</b> shows the change over a period, in per cent or in units.</p>
+<p>Select an element to open <b>Properties</b>. <b>Source</b> is <b>Register</b> (slave ID, register type, address &mdash; polled in the background while polling runs, even without a poll window), <b>Tag</b>, or <b>Siemens S7</b>. The other fields follow the element: label, min/max, unit, decimals, font size, compare and threshold, on/off colours and labels, states (<code>0=Off:#8892a4,1=On:#00d4aa</code>), options for Enum Write, write value for a Button, flow and spin direction, image file, size, layer order. In the Modern theme a <b>Style (Modern)</b> block adds main and second colour, alarm and warning levels, arc span, glow and glass card. A <b>KPI Card</b> shows the change over a period, in per cent or in units.</p>
 <h3>Trends and channel charts</h3>
 <ul class="body-list">
 <li><b>Trend</b>: one value over time. <b>Max points</b> sets the length, <b>Sample interval (ms)</b> how often a point is taken (default 1000 ms; never faster than the value actually arrives). A steady value keeps drawing.</li>
@@ -796,12 +796,12 @@ function tagPlayVideo() {
 <figure class="shot"><img src="/manual-gateway.jpg" width="1210" height="820" loading="lazy" alt="Gateway tab: PLC side slave TCP port 5602, Siemens side S7 server with port 102 and allowed PLC addresses, source endpoints PS-02 station over TCP and Calculated tags, and five mapping rows from the station registers and a tag into the common map"><figcaption>Two endpoints (a TCP device and this application&rsquo;s tags) mapped into one common register map.</figcaption></figure>
 <ol class="body-list">
 <li><b>PLC side</b>: the <b>Slave TCP port</b> the PLC or SCADA connects to (502 by default).</li>
-<li><b>Source endpoints</b>: <b>+ TCP</b> (host, port), <b>+ RTU</b> (COM port, baud, parity), <b>+ Siemens S7 (beta)</b> (a PLC from the S7 list) and <b>+ Tags</b> (this application&rsquo;s tags, including script results).</li>
-<li><b>Mapping rows</b>: name, endpoint, mode (<b>read</b> device &rarr; map, or <b>write</b> map &rarr; device), source slave ID, type and address (an S7 address or a tag for those endpoints), data type, scale and offset, then the destination: <b>Modbus map</b> (common slave ID, type, address, data type), <b>S7 DB (beta)</b> (DB, byte, bit, S7 type) or <b>MQTT</b> (topic, unit, Home Assistant device class).</li>
+<li><b>Source endpoints</b>: <b>+ TCP</b> (host, port), <b>+ RTU</b> (COM port, baud, parity), <b>+ Siemens S7</b> (a PLC from the S7 list) and <b>+ Tags</b> (this application&rsquo;s tags, including script results).</li>
+<li><b>Mapping rows</b>: name, endpoint, mode (<b>read</b> device &rarr; map, or <b>write</b> map &rarr; device), source slave ID, type and address (an S7 address or a tag for those endpoints), data type, scale and offset, then the destination: <b>Modbus map</b> (common slave ID, type, address, data type), <b>S7 DB</b> (DB, byte, bit, S7 type) or <b>MQTT</b> (topic, unit, Home Assistant device class).</li>
 <li><b>Start gateway</b>. Each endpoint and row shows its state; a row with an error says why.</li>
 </ol>
 <p><b>&#11014; Import CSV</b> and <b>&#11015; Export CSV</b> move rows and endpoints to and from a spreadsheet. <b>Start gateway automatically</b> plus the tray options <i>Keep running when window is closed</i> and <i>Start with Windows</i> run it unattended. The gateway configuration is saved with the workspace.</p>
-<h3>S7 server: the PLC reads a DB from ModbusManager <span class="ed beta">beta</span></h3>
+<h3>S7 server: the PLC reads a DB from ModbusManager</h3>
 <p>With <b>Serve the rows whose Dest is &ldquo;S7 DB&rdquo; to Siemens PLCs</b> the gateway also answers as an S7 server (port 102): an S7-1200/1500 reads the rows with a <b>GET</b> block and writes them with <b>PUT</b> &mdash; no Modbus program in the PLC. In TIA Portal create a GET/PUT connection to an unspecified partner at this PC&rsquo;s IP address and use absolute addresses such as <code>P#DB100.DBX0.0 BYTE 16</code>. A DB is as long as its rows reach, in steps of 16 bytes; a PUT is forwarded to the row&rsquo;s source when its value changes.</p>
 <div class="callout warn"><div class="c-label">Allowed PLC addresses</div><p>Only PLCs listed in <b>Allowed PLC addresses</b> (comma-separated IPs) can connect. An empty list refuses everyone, and the panel warns about it. The list applies at once; removing an address drops that PLC.</p></div>
 <h3 id="mqtt">MQTT and Home Assistant</h3>
@@ -819,11 +819,11 @@ function tagPlayVideo() {
 </section>
 
 <section id="s7" class="doc-section">
-<h2>Siemens S7 (beta) <span class="ed pro">Pro</span></h2>
-<p>Pro reads and writes Siemens S7-1200, S7-1500 and S7-300/400 PLCs over S7 communication (PUT/GET) &mdash; data blocks, merkers, inputs and outputs &mdash; with no communication block in the PLC program. It is released as <b>beta</b>: tested against a simulated S7 PLC; feedback from real CPUs is welcome.</p>
+<h2>Siemens S7 <span class="ed pro">Pro</span></h2>
+<p>Pro reads and writes Siemens S7-1200, S7-1500 and S7-300/400 PLCs over S7 communication (PUT/GET) &mdash; data blocks, merkers, inputs and outputs &mdash; with no communication block in the PLC program. It has been tested against a real S7 PLC and is no longer marked beta.</p>
 <ol class="body-list">
 <li>In TIA Portal: CPU properties &rarr; Protection &amp; Security &rarr; <i>Permit access with PUT/GET communication</i>; for every DB you read, turn off <i>Optimized block access</i>; download.</li>
-<li>In ModbusManager: Tags &rarr; <b>Siemens S7 (beta)&hellip;</b> (also in the gateway, the dashboard source and the Runtime service menu) &rarr; <b>+ Add PLC</b>: ID, name, IP address, port 102, rack 0 and slot 1 for S7-1200/1500 (slot 2 for S7-300/400), poll interval. <b>Test read</b> checks an address.</li>
+<li>In ModbusManager: Tags &rarr; <b>Siemens S7&hellip;</b> (also in the gateway, the dashboard source and the Runtime service menu) &rarr; <b>+ Add PLC</b>: ID, name, IP address, port 102, rack 0 and slot 1 for S7-1200/1500 (slot 2 for S7-300/400), poll interval. <b>Test read</b> checks an address.</li>
 <li>Create S7 tags, bind dashboard elements to <b>Siemens S7</b>, or add an S7 endpoint to the gateway.</li>
 </ol>
 <p>Address syntax: <code>DB1,REAL4</code> &middot; <code>DB1,INT2</code> &middot; <code>DB1,X12.0</code> (bit) &middot; <code>MW2</code> &middot; <code>M0.0</code> &middot; <code>IW64</code>. Writes are converted to the address type (a bit takes 0/1, integers are rounded, REAL keeps decimals). The PLC&rsquo;s state shows as online, connecting, error, or idle when nothing reads from it. The PLC ID ties tags to the PLC, so a runtime package keeps working when each machine&rsquo;s PLC has a different IP.</p>
@@ -892,7 +892,7 @@ function tagPlayVideo() {
   <h2>Start with the 14-day trial</h2>
   <p>Install ModbusManager Pro on Windows and follow this manual to connect, poll and build your first dashboard.</p>
   <div class="ctas">
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.7/Modbus.Manager.Pro.Setup.1.9.7.exe" class="btn-cta-yellow" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-CTA','product':'pro','value':1})">Download Pro trial</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.8/Modbus.Manager.Pro.Setup.1.9.8.exe" class="btn-cta-yellow" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-CTA','product':'pro','value':1})">Download Pro trial</a>
     <a href="/ModbusManagerPro_UserManual.pdf" class="btn-cta-outline">Download PDF manual</a>
   </div>
 </section>
