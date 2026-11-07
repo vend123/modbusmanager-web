@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ModbusManager for Linux, Raspberry Pi and macOS — Join the Waitlist</title>
-<meta name="description" content="ModbusManager runs on Windows today. Tell us whether you need it on Linux, a Raspberry Pi or a Mac: one e-mail when a build is ready, no newsletter.">
+<title>Modbus Software for Linux, Raspberry Pi and Mac — Waitlist</title>
+<meta name="description" content="Need a Modbus TCP/RTU and BACnet tool on Linux, a Raspberry Pi or a Mac? ModbusManager runs on Windows today. Join the waitlist: one e-mail when your build is ready.">
 <meta name="keywords" content="Modbus RTU over TCP, Modbus RTU over TCP vs Modbus TCP, Modbus TCP vs RTU over TCP, Modbus ASCII over TCP, Modbus RTU over UDP, serial device server Modbus, RS485 to Ethernet Modbus, transparent mode Modbus, Modbus RTU over TCP software">
 <meta name="author" content="ModbusManager">
 <meta name="robots" content="index, follow">
@@ -16,8 +16,8 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
 <meta property="og:site_name" content="ModbusManager">
-<meta property="og:title" content="ModbusManager for Linux, Raspberry Pi and macOS — Join the Waitlist">
-<meta property="og:description" content="ModbusManager runs on Windows today. Tell us whether you need it on Linux, a Raspberry Pi or a Mac: one e-mail when a build is ready, no newsletter.">
+<meta property="og:title" content="Modbus Software for Linux, Raspberry Pi and Mac — Waitlist">
+<meta property="og:description" content="Need a Modbus TCP/RTU and BACnet tool on Linux, a Raspberry Pi or a Mac? ModbusManager runs on Windows today. Join the waitlist: one e-mail when your build is ready.">
 <meta property="og:url" content="https://modbusmanager.com/linux-mac.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://modbusmanager.com/og-linux-mac.png">
@@ -177,8 +177,8 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "ModbusManager for Linux, Raspberry Pi and macOS — Join the Waitlist",
-  "description": "ModbusManager runs on Windows today. Tell us whether you need it on Linux, a Raspberry Pi or a Mac: one e-mail when a build is ready, no newsletter.",
+  "name": "Modbus Software for Linux, Raspberry Pi and Mac — Waitlist",
+  "description": "Need a Modbus TCP/RTU and BACnet tool on Linux, a Raspberry Pi or a Mac? ModbusManager runs on Windows today. Join the waitlist: one e-mail when your build is ready.",
   "url": "https://modbusmanager.com/linux-mac.html",
   "publisher": { "@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com" }
 }
@@ -195,7 +195,32 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
 .wl-btn:disabled{opacity:.55;cursor:default}
 .wl-msg{margin-top:1rem;font-weight:600}
 .wl-list{max-width:820px;margin:0 0 2.5rem;line-height:1.75;color:var(--body)}
+.faq-list{display:flex;flex-direction:column;gap:0;max-width:820px;margin:0 0 2.5rem}
+.faq-item{border-top:1px solid var(--steel)}
+.faq-item:last-child{border-bottom:1px solid var(--steel)}
+.faq-q{font-family:'Saira Condensed',sans-serif;font-size:1.05rem;font-weight:600;letter-spacing:0.02em;padding:1.1rem 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq-q:hover{color:var(--amber-ink)}
+.faq-q .icon{font-family:'IBM Plex Mono',monospace;font-size:1.1rem;flex-shrink:0;transition:transform 0.2s}
+.faq-a{font-size:0.9rem;color:var(--body);line-height:1.75;padding:0 0 1.1rem;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .icon{transform:rotate(45deg)}
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Does ModbusManager run on Linux?", "acceptedAnswer": { "@type": "Answer", "text": "Not yet. ModbusManager, its Pro edition and BACManager run on Windows 10 and 11 (x64) today. A Linux build is planned if enough people need it, and this waitlist is how we measure that. Tick Linux PC above and we write once, when a build is ready to try." } },
+    { "@type": "Question", "name": "Can I run ModbusManager on a Raspberry Pi?", "acceptedAnswer": { "@type": "Answer", "text": "Not yet. A Raspberry Pi needs an ARM64 Linux build, which is part of the same waitlist. Until then, a small Windows PC in the cabinet with the Runtime licence does the job a Pi usually does: it shows one dashboard full-screen and keeps polling the devices." } },
+    { "@type": "Question", "name": "Does ModbusManager work on a Mac?", "acceptedAnswer": { "@type": "Answer", "text": "There is no native macOS build yet. You can run the Windows version in a Windows virtual machine (Parallels, VMware Fusion or VirtualBox). Tick macOS above if you want a native build." } },
+    { "@type": "Question", "name": "Does Modbus RTU over a USB to RS-485 adapter work inside a virtual machine?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Pass the USB adapter through to the Windows virtual machine, and it appears there as a COM port like on a normal PC. For Modbus TCP and BACnet/IP, use a bridged network adapter so the VM is on the same network as the devices." } },
+    { "@type": "Question", "name": "What happens to my e-mail address?", "acceptedAnswer": { "@type": "Answer", "text": "It is stored only for this waitlist. We write once, when a build for the platform you ticked is ready. There is no newsletter, and we remove your address whenever you ask (support@modbusmanager.com)." } }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Linux, Raspberry Pi and macOS","item": "https://modbusmanager.com/linux-mac.html"}]}
+</script>
 <style id="sf-css">
 footer.sf{display:block;text-align:left;padding:2.2rem 3rem 1.6rem;border-top:2px solid var(--ink,#16181A);background:var(--enclosure2,#E8EAE5);color:var(--muted,#5F5E5A);font-family:'Archivo',sans-serif;font-size:.92rem}
 footer.sf a{color:var(--muted,#5F5E5A);text-decoration:none}
@@ -328,11 +353,21 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
     <li><strong>A small Windows PC in the cabinet</strong> with the <a href="/modbus-hmi-runtime.html">Runtime</a> licence runs one dashboard full-screen, where you would otherwise put a Raspberry Pi.</li>
   </ul>
 
+  <h2>Questions</h2>
+  <div class="faq-list">
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does ModbusManager run on Linux?<span class="icon">+</span></div><div class="faq-a">Not yet. ModbusManager, its Pro edition and BACManager run on Windows 10 and 11 (x64) today. A Linux build is planned if enough people need it, and this waitlist is how we measure that. Tick Linux PC above and we write once, when a build is ready to try.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I run ModbusManager on a Raspberry Pi?<span class="icon">+</span></div><div class="faq-a">Not yet. A Raspberry Pi needs an ARM64 Linux build, which is part of the same waitlist. Until then, a small Windows PC in the cabinet with the Runtime licence does the job a Pi usually does: it shows one dashboard full-screen and keeps polling the devices.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does ModbusManager work on a Mac?<span class="icon">+</span></div><div class="faq-a">There is no native macOS build yet. You can run the Windows version in a Windows virtual machine (Parallels, VMware Fusion or VirtualBox). Tick macOS above if you want a native build.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does Modbus RTU over a USB to RS-485 adapter work inside a virtual machine?<span class="icon">+</span></div><div class="faq-a">Yes. Pass the USB adapter through to the Windows virtual machine, and it appears there as a COM port like on a normal PC. For Modbus TCP and BACnet/IP, use a bridged network adapter so the VM is on the same network as the devices.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What happens to my e-mail address?<span class="icon">+</span></div><div class="faq-a">It is stored only for this waitlist. We write once, when a build for the platform you ticked is ready. There is no newsletter, and we remove your address whenever you ask (support@modbusmanager.com).</div></div>
+  </div>
+
 </div>
 
 <div class="hazard"></div>
 
 <script>
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
 (function () {
   // the waitlist's own Google Sheet (Apps Script web app): no Make.com, no reminder e-mail
   var WEBHOOK = 'https://script.google.com/macros/s/AKfycbwXritGkqX0Kk4_Nr8SHNW5LZTftUuZ0qLUv4CJio9a90jj1o_xCAmEVgDGqqhl1XQs/exec';
