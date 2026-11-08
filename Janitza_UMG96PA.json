@@ -1,0 +1,728 @@
+{
+  "version": 2,
+  "polls": [
+    {
+      "name": "UMG 96-PA 19000-19053 (V, I, P, S, Q, cos phi, Hz)",
+      "fc": 3,
+      "addr": 19000,
+      "qty": 54,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 19000,
+      "chartName": "UMG 96-PA 19000-19053 (V, I, P, S, Q, cos phi, Hz) [19000]",
+      "logFile": "log_UMG_96_PA_19000_19053_V_I_P_S_Q_cos_phi_Hz_.txt"
+    },
+    {
+      "name": "UMG 96-PA 19060-19093 (energies)",
+      "fc": 3,
+      "addr": 19060,
+      "qty": 34,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 19060,
+      "chartName": "UMG 96-PA 19060-19093 (energies) [19060]",
+      "logFile": "log_UMG_96_PA_19060_19093_energies_.txt"
+    },
+    {
+      "name": "UMG 96-PA 19110-19121 (THD)",
+      "fc": 3,
+      "addr": 19110,
+      "qty": 12,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 19110,
+      "chartName": "UMG 96-PA 19110-19121 (THD) [19110]",
+      "logFile": "log_UMG_96_PA_19110_19121_THD_.txt"
+    }
+  ],
+  "activePoll": 0,
+  "condColors": {},
+  "scaling": {},
+  "valueNames": {},
+  "chartSeries": [],
+  "slaveBlocks": [],
+  "dashTheme": "modern",
+  "dashFx": true,
+  "dashBgColor": "#0d1117",
+  "dashPages": [
+    {
+      "id": 1,
+      "name": "UMG 96-PA",
+      "elements": [
+        {
+          "id": 1,
+          "value": 0,
+          "type": "statictext",
+          "x": 20,
+          "y": 10,
+          "w": 840,
+          "h": 30,
+          "text": "Main incomer 400 A  ·  Janitza UMG 96-PA  ·  Modbus, read-only",
+          "fontSize": 20,
+          "bold": true,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 2,
+          "value": 0,
+          "type": "meter3",
+          "x": 20,
+          "y": 50,
+          "w": 330,
+          "h": 270,
+          "label": "UMG 96-PA · ID 1",
+          "unitId": 1,
+          "nomV": 230,
+          "ratedA": 400,
+          "pUnit": "kW",
+          "vUnbal": 2,
+          "iUnbal": 10,
+          "lostPct": 50,
+          "showLL": true,
+          "showEnergy": true,
+          "view": "full",
+          "phaseColors": "iec",
+          "flagTag": "",
+          "tpl": "sdm630",
+          "pts": {
+            "v1": {
+              "src": "tag",
+              "tagName": "U_L1N"
+            },
+            "v2": {
+              "src": "tag",
+              "tagName": "U_L2N"
+            },
+            "v3": {
+              "src": "tag",
+              "tagName": "U_L3N"
+            },
+            "i1": {
+              "src": "tag",
+              "tagName": "I_L1"
+            },
+            "i2": {
+              "src": "tag",
+              "tagName": "I_L2"
+            },
+            "i3": {
+              "src": "tag",
+              "tagName": "I_L3"
+            },
+            "p1": {
+              "src": "tag",
+              "tagName": "P_L1_kW"
+            },
+            "p2": {
+              "src": "tag",
+              "tagName": "P_L2_kW"
+            },
+            "p3": {
+              "src": "tag",
+              "tagName": "P_L3_kW"
+            },
+            "pt": {
+              "src": "tag",
+              "tagName": "P_sum_kW"
+            },
+            "pf1": {
+              "src": "tag",
+              "tagName": "CosPhi_L1"
+            },
+            "pf2": {
+              "src": "tag",
+              "tagName": "CosPhi_L2"
+            },
+            "pf3": {
+              "src": "tag",
+              "tagName": "CosPhi_L3"
+            },
+            "pft": {
+              "src": "tag",
+              "tagName": "PF_total"
+            },
+            "hz": {
+              "src": "tag",
+              "tagName": "Freq"
+            },
+            "v12": {
+              "src": "tag",
+              "tagName": "U_L1L2"
+            },
+            "v23": {
+              "src": "tag",
+              "tagName": "U_L2L3"
+            },
+            "v31": {
+              "src": "tag",
+              "tagName": "U_L3L1"
+            },
+            "eimp": {
+              "src": "tag",
+              "tagName": "E_real_kWh"
+            },
+            "eexp": {
+              "src": "tag",
+              "tagName": "E_deliv_kWh"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "value": 0,
+          "type": "text",
+          "x": 370,
+          "y": 50,
+          "w": 155,
+          "h": 66,
+          "label": "Apparent Ssum3",
+          "unit": "kVA",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "S_sum_kVA"
+        },
+        {
+          "id": 4,
+          "value": 0,
+          "type": "text",
+          "x": 537,
+          "y": 50,
+          "w": 155,
+          "h": 66,
+          "label": "Reactive Qsum3",
+          "unit": "kvar",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Q_sum_kvar"
+        },
+        {
+          "id": 5,
+          "value": 0,
+          "type": "text",
+          "x": 705,
+          "y": 50,
+          "w": 155,
+          "h": 66,
+          "label": "Neutral IN",
+          "unit": "A",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "I_N"
+        },
+        {
+          "id": 6,
+          "value": 0,
+          "type": "text",
+          "x": 370,
+          "y": 126,
+          "w": 155,
+          "h": 66,
+          "label": "THD U L1",
+          "unit": "%",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "THD_U_L1"
+        },
+        {
+          "id": 7,
+          "value": 0,
+          "type": "text",
+          "x": 537,
+          "y": 126,
+          "w": 155,
+          "h": 66,
+          "label": "THD I L1",
+          "unit": "%",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "THD_I_L1"
+        },
+        {
+          "id": 8,
+          "value": 0,
+          "type": "multistate",
+          "x": 705,
+          "y": 126,
+          "w": 155,
+          "h": 66,
+          "label": "Rotation field",
+          "states": "1=Right:#3fd28a,0=None:#9fb3cc,-1=Left:#f85149",
+          "sourceType": "tag",
+          "tagName": "Rotation"
+        },
+        {
+          "id": 9,
+          "value": 0,
+          "type": "text",
+          "x": 370,
+          "y": 202,
+          "w": 240,
+          "h": 66,
+          "label": "Energy L1..L3 (19060)",
+          "unit": "kWh",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "E_real_kWh"
+        },
+        {
+          "id": 10,
+          "value": 0,
+          "type": "text",
+          "x": 620,
+          "y": 202,
+          "w": 240,
+          "h": 66,
+          "label": "Consumed rate 1 (19068)",
+          "unit": "kWh",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#9fb3cc",
+          "sourceType": "tag",
+          "tagName": "E_cons_T1_kWh"
+        },
+        {
+          "id": 11,
+          "value": 0,
+          "type": "multitend",
+          "x": 20,
+          "y": 340,
+          "w": 840,
+          "h": 200,
+          "label": "Psum3 (kW) and THD I L1 (%)",
+          "maxPoints": 1200,
+          "decimals": 1,
+          "sampleMs": 1000,
+          "items": [
+            {
+              "name": "Psum3 19026",
+              "sourceType": "tag",
+              "tagName": "P_sum_kW",
+              "color": "#00d4aa",
+              "value": 0
+            },
+            {
+              "name": "THD I L1 19116",
+              "sourceType": "tag",
+              "tagName": "THD_I_L1",
+              "color": "#f0c040",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "U_L1N",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19000,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "V (address 19000)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "U_L2N",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19002,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "V (address 19002)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "U_L3N",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19004,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "V (address 19004)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "U_L1L2",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19006,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "V (address 19006)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "U_L2L3",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19008,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "V (address 19008)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "U_L3L1",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19010,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "V (address 19010)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "I_L1",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19012,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "A (address 19012)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "I_L2",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19014,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "A (address 19014)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "I_L3",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19016,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "A (address 19016)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "I_N",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19018,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "A, vector sum (address 19018)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "P_L1_kW",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19020,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "W -> kW (address 19020)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "P_L2_kW",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19022,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "W -> kW (address 19022)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "P_L3_kW",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19024,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "W -> kW (address 19024)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "P_sum_kW",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19026,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "Psum3 W -> kW (address 19026)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "S_sum_kVA",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19034,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "Ssum3 VA -> kVA (address 19034)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "Q_sum_kvar",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19042,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "Qsum3 var -> kvar (address 19042)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "CosPhi_L1",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19044,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "cos phi L1 (address 19044)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "CosPhi_L2",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19046,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "cos phi L2 (address 19046)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "CosPhi_L3",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19048,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "cos phi L3 (address 19048)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Freq",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19050,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "Hz (address 19050)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Rotation",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19052,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "1 = right, 0 = none, -1 = left (address 19052)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "E_real_kWh",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19060,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "real energy L1..L3 Wh -> kWh (address 19060)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "E_cons_T1_kWh",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19068,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "consumed, rate 1, Wh -> kWh (address 19068)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "E_deliv_kWh",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19076,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "delivered Wh -> kWh (address 19076)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "PF_total",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "Psum3 / Ssum3, by the script"
+    },
+    {
+      "name": "THD_U_L1",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19110,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "THD U L1-N % (address 19110)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "THD_I_L1",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19116,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "THD I L1 % (address 19116)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "THD_I_L2",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19118,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "THD I L2 % (address 19118)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "THD_I_L3",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19120,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "THD I L3 % (address 19120)",
+      "scale": 1,
+      "offset": 0
+    }
+  ],
+  "script": "(* The quick block has cos phi per phase only: total PF = Psum3 / Ssum3 *)\nIF S_sum_kVA > 0.001 THEN PF_total := P_sum_kW / S_sum_kVA; ELSE PF_total := 0; END_IF;\n",
+  "scriptInterval": "1000",
+  "historianLogging": {
+    "registers": [],
+    "tags": []
+  },
+  "saved": "2026-11-08T12:00:00.000Z"
+}
