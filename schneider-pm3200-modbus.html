@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schneider PM3250 / PM3255 Modbus Register Map (PM3200)</title>
+<meta name="description" content="Schneider PM3200 series on Modbus: only PM3250/PM3255, register = address + 1, FC03/FC16 only, PF -2..+2, Int64 vs Float32 energy. Free workspace.">
+<meta name="keywords" content="Schneider PM3200 Modbus, PM3250 Modbus register map, PM3255 Modbus registers, PM3200 register list, PM3250 RS485, PM3255 Modbus RTU, PM3200 power factor register, PM3250 energy register, DOCA0006EN, Schneider DIN rail meter Modbus">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/schneider-pm3200-modbus.html">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:title" content="Schneider PM3250 / PM3255 Modbus Register Map (PM3200)">
+<meta property="og:description" content="Read a Schneider PM3250 or PM3255 DIN-rail meter over Modbus RTU: which models have Modbus, why every register is one off, the four-quadrant power factor, exact Int64 energy versus Float32, and the command interface. Free ModbusManager workspace.">
+<meta property="og:url" content="https://modbusmanager.com/schneider-pm3200-modbus.html">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://modbusmanager.com/og-schneider-pm3200.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:published_time" content="2026-11-08T00:00:00Z">
+<meta property="article:section" content="Guides">
+<meta property="article:tag" content="Schneider Electric">
+<meta property="article:tag" content="Modbus">
+<meta property="article:tag" content="Power meter">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Schneider PM3250 / PM3255 Modbus Register Map (PM3200)">
+<meta name="twitter:description" content="Read a Schneider PM3250 or PM3255 DIN-rail meter over Modbus RTU: which models have Modbus, why every register is one off, the four-quadrant power factor, exact Int64 energy versus Float32, and the command interface. Free ModbusManager workspace.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-schneider-pm3200.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Schneider PM3250 / PM3255 Modbus Register Map (PM3200 Series)",
+  "description": "Read a Schneider PM3250 or PM3255 DIN-rail meter over Modbus RTU: which models have Modbus, why every register is one off, the four-quadrant power factor, exact Int64 energy versus Float32, and the command interface. Free ModbusManager workspace.",
+  "url": "https://modbusmanager.com/schneider-pm3200-modbus.html",
+  "image": "https://modbusmanager.com/og-schneider-pm3200.png",
+  "datePublished": "2026-11-08",
+  "author": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "keywords": "Schneider PM3200 Modbus, PM3250 Modbus register map, PM3255 Modbus registers, PM3200 register list, PM3250 RS485, PM3255 Modbus RTU, PM3200 power factor register, PM3250 energy register, DOCA0006EN, Schneider DIN rail meter Modbus"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does the Schneider PM3200 have Modbus?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only the PM3250 and PM3255 do, on RS-485 (Modbus RTU). The PM3200 and PM3210 have no communication port; the PM3210 has a pulse output."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the Modbus address of the PM3250 total active power?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Register 3060, which is address 3059 on the wire (FC03, Float32, kW). Schneider's rule is register = address + 1, so phase-1 current, register 3000, is address 2999."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the PM3250 power factor read more than 1?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Registers 3078–3084 use a four-quadrant format from −2 to +2. A value between 1 and 2 is a capacitive power factor of 2 minus the value: 1.08 means 0.92 leading."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I read PM3200 energy as Int64 or Float32?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Int64 at 3204 for anything you bill or compare. Both are in Wh, but the Float32 copy at 45166 stops resolving single watt-hours above 16.8 MWh."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my master get \"illegal function\" from the PM3250?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The meter supports FC03, FC16, 43/14 and 20 only. FC04 reads and FC06 single-register writes are refused; use FC03 to read and FC16 with a quantity of 1 to write one register."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+.article-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 5rem}
+.breadcrumb{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--muted);margin-bottom:2rem}
+.breadcrumb a{color:var(--muted);text-decoration:none}
+.breadcrumb a:hover{color:var(--ink)}
+h1{font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;line-height:1.05;text-transform:uppercase;letter-spacing:0.01em;margin-bottom:1rem}
+h2{font-family:'Saira Condensed',sans-serif;font-size:1.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin:2.5rem 0 0.8rem;padding-top:0.5rem;border-top:2px solid var(--ink)}
+h3{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.03em;margin:1.5rem 0 0.5rem;color:var(--amber-ink)}
+p{font-size:0.93rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+ul{font-size:0.93rem;color:var(--body);line-height:1.75;margin:0 0 1rem 1.2rem;padding-left:0.6rem}
+li{margin-bottom:0.4rem}
+.lead{font-size:1.05rem;color:var(--ink);line-height:1.7;margin-bottom:2rem;border-left:3px solid var(--safety);padding-left:1rem}
+code{font-family:'IBM Plex Mono',monospace;font-size:0.82rem;background:#fff;border:1px solid var(--steel);padding:1px 5px;border-radius:2px}
+pre{font-family:'IBM Plex Mono',monospace;font-size:0.8rem;background:var(--ink);color:#E6E8E3;padding:1.2rem 1.4rem;border-radius:3px;overflow-x:auto;margin:1.2rem 0;line-height:1.6}
+pre .c{color:#888}
+pre .v{color:#F2A900}
+pre .k{color:#7ec8e3}
+table{width:100%;border-collapse:collapse;font-size:0.83rem;margin:1.2rem 0;background:var(--plate);border:2px solid var(--ink)}
+th{text-align:left;padding:0.65rem 0.9rem;border-bottom:2px solid var(--ink);background:var(--enclosure2);font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted)}
+td{padding:0.6rem 0.9rem;border-bottom:1px solid var(--steel);color:var(--body)}
+tr:hover td{background:#ECEEE9}
+td.mono{font-family:'IBM Plex Mono',monospace;font-size:0.78rem}
+td.formula{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--amber-ink)}
+.callout{background:var(--plate);border:1.5px solid var(--ink);border-left:4px solid var(--safety);padding:1rem 1.2rem;border-radius:2px;margin:1.5rem 0;font-size:0.88rem;color:var(--body);line-height:1.6}
+.callout strong{color:var(--ink)}
+.callout.tip{border-left-color:var(--run)}
+.callout.warn{border-left-color:var(--bad)}
+.step-num{display:inline-block;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.85rem;background:var(--ink);color:var(--safety);padding:2px 8px;border-radius:2px;margin-right:8px;letter-spacing:0.05em}
+.cta-box{background:var(--ink);color:var(--enclosure);padding:2rem 2.2rem;border-radius:3px;margin:3rem 0;display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
+.cta-box h3{color:var(--safety);margin:0 0 0.4rem;font-size:1.2rem;border:none;padding:0}
+.cta-box p{color:#B9BDB6;font-size:0.85rem;margin:0}
+.cta-box a{background:var(--safety);color:var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.cta-box a:hover{background:#fff}
+.download-box{border:2px solid var(--ink);background:var(--enclosure2);padding:1.4rem 1.8rem;border-radius:3px;margin:2rem 0;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.download-box h3{margin:0 0 0.3rem;font-size:1rem;border:none;padding:0;font-family:'IBM Plex Mono',monospace;color:var(--ink)}
+.download-box p{margin:0;font-size:0.82rem;color:var(--muted);max-width:46ch}
+.download-box a{background:var(--ink);color:var(--enclosure);padding:0.6rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.download-box a:hover{background:var(--safety);color:var(--ink)}
+footer{border-top:2px solid var(--ink);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;color:var(--muted);flex-wrap:wrap;gap:1rem;background:var(--enclosure2)}
+.footer-logo{font-family:'Saira Condensed',sans-serif;color:var(--ink);font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--ink)}
+@media(max-width:640px){nav .nav-links{display:none}.article-wrap{padding:2rem 1.2rem 4rem}h1{font-size:2rem}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}td,th{white-space:normal;word-break:break-word}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+
+@media(max-width:680px){pre,code{white-space:pre-wrap;word-break:break-word;max-width:100%;overflow-x:auto}}
+
+/* family slogan band, slim (2026-10-22) */
+.slogan-band.slim{background:var(--safety,#F2A900);border-bottom:2px solid var(--ink,#16181A);padding:0.5rem 1rem;text-align:center;color:var(--ink,#16181A);display:flex;gap:0.3rem 1rem;justify-content:center;align-items:baseline;flex-wrap:wrap}
+.slogan-band.slim .sb-main{font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.3rem;line-height:1.1;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim .sb-sub{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim a{color:var(--ink,#16181A);font-weight:700}
+@media(max-width:768px){.slogan-band.slim .sb-main{font-size:1.05rem}.slogan-band.slim .sb-sub{display:none}}
+</style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/#guides"},{"@type": "ListItem","position": 3,"name": "Schneider PM3200 / PM3250 Modbus","item": "https://modbusmanager.com/schneider-pm3200-modbus.html"}]}
+</script>
+<style id="site-nav">
+/* site menu (tools/web-research/site-nav.js) */
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop.nd-has>.nav-drop-label{color:var(--ink,#16181A);font-weight:600}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;display:none;z-index:200}
+.nav-drop:hover>.nav-drop-menu,.nav-drop:focus-within>.nav-drop-menu{display:block}
+.nd-box{display:flex;flex-direction:column;background:var(--enclosure2,#e8e9e4);border:1px solid var(--ink,#16181A);border-radius:3px;box-shadow:0 6px 20px rgba(0,0,0,0.18);padding:0.35rem 0;min-width:210px}
+.nav-drop-menu a,.nd-glabel{display:flex;align-items:center;gap:0.55rem;padding:0.45rem 1rem;white-space:nowrap;text-transform:none;font-family:'IBM Plex Mono',monospace;font-size:0.78rem;letter-spacing:0.02em;color:var(--ink,#16181A);text-decoration:none;background:none;border:none;text-align:left;cursor:pointer;width:100%;box-sizing:border-box}
+.nav-drop-menu a:hover,.nd-glabel:hover,.nd-group:hover>.nd-glabel,.nd-group.open>.nd-glabel{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+.nav-drop-menu .ni{display:inline-block;width:1.25rem;text-align:center;flex:none;font-size:0.9rem;line-height:1}
+.nav-drop-menu a.nd-sub{padding-left:2.1rem;font-size:0.75rem}
+.nav-drop-menu .nd-hot{color:#9A6700;font-weight:600}
+.nav-drop-menu a[aria-current="page"]{font-weight:700;box-shadow:inset 3px 0 0 var(--safety,#F2A900)}
+.nd-group.nd-has>.nd-glabel{font-weight:700}
+.nd-arrow{margin-left:auto;padding-left:1rem;font-size:0.7rem;color:var(--muted,#5F5E5A);display:inline-block;transform-origin:calc(50% + 0.5rem) 50%}
+.nd-group{position:relative}
+.nd-flyout{display:none;position:absolute;left:100%;top:-0.4rem;padding-left:0.25rem;z-index:210}
+.nd-group:hover>.nd-flyout,.nd-group:focus-within>.nd-flyout,.nd-group.open>.nd-flyout{display:block}
+.nd-head{font-family:'IBM Plex Mono',monospace;font-size:0.64rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted,#5F5E5A);padding:0.55rem 1rem 0.15rem;border-top:1px solid var(--steel,#B9BDB6);margin-top:0.25rem}
+.nd-box>.nd-head:first-child{border-top:none;margin-top:0}
+@media(max-width:768px){
+nav .nav-links.open{align-items:stretch;text-align:left}
+nav .nav-links.open .nav-drop{padding-bottom:0;margin-bottom:0}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu{position:static;display:block;padding:0;margin:0.3rem 0 0.2rem}
+nav .nav-links.open .nd-box{border:none;box-shadow:none;background:none;padding:0;min-width:0}
+nav .nav-links.open .nav-drop-menu a,nav .nav-links.open .nd-glabel{padding:0.4rem 0;font-size:0.82rem;white-space:normal}
+nav .nav-links.open .nav-drop-menu a.nd-sub{padding-left:1.8rem}
+nav .nav-links.open .nd-flyout a[aria-current="page"]{padding-left:0.6rem}
+nav .nav-links.open .nd-flyout{position:static;padding:0 0 0.3rem 1.8rem;display:none}
+nav .nav-links.open .nd-group:hover>.nd-flyout,nav .nav-links.open .nd-group:focus-within>.nd-flyout{display:none}
+nav .nav-links.open .nd-group.open>.nd-flyout{display:block}
+nav .nav-links.open .nd-group.open>.nd-glabel,nav .nav-links.open .nd-group:hover>.nd-glabel{background:none}
+nav .nav-links.open .nd-group.open .nd-arrow{transform:rotate(90deg)}
+nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label" tabindex="0">Features &#9662;</span>
+      <div class="nav-drop-menu"><div class="nd-box">
+        <a href="/modbus-scanner.html" class="nd-hot"><span class="ni">&#128269;&#65039;</span>Modbus Scanner</a>
+        <a href="/modbus-rtu-over-tcp.html" class="nd-sub"><span class="ni">&#128257;&#65039;</span>RTU over TCP</a>
+        <a href="/modbus-tcp-security-tls.html" class="nd-sub"><span class="ni">&#128274;&#65039;</span>Modbus TCP Security (TLS)</a>
+        <a href="/modbus-hmi-dashboard.html"><span class="ni">&#128202;&#65039;</span>HMI Dashboard</a>
+        <a href="/modbus-hmi-runtime.html" class="nd-sub"><span class="ni">&#128421;&#65039;</span>HMI Runtime (OEM)</a>
+        <a href="/modbus-data-logger-software.html"><span class="ni">&#128200;&#65039;</span>Data Logger</a>
+        <a href="/modbus-rtu-rs485-data-logger.html" class="nd-sub"><span class="ni">&#128223;&#65039;</span>RTU / RS-485 Logging</a>
+        <a href="/modbus-logging-interval-deadband.html" class="nd-sub"><span class="ni">&#9201;&#65039;</span>Interval &amp; Deadband</a>
+        <a href="/modbus-to-csv-logging.html" class="nd-sub"><span class="ni">&#128196;&#65039;</span>CSV Export</a>
+        <a href="/modbus-alarm-software.html"><span class="ni">&#128276;&#65039;</span>Alarms</a>
+        <a href="/modbus-gateway-software.html"><span class="ni">&#128256;&#65039;</span>Gateway</a>
+        <a href="/modbus-to-mqtt.html" class="nd-sub"><span class="ni">&#128225;&#65039;</span>Modbus to MQTT</a>
+        <a href="/modbus-structured-text-scripting.html"><span class="ni">&#127991;&#65039;</span>Tags &amp; Structured Text</a>
+      </div></div>
+    </li>
+    <li class="nav-drop nd-has">
+      <span class="nav-drop-label" tabindex="0">Guides &#9662;</span>
+      <div class="nav-drop-menu"><div class="nd-box">
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9728;&#65039;</span>Solar &amp; inverters<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+            <a href="/huawei-sun2000-modbus.html">Huawei SUN2000</a>
+            <a href="/huawei-sun2000-home-assistant.html">SUN2000 &rarr; Home Assistant</a>
+            <a href="/sungrow-inverter-modbus.html">Sungrow Inverters</a>
+            <a href="/sunspec-modbus-sma-fronius-solaredge.html">SunSpec: SMA, Fronius, SolarEdge</a>
+            <a href="/deye-sunsynk-growatt-modbus.html">Deye, Sunsynk &amp; Growatt</a>
+          </div></div>
+        </div>
+        <div class="nd-group nd-has">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9889;&#65039;</span>Energy meters<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+            <a href="/schneider-pm3200-modbus.html" aria-current="page">Schneider PM3250</a>
+            <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+            <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+            <a href="/wattnode-modbus.html">WattNode</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9881;&#65039;</span>Drives &amp; EC fans<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+            <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+            <a href="/abb-ach580-modbus.html">ABB ACH580</a>
+            <a href="/powerflex-525-modbus.html">PowerFlex 525</a>
+            <a href="/durapulse-gs20-modbus.html">DURApulse GS20</a>
+            <a href="/yaskawa-v1000-modbus.html">Yaskawa V1000</a>
+            <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+            <a href="/modbus-vfd-speed-reference.html">VFD Speed Registers</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#127981;&#65039;</span>Siemens PLCs<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200 HMI</a>
+            <a href="/siemens-s7-put-get.html">Siemens S7 PUT/GET</a>
+          </div></div>
+        </div>
+        <a href="/manual.html"><span class="ni">&#128214;&#65039;</span>Documentation</a>
+        <a href="/modbus-poll-alternative.html"><span class="ni">&#9878;&#65039;</span>vs Modbus Poll</a>
+      </div></div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+    <li><a href="https://bacmanager.com">BACManager &#8599;</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.8/Modbus.Manager.Pro.Setup.1.9.8.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-PM3200-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/v1.4.13/Modbus.Manager.Setup.1.4.13.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-PM3200-Nav', 'product': 'standard', 'value': 1})">Download free trial</a>
+  </div>
+</nav>
+<div class="slogan-band slim">
+  <span class="sb-main">Every device. One tool. Pay once.</span>
+  <span class="sb-sub">Modbus &middot; BACnet &middot; Siemens S7 &middot; one-time licence &middot; also from us: <a href="https://bacmanager.com">BACManager&nbsp;&#8599;</a></span>
+</div>
+<div class="hazard"></div>
+
+<div class="article-wrap">
+
+  <div class="breadcrumb">
+    <a href="/">ModbusManager</a> &rsaquo; Guides &rsaquo; Schneider PM3200 / PM3250 Modbus
+  </div>
+
+  <h1>Schneider PM3250 / PM3255 Modbus Register Map (PM3200 Series)</h1>
+
+  <p class="lead">How to read a Schneider Electric PM3200-series DIN-rail power meter over Modbus RTU. Only two of the four models have Modbus at all, the documented register is <strong>one more</strong> than the address on the wire, the meter knows <strong>FC03 and FC16 only</strong>, and energy comes twice &mdash; as an exact 64-bit integer and as a 32-bit float that quietly loses precision on a big feeder. This page covers all of it, from Schneider's current user manual.</p>
+
+  <figure style="margin:1.8rem 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink)">
+    <img src="/schneider-pm3200-dashboard.png" width="1320" height="825" loading="lazy" decoding="async"
+         alt="ModbusManager Pro dashboard for a Schneider PM3255 on a low-voltage feeder: three-phase meter with phase voltages, currents and powers, active energy import read as Int64 and as Float32 side by side, power factor decoded from the four-quadrant register, neutral current, reactive and apparent power, meter temperature, tan phi, frequency and a power and current trend"
+         style="width:100%;height:auto;display:block">
+    <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">
+      The free workspace below on a simulated PM3255 with the register map on this page &mdash; note the last digits of the two energy values.
+    </figcaption>
+  </figure>
+
+  <h2>Which PM3200 Models Have Modbus</h2>
+
+  <table>
+    <tr><th>Model</th><th>Modbus</th><th>Other I/O</th></tr>
+    <tr><td class="mono">PM3200</td><td>no</td><td>display only</td></tr>
+    <tr><td class="mono">PM3210</td><td>no</td><td>pulse output</td></tr>
+    <tr><td class="mono">PM3250</td><td><strong>RS-485, Modbus RTU</strong></td><td>&mdash;</td></tr>
+    <tr><td class="mono">PM3255</td><td><strong>RS-485, Modbus RTU</strong></td><td>2 digital inputs, 2 digital outputs, demand and energy logs</td></tr>
+  </table>
+  <p>All four measure through CTs (1 A or 5 A secondaries) and optionally VTs. If the front says PM3200 or PM3210, no Modbus setting will make it answer &mdash; it has no port.</p>
+
+  <h2>Connection Settings</h2>
+
+  <table>
+    <tr><th>Setting</th><th>Values</th><th>Notes</th></tr>
+    <tr><td>Terminals</td><td class="mono">D0 (A / Rx-, Tx-), D1 (B / Rx+, Tx+), 0 V</td><td>Two-wire RS-485, one port, 4 kV isolated</td></tr>
+    <tr><td>Baud rate</td><td class="mono">9600, 19200, 38400</td><td>Set on the meter's display</td></tr>
+    <tr><td>Parity</td><td class="mono">Even, Odd, None</td><td><strong>Always 1 stop bit</strong> &mdash; with None that is 8N1, not 8N2</td></tr>
+    <tr><td>Address</td><td class="mono">1&ndash;247</td><td>Set on the display</td></tr>
+    <tr><td>Function codes</td><td class="mono">03, 16, 43/14, 20</td><td>Read holding, write multiple, device identification, read file record (logs)</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>No FC04, no FC06.</strong> Everything is a holding register read with FC03; an input-register read (FC04) is refused. A write of even one register must be FC16 with a quantity of 1 &mdash; masters that default to FC06 for single writes get an error. The yellow LED flashes while the meter communicates (also on a line error) and is off when nothing talks to it.
+  </div>
+
+  <h2>Register = Address + 1</h2>
+  <p>Schneider's register tables give both numbers, and the manual states the rule outright: the <em>address</em> (hex) is what goes in the Modbus frame, and <strong>register = address + 1</strong>. Phase-1 current is register 3000 at address <code>0x0BB7</code> = 2999. A tool that takes 0-based addresses wants 2999; one with 1-based addressing wants 3000. Ask a 0-based tool for 3000 and every Float32 comes back as half of one value and half of the next.</p>
+  <p>The values are IEEE-754 Float32 in two registers. The manual does not spell out the word order; on this meter, as on other Schneider meters, the high word comes first &mdash; a phase voltage reading near 230 confirms it, a value like 1.2e-38 means the words are swapped.</p>
+
+  <h2>Measurement Registers</h2>
+  <p>All FC03, Float32 (two registers) unless noted. <em>Wire</em> is the 0-based address.</p>
+
+  <table>
+    <tr><th>Register</th><th>Wire</th><th>Value</th><th>Unit</th></tr>
+    <tr><td class="mono">3000 / 3002 / 3004</td><td class="mono">2999 / 3001 / 3003</td><td>Current I1 / I2 / I3</td><td>A</td></tr>
+    <tr><td class="mono">3006</td><td class="mono">3005</td><td>Neutral current In</td><td>A</td></tr>
+    <tr><td class="mono">3010</td><td class="mono">3009</td><td>Current average</td><td>A</td></tr>
+    <tr><td class="mono">3020 / 3022 / 3024</td><td class="mono">3019 / 3021 / 3023</td><td>Voltage L1-L2 / L2-L3 / L3-L1</td><td>V</td></tr>
+    <tr><td class="mono">3028 / 3030 / 3032</td><td class="mono">3027 / 3029 / 3031</td><td>Voltage L1-N / L2-N / L3-N</td><td>V</td></tr>
+    <tr><td class="mono">3054 / 3056 / 3058</td><td class="mono">3053 / 3055 / 3057</td><td>Active power phase 1 / 2 / 3</td><td>kW</td></tr>
+    <tr><td class="mono">3060</td><td class="mono">3059</td><td><strong>Total active power</strong></td><td>kW</td></tr>
+    <tr><td class="mono">3068</td><td class="mono">3067</td><td>Total reactive power</td><td>kVAR</td></tr>
+    <tr><td class="mono">3076</td><td class="mono">3075</td><td>Total apparent power</td><td>kVA</td></tr>
+    <tr><td class="mono">3078&ndash;3084</td><td class="mono">3077&ndash;3083</td><td>Power factor phase 1&ndash;3, total (&minus;2&hellip;+2 format)</td><td>&mdash;</td></tr>
+    <tr><td class="mono">3108</td><td class="mono">3107</td><td>Tan phi (reactive factor)</td><td>&mdash;</td></tr>
+    <tr><td class="mono">3110</td><td class="mono">3109</td><td>Frequency</td><td>Hz</td></tr>
+    <tr><td class="mono">3132</td><td class="mono">3131</td><td>Meter temperature</td><td>&deg;C</td></tr>
+    <tr><td class="mono">3012&ndash;3018, 3038&ndash;3052</td><td class="mono">3011&ndash;, 3037&ndash;</td><td>Current and voltage unbalance</td><td>%</td></tr>
+    <tr><td class="mono">3766 / 3770</td><td class="mono">3765 / 3769</td><td>Active power present / peak demand</td><td>kW</td></tr>
+  </table>
+
+  <div class="callout tip">
+    <strong>Read in gap-free blocks.</strong> The list has holes (3008, 3034, 3086&ndash;3107&hellip;), and the manual does not say what the meter answers for a register that is not listed. The workspace below polls only runs of documented registers: 3000&ndash;3007, 3010&ndash;3033, 3036&ndash;3085, 3108&ndash;3111.
+  </div>
+
+  <h2>Power Factor: the &minus;2 to +2 Register</h2>
+  <p>Registers 3078&ndash;3084 do not hold a plain power factor. Schneider encodes the quadrant into the number: between 0 and +1 is Q1 (active power positive, inductive), between +1 and +2 is Q4 (positive, capacitive), between &minus;1 and 0 is Q3 and between &minus;2 and &minus;1 is Q2 (active power negative). A reading of <code>1.08</code> is a <strong>0.92 capacitive</strong> power factor: PF = 2 &minus; 1.08. Below &minus;1 it is &minus;2 &minus; x. Show the raw register on an HMI and a perfectly good 0.92 leading load looks like an impossible 1.08.</p>
+
+  <h2>Energy: Int64 or Float32</h2>
+  <p>The PM3200 gives every energy counter twice, both in <strong>Wh</strong> (not kWh):</p>
+  <table>
+    <tr><th>Counter</th><th>Int64 register (4 words)</th><th>Float32 register</th></tr>
+    <tr><td>Active energy import</td><td class="mono">3204</td><td class="mono">45166</td></tr>
+    <tr><td>Active energy export</td><td class="mono">3208</td><td class="mono">45168</td></tr>
+    <tr><td>Reactive import / export</td><td class="mono">3220 / 3224</td><td class="mono">45170 / 45172</td></tr>
+    <tr><td>Apparent import / export</td><td class="mono">3236 / 3240</td><td class="mono">45174 / 45176</td></tr>
+    <tr><td>Partial active import</td><td class="mono">3256</td><td class="mono">45178</td></tr>
+    <tr><td>Tariff 1&ndash;4 active import</td><td class="mono">4196 / 4200 / 4204 / 4208</td><td class="mono">45206&ndash;45212</td></tr>
+  </table>
+  <p>The Int64 value is exact. The Float32 has a 24-bit mantissa, so above 2<sup>24</sup> Wh &mdash; <strong>16.8 MWh</strong>, a few months on a busy feeder &mdash; it can no longer count single watt-hours, and the step grows as the counter does: 2 Wh steps from 16.8 MWh, 4 Wh from 33.6 MWh, 64 Wh around a gigawatt-hour. For billing or sub-metering read the Int64. ModbusManager has no 64-bit data type, so the workspace reads the four words as UInt16 and combines them in its script: <code>((w0 &times; 65536 + w1) &times; 65536 + w2) &times; 65536 + w3</code>.</p>
+
+  <h2>Writing: the Command Interface</h2>
+  <p>Settings are not written into their own registers. The meter has a command interface: write the command number to <strong>5250</strong> and its parameters from 5252 with one FC16, then read the result at 5376 (0 = valid; 3000 invalid command, 3001 invalid parameter, 3002 wrong number of parameters, 3007 not performed). Examples from the manual: 1003 sets date and time, 2060 selects the multi-tariff mode (1 = controlled over communication), 2008 sets the active tariff 1&ndash;4 &mdash; only when the tariff is under communication control. The active tariff can be read at 4191. Wiring, CT and VT ratios are set on the display; they are not in the Modbus list.</p>
+
+  <h2>PM3255 Extras</h2>
+  <ul>
+    <li><strong>Digital input status</strong> at 8905 (bitmap, 2 registers): DI1 and DI2, open / closed. Digital output status at 9667.</li>
+    <li><strong>Logs</strong> (power demand, energy per day / week / month) through function 20 (0x14) Read File Record, file number 1.</li>
+    <li><strong>Input metering:</strong> pulse counters on DI1 / DI2 at 3558 / 3562 (Int64) or 45202 / 45204 (Float32), e.g. a water or gas meter.</li>
+  </ul>
+
+  <h2>Common Mistakes</h2>
+  <ul>
+    <li><strong>No answer at all:</strong> it is a PM3200 or PM3210 &mdash; no Modbus port. Or 8N2 on the master: the meter always uses one stop bit.</li>
+    <li><strong>Values look like 1e-38 or 4e+9:</strong> the read started on the wrong register (3000 instead of 2999 on a 0-based tool), or the words are swapped.</li>
+    <li><strong>"Illegal function":</strong> FC04 or FC06. Use FC03 and FC16.</li>
+    <li><strong>Power factor above 1:</strong> the four-quadrant format; 2 &minus; x.</li>
+    <li><strong>Energy a thousand times too big:</strong> it is Wh, not kWh.</li>
+    <li><strong>Energy that moves in steps of 2 or 4:</strong> Float32 above 16.8 MWh; read the Int64 at 3204.</li>
+    <li><strong>A tariff write is ignored:</strong> the multi-tariff mode is not set to communication control (command 2060).</li>
+  </ul>
+
+  <h2>Step-by-Step: Reading a PM3250 with ModbusManager</h2>
+  <ol>
+    <li>On the meter's display set the address, baud rate and parity (one stop bit is fixed).</li>
+    <li>Wire a USB&ndash;RS-485 adapter to D0, D1 and 0 V; terminate the line at both ends.</li>
+    <li>In ModbusManager choose RTU, the COM port and the same baud rate and parity.</li>
+    <li>Poll FC03 from address 2999, quantity 8, as Float32: I1, I2, I3 and In in amps.</li>
+    <li>Open the workspace below to get all values named and scaled, the power factor decoded and the exact energy counter.</li>
+  </ol>
+
+  <h2>Download a Ready-Made Workspace</h2>
+  <ul>
+    <li>Seven FC03 polls over gap-free blocks of documented registers, including both energy formats</li>
+    <li>36 tags: currents, phase and line voltages, powers, power factors, tan phi, frequency, temperature, the four Int64 energy words and the Float32 energy</li>
+    <li>A script that turns the &minus;2&hellip;+2 power factors into plain ones and combines the Int64 energy into kWh</li>
+    <li>A dashboard: three-phase meter, Int64 and Float32 energy side by side, decoded and raw PF, neutral current, Q, S, temperature and a power and current trend</li>
+  </ul>
+  <div class="callout">
+    <strong>Read-only, PM3250 and PM3255.</strong> Nothing is written. Unit ID 1; change it in the polls and tags for another address. Tags, script and dashboard are ModbusManager Pro features; Standard opens the poll windows only.
+  </div>
+  <div class="download-box">
+    <div>
+      <h3>SchneiderPM3200_workspace.json</h3>
+      <p>Schneider PM3250 / PM3255 workspace. Open via Workspace &rsaquo; Open in ModbusManager Pro.</p>
+    </div>
+    <a href="/SchneiderPM3200_workspace.json" download>Download Workspace</a>
+  </div>
+
+  <div class="cta-box">
+    <div>
+      <h3>Try it with ModbusManager Pro</h3>
+      <p>Scaled tags, three-phase meter, historian and energy reports for your meters. Free 14-day trial. No credit card. Windows 10/11.</p>
+    </div>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.8/Modbus.Manager.Pro.Setup.1.9.8.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-PM3200-Body', 'product': 'pro', 'value': 1})">Download Pro Trial</a>
+  </div>
+
+  <p>The panel-mount PowerLogic PM5100 / PM5300 uses the same measurement registers &mdash; see the <a href="/schneider-powerlogic-pm5000-modbus.html">PM5000 Modbus guide</a>. Eastron meters work differently (input registers, FC04): <a href="/eastron-sdm630-modbus.html">SDM630</a>.</p>
+
+  <h2>Frequently Asked Questions</h2>
+
+  <h3>Does the Schneider PM3200 have Modbus?</h3>
+  <p>Only the PM3250 and PM3255 do, on RS-485 (Modbus RTU). The PM3200 and PM3210 have no communication port; the PM3210 has a pulse output.</p>
+
+  <h3>What is the Modbus address of the PM3250 total active power?</h3>
+  <p>Register 3060, which is address 3059 on the wire (FC03, Float32, kW). Schneider's rule is register = address + 1, so phase-1 current, register 3000, is address 2999.</p>
+
+  <h3>Why does the PM3250 power factor read more than 1?</h3>
+  <p>Registers 3078&ndash;3084 use a four-quadrant format from &minus;2 to +2. A value between 1 and 2 is a capacitive power factor of 2 minus the value: 1.08 means 0.92 leading.</p>
+
+  <h3>Should I read PM3200 energy as Int64 or Float32?</h3>
+  <p>Int64 at 3204 for anything you bill or compare. Both are in Wh, but the Float32 copy at 45166 stops resolving single watt-hours above 16.8 MWh.</p>
+
+  <h3>Why does my master get "illegal function" from the PM3250?</h3>
+  <p>The meter supports FC03, FC16, 43/14 and 20 only. FC04 reads and FC06 single-register writes are refused; use FC03 to read and FC16 with a quantity of 1 to write one register.</p>
+
+  <h2>Sources</h2>
+  <p style="font-size:0.85rem">Schneider Electric, <em>PM3200 series &ndash; User manual</em>, DOCA0006EN-09 (07/2026): main characteristics (pp. 13&ndash;14), wiring (p. 23), Modbus communication and register list (pp. 49&ndash;67), power factor register format (pp. 80&ndash;81), specifications (p. 87). Public download from se.com. The word order of the 32- and 64-bit values is not stated in the manual; the high-word-first order used here is the one Schneider meters use. The workspace was tested against a simulator built from this manual, not a physical meter.</p>
+
+</div>
+
+

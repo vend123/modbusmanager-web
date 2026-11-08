@@ -43,7 +43,7 @@
   "description": "How to read a Schneider PowerLogic PM5000-series power meter over Modbus RTU or TCP using ModbusManager: register map, FLOAT32 decoding, serial settings and live data.",
   "url": "https://modbusmanager.com/schneider-powerlogic-pm5000-modbus.html",
   "datePublished": "2026-06-29",
-  "dateModified": "2026-11-05",
+  "dateModified": "2026-11-08",
   "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
   "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
 },
@@ -316,6 +316,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
           <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9889;&#65039;</span>Energy meters<span class="nd-arrow">&#9656;</span></button>
           <div class="nd-flyout"><div class="nd-box">
             <a href="/schneider-powerlogic-pm5000-modbus.html" aria-current="page">Schneider PM5000</a>
+            <a href="/schneider-pm3200-modbus.html">Schneider PM3250</a>
             <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
             <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
             <a href="/wattnode-modbus.html">WattNode</a>
@@ -388,7 +389,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 <section class="section">
   <div class="sec-label">// pm5300 &amp; pm5350</div>
   <h2 class="sec-title">PM5300 and PM5350: same registers, different hardware</h2>
-  <p class="sec-sub">Looking for a PM5300 or PM5350 Modbus register list? It is the table on this page &mdash; both models read the same measurement block.</p>
+  <p class="sec-sub">Looking for a PM5300 or PM5350 Modbus register list? It is the table on this page &mdash; both models read the same measurement block. The DIN-rail PM3250 / PM3255 shares the measurement registers but not the energy and function codes: <a href="/schneider-pm3200-modbus.html" style="color:var(--amber-ink)">PM3200 series guide</a>.</p>
   <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.7">The PM5310, PM5320, PM5330 and PM5340 (the PM5300 range) and the newer PM5350 expose the same FLOAT32 measurement block starting at register 3000 (address 2999 on the wire) as the rest of the PM5000 family: current, voltage, active/reactive/apparent power, power factor, frequency and energy all sit at the addresses listed below. What differs between the models is hardware &mdash; display type, digital I/O count, RS-485 vs. Ethernet options and tariff features &mdash; not the Modbus map. In practice that means the <a href="/SchneiderPM5000_workspace.json" download>ready-made workspace</a> on this page works unchanged on a PM5300 or PM5350: set your meter&rsquo;s slave ID and connection type, and the same 19 tags read correctly.</p>
 </section>
 
