@@ -1,0 +1,132 @@
+{
+ "about": "The device library ModbusManager and BACManager read (Device library, Open in app). One entry per ready workspace on this site.",
+ "updated": "2026-11-08",
+ "devices": [
+  {
+   "id": "eastron-sdm630",
+   "name": "Eastron SDM630 / SDM630MCT",
+   "cat": "meters",
+   "proto": "Modbus RTU",
+   "desc": "3-phase energy meter: voltage, current, power, PF and energy on one dashboard",
+   "ws": "SDM630_workspace.json",
+   "page": "eastron-sdm630-modbus.html"
+  },
+  {
+   "id": "eastron-sdm120",
+   "name": "Eastron SDM120",
+   "cat": "meters",
+   "proto": "Modbus RTU",
+   "desc": "Single-phase energy meter: voltage, current, power and kWh",
+   "ws": "SDM120_workspace.json",
+   "page": "eastron-sdm120-modbus.html"
+  },
+  {
+   "id": "schneider-pm5000",
+   "name": "Schneider PowerLogic PM5000",
+   "cat": "meters",
+   "proto": "Modbus RTU / TCP",
+   "desc": "PM5300 / PM5320 / PM5350 / PM5500 power meter, 4-quadrant power factor decoded",
+   "ws": "SchneiderPM5000_workspace.json",
+   "page": "schneider-powerlogic-pm5000-modbus.html"
+  },
+  {
+   "id": "huawei-sun2000",
+   "name": "Huawei SUN2000",
+   "cat": "solar",
+   "proto": "Modbus TCP / RS485",
+   "desc": "Inverter: PV strings, AC power, energy, state and alarms",
+   "ws": "Huawei_SUN2000.json",
+   "page": "huawei-sun2000-modbus.html"
+  },
+  {
+   "id": "huawei-smartlogger",
+   "name": "Huawei SmartLogger3000 (24 inverters)",
+   "cat": "solar",
+   "proto": "Modbus TCP",
+   "desc": "A plant behind a SmartLogger: every inverter in one device table",
+   "ws": "SmartLogger_24inv.json",
+   "page": "huawei-smartlogger-modbus.html"
+  },
+  {
+   "id": "sungrow-sg",
+   "name": "Sungrow SG / SH",
+   "cat": "solar",
+   "proto": "Modbus TCP / RS485",
+   "desc": "String inverter: PV, AC output, daily and total energy, state",
+   "ws": "Sungrow_SG.json",
+   "page": "sungrow-inverter-modbus.html"
+  },
+  {
+   "id": "sunspec",
+   "name": "SunSpec inverter (SMA, Fronius, SolarEdge)",
+   "cat": "solar",
+   "proto": "Modbus TCP",
+   "desc": "The SunSpec model blocks most inverters share, with scale factors applied",
+   "ws": "SunSpec_Inverter.json",
+   "page": "sunspec-modbus-sma-fronius-solaredge.html"
+  },
+  {
+   "id": "deye-hybrid",
+   "name": "Deye / Sunsynk / Growatt hybrid",
+   "cat": "solar",
+   "proto": "Modbus RTU",
+   "desc": "Single-phase hybrid inverter: PV, battery, grid and load",
+   "ws": "Deye_Hybrid_1P.json",
+   "page": "deye-sunsynk-growatt-modbus.html"
+  },
+  {
+   "id": "abb-acs580",
+   "name": "ABB ACS580",
+   "cat": "drives",
+   "proto": "Modbus RTU",
+   "desc": "Drive monitor: ABB Drives status word, speed, current, power",
+   "ws": "ABB_ACS580_monitor_workspace.json",
+   "page": "abb-acs580-modbus.html"
+  },
+  {
+   "id": "abb-acs880",
+   "name": "ABB ACS880",
+   "cat": "drives",
+   "proto": "Modbus RTU",
+   "desc": "Drive monitor: status word, speed, torque, current",
+   "ws": "ABB_ACS880_monitor_workspace.json",
+   "page": "abb-acs880-modbus.html"
+  },
+  {
+   "id": "ebmpapst-ec",
+   "name": "ebm-papst EC fans (16 on one bus)",
+   "cat": "hvac",
+   "proto": "Modbus RTU",
+   "desc": "Speed, power in W and faults of 16 EC fans",
+   "ws": "ebmpapst_16fans_workspace.json",
+   "page": "modbus-hmi-ebm-papst.html"
+  },
+  {
+   "id": "siemens-s7",
+   "name": "Siemens S7-1200 / S7-1500",
+   "cat": "plc",
+   "proto": "S7 PUT/GET",
+   "desc": "Data blocks, merkers and I/O read over PUT/GET, no PLC code",
+   "ws": "Siemens_S7_PUT_GET.json",
+   "page": "siemens-s7-put-get.html"
+  },
+  {
+   "id": "sun2000-ha",
+   "name": "Huawei SUN2000 → Home Assistant",
+   "cat": "ha",
+   "proto": "Modbus → MQTT",
+   "desc": "Inverter values published to MQTT with Home Assistant discovery",
+   "ws": "Huawei_SUN2000_HomeAssistant.json",
+   "page": "huawei-sun2000-home-assistant.html"
+  },
+  {
+   "id": "sdm630-ha",
+   "name": "Eastron SDM630 → Home Assistant",
+   "cat": "ha",
+   "proto": "Modbus → MQTT",
+   "desc": "Meter values to MQTT, energy ready for the HA Energy dashboard",
+   "ws": "SDM630_MQTT_HomeAssistant.json",
+   "page": "modbus-to-mqtt.html"
+  }
+ ]
+}
