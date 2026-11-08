@@ -1,0 +1,701 @@
+{
+  "version": 2,
+  "polls": [
+    {
+      "name": "ZSW1 + actual (40110-40111)",
+      "fc": 3,
+      "addr": 109,
+      "qty": 2,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 109,
+      "chartName": "ZSW1 + actual (40110-40111) [109]",
+      "logFile": "log_ZSW1_actual_40110_40111_.txt"
+    },
+    {
+      "name": "Diagnostics (40340-40349)",
+      "fc": 3,
+      "addr": 339,
+      "qty": 10,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 339,
+      "chartName": "Diagnostics (40340-40349) [339]",
+      "logFile": "log_Diagnostics_40340_40349_.txt"
+    },
+    {
+      "name": "Faults (40400-40403)",
+      "fc": 3,
+      "addr": 399,
+      "qty": 4,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 399,
+      "chartName": "Faults (40400-40403) [399]",
+      "logFile": "log_Faults_40400_40403_.txt"
+    },
+    {
+      "name": "Reference speed p2000 (40324)",
+      "fc": 3,
+      "addr": 323,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 10000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 323,
+      "chartName": "Reference speed p2000 (40324) [323]",
+      "logFile": "log_Reference_speed_p2000_40324_.txt"
+    }
+  ],
+  "activePoll": 0,
+  "condColors": {},
+  "scaling": {},
+  "valueNames": {},
+  "chartSeries": [],
+  "slaveBlocks": [],
+  "dashTheme": "modern",
+  "dashFx": true,
+  "dashBgColor": "#0d1117",
+  "dashPages": [
+    {
+      "id": 1,
+      "name": "G120",
+      "elements": [
+        {
+          "id": 1,
+          "value": 0,
+          "type": "statictext",
+          "x": 20,
+          "y": 10,
+          "w": 840,
+          "h": 30,
+          "text": "Fan F-7  ·  Siemens SINAMICS G120 CU240E-2  ·  Modbus RTU, read-only",
+          "fontSize": 20,
+          "bold": true,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 2,
+          "value": 0,
+          "type": "drive",
+          "x": 20,
+          "y": 50,
+          "w": 300,
+          "h": 150,
+          "label": "F-7 G120",
+          "unit": "rpm",
+          "min": 0,
+          "max": 1500,
+          "step": 50,
+          "powerUnit": "kW",
+          "fbTimeout": 10,
+          "startVal": 1,
+          "stopVal": 0,
+          "resetVal": 1,
+          "resetBack": 0,
+          "resetMs": 1000,
+          "items": [
+            {
+              "role": "run",
+              "name": "RUN",
+              "sourceType": "register",
+              "slaveId": 1,
+              "regType": "holdingRegisters",
+              "address": 109,
+              "bit": 2
+            },
+            {
+              "role": "ready",
+              "name": "READY",
+              "sourceType": "register",
+              "slaveId": 1,
+              "regType": "holdingRegisters",
+              "address": 109,
+              "bit": 1
+            },
+            {
+              "role": "atSp",
+              "name": "ATSP",
+              "sourceType": "register",
+              "slaveId": 1,
+              "regType": "holdingRegisters",
+              "address": 109,
+              "bit": 8
+            },
+            {
+              "role": "warn",
+              "name": "WARN",
+              "sourceType": "register",
+              "slaveId": 1,
+              "regType": "holdingRegisters",
+              "address": 109,
+              "bit": 7
+            },
+            {
+              "role": "fault",
+              "name": "FAULT",
+              "sourceType": "register",
+              "slaveId": 1,
+              "regType": "holdingRegisters",
+              "address": 109,
+              "bit": 3
+            },
+            {
+              "role": "hand",
+              "name": "HAND"
+            },
+            {
+              "role": "faultCode",
+              "name": "CODE",
+              "sourceType": "tag",
+              "tagName": "Fault_0"
+            },
+            {
+              "role": "freq",
+              "name": "HZ",
+              "sourceType": "tag",
+              "tagName": "Frequency_Hz"
+            },
+            {
+              "role": "current",
+              "name": "A",
+              "sourceType": "tag",
+              "tagName": "Current_A"
+            },
+            {
+              "role": "power",
+              "name": "P",
+              "sourceType": "tag",
+              "tagName": "Power_kW"
+            },
+            {
+              "role": "speedAct",
+              "name": "SPEED",
+              "sourceType": "tag",
+              "tagName": "Speed_rpm"
+            },
+            {
+              "role": "ref",
+              "name": "REF"
+            },
+            {
+              "role": "hours",
+              "name": "H"
+            },
+            {
+              "role": "runCmd",
+              "name": "RUN CMD"
+            },
+            {
+              "role": "resetCmd",
+              "name": "RESET"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "value": 0,
+          "type": "text",
+          "x": 20,
+          "y": 210,
+          "w": 145,
+          "h": 56,
+          "label": "Speed 40341",
+          "unit": "rpm",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Speed_rpm"
+        },
+        {
+          "id": 4,
+          "value": 0,
+          "type": "text",
+          "x": 175,
+          "y": 210,
+          "w": 145,
+          "h": 56,
+          "label": "Setpoint 40340",
+          "unit": "rpm",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#9fb3cc",
+          "sourceType": "tag",
+          "tagName": "Speed_SP_rpm"
+        },
+        {
+          "id": 5,
+          "value": 0,
+          "type": "text",
+          "x": 20,
+          "y": 274,
+          "w": 145,
+          "h": 56,
+          "label": "Torque 40346",
+          "unit": "Nm",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Torque_Nm"
+        },
+        {
+          "id": 6,
+          "value": 0,
+          "type": "text",
+          "x": 175,
+          "y": 274,
+          "w": 145,
+          "h": 56,
+          "label": "DC link 40344",
+          "unit": "V",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "DC_Link_V"
+        },
+        {
+          "id": 7,
+          "value": 0,
+          "type": "bitword",
+          "x": 340,
+          "y": 50,
+          "w": 300,
+          "h": 330,
+          "label": "ZSW1 40110",
+          "sourceType": "register",
+          "slaveId": 1,
+          "regType": "holdingRegisters",
+          "address": 109,
+          "wsize": 16,
+          "wordOrder": "hl",
+          "view": "all",
+          "bitCols": 1,
+          "showNums": true,
+          "emptyText": "",
+          "bits": [
+            {
+              "bit": 0,
+              "name": "Ready for switching on",
+              "kind": "ok"
+            },
+            {
+              "bit": 1,
+              "name": "Ready",
+              "kind": "ok"
+            },
+            {
+              "bit": 2,
+              "name": "Operation enabled",
+              "kind": "ok"
+            },
+            {
+              "bit": 3,
+              "name": "Fault active",
+              "kind": "alarm"
+            },
+            {
+              "bit": 4,
+              "name": "OFF2 inactive",
+              "kind": "ok"
+            },
+            {
+              "bit": 5,
+              "name": "OFF3 inactive",
+              "kind": "ok"
+            },
+            {
+              "bit": 6,
+              "name": "Switching on inhibited",
+              "kind": "warn"
+            },
+            {
+              "bit": 7,
+              "name": "Alarm active",
+              "kind": "warn"
+            },
+            {
+              "bit": 8,
+              "name": "Speed deviation in tolerance",
+              "kind": "info"
+            },
+            {
+              "bit": 9,
+              "name": "Master control requested",
+              "kind": "info"
+            },
+            {
+              "bit": 10,
+              "name": "Comparison speed reached",
+              "kind": "info"
+            },
+            {
+              "bit": 11,
+              "name": "Current / torque limit reached",
+              "kind": "warn"
+            },
+            {
+              "bit": 12,
+              "name": "Holding brake open",
+              "kind": "info"
+            },
+            {
+              "bit": 13,
+              "name": "No motor overtemperature alarm",
+              "kind": "ok"
+            },
+            {
+              "bit": 14,
+              "name": "Motor rotates clockwise",
+              "kind": "info"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "value": 0,
+          "type": "text",
+          "x": 660,
+          "y": 50,
+          "w": 200,
+          "h": 56,
+          "label": "Actual 40111",
+          "unit": "% p2000",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Actual_pct"
+        },
+        {
+          "id": 9,
+          "value": 0,
+          "type": "text",
+          "x": 660,
+          "y": 116,
+          "w": 200,
+          "h": 56,
+          "label": "Output voltage 40343",
+          "unit": "V",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Output_V"
+        },
+        {
+          "id": 10,
+          "value": 0,
+          "type": "text",
+          "x": 660,
+          "y": 182,
+          "w": 200,
+          "h": 56,
+          "label": "Energy 40348",
+          "unit": "kWh",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#9fb3cc",
+          "sourceType": "tag",
+          "tagName": "Energy_kWh"
+        },
+        {
+          "id": 11,
+          "value": 0,
+          "type": "multistate",
+          "x": 660,
+          "y": 248,
+          "w": 200,
+          "h": 56,
+          "label": "Control 40349",
+          "states": "0=Manual:#f0c040,1=Auto:#3fd28a",
+          "sourceType": "tag",
+          "tagName": "Control_Auto"
+        },
+        {
+          "id": 12,
+          "value": 0,
+          "type": "text",
+          "x": 660,
+          "y": 312,
+          "w": 200,
+          "h": 56,
+          "label": "Fault 40400",
+          "unit": "",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#9fb3cc",
+          "sourceType": "tag",
+          "tagName": "Fault_0"
+        },
+        {
+          "id": 13,
+          "value": 0,
+          "type": "multitend",
+          "x": 20,
+          "y": 395,
+          "w": 840,
+          "h": 145,
+          "label": "Speed (rpm) and current (A)",
+          "maxPoints": 1200,
+          "decimals": 1,
+          "sampleMs": 1000,
+          "items": [
+            {
+              "name": "Speed 40341",
+              "sourceType": "tag",
+              "tagName": "Speed_rpm",
+              "color": "#00d4aa",
+              "value": 0
+            },
+            {
+              "name": "Current 40345",
+              "sourceType": "tag",
+              "tagName": "Current_A",
+              "color": "#f0c040",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "ZSW1",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 109,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "status word 1 (40110, wire 109)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Actual_pct",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 110,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "main actual value, 4000 hex = 100 % of p2000 (40111, wire 110)",
+      "scale": 0.006103515625,
+      "offset": 0
+    },
+    {
+      "name": "Speed_SP_rpm",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 339,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "r0020 speed setpoint rpm (40340, wire 339)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Speed_rpm",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 340,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "r0022 speed actual rpm (40341, wire 340)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Frequency_Hz",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 341,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "r0024 output frequency, x 100 (40342, wire 341)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "Output_V",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 342,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "r0025 output voltage V (40343, wire 342)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "DC_Link_V",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 343,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "r0026 DC link voltage V (40344, wire 343)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Current_A",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 344,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "r0027 current actual, x 100 (40345, wire 344)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "Torque_Nm",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 345,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "r0031 torque actual, x 100 (40346, wire 345)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "Power_kW",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 346,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "r0032 active power, x 100 (40347, wire 346)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "Energy_kWh",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 347,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "r0039 energy kWh (40348, wire 347)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Control_Auto",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 348,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "r0807 control: manual / auto (40349, wire 348)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Fault_0",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 399,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "r0947[0] fault number (40400, wire 399)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "p2000_rpm",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 323,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "p2000 reference speed rpm (40324, wire 323)",
+      "scale": 1,
+      "offset": 0
+    }
+  ],
+  "script": "",
+  "scriptInterval": "1000",
+  "historianLogging": {
+    "registers": [],
+    "tags": []
+  },
+  "saved": "2026-11-08T12:00:00.000Z"
+}
