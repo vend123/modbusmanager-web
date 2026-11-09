@@ -1,7 +1,7 @@
 // Open a ready workspace straight in ModbusManager (modbusmanager:// link, ModbusManager 1.9.9 / 1.4.9 or newer).
 // Written by tools/web-research/open-in-app.js — edit it there.
 (function () {
-  var FILES = ["SDM630_workspace.json","SDM120_workspace.json","SchneiderPM5000_workspace.json","Huawei_SUN2000.json","SmartLogger_24inv.json","Sungrow_SG.json","SunSpec_Inverter.json","Deye_Hybrid_1P.json","ABB_ACS580_monitor_workspace.json","ABB_ACS880_monitor_workspace.json","ebmpapst_16fans_workspace.json","Siemens_S7_PUT_GET.json","Huawei_SUN2000_HomeAssistant.json","SDM630_MQTT_HomeAssistant.json"];
+  var FILES = ["SDM630_workspace.json","SDM120_workspace.json","SchneiderPM5000_workspace.json","SchneiderPM3200_workspace.json","Eastron_SDM230_SDM72.json","CarloGavazzi_EM340.json","Janitza_UMG96PA.json","ABB_ACS580_monitor_workspace.json","ABB_ACS880_monitor_workspace.json","ABB_ACH580_Modbus_monitor.json","Danfoss_FC102_monitor.json","Schneider_ATV320_monitor.json","Siemens_G120_monitor.json","Huawei_SUN2000.json","SmartLogger_24inv.json","Sungrow_SG.json","SunSpec_Inverter.json","Deye_Hybrid_1P.json","Victron_CerboGX.json","GoodWe_ET_Hybrid.json","ebmpapst_16fans_workspace.json","Siemens_S7_PUT_GET.json","Huawei_SUN2000_HomeAssistant.json","SDM630_MQTT_HomeAssistant.json"];
   var done = {};
   [].forEach.call(document.querySelectorAll('a[download][href$=".json"]'), function (a) {
     var file = (a.getAttribute('href') || '').replace(/^.*\//, '');

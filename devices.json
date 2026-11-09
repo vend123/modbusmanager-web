@@ -1,132 +1,222 @@
 {
- "about": "The device library ModbusManager and BACManager read (Device library, Open in app). One entry per ready workspace on this site.",
- "updated": "2026-11-08",
- "devices": [
-  {
-   "id": "eastron-sdm630",
-   "name": "Eastron SDM630 / SDM630MCT",
-   "cat": "meters",
-   "proto": "Modbus RTU",
-   "desc": "3-phase energy meter: voltage, current, power, PF and energy on one dashboard",
-   "ws": "SDM630_workspace.json",
-   "page": "eastron-sdm630-modbus.html"
-  },
-  {
-   "id": "eastron-sdm120",
-   "name": "Eastron SDM120",
-   "cat": "meters",
-   "proto": "Modbus RTU",
-   "desc": "Single-phase energy meter: voltage, current, power and kWh",
-   "ws": "SDM120_workspace.json",
-   "page": "eastron-sdm120-modbus.html"
-  },
-  {
-   "id": "schneider-pm5000",
-   "name": "Schneider PowerLogic PM5000",
-   "cat": "meters",
-   "proto": "Modbus RTU / TCP",
-   "desc": "PM5300 / PM5320 / PM5350 / PM5500 power meter, 4-quadrant power factor decoded",
-   "ws": "SchneiderPM5000_workspace.json",
-   "page": "schneider-powerlogic-pm5000-modbus.html"
-  },
-  {
-   "id": "huawei-sun2000",
-   "name": "Huawei SUN2000",
-   "cat": "solar",
-   "proto": "Modbus TCP / RS485",
-   "desc": "Inverter: PV strings, AC power, energy, state and alarms",
-   "ws": "Huawei_SUN2000.json",
-   "page": "huawei-sun2000-modbus.html"
-  },
-  {
-   "id": "huawei-smartlogger",
-   "name": "Huawei SmartLogger3000 (24 inverters)",
-   "cat": "solar",
-   "proto": "Modbus TCP",
-   "desc": "A plant behind a SmartLogger: every inverter in one device table",
-   "ws": "SmartLogger_24inv.json",
-   "page": "huawei-smartlogger-modbus.html"
-  },
-  {
-   "id": "sungrow-sg",
-   "name": "Sungrow SG / SH",
-   "cat": "solar",
-   "proto": "Modbus TCP / RS485",
-   "desc": "String inverter: PV, AC output, daily and total energy, state",
-   "ws": "Sungrow_SG.json",
-   "page": "sungrow-inverter-modbus.html"
-  },
-  {
-   "id": "sunspec",
-   "name": "SunSpec inverter (SMA, Fronius, SolarEdge)",
-   "cat": "solar",
-   "proto": "Modbus TCP",
-   "desc": "The SunSpec model blocks most inverters share, with scale factors applied",
-   "ws": "SunSpec_Inverter.json",
-   "page": "sunspec-modbus-sma-fronius-solaredge.html"
-  },
-  {
-   "id": "deye-hybrid",
-   "name": "Deye / Sunsynk / Growatt hybrid",
-   "cat": "solar",
-   "proto": "Modbus RTU",
-   "desc": "Single-phase hybrid inverter: PV, battery, grid and load",
-   "ws": "Deye_Hybrid_1P.json",
-   "page": "deye-sunsynk-growatt-modbus.html"
-  },
-  {
-   "id": "abb-acs580",
-   "name": "ABB ACS580",
-   "cat": "drives",
-   "proto": "Modbus RTU",
-   "desc": "Drive monitor: ABB Drives status word, speed, current, power",
-   "ws": "ABB_ACS580_monitor_workspace.json",
-   "page": "abb-acs580-modbus.html"
-  },
-  {
-   "id": "abb-acs880",
-   "name": "ABB ACS880",
-   "cat": "drives",
-   "proto": "Modbus RTU",
-   "desc": "Drive monitor: status word, speed, torque, current",
-   "ws": "ABB_ACS880_monitor_workspace.json",
-   "page": "abb-acs880-modbus.html"
-  },
-  {
-   "id": "ebmpapst-ec",
-   "name": "ebm-papst EC fans (16 on one bus)",
-   "cat": "hvac",
-   "proto": "Modbus RTU",
-   "desc": "Speed, power in W and faults of 16 EC fans",
-   "ws": "ebmpapst_16fans_workspace.json",
-   "page": "modbus-hmi-ebm-papst.html"
-  },
-  {
-   "id": "siemens-s7",
-   "name": "Siemens S7-1200 / S7-1500",
-   "cat": "plc",
-   "proto": "S7 PUT/GET",
-   "desc": "Data blocks, merkers and I/O read over PUT/GET, no PLC code",
-   "ws": "Siemens_S7_PUT_GET.json",
-   "page": "siemens-s7-put-get.html"
-  },
-  {
-   "id": "sun2000-ha",
-   "name": "Huawei SUN2000 → Home Assistant",
-   "cat": "ha",
-   "proto": "Modbus → MQTT",
-   "desc": "Inverter values published to MQTT with Home Assistant discovery",
-   "ws": "Huawei_SUN2000_HomeAssistant.json",
-   "page": "huawei-sun2000-home-assistant.html"
-  },
-  {
-   "id": "sdm630-ha",
-   "name": "Eastron SDM630 → Home Assistant",
-   "cat": "ha",
-   "proto": "Modbus → MQTT",
-   "desc": "Meter values to MQTT, energy ready for the HA Energy dashboard",
-   "ws": "SDM630_MQTT_HomeAssistant.json",
-   "page": "modbus-to-mqtt.html"
-  }
- ]
+  "about": "The device library ModbusManager and BACManager read (Device library, Open in app). One entry per ready workspace on this site.",
+  "updated": "2026-11-09",
+  "devices": [
+    {
+      "id": "eastron-sdm630",
+      "name": "Eastron SDM630 / SDM630MCT",
+      "cat": "meters",
+      "proto": "Modbus RTU",
+      "desc": "3-phase energy meter: voltage, current, power, PF and energy on one dashboard",
+      "ws": "SDM630_workspace.json",
+      "page": "eastron-sdm630-modbus.html"
+    },
+    {
+      "id": "eastron-sdm120",
+      "name": "Eastron SDM120",
+      "cat": "meters",
+      "proto": "Modbus RTU",
+      "desc": "Single-phase energy meter: voltage, current, power and kWh",
+      "ws": "SDM120_workspace.json",
+      "page": "eastron-sdm120-modbus.html"
+    },
+    {
+      "id": "schneider-pm5000",
+      "name": "Schneider PowerLogic PM5000",
+      "cat": "meters",
+      "proto": "Modbus RTU / TCP",
+      "desc": "PM5300 / PM5320 / PM5350 / PM5500 power meter, 4-quadrant power factor decoded",
+      "ws": "SchneiderPM5000_workspace.json",
+      "page": "schneider-powerlogic-pm5000-modbus.html"
+    },
+    {
+      "id": "schneider-pm3200",
+      "name": "Schneider PM3250 / PM3255",
+      "cat": "meters",
+      "proto": "Modbus RTU",
+      "desc": "DIN-rail meter: 3-phase values, 4-quadrant PF decoded, exact Int64 energy next to Float32",
+      "ws": "SchneiderPM3200_workspace.json",
+      "page": "schneider-pm3200-modbus.html"
+    },
+    {
+      "id": "eastron-sdm230-sdm72",
+      "name": "Eastron SDM230 + SDM72DM-V2",
+      "cat": "meters",
+      "proto": "Modbus RTU",
+      "desc": "Two meters on one line: SDM72 house main (ID 2) and SDM230 heat pump (ID 1)",
+      "ws": "Eastron_SDM230_SDM72.json",
+      "page": "eastron-sdm230-sdm72-modbus.html"
+    },
+    {
+      "id": "gavazzi-em340",
+      "name": "Carlo Gavazzi EM340 / EM24",
+      "cat": "meters",
+      "proto": "Modbus RTU / TCP",
+      "desc": "3-phase meter, INT32 low word first, weights applied, identification code",
+      "ws": "CarloGavazzi_EM340.json",
+      "page": "carlo-gavazzi-em24-em340-modbus.html"
+    },
+    {
+      "id": "janitza-umg96pa",
+      "name": "Janitza UMG 96-PA",
+      "cat": "meters",
+      "proto": "Modbus RTU / TCP",
+      "desc": "Power analyser: the 19000 block, THD, rotation field, energy and total PF",
+      "ws": "Janitza_UMG96PA.json",
+      "page": "janitza-umg-96-pa-modbus.html"
+    },
+    {
+      "id": "abb-acs580",
+      "name": "ABB ACS580",
+      "cat": "drives",
+      "proto": "Modbus RTU",
+      "desc": "Drive monitor: ABB Drives status word, speed, current, power",
+      "ws": "ABB_ACS580_monitor_workspace.json",
+      "page": "abb-acs580-modbus.html"
+    },
+    {
+      "id": "abb-acs880",
+      "name": "ABB ACS880",
+      "cat": "drives",
+      "proto": "Modbus RTU",
+      "desc": "Drive monitor: status word, speed, torque, current",
+      "ws": "ABB_ACS880_monitor_workspace.json",
+      "page": "abb-acs880-modbus.html"
+    },
+    {
+      "id": "abb-ach580",
+      "name": "ABB ACH580 (read-only)",
+      "cat": "drives",
+      "proto": "Modbus RTU",
+      "desc": "HVAC drive monitor: status word, 32-bit parameters, DI4 start interlock, warning and fault codes",
+      "ws": "ABB_ACH580_Modbus_monitor.json",
+      "page": "abb-ach580-modbus.html"
+    },
+    {
+      "id": "danfoss-fc102",
+      "name": "Danfoss VLT FC 102 / FC 302 (read-only)",
+      "cat": "drives",
+      "proto": "Modbus RTU",
+      "desc": "Drive monitor: FC-profile status word, parameters at 10 x number, conversion index applied",
+      "ws": "Danfoss_FC102_monitor.json",
+      "page": "danfoss-vlt-fc102-fc302-modbus.html"
+    },
+    {
+      "id": "schneider-atv320",
+      "name": "Schneider Altivar ATV320 / ATV630 (read-only)",
+      "cat": "drives",
+      "proto": "Modbus RTU",
+      "desc": "Drive monitor through the communication scanner: ETA, speed, port settings",
+      "ws": "Schneider_ATV320_monitor.json",
+      "page": "schneider-altivar-atv320-atv630-modbus.html"
+    },
+    {
+      "id": "siemens-g120",
+      "name": "Siemens SINAMICS G120 (read-only)",
+      "cat": "drives",
+      "proto": "Modbus RTU",
+      "desc": "CU240B-2 / CU240E-2 monitor: ZSW1, speed, frequency, current, power, faults",
+      "ws": "Siemens_G120_monitor.json",
+      "page": "siemens-sinamics-g120-modbus.html"
+    },
+    {
+      "id": "huawei-sun2000",
+      "name": "Huawei SUN2000",
+      "cat": "solar",
+      "proto": "Modbus TCP / RS485",
+      "desc": "Inverter: PV strings, AC power, energy, state and alarms",
+      "ws": "Huawei_SUN2000.json",
+      "page": "huawei-sun2000-modbus.html"
+    },
+    {
+      "id": "huawei-smartlogger",
+      "name": "Huawei SmartLogger3000 (24 inverters)",
+      "cat": "solar",
+      "proto": "Modbus TCP",
+      "desc": "A plant behind a SmartLogger: every inverter in one device table",
+      "ws": "SmartLogger_24inv.json",
+      "page": "huawei-smartlogger-modbus.html"
+    },
+    {
+      "id": "sungrow-sg",
+      "name": "Sungrow SG / SH",
+      "cat": "solar",
+      "proto": "Modbus TCP / RS485",
+      "desc": "String inverter: PV, AC output, daily and total energy, state",
+      "ws": "Sungrow_SG.json",
+      "page": "sungrow-inverter-modbus.html"
+    },
+    {
+      "id": "sunspec",
+      "name": "SunSpec inverter (SMA, Fronius, SolarEdge)",
+      "cat": "solar",
+      "proto": "Modbus TCP",
+      "desc": "The SunSpec model blocks most inverters share, with scale factors applied",
+      "ws": "SunSpec_Inverter.json",
+      "page": "sunspec-modbus-sma-fronius-solaredge.html"
+    },
+    {
+      "id": "deye-hybrid",
+      "name": "Deye / Sunsynk / Growatt hybrid",
+      "cat": "solar",
+      "proto": "Modbus RTU",
+      "desc": "Single-phase hybrid inverter: PV, battery, grid and load",
+      "ws": "Deye_Hybrid_1P.json",
+      "page": "deye-sunsynk-growatt-modbus.html"
+    },
+    {
+      "id": "victron-gx",
+      "name": "Victron Cerbo GX",
+      "cat": "solar",
+      "proto": "Modbus TCP",
+      "desc": "ESS energy flow: PV, battery and SOC, grid, house load, MultiPlus state (unit 100 + 227)",
+      "ws": "Victron_CerboGX.json",
+      "page": "victron-gx-modbus-tcp.html"
+    },
+    {
+      "id": "goodwe-et",
+      "name": "GoodWe ET hybrid",
+      "cat": "solar",
+      "proto": "Modbus RTU",
+      "desc": "Hybrid inverter at address 247: PV strings, battery and SOC, energy flow, work mode",
+      "ws": "GoodWe_ET_Hybrid.json",
+      "page": "goodwe-et-hybrid-modbus.html"
+    },
+    {
+      "id": "ebmpapst-ec",
+      "name": "ebm-papst EC fans (16 on one bus)",
+      "cat": "hvac",
+      "proto": "Modbus RTU",
+      "desc": "Speed, power in W and faults of 16 EC fans",
+      "ws": "ebmpapst_16fans_workspace.json",
+      "page": "modbus-hmi-ebm-papst.html"
+    },
+    {
+      "id": "siemens-s7",
+      "name": "Siemens S7-1200 / S7-1500",
+      "cat": "plc",
+      "proto": "S7 PUT/GET",
+      "desc": "Data blocks, merkers and I/O read over PUT/GET, no PLC code",
+      "ws": "Siemens_S7_PUT_GET.json",
+      "page": "siemens-s7-put-get.html"
+    },
+    {
+      "id": "sun2000-ha",
+      "name": "Huawei SUN2000 → Home Assistant",
+      "cat": "ha",
+      "proto": "Modbus → MQTT",
+      "desc": "Inverter values published to MQTT with Home Assistant discovery",
+      "ws": "Huawei_SUN2000_HomeAssistant.json",
+      "page": "huawei-sun2000-home-assistant.html"
+    },
+    {
+      "id": "sdm630-ha",
+      "name": "Eastron SDM630 → Home Assistant",
+      "cat": "ha",
+      "proto": "Modbus → MQTT",
+      "desc": "Meter values to MQTT, energy ready for the HA Energy dashboard",
+      "ws": "SDM630_MQTT_HomeAssistant.json",
+      "page": "modbus-to-mqtt.html"
+    }
+  ]
 }
