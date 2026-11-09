@@ -1,0 +1,787 @@
+{
+  "version": 2,
+  "polls": [
+    {
+      "name": "ACH580 SW + Act (400001-400006)",
+      "fc": 3,
+      "addr": 0,
+      "qty": 6,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 0,
+      "chartName": "ACH580 SW + Act (400001-400006) [0]",
+      "logFile": "log_ACH580_SW_Act_400001_400006_.txt"
+    },
+    {
+      "name": "01.06-01.11 32-bit (Mode 0)",
+      "fc": 3,
+      "addr": 20211,
+      "qty": 12,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 20211,
+      "chartName": "01.06-01.11 32-bit (Mode 0) [20211]",
+      "logFile": "log_01_06_01_11_32_bit_Mode_0_.txt"
+    },
+    {
+      "name": "01.13-01.14 32-bit (Mode 0)",
+      "fc": 3,
+      "addr": 20225,
+      "qty": 4,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 20225,
+      "chartName": "01.13-01.14 32-bit (Mode 0) [20225]",
+      "logFile": "log_01_13_01_14_32_bit_Mode_0_.txt"
+    },
+    {
+      "name": "05.11 inverter temp 32-bit",
+      "fc": 3,
+      "addr": 21021,
+      "qty": 2,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 21021,
+      "chartName": "05.11 inverter temp 32-bit [21021]",
+      "logFile": "log_05_11_inverter_temp_32_bit.txt"
+    },
+    {
+      "name": "10.02 DI status",
+      "fc": 3,
+      "addr": 1001,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 1001,
+      "chartName": "10.02 DI status [1001]",
+      "logFile": "log_10_02_DI_status.txt"
+    },
+    {
+      "name": "04.01 tripping fault",
+      "fc": 3,
+      "addr": 400,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 400,
+      "chartName": "04.01 tripping fault [400]",
+      "logFile": "log_04_01_tripping_fault.txt"
+    },
+    {
+      "name": "04.06 active warning 1",
+      "fc": 3,
+      "addr": 405,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 405,
+      "chartName": "04.06 active warning 1 [405]",
+      "logFile": "log_04_06_active_warning_1.txt"
+    }
+  ],
+  "activePoll": 0,
+  "condColors": {},
+  "scaling": {},
+  "valueNames": {},
+  "chartSeries": [],
+  "slaveBlocks": [],
+  "dashTheme": "modern",
+  "dashFx": true,
+  "dashBgColor": "#0d1117",
+  "dashPages": [
+    {
+      "id": 1,
+      "name": "ACH580",
+      "elements": [
+        {
+          "id": 1,
+          "value": 0,
+          "type": "statictext",
+          "x": 20,
+          "y": 10,
+          "w": 840,
+          "h": 30,
+          "text": "AHU-1 supply fan  ·  ABB ACH580  ·  Modbus RTU (EFB), read-only",
+          "fontSize": 20,
+          "bold": true,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 2,
+          "value": 0,
+          "type": "drive",
+          "x": 20,
+          "y": 50,
+          "w": 300,
+          "h": 120,
+          "label": "SF-1 ACH580",
+          "unit": "%",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "powerUnit": "kW",
+          "fbTimeout": 10,
+          "startVal": 1151,
+          "stopVal": 1142,
+          "resetVal": 1270,
+          "resetBack": 1142,
+          "resetMs": 1000,
+          "items": [
+            {
+              "role": "run",
+              "name": "RUN",
+              "sourceType": "register",
+              "slaveId": 1,
+              "regType": "holdingRegisters",
+              "address": 3,
+              "bit": 2
+            },
+            {
+              "role": "ready",
+              "name": "READY",
+              "sourceType": "register",
+              "slaveId": 1,
+              "regType": "holdingRegisters",
+              "address": 3,
+              "bit": 1
+            },
+            {
+              "role": "atSp",
+              "name": "ATSP",
+              "sourceType": "register",
+              "slaveId": 1,
+              "regType": "holdingRegisters",
+              "address": 3,
+              "bit": 8
+            },
+            {
+              "role": "warn",
+              "name": "WARN",
+              "sourceType": "register",
+              "slaveId": 1,
+              "regType": "holdingRegisters",
+              "address": 3,
+              "bit": 7
+            },
+            {
+              "role": "fault",
+              "name": "FAULT",
+              "sourceType": "register",
+              "slaveId": 1,
+              "regType": "holdingRegisters",
+              "address": 3,
+              "bit": 3
+            },
+            {
+              "role": "hand",
+              "name": "HAND"
+            },
+            {
+              "role": "faultCode",
+              "name": "CODE"
+            },
+            {
+              "role": "freq",
+              "name": "HZ",
+              "sourceType": "tag",
+              "tagName": "Output_Frequency"
+            },
+            {
+              "role": "current",
+              "name": "A",
+              "sourceType": "tag",
+              "tagName": "Motor_Current"
+            },
+            {
+              "role": "power",
+              "name": "P",
+              "sourceType": "tag",
+              "tagName": "Output_Power"
+            },
+            {
+              "role": "speedAct",
+              "name": "SPEED"
+            },
+            {
+              "role": "ref",
+              "name": "REF"
+            },
+            {
+              "role": "hours",
+              "name": "H"
+            },
+            {
+              "role": "runCmd",
+              "name": "RUN CMD"
+            },
+            {
+              "role": "resetCmd",
+              "name": "RESET"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "value": 0,
+          "type": "bitword",
+          "x": 340,
+          "y": 50,
+          "w": 290,
+          "h": 250,
+          "label": "Status word 400004",
+          "sourceType": "register",
+          "slaveId": 1,
+          "regType": "holdingRegisters",
+          "address": 3,
+          "wsize": 16,
+          "wordOrder": "hl",
+          "view": "all",
+          "bitCols": 1,
+          "showNums": true,
+          "emptyText": "",
+          "profile": "abb",
+          "bits": [
+            {
+              "bit": 0,
+              "name": "Ready to switch on",
+              "kind": "ok"
+            },
+            {
+              "bit": 1,
+              "name": "Ready to run",
+              "kind": "ok"
+            },
+            {
+              "bit": 2,
+              "name": "Running (reference enabled)",
+              "kind": "ok"
+            },
+            {
+              "bit": 3,
+              "name": "Fault (tripped)",
+              "kind": "alarm"
+            },
+            {
+              "bit": 4,
+              "name": "Off 2 inactive",
+              "kind": "ok"
+            },
+            {
+              "bit": 5,
+              "name": "Off 3 inactive",
+              "kind": "ok"
+            },
+            {
+              "bit": 6,
+              "name": "Switch-on inhibited",
+              "kind": "warn"
+            },
+            {
+              "bit": 7,
+              "name": "Warning",
+              "kind": "warn"
+            },
+            {
+              "bit": 8,
+              "name": "At setpoint",
+              "kind": "info"
+            },
+            {
+              "bit": 9,
+              "name": "Remote (fieldbus control)",
+              "kind": "info"
+            },
+            {
+              "bit": 10,
+              "name": "Above limit",
+              "kind": "info"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "value": 0,
+          "type": "bitword",
+          "x": 650,
+          "y": 50,
+          "w": 210,
+          "h": 170,
+          "label": "DI status 10.02",
+          "sourceType": "tag",
+          "tagName": "DI_Status",
+          "wsize": 16,
+          "wordOrder": "hl",
+          "view": "all",
+          "bitCols": 1,
+          "showNums": true,
+          "emptyText": "",
+          "bits": [
+            {
+              "bit": 0,
+              "name": "DI1 start / stop",
+              "kind": "info"
+            },
+            {
+              "bit": 1,
+              "name": "DI2",
+              "kind": "info"
+            },
+            {
+              "bit": 2,
+              "name": "DI3",
+              "kind": "info"
+            },
+            {
+              "bit": 3,
+              "name": "DI4 start interlock 1",
+              "kind": "ok"
+            },
+            {
+              "bit": 4,
+              "name": "DI5",
+              "kind": "info"
+            },
+            {
+              "bit": 5,
+              "name": "DI6",
+              "kind": "info"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "value": 0,
+          "type": "multistate",
+          "x": 650,
+          "y": 230,
+          "w": 210,
+          "h": 70,
+          "label": "Active warning 04.06",
+          "states": "0=None:#3fd28a,45038=AFEE Start interlock 1:#f0c040,45037=AFED Run permissive:#f0c040,42958=A7CE EFB comm loss:#f0c040,45046=AFF6 Identification run:#f0c040",
+          "sourceType": "tag",
+          "tagName": "Active_Warning"
+        },
+        {
+          "id": 6,
+          "value": 0,
+          "type": "multistate",
+          "x": 650,
+          "y": 310,
+          "w": 210,
+          "h": 70,
+          "label": "Tripping fault 04.01",
+          "states": "0=None:#3fd28a,26241=6681 EFB comm loss:#f85149,28801=7081 Control panel loss:#f85149,8976=2310 Overcurrent:#f85149,12816=3210 DC link overvoltage:#f85149",
+          "sourceType": "tag",
+          "tagName": "Tripping_Fault"
+        },
+        {
+          "id": 7,
+          "value": 0,
+          "type": "text",
+          "x": 20,
+          "y": 180,
+          "w": 145,
+          "h": 56,
+          "label": "Torque",
+          "unit": "%",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Motor_Torque"
+        },
+        {
+          "id": 8,
+          "value": 0,
+          "type": "text",
+          "x": 175,
+          "y": 180,
+          "w": 145,
+          "h": 56,
+          "label": "DC link",
+          "unit": "V",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "DC_Voltage"
+        },
+        {
+          "id": 9,
+          "value": 0,
+          "type": "text",
+          "x": 20,
+          "y": 244,
+          "w": 145,
+          "h": 56,
+          "label": "Motor voltage",
+          "unit": "V",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Output_Voltage"
+        },
+        {
+          "id": 10,
+          "value": 0,
+          "type": "text",
+          "x": 175,
+          "y": 244,
+          "w": 145,
+          "h": 56,
+          "label": "Drive temp.",
+          "unit": "% lim",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Inverter_Temp"
+        },
+        {
+          "id": 11,
+          "value": 0,
+          "type": "text",
+          "x": 650,
+          "y": 390,
+          "w": 210,
+          "h": 56,
+          "label": "Act1 400005 (÷400)",
+          "unit": "Hz",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Act1_Hz"
+        },
+        {
+          "id": 12,
+          "value": 0,
+          "type": "text",
+          "x": 650,
+          "y": 466,
+          "w": 210,
+          "h": 56,
+          "label": "Act2 400006 (default)",
+          "unit": "",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Act2_Raw"
+        },
+        {
+          "id": 13,
+          "value": 0,
+          "type": "multitend",
+          "x": 20,
+          "y": 310,
+          "w": 620,
+          "h": 230,
+          "label": "Output frequency (Hz) and motor current (A)",
+          "maxPoints": 1200,
+          "decimals": 2,
+          "sampleMs": 1000,
+          "items": [
+            {
+              "name": "Output frequency 01.06",
+              "sourceType": "tag",
+              "tagName": "Output_Frequency",
+              "color": "#00d4aa",
+              "value": 0
+            },
+            {
+              "name": "Motor current 01.07",
+              "sourceType": "tag",
+              "tagName": "Motor_Current",
+              "color": "#f0c040",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "Status_Word",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "SW, ABB Drives profile (400004, wire 3)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Act1_Hz",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 4,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "Act1 (400005, wire 4): frequency in scalar control, 20000 = 46.02 (50 Hz; on a 60 Hz drive use 0.003)",
+      "scale": 0.0025,
+      "offset": 0
+    },
+    {
+      "name": "Act2_Raw",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 5,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "Act2 (400006, wire 5): 0 by default (58.29 Transparent, 58.32 Not selected)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Output_Frequency",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 20211,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "Hz, 01.06 32-bit (420212, wire 20211)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "Motor_Current",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 20213,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "A, 01.07 32-bit (420214, wire 20213)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "Current_Pct_Motor",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 20215,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "% of motor nominal, 01.08 32-bit (wire 20215)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Motor_Torque",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 20219,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "% of nominal, 01.10 32-bit (wire 20219)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "DC_Voltage",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 20221,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "V, 01.11 32-bit (wire 20221)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "Output_Voltage",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 20225,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "V, 01.13 32-bit (wire 20225)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Output_Power",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 20227,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "kW, 01.14 32-bit (420228, wire 20227)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "Inverter_Temp",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 21021,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "% of fault limit, 05.11 32-bit (wire 21021)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "DI_Status",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 1001,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "10.02 DI delayed status, bits 0-5 = DI1-DI6 (401002, wire 1001)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Tripping_Fault",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 400,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "04.01 code of the active fault, hex in the manual (400401, wire 400)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Active_Warning",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 405,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "04.06 code of the 1st active warning (400406, wire 405)",
+      "scale": 1,
+      "offset": 0
+    }
+  ],
+  "script": "",
+  "scriptInterval": "1000",
+  "historianLogging": {
+    "registers": [],
+    "tags": []
+  },
+  "saved": "2026-11-08T12:00:00.000Z"
+}

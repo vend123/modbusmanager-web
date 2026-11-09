@@ -1,0 +1,657 @@
+{
+  "version": 2,
+  "polls": [
+    {
+      "name": "PV1, PV2 (35103-35110)",
+      "fc": 3,
+      "addr": 35103,
+      "qty": 8,
+      "slaveId": 247,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 35103,
+      "chartName": "PV1, PV2 (35103-35110) [35103]",
+      "logFile": "log_PV1_PV2_35103_35110_.txt"
+    },
+    {
+      "name": "Inverter phases, grid mode, totals (35121-35144)",
+      "fc": 3,
+      "addr": 35121,
+      "qty": 24,
+      "slaveId": 247,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 35121,
+      "chartName": "Inverter phases, grid mode, totals (35121-35144) [35121]",
+      "logFile": "log_Inverter_phases_grid_mode_totals_35121_35144_.txt"
+    },
+    {
+      "name": "Load, temperatures, battery, modes (35171-35187)",
+      "fc": 3,
+      "addr": 35171,
+      "qty": 17,
+      "slaveId": 247,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 35171,
+      "chartName": "Load, temperatures, battery, modes (35171-35187) [35171]",
+      "logFile": "log_Load_temperatures_battery_modes_35171_35187_.txt"
+    },
+    {
+      "name": "PV energy total (35191-35192)",
+      "fc": 3,
+      "addr": 35191,
+      "qty": 2,
+      "slaveId": 247,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 35191,
+      "chartName": "PV energy total (35191-35192) [35191]",
+      "logFile": "log_PV_energy_total_35191_35192_.txt"
+    },
+    {
+      "name": "SOC (37007)",
+      "fc": 3,
+      "addr": 37007,
+      "qty": 1,
+      "slaveId": 247,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 37007,
+      "chartName": "SOC (37007) [37007]",
+      "logFile": "log_SOC_37007_.txt"
+    }
+  ],
+  "activePoll": 0,
+  "condColors": {},
+  "scaling": {},
+  "valueNames": {},
+  "chartSeries": [],
+  "slaveBlocks": [],
+  "dashTheme": "modern",
+  "dashFx": true,
+  "dashBgColor": "#0d1117",
+  "dashPages": [
+    {
+      "id": 1,
+      "name": "GoodWe ET",
+      "elements": [
+        {
+          "id": 1,
+          "value": 0,
+          "type": "statictext",
+          "x": 20,
+          "y": 10,
+          "w": 840,
+          "h": 30,
+          "text": "Home battery  ·  GoodWe ET hybrid, address 247  ·  read-only",
+          "fontSize": 20,
+          "bold": true,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 2,
+          "value": 0,
+          "type": "pvflow",
+          "x": 20,
+          "y": 50,
+          "w": 380,
+          "h": 330,
+          "label": "Energy flow",
+          "unitId": 247,
+          "sBatt": "discharge",
+          "sGrid": "buy",
+          "showDay": false,
+          "animate": true,
+          "idleW": 20,
+          "maxKw": 10,
+          "pts": {
+            "pv1": {
+              "src": "tag",
+              "tagName": "PV1_W"
+            },
+            "pv2": {
+              "src": "tag",
+              "tagName": "PV2_W"
+            },
+            "batt": {
+              "src": "tag",
+              "tagName": "Bat_W"
+            },
+            "soc": {
+              "src": "tag",
+              "tagName": "SOC"
+            },
+            "grid": {
+              "src": "tag",
+              "tagName": "Grid_W"
+            },
+            "load": {
+              "src": "tag",
+              "tagName": "Load_W"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "value": 0,
+          "type": "text",
+          "x": 420,
+          "y": 50,
+          "w": 155,
+          "h": 66,
+          "label": "PV1 35103",
+          "unit": "V",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "PV1_V"
+        },
+        {
+          "id": 4,
+          "value": 0,
+          "type": "text",
+          "x": 587,
+          "y": 50,
+          "w": 155,
+          "h": 66,
+          "label": "PV2 35107",
+          "unit": "V",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "PV2_V"
+        },
+        {
+          "id": 5,
+          "value": 0,
+          "type": "multistate",
+          "x": 754,
+          "y": 50,
+          "w": 106,
+          "h": 66,
+          "label": "Grid 35136",
+          "states": "0=Loss:#f85149,1=OK:#3fd28a,2=Fault:#f85149",
+          "sourceType": "tag",
+          "tagName": "Grid_Mode"
+        },
+        {
+          "id": 6,
+          "value": 0,
+          "type": "multistate",
+          "x": 420,
+          "y": 126,
+          "w": 220,
+          "h": 66,
+          "label": "Work mode 35187",
+          "states": "0=Wait:#9fb3cc,1=On-grid:#3fd28a,2=Off-grid:#f0c040,3=Fault:#f85149,4=Flash:#58a6ff,5=Check:#58a6ff",
+          "sourceType": "tag",
+          "tagName": "Work_Mode"
+        },
+        {
+          "id": 7,
+          "value": 0,
+          "type": "multistate",
+          "x": 650,
+          "y": 126,
+          "w": 210,
+          "h": 66,
+          "label": "Battery mode 35184",
+          "states": "0=No battery:#9fb3cc,1=Standby:#9fb3cc,2=Discharging:#f0c040,3=Charging:#3fd28a",
+          "sourceType": "tag",
+          "tagName": "Bat_Mode"
+        },
+        {
+          "id": 8,
+          "value": 0,
+          "type": "text",
+          "x": 420,
+          "y": 202,
+          "w": 155,
+          "h": 66,
+          "label": "Battery 35180",
+          "unit": "V",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Bat_V"
+        },
+        {
+          "id": 9,
+          "value": 0,
+          "type": "text",
+          "x": 587,
+          "y": 202,
+          "w": 155,
+          "h": 66,
+          "label": "Battery 35181",
+          "unit": "A",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Bat_A"
+        },
+        {
+          "id": 10,
+          "value": 0,
+          "type": "text",
+          "x": 754,
+          "y": 202,
+          "w": 106,
+          "h": 66,
+          "label": "SOC 37007",
+          "unit": "%",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "SOC"
+        },
+        {
+          "id": 11,
+          "value": 0,
+          "type": "text",
+          "x": 420,
+          "y": 278,
+          "w": 155,
+          "h": 66,
+          "label": "Phase R 35121",
+          "unit": "V",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "R_V"
+        },
+        {
+          "id": 12,
+          "value": 0,
+          "type": "text",
+          "x": 587,
+          "y": 278,
+          "w": 155,
+          "h": 66,
+          "label": "Heatsink 35176",
+          "unit": "°C",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Heatsink_C"
+        },
+        {
+          "id": 13,
+          "value": 0,
+          "type": "text",
+          "x": 754,
+          "y": 278,
+          "w": 106,
+          "h": 66,
+          "label": "PV total 35191",
+          "unit": "kWh",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#9fb3cc",
+          "sourceType": "tag",
+          "tagName": "PV_E_Total"
+        },
+        {
+          "id": 14,
+          "value": 0,
+          "type": "multitend",
+          "x": 20,
+          "y": 395,
+          "w": 840,
+          "h": 145,
+          "label": "PV, load and grid (W)",
+          "maxPoints": 1200,
+          "decimals": 0,
+          "sampleMs": 1000,
+          "items": [
+            {
+              "name": "PV 35105 + 35109",
+              "sourceType": "tag",
+              "tagName": "PV_W",
+              "color": "#f0c040",
+              "value": 0
+            },
+            {
+              "name": "Load 35171",
+              "sourceType": "tag",
+              "tagName": "Load_W",
+              "color": "#e6eef8",
+              "value": 0
+            },
+            {
+              "name": "Grid (calculated)",
+              "sourceType": "tag",
+              "tagName": "Grid_W",
+              "color": "#58a6ff",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "PV1_V",
+      "type": "register",
+      "slaveId": 247,
+      "regType": "holdingRegisters",
+      "address": 35103,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "PV1 voltage V (35103)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "PV1_W",
+      "type": "register",
+      "slaveId": 247,
+      "regType": "holdingRegisters",
+      "address": 35105,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "PV1 power W (35105)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "PV2_V",
+      "type": "register",
+      "slaveId": 247,
+      "regType": "holdingRegisters",
+      "address": 35107,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "PV2 voltage V (35107)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "PV2_W",
+      "type": "register",
+      "slaveId": 247,
+      "regType": "holdingRegisters",
+      "address": 35109,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "PV2 power W (35109)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "R_V",
+      "type": "register",
+      "slaveId": 247,
+      "regType": "holdingRegisters",
+      "address": 35121,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "R phase inverter voltage (35121)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "R_Hz",
+      "type": "register",
+      "slaveId": 247,
+      "regType": "holdingRegisters",
+      "address": 35123,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "R phase frequency (35123)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "Grid_Mode",
+      "type": "register",
+      "slaveId": 247,
+      "regType": "holdingRegisters",
+      "address": 35136,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "0 loss, 1 OK, 2 fault (35136)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Inv_W",
+      "type": "register",
+      "slaveId": 247,
+      "regType": "holdingRegisters",
+      "address": 35137,
+      "dataType": "int32",
+      "wordOrder": "big",
+      "description": "total inverter power W (35137)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Load_W",
+      "type": "register",
+      "slaveId": 247,
+      "regType": "holdingRegisters",
+      "address": 35171,
+      "dataType": "int32",
+      "wordOrder": "big",
+      "description": "total load power W (35171)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Heatsink_C",
+      "type": "register",
+      "slaveId": 247,
+      "regType": "holdingRegisters",
+      "address": 35176,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "heatsink temperature (35176)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Bat_V",
+      "type": "register",
+      "slaveId": 247,
+      "regType": "holdingRegisters",
+      "address": 35180,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "battery 1 voltage (35180)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Bat_A",
+      "type": "register",
+      "slaveId": 247,
+      "regType": "holdingRegisters",
+      "address": 35181,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "battery 1 current (35181)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Bat_W_raw",
+      "type": "register",
+      "slaveId": 247,
+      "regType": "holdingRegisters",
+      "address": 35182,
+      "dataType": "int32",
+      "wordOrder": "big",
+      "description": "battery 1 power W (sign not documented) (35182)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Bat_Mode",
+      "type": "register",
+      "slaveId": 247,
+      "regType": "holdingRegisters",
+      "address": 35184,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "0 none, 1 standby, 2 discharging, 3 charging (35184)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Work_Mode",
+      "type": "register",
+      "slaveId": 247,
+      "regType": "holdingRegisters",
+      "address": 35187,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "0 wait, 1 on-grid, 2 off-grid, 3 fault, 4 flash, 5 check (35187)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "PV_E_Total",
+      "type": "register",
+      "slaveId": 247,
+      "regType": "holdingRegisters",
+      "address": 35191,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "PV energy total kWh (35191)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "SOC",
+      "type": "register",
+      "slaveId": 247,
+      "regType": "holdingRegisters",
+      "address": 37007,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "BMS SOC % (37007)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "PV_W",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "PV1 + PV2"
+    },
+    {
+      "name": "Bat_W",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "battery W, + discharging, from 35184"
+    },
+    {
+      "name": "Grid_W",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "load - PV - battery, + buying"
+    }
+  ],
+  "script": "(* GoodWe gives no sign for battery power: take it from Battery1 Mode 35184 *)\nIF Bat_W_raw < 0 THEN Bat_W := 0 - Bat_W_raw; ELSE Bat_W := Bat_W_raw; END_IF;\nIF Bat_Mode = 3 THEN Bat_W := 0 - Bat_W; ELSIF Bat_Mode <> 2 THEN Bat_W := 0; END_IF;\nPV_W := PV1_W + PV2_W;\n(* grid = what the house needs that PV and battery do not cover *)\nGrid_W := Load_W - PV_W - Bat_W;\n",
+  "scriptInterval": "1000",
+  "historianLogging": {
+    "registers": [],
+    "tags": []
+  },
+  "saved": "2026-11-08T12:00:00.000Z"
+}

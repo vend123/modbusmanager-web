@@ -1,0 +1,709 @@
+{
+  "version": 2,
+  "polls": [
+    {
+      "name": "V and A (0000h-0011h)",
+      "fc": 4,
+      "addr": 0,
+      "qty": 18,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 0,
+      "chartName": "V and A (0000h-0011h) [0]",
+      "logFile": "log_V_and_A_0000h_0011h_.txt"
+    },
+    {
+      "name": "W, VA, var per phase (0012h-0023h)",
+      "fc": 4,
+      "addr": 18,
+      "qty": 18,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 18,
+      "chartName": "W, VA, var per phase (0012h-0023h) [18]",
+      "logFile": "log_W_VA_var_per_phase_0012h_0023h_.txt"
+    },
+    {
+      "name": "System, PF, Hz, kWh+ (0024h-0035h)",
+      "fc": 4,
+      "addr": 36,
+      "qty": 18,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 36,
+      "chartName": "System, PF, Hz, kWh+ (0024h-0035h) [36]",
+      "logFile": "log_System_PF_Hz_kWh_0024h_0035h_.txt"
+    },
+    {
+      "name": "kWh- TOT (004Eh)",
+      "fc": 4,
+      "addr": 78,
+      "qty": 2,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 78,
+      "chartName": "kWh- TOT (004Eh) [78]",
+      "logFile": "log_kWh_TOT_004Eh_.txt"
+    },
+    {
+      "name": "ID code (000Bh, one word, FC03)",
+      "fc": 3,
+      "addr": 11,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 30000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 11,
+      "chartName": "ID code (000Bh, one word, FC03) [11]",
+      "logFile": "log_ID_code_000Bh_one_word_FC03_.txt"
+    }
+  ],
+  "activePoll": 0,
+  "condColors": {},
+  "scaling": {},
+  "valueNames": {},
+  "chartSeries": [],
+  "slaveBlocks": [],
+  "dashTheme": "modern",
+  "dashFx": true,
+  "dashBgColor": "#0d1117",
+  "dashPages": [
+    {
+      "id": 1,
+      "name": "EM340",
+      "elements": [
+        {
+          "id": 1,
+          "value": 0,
+          "type": "statictext",
+          "x": 20,
+          "y": 10,
+          "w": 840,
+          "h": 30,
+          "text": "Workshop sub-board  ·  Carlo Gavazzi EM340  ·  Modbus RTU, read-only",
+          "fontSize": 20,
+          "bold": true,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 2,
+          "value": 0,
+          "type": "meter3",
+          "x": 20,
+          "y": 50,
+          "w": 330,
+          "h": 270,
+          "label": "EM340 · ID 1",
+          "unitId": 1,
+          "nomV": 230,
+          "ratedA": 65,
+          "pUnit": "kW",
+          "vUnbal": 2,
+          "iUnbal": 10,
+          "lostPct": 50,
+          "showLL": true,
+          "showEnergy": true,
+          "view": "full",
+          "phaseColors": "iec",
+          "flagTag": "",
+          "tpl": "sdm630",
+          "pts": {
+            "v1": {
+              "src": "tag",
+              "tagName": "V_L1N"
+            },
+            "v2": {
+              "src": "tag",
+              "tagName": "V_L2N"
+            },
+            "v3": {
+              "src": "tag",
+              "tagName": "V_L3N"
+            },
+            "i1": {
+              "src": "tag",
+              "tagName": "A_L1"
+            },
+            "i2": {
+              "src": "tag",
+              "tagName": "A_L2"
+            },
+            "i3": {
+              "src": "tag",
+              "tagName": "A_L3"
+            },
+            "p1": {
+              "src": "tag",
+              "tagName": "kW_L1"
+            },
+            "p2": {
+              "src": "tag",
+              "tagName": "kW_L2"
+            },
+            "p3": {
+              "src": "tag",
+              "tagName": "kW_L3"
+            },
+            "pt": {
+              "src": "tag",
+              "tagName": "kW_sys"
+            },
+            "pf1": {
+              "src": "tag",
+              "tagName": "PF_L1"
+            },
+            "pf2": {
+              "src": "tag",
+              "tagName": "PF_L2"
+            },
+            "pf3": {
+              "src": "tag",
+              "tagName": "PF_L3"
+            },
+            "pft": {
+              "src": "tag",
+              "tagName": "PF_sys"
+            },
+            "hz": {
+              "src": "tag",
+              "tagName": "Hz"
+            },
+            "v12": {
+              "src": "tag",
+              "tagName": "V_L1L2"
+            },
+            "v23": {
+              "src": "tag",
+              "tagName": "V_L2L3"
+            },
+            "v31": {
+              "src": "tag",
+              "tagName": "V_L3L1"
+            },
+            "eimp": {
+              "src": "tag",
+              "tagName": "kWh_imp"
+            },
+            "eexp": {
+              "src": "tag",
+              "tagName": "kWh_exp"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "value": 0,
+          "type": "text",
+          "x": 370,
+          "y": 50,
+          "w": 240,
+          "h": 66,
+          "label": "kWh(+) 0034h",
+          "unit": "kWh",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "kWh_imp"
+        },
+        {
+          "id": 4,
+          "value": 0,
+          "type": "text",
+          "x": 620,
+          "y": 50,
+          "w": 240,
+          "h": 66,
+          "label": "kWh(-) 004Eh",
+          "unit": "kWh",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#9fb3cc",
+          "sourceType": "tag",
+          "tagName": "kWh_exp"
+        },
+        {
+          "id": 5,
+          "value": 0,
+          "type": "text",
+          "x": 370,
+          "y": 126,
+          "w": 155,
+          "h": 66,
+          "label": "Apparent 002Ah",
+          "unit": "kVA",
+          "decimals": 2,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "kVA_sys"
+        },
+        {
+          "id": 6,
+          "value": 0,
+          "type": "text",
+          "x": 537,
+          "y": 126,
+          "w": 155,
+          "h": 66,
+          "label": "Reactive 002Ch",
+          "unit": "kvar",
+          "decimals": 2,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "kvar_sys"
+        },
+        {
+          "id": 7,
+          "value": 0,
+          "type": "multistate",
+          "x": 705,
+          "y": 126,
+          "w": 155,
+          "h": 66,
+          "label": "Phase seq 0032h",
+          "states": "0=L1-L2-L3:#3fd28a,1=L1-L3-L2:#f0c040",
+          "sourceType": "tag",
+          "tagName": "Phase_seq"
+        },
+        {
+          "id": 8,
+          "value": 0,
+          "type": "multistate",
+          "x": 370,
+          "y": 202,
+          "w": 240,
+          "h": 66,
+          "label": "ID code 000Bh (one word)",
+          "states": "331=EM330 (CT):#9fb3cc,332=EM330:#9fb3cc,341=EM340:#3fd28a,345=ET340:#9fb3cc",
+          "sourceType": "tag",
+          "tagName": "ID_code"
+        },
+        {
+          "id": 9,
+          "value": 0,
+          "type": "text",
+          "x": 620,
+          "y": 202,
+          "w": 240,
+          "h": 66,
+          "label": "Frequency 0033h",
+          "unit": "Hz",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Hz"
+        },
+        {
+          "id": 10,
+          "value": 0,
+          "type": "multitend",
+          "x": 20,
+          "y": 340,
+          "w": 840,
+          "h": 200,
+          "label": "Phase currents (A)",
+          "maxPoints": 1200,
+          "decimals": 2,
+          "sampleMs": 1000,
+          "items": [
+            {
+              "name": "L1 000Ch",
+              "sourceType": "tag",
+              "tagName": "A_L1",
+              "color": "#b5733f",
+              "value": 0
+            },
+            {
+              "name": "L2 000Eh",
+              "sourceType": "tag",
+              "tagName": "A_L2",
+              "color": "#c9d1d9",
+              "value": 0
+            },
+            {
+              "name": "L3 0010h",
+              "sourceType": "tag",
+              "tagName": "A_L3",
+              "color": "#808080",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "V_L1N",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 0,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "V (Modicom 300001, physical 0000h)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "V_L2N",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 2,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "V (Modicom 300003, physical 0002h)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "V_L3N",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 4,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "V (Modicom 300005, physical 0004h)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "V_L1L2",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 6,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "V (Modicom 300007, physical 0006h)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "V_L2L3",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 8,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "V (Modicom 300009, physical 0008h)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "V_L3L1",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 10,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "V (Modicom 300011, physical 000Ah)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "A_L1",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 12,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "A (Modicom 300013, physical 000Ch)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "A_L2",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 14,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "A (Modicom 300015, physical 000Eh)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "A_L3",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 16,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "A (Modicom 300017, physical 0010h)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "kW_L1",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 18,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "W x10 -> kW (Modicom 300019, physical 0012h)",
+      "scale": 0.0001,
+      "offset": 0
+    },
+    {
+      "name": "kW_L2",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 20,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "W x10 -> kW (Modicom 300021, physical 0014h)",
+      "scale": 0.0001,
+      "offset": 0
+    },
+    {
+      "name": "kW_L3",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 22,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "W x10 -> kW (Modicom 300023, physical 0016h)",
+      "scale": 0.0001,
+      "offset": 0
+    },
+    {
+      "name": "kW_sys",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 40,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "W sys x10 -> kW (Modicom 300041, physical 0028h)",
+      "scale": 0.0001,
+      "offset": 0
+    },
+    {
+      "name": "kVA_sys",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 42,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "VA sys x10 -> kVA (Modicom 300043, physical 002Ah)",
+      "scale": 0.0001,
+      "offset": 0
+    },
+    {
+      "name": "kvar_sys",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 44,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "var sys x10 -> kvar (Modicom 300045, physical 002Ch)",
+      "scale": 0.0001,
+      "offset": 0
+    },
+    {
+      "name": "PF_L1",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 46,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "PF x1000, negative = export (Modicom 300047, physical 002Eh)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "PF_L2",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 47,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "PF x1000 (Modicom 300048, physical 002Fh)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "PF_L3",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 48,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "PF x1000 (Modicom 300049, physical 0030h)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "PF_sys",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 49,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "PF sys x1000 (Modicom 300050, physical 0031h)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "Phase_seq",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 50,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "0 = L1-L2-L3, 1 = L1-L3-L2 (Modicom 300051, physical 0032h)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Hz",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 51,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "Hz x10 (Modicom 300052, physical 0033h)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "kWh_imp",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 52,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "kWh(+) TOT x10 (Modicom 300053, physical 0034h)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "kWh_exp",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 78,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "kWh(-) TOT x10 (Modicom 300079, physical 004Eh)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "ID_code",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 11,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "identification code (341 = EM340), one word at a time (Modicom 300012, physical 000Bh)",
+      "scale": 1,
+      "offset": 0
+    }
+  ],
+  "script": "",
+  "scriptInterval": "1000",
+  "historianLogging": {
+    "registers": [],
+    "tags": []
+  },
+  "saved": "2026-11-08T12:00:00.000Z"
+}

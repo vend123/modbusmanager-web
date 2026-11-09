@@ -1,0 +1,760 @@
+{
+  "version": 2,
+  "polls": [
+    {
+      "name": "STW 50200",
+      "fc": 3,
+      "addr": 50199,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 50199,
+      "chartName": "STW 50200 [50199]",
+      "logFile": "log_STW_50200.txt"
+    },
+    {
+      "name": "MAV 50210",
+      "fc": 3,
+      "addr": 50209,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 50209,
+      "chartName": "MAV 50210 [50209]",
+      "logFile": "log_MAV_50210.txt"
+    },
+    {
+      "name": "16-13 Frequency (16130)",
+      "fc": 3,
+      "addr": 16129,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 16129,
+      "chartName": "16-13 Frequency (16130) [16129]",
+      "logFile": "log_16_13_Frequency_16130_.txt"
+    },
+    {
+      "name": "16-14 Motor Current (16140)",
+      "fc": 3,
+      "addr": 16139,
+      "qty": 2,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 16139,
+      "chartName": "16-14 Motor Current (16140) [16139]",
+      "logFile": "log_16_14_Motor_Current_16140_.txt"
+    },
+    {
+      "name": "16-10 Power kW (16100)",
+      "fc": 3,
+      "addr": 16099,
+      "qty": 2,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 16099,
+      "chartName": "16-10 Power kW (16100) [16099]",
+      "logFile": "log_16_10_Power_kW_16100_.txt"
+    },
+    {
+      "name": "16-12 Motor Voltage (16120)",
+      "fc": 3,
+      "addr": 16119,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 16119,
+      "chartName": "16-12 Motor Voltage (16120) [16119]",
+      "logFile": "log_16_12_Motor_Voltage_16120_.txt"
+    },
+    {
+      "name": "16-30 DC Link Voltage (16300)",
+      "fc": 3,
+      "addr": 16299,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 16299,
+      "chartName": "16-30 DC Link Voltage (16300) [16299]",
+      "logFile": "log_16_30_DC_Link_Voltage_16300_.txt"
+    },
+    {
+      "name": "16-34 Heatsink Temp (16340)",
+      "fc": 3,
+      "addr": 16339,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 16339,
+      "chartName": "16-34 Heatsink Temp (16340) [16339]",
+      "logFile": "log_16_34_Heatsink_Temp_16340_.txt"
+    },
+    {
+      "name": "16-90 Alarm Word (16900)",
+      "fc": 3,
+      "addr": 16899,
+      "qty": 2,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 16899,
+      "chartName": "16-90 Alarm Word (16900) [16899]",
+      "logFile": "log_16_90_Alarm_Word_16900_.txt"
+    },
+    {
+      "name": "16-92 Warning Word (16920)",
+      "fc": 3,
+      "addr": 16919,
+      "qty": 2,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 16919,
+      "chartName": "16-92 Warning Word (16920) [16919]",
+      "logFile": "log_16_92_Warning_Word_16920_.txt"
+    }
+  ],
+  "activePoll": 0,
+  "condColors": {},
+  "scaling": {},
+  "valueNames": {},
+  "chartSeries": [],
+  "slaveBlocks": [],
+  "dashTheme": "modern",
+  "dashFx": true,
+  "dashBgColor": "#0d1117",
+  "dashPages": [
+    {
+      "id": 1,
+      "name": "FC 102",
+      "elements": [
+        {
+          "id": 1,
+          "value": 0,
+          "type": "statictext",
+          "x": 20,
+          "y": 10,
+          "w": 840,
+          "h": 30,
+          "text": "Chilled-water pump P-2  ·  Danfoss VLT FC 102  ·  Modbus RTU, read-only",
+          "fontSize": 20,
+          "bold": true,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 2,
+          "value": 0,
+          "type": "drive",
+          "x": 20,
+          "y": 50,
+          "w": 300,
+          "h": 120,
+          "label": "P-2 FC 102",
+          "unit": "%",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "powerUnit": "kW",
+          "fbTimeout": 10,
+          "startVal": 1,
+          "stopVal": 0,
+          "resetVal": 1,
+          "resetBack": 0,
+          "resetMs": 1000,
+          "items": [
+            {
+              "role": "run",
+              "name": "RUN",
+              "sourceType": "register",
+              "slaveId": 1,
+              "regType": "holdingRegisters",
+              "address": 50199,
+              "bit": 11
+            },
+            {
+              "role": "ready",
+              "name": "READY",
+              "sourceType": "register",
+              "slaveId": 1,
+              "regType": "holdingRegisters",
+              "address": 50199,
+              "bit": 1
+            },
+            {
+              "role": "atSp",
+              "name": "ATSP",
+              "sourceType": "register",
+              "slaveId": 1,
+              "regType": "holdingRegisters",
+              "address": 50199,
+              "bit": 8
+            },
+            {
+              "role": "warn",
+              "name": "WARN",
+              "sourceType": "register",
+              "slaveId": 1,
+              "regType": "holdingRegisters",
+              "address": 50199,
+              "bit": 7
+            },
+            {
+              "role": "fault",
+              "name": "FAULT",
+              "sourceType": "register",
+              "slaveId": 1,
+              "regType": "holdingRegisters",
+              "address": 50199,
+              "bit": 3
+            },
+            {
+              "role": "hand",
+              "name": "HAND"
+            },
+            {
+              "role": "faultCode",
+              "name": "CODE"
+            },
+            {
+              "role": "freq",
+              "name": "HZ",
+              "sourceType": "tag",
+              "tagName": "Frequency_Hz"
+            },
+            {
+              "role": "current",
+              "name": "A",
+              "sourceType": "tag",
+              "tagName": "Motor_Current_A"
+            },
+            {
+              "role": "power",
+              "name": "P",
+              "sourceType": "tag",
+              "tagName": "Power_kW"
+            },
+            {
+              "role": "speedAct",
+              "name": "SPEED"
+            },
+            {
+              "role": "ref",
+              "name": "REF"
+            },
+            {
+              "role": "hours",
+              "name": "H"
+            },
+            {
+              "role": "runCmd",
+              "name": "RUN CMD"
+            },
+            {
+              "role": "resetCmd",
+              "name": "RESET"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "value": 0,
+          "type": "text",
+          "x": 20,
+          "y": 180,
+          "w": 145,
+          "h": 56,
+          "label": "Motor voltage",
+          "unit": "V",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Motor_Voltage_V"
+        },
+        {
+          "id": 4,
+          "value": 0,
+          "type": "text",
+          "x": 175,
+          "y": 180,
+          "w": 145,
+          "h": 56,
+          "label": "DC link",
+          "unit": "V",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "DC_Link_V"
+        },
+        {
+          "id": 5,
+          "value": 0,
+          "type": "text",
+          "x": 20,
+          "y": 244,
+          "w": 145,
+          "h": 56,
+          "label": "MAV 50210",
+          "unit": "%",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "MAV_pct"
+        },
+        {
+          "id": 6,
+          "value": 0,
+          "type": "text",
+          "x": 175,
+          "y": 244,
+          "w": 145,
+          "h": 56,
+          "label": "Heatsink",
+          "unit": "°C",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Heatsink_C"
+        },
+        {
+          "id": 7,
+          "value": 0,
+          "type": "bitword",
+          "x": 340,
+          "y": 50,
+          "w": 300,
+          "h": 330,
+          "label": "Status word 50200 (FC profile)",
+          "sourceType": "register",
+          "slaveId": 1,
+          "regType": "holdingRegisters",
+          "address": 50199,
+          "wsize": 16,
+          "wordOrder": "hl",
+          "view": "all",
+          "bitCols": 1,
+          "showNums": true,
+          "emptyText": "",
+          "bits": [
+            {
+              "bit": 0,
+              "name": "Control ready",
+              "kind": "ok"
+            },
+            {
+              "bit": 1,
+              "name": "Drive ready",
+              "kind": "ok"
+            },
+            {
+              "bit": 2,
+              "name": "Enable (no coasting)",
+              "kind": "ok"
+            },
+            {
+              "bit": 3,
+              "name": "Trip",
+              "kind": "alarm"
+            },
+            {
+              "bit": 4,
+              "name": "Error (no trip)",
+              "kind": "warn"
+            },
+            {
+              "bit": 6,
+              "name": "Triplock",
+              "kind": "alarm"
+            },
+            {
+              "bit": 7,
+              "name": "Warning",
+              "kind": "warn"
+            },
+            {
+              "bit": 8,
+              "name": "Speed = reference",
+              "kind": "info"
+            },
+            {
+              "bit": 9,
+              "name": "Bus control",
+              "kind": "info"
+            },
+            {
+              "bit": 10,
+              "name": "Frequency limit OK",
+              "kind": "ok"
+            },
+            {
+              "bit": 11,
+              "name": "In operation",
+              "kind": "ok"
+            },
+            {
+              "bit": 12,
+              "name": "Stopped, auto start",
+              "kind": "info"
+            },
+            {
+              "bit": 13,
+              "name": "Voltage exceeded",
+              "kind": "warn"
+            },
+            {
+              "bit": 14,
+              "name": "Torque exceeded",
+              "kind": "warn"
+            },
+            {
+              "bit": 15,
+              "name": "Timer exceeded",
+              "kind": "warn"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "value": 0,
+          "type": "text",
+          "x": 660,
+          "y": 50,
+          "w": 200,
+          "h": 56,
+          "label": "Alarm word 16-90",
+          "unit": "",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#9fb3cc",
+          "sourceType": "tag",
+          "tagName": "Alarm_Word"
+        },
+        {
+          "id": 9,
+          "value": 0,
+          "type": "text",
+          "x": 660,
+          "y": 126,
+          "w": 200,
+          "h": 56,
+          "label": "Warning word 16-92",
+          "unit": "",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#9fb3cc",
+          "sourceType": "tag",
+          "tagName": "Warning_Word"
+        },
+        {
+          "id": 10,
+          "value": 0,
+          "type": "multitend",
+          "x": 20,
+          "y": 390,
+          "w": 840,
+          "h": 150,
+          "label": "Frequency (Hz) and motor current (A)",
+          "maxPoints": 1200,
+          "decimals": 2,
+          "sampleMs": 1000,
+          "items": [
+            {
+              "name": "Frequency 16-13",
+              "sourceType": "tag",
+              "tagName": "Frequency_Hz",
+              "color": "#00d4aa",
+              "value": 0
+            },
+            {
+              "name": "Motor current 16-14",
+              "sourceType": "tag",
+              "tagName": "Motor_Current_A",
+              "color": "#f0c040",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "STW",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50199,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "status word, FC profile (register 50200) (wire 50199)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "MAV_pct",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50209,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "main actual value %, 16384 = 100 % (register 50210) (wire 50209)",
+      "scale": 0.006103515625,
+      "offset": 0
+    },
+    {
+      "name": "Frequency_Hz",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 16129,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "16-13 Frequency, Uint16, conversion index -1 (wire 16129)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Motor_Current_A",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 16139,
+      "dataType": "int32",
+      "wordOrder": "big",
+      "description": "16-14 Motor Current, Int32, index -2 (wire 16139)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "Power_kW",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 16099,
+      "dataType": "int32",
+      "wordOrder": "big",
+      "description": "16-10 Power [kW], Int32, index 1 (10 W steps) (wire 16099)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "Motor_Voltage_V",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 16119,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "16-12 Motor Voltage, Uint16, index -1 (wire 16119)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "DC_Link_V",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 16299,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "16-30 DC Link Voltage, Uint16, index 0 (wire 16299)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Heatsink_C",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 16339,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "16-34 Heatsink Temp., degC (wire 16339)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Alarm_Word",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 16899,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "16-90 Alarm Word, Uint32 (wire 16899)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Warning_Word",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 16919,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "16-92 Warning Word, Uint32 (wire 16919)",
+      "scale": 1,
+      "offset": 0
+    }
+  ],
+  "script": "",
+  "scriptInterval": "1000",
+  "historianLogging": {
+    "registers": [],
+    "tags": []
+  },
+  "saved": "2026-11-08T12:00:00.000Z"
+}

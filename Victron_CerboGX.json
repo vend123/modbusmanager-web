@@ -1,0 +1,654 @@
+{
+  "version": 2,
+  "polls": [
+    {
+      "name": "System 817-826 (consumption, grid, input)",
+      "fc": 3,
+      "addr": 817,
+      "qty": 10,
+      "slaveId": 100,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 817,
+      "chartName": "System 817-826 (consumption, grid, input) [817]",
+      "logFile": "log_System_817_826_consumption_grid_input_.txt"
+    },
+    {
+      "name": "System 840-846 (battery)",
+      "fc": 3,
+      "addr": 840,
+      "qty": 7,
+      "slaveId": 100,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 840,
+      "chartName": "System 840-846 (battery) [840]",
+      "logFile": "log_System_840_846_battery_.txt"
+    },
+    {
+      "name": "System 850-851 (PV DC)",
+      "fc": 3,
+      "addr": 850,
+      "qty": 2,
+      "slaveId": 100,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 850,
+      "chartName": "System 850-851 (PV DC) [850]",
+      "logFile": "log_System_850_851_PV_DC_.txt"
+    },
+    {
+      "name": "VE.Bus 3-33 (MultiPlus, unit 227)",
+      "fc": 3,
+      "addr": 3,
+      "qty": 31,
+      "slaveId": 227,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 3,
+      "chartName": "VE.Bus 3-33 (MultiPlus, unit 227) [3]",
+      "logFile": "log_VE_Bus_3_33_MultiPlus_unit_227_.txt"
+    }
+  ],
+  "activePoll": 0,
+  "condColors": {},
+  "scaling": {},
+  "valueNames": {},
+  "chartSeries": [],
+  "slaveBlocks": [],
+  "dashTheme": "modern",
+  "dashFx": true,
+  "dashBgColor": "#0d1117",
+  "dashPages": [
+    {
+      "id": 1,
+      "name": "Cerbo GX",
+      "elements": [
+        {
+          "id": 1,
+          "value": 0,
+          "type": "statictext",
+          "x": 20,
+          "y": 10,
+          "w": 840,
+          "h": 30,
+          "text": "House ESS  ·  Victron Cerbo GX  ·  Modbus TCP 502, read-only",
+          "fontSize": 20,
+          "bold": true,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 2,
+          "value": 0,
+          "type": "pvflow",
+          "x": 20,
+          "y": 50,
+          "w": 380,
+          "h": 330,
+          "label": "Energy flow (unit 100)",
+          "unitId": 100,
+          "sBatt": "charge",
+          "sGrid": "buy",
+          "showDay": false,
+          "animate": true,
+          "idleW": 20,
+          "maxKw": 6,
+          "pts": {
+            "pv1": {
+              "src": "tag",
+              "tagName": "PV_DC_W"
+            },
+            "batt": {
+              "src": "tag",
+              "tagName": "Bat_W"
+            },
+            "soc": {
+              "src": "tag",
+              "tagName": "SOC"
+            },
+            "grid": {
+              "src": "tag",
+              "tagName": "Grid_W"
+            },
+            "load": {
+              "src": "tag",
+              "tagName": "Load_W"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "value": 0,
+          "type": "text",
+          "x": 420,
+          "y": 50,
+          "w": 155,
+          "h": 66,
+          "label": "Battery 840",
+          "unit": "V",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Bat_V"
+        },
+        {
+          "id": 4,
+          "value": 0,
+          "type": "text",
+          "x": 587,
+          "y": 50,
+          "w": 155,
+          "h": 66,
+          "label": "Battery 841",
+          "unit": "A",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Bat_A"
+        },
+        {
+          "id": 5,
+          "value": 0,
+          "type": "multistate",
+          "x": 754,
+          "y": 50,
+          "w": 106,
+          "h": 66,
+          "label": "State 844",
+          "states": "0=Idle:#9fb3cc,1=Charging:#3fd28a,2=Discharging:#f0c040",
+          "sourceType": "tag",
+          "tagName": "Bat_State"
+        },
+        {
+          "id": 6,
+          "value": 0,
+          "type": "multistate",
+          "x": 420,
+          "y": 126,
+          "w": 220,
+          "h": 66,
+          "label": "Active input 826",
+          "states": "0=Unknown:#9fb3cc,1=Grid:#3fd28a,2=Generator:#f0c040,3=Shore power:#3fd28a,240=Not connected:#f85149",
+          "sourceType": "tag",
+          "tagName": "Input_Source"
+        },
+        {
+          "id": 7,
+          "value": 0,
+          "type": "multistate",
+          "x": 650,
+          "y": 126,
+          "w": 210,
+          "h": 66,
+          "label": "VE.Bus state 31 (unit 227)",
+          "states": "0=Off:#9fb3cc,1=Low power:#9fb3cc,2=Fault:#f85149,3=Bulk:#3fd28a,4=Absorption:#3fd28a,5=Float:#3fd28a,6=Storage:#3fd28a,7=Equalize:#f0c040,8=Passthru:#58a6ff,9=Inverting:#f0c040,10=Power assist:#f0c040,11=Power supply:#58a6ff,252=External control:#58a6ff",
+          "sourceType": "tag",
+          "tagName": "VB_State"
+        },
+        {
+          "id": 8,
+          "value": 0,
+          "type": "text",
+          "x": 420,
+          "y": 202,
+          "w": 155,
+          "h": 66,
+          "label": "AC in 3 (unit 227)",
+          "unit": "V",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "VB_In_V"
+        },
+        {
+          "id": 9,
+          "value": 0,
+          "type": "text",
+          "x": 587,
+          "y": 202,
+          "w": 155,
+          "h": 66,
+          "label": "AC out 15 (unit 227)",
+          "unit": "V",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "VB_Out_V"
+        },
+        {
+          "id": 10,
+          "value": 0,
+          "type": "text",
+          "x": 754,
+          "y": 202,
+          "w": 106,
+          "h": 66,
+          "label": "Input limit 22",
+          "unit": "A",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "VB_In_Limit"
+        },
+        {
+          "id": 11,
+          "value": 0,
+          "type": "multistate",
+          "x": 420,
+          "y": 278,
+          "w": 220,
+          "h": 66,
+          "label": "VE.Bus error 32",
+          "states": "0=No error:#3fd28a",
+          "sourceType": "tag",
+          "tagName": "VB_Error"
+        },
+        {
+          "id": 12,
+          "value": 0,
+          "type": "multistate",
+          "x": 650,
+          "y": 278,
+          "w": 210,
+          "h": 66,
+          "label": "Switch 33",
+          "states": "1=Charger only:#9fb3cc,2=Inverter only:#9fb3cc,3=On:#3fd28a,4=Off:#f85149",
+          "sourceType": "tag",
+          "tagName": "VB_Switch"
+        },
+        {
+          "id": 13,
+          "value": 0,
+          "type": "multitend",
+          "x": 20,
+          "y": 395,
+          "w": 840,
+          "h": 145,
+          "label": "PV, battery and grid (W)",
+          "maxPoints": 1200,
+          "decimals": 0,
+          "sampleMs": 1000,
+          "items": [
+            {
+              "name": "PV DC 850",
+              "sourceType": "tag",
+              "tagName": "PV_DC_W",
+              "color": "#f0c040",
+              "value": 0
+            },
+            {
+              "name": "Battery 842",
+              "sourceType": "tag",
+              "tagName": "Bat_W",
+              "color": "#3fd28a",
+              "value": 0
+            },
+            {
+              "name": "Grid 820-822",
+              "sourceType": "tag",
+              "tagName": "Grid_W",
+              "color": "#58a6ff",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "AC_Cons_L1",
+      "type": "register",
+      "slaveId": 100,
+      "regType": "holdingRegisters",
+      "address": 817,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "AC consumption L1 W (unit 100, register 817)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "AC_Cons_L2",
+      "type": "register",
+      "slaveId": 100,
+      "regType": "holdingRegisters",
+      "address": 818,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "AC consumption L2 W (unit 100, register 818)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "AC_Cons_L3",
+      "type": "register",
+      "slaveId": 100,
+      "regType": "holdingRegisters",
+      "address": 819,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "AC consumption L3 W (unit 100, register 819)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Grid_L1",
+      "type": "register",
+      "slaveId": 100,
+      "regType": "holdingRegisters",
+      "address": 820,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "grid L1 W, + import (unit 100, register 820)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Grid_L2",
+      "type": "register",
+      "slaveId": 100,
+      "regType": "holdingRegisters",
+      "address": 821,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "grid L2 W (unit 100, register 821)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Grid_L3",
+      "type": "register",
+      "slaveId": 100,
+      "regType": "holdingRegisters",
+      "address": 822,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "grid L3 W (unit 100, register 822)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Input_Source",
+      "type": "register",
+      "slaveId": 100,
+      "regType": "holdingRegisters",
+      "address": 826,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "0 unknown, 1 grid, 2 generator, 3 shore, 240 not connected (unit 100, register 826)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Bat_V",
+      "type": "register",
+      "slaveId": 100,
+      "regType": "holdingRegisters",
+      "address": 840,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "battery voltage, scale 10 (unit 100, register 840)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Bat_A",
+      "type": "register",
+      "slaveId": 100,
+      "regType": "holdingRegisters",
+      "address": 841,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "battery current, scale 10 (unit 100, register 841)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Bat_W",
+      "type": "register",
+      "slaveId": 100,
+      "regType": "holdingRegisters",
+      "address": 842,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "battery power W, + charging (unit 100, register 842)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "SOC",
+      "type": "register",
+      "slaveId": 100,
+      "regType": "holdingRegisters",
+      "address": 843,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "state of charge % (unit 100, register 843)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Bat_State",
+      "type": "register",
+      "slaveId": 100,
+      "regType": "holdingRegisters",
+      "address": 844,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "0 idle, 1 charging, 2 discharging (unit 100, register 844)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "PV_DC_W",
+      "type": "register",
+      "slaveId": 100,
+      "regType": "holdingRegisters",
+      "address": 850,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "PV DC-coupled power W (unit 100, register 850)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "VB_In_V",
+      "type": "register",
+      "slaveId": 227,
+      "regType": "holdingRegisters",
+      "address": 3,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VE.Bus input voltage L1, scale 10 (unit 227, register 3)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "VB_In_Hz",
+      "type": "register",
+      "slaveId": 227,
+      "regType": "holdingRegisters",
+      "address": 9,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "input frequency, scale 100 (unit 227, register 9)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "VB_In_W",
+      "type": "register",
+      "slaveId": 227,
+      "regType": "holdingRegisters",
+      "address": 12,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "input power L1, scale 0.1 = raw x 10 W (unit 227, register 12)",
+      "scale": 10,
+      "offset": 0
+    },
+    {
+      "name": "VB_Out_V",
+      "type": "register",
+      "slaveId": 227,
+      "regType": "holdingRegisters",
+      "address": 15,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "output voltage L1, scale 10 (unit 227, register 15)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "VB_Out_W",
+      "type": "register",
+      "slaveId": 227,
+      "regType": "holdingRegisters",
+      "address": 23,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "output power L1, scale 0.1 (unit 227, register 23)",
+      "scale": 10,
+      "offset": 0
+    },
+    {
+      "name": "VB_In_Limit",
+      "type": "register",
+      "slaveId": 227,
+      "regType": "holdingRegisters",
+      "address": 22,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "active input current limit A, scale 10 (unit 227, register 22)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "VB_State",
+      "type": "register",
+      "slaveId": 227,
+      "regType": "holdingRegisters",
+      "address": 31,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VE.Bus state (unit 227, register 31)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "VB_Error",
+      "type": "register",
+      "slaveId": 227,
+      "regType": "holdingRegisters",
+      "address": 32,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VE.Bus error (unit 227, register 32)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "VB_Switch",
+      "type": "register",
+      "slaveId": 227,
+      "regType": "holdingRegisters",
+      "address": 33,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "switch position (unit 227, register 33)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Grid_W",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "grid L1 + L2 + L3"
+    },
+    {
+      "name": "Load_W",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "AC consumption L1 + L2 + L3"
+    }
+  ],
+  "script": "(* System totals: the GX gives grid and consumption per phase *)\nGrid_W := Grid_L1 + Grid_L2 + Grid_L3;\nLoad_W := AC_Cons_L1 + AC_Cons_L2 + AC_Cons_L3;\n",
+  "scriptInterval": "1000",
+  "historianLogging": {
+    "registers": [],
+    "tags": []
+  },
+  "saved": "2026-11-08T12:00:00.000Z"
+}

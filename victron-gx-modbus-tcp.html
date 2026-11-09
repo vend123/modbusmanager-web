@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Victron Cerbo GX Modbus TCP: Unit-IDs, Registers, Scaling</title>
+<meta name="description" content="Victron GX Modbus TCP: enable the server, Unit-ID 100 for system data, 227 for the MultiPlus, registers 840-850, scale factors, 0x0A/0x0B. Free workspace.">
+<meta name="keywords" content="Victron Modbus TCP, Cerbo GX Modbus, Victron GX Modbus registers, Victron unit ID 100, Victron Modbus register list, CCGX Modbus TCP, Venus GX Modbus, Victron MultiPlus Modbus, Victron 0x0B exception, Victron ESS Modbus">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/victron-gx-modbus-tcp.html">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:title" content="Victron Cerbo GX Modbus TCP: Unit-IDs, Registers, Scaling">
+<meta property="og:description" content="Read a Victron Cerbo GX, CCGX or Venus GX over Modbus TCP: enabling the server, which Unit-ID is which device, the system registers, dividing by the scale factor and what each exception means. Free ModbusManager workspace.">
+<meta property="og:url" content="https://modbusmanager.com/victron-gx-modbus-tcp.html">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://modbusmanager.com/og-victron-gx.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:published_time" content="2026-11-08T00:00:00Z">
+<meta property="article:section" content="Guides">
+<meta property="article:tag" content="Victron Energy">
+<meta property="article:tag" content="Modbus">
+<meta property="article:tag" content="Solar">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Victron Cerbo GX Modbus TCP: Unit-IDs, Registers, Scaling">
+<meta name="twitter:description" content="Read a Victron Cerbo GX, CCGX or Venus GX over Modbus TCP: enabling the server, which Unit-ID is which device, the system registers, dividing by the scale factor and what each exception means. Free ModbusManager workspace.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-victron-gx.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Victron Cerbo GX Modbus TCP: Unit-IDs, Registers and Scale Factors",
+  "description": "Read a Victron Cerbo GX, CCGX or Venus GX over Modbus TCP: enabling the server, which Unit-ID is which device, the system registers, dividing by the scale factor and what each exception means. Free ModbusManager workspace.",
+  "url": "https://modbusmanager.com/victron-gx-modbus-tcp.html",
+  "image": "https://modbusmanager.com/og-victron-gx.png",
+  "datePublished": "2026-11-08",
+  "author": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "keywords": "Victron Modbus TCP, Cerbo GX Modbus, Victron GX Modbus registers, Victron unit ID 100, Victron Modbus register list, CCGX Modbus TCP, Venus GX Modbus, Victron MultiPlus Modbus, Victron 0x0B exception, Victron ESS Modbus"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which Unit-ID does a Victron Cerbo GX use for system data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Unit-ID 100 for com.victronenergy.system: battery 840–846, PV 850, grid 820–822, consumption 817–819. Unit-ID 0 maps to the same data, but Victron recommends 100."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I enable Modbus TCP on a Victron GX?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is disabled by default. Enable the Modbus TCP server under Settings → Integrations (older firmware: Settings → Services). The same menu lists the Unit-ID of every connected device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does exception 0x0B mean from a Victron GX?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Unit-ID is not in the GX's mapping list. 0x0A means it is mapped but no device answers on that port, and 0x02 means the Unit-ID is right but a requested register does not exist."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How are Victron Modbus values scaled?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Divide by the scale factor in Victron's register list: battery voltage 840 has factor 10 (526 = 52.6 V); VE.Bus power has factor 0.1, so the raw value is multiplied by 10."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the Unit-ID of the MultiPlus on a Cerbo GX?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Victron's preferred ID for the Cerbo GX VE.Bus port is 227 (CCGX 246, Venus GX 242, MultiPlus-II GX 228). Since Venus OS 2.60 IDs are assigned dynamically; check Available services on your GX."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+.article-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 5rem}
+.breadcrumb{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--muted);margin-bottom:2rem}
+.breadcrumb a{color:var(--muted);text-decoration:none}
+.breadcrumb a:hover{color:var(--ink)}
+h1{font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;line-height:1.05;text-transform:uppercase;letter-spacing:0.01em;margin-bottom:1rem}
+h2{font-family:'Saira Condensed',sans-serif;font-size:1.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin:2.5rem 0 0.8rem;padding-top:0.5rem;border-top:2px solid var(--ink)}
+h3{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.03em;margin:1.5rem 0 0.5rem;color:var(--amber-ink)}
+p{font-size:0.93rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+ul{font-size:0.93rem;color:var(--body);line-height:1.75;margin:0 0 1rem 1.2rem;padding-left:0.6rem}
+li{margin-bottom:0.4rem}
+.lead{font-size:1.05rem;color:var(--ink);line-height:1.7;margin-bottom:2rem;border-left:3px solid var(--safety);padding-left:1rem}
+code{font-family:'IBM Plex Mono',monospace;font-size:0.82rem;background:#fff;border:1px solid var(--steel);padding:1px 5px;border-radius:2px}
+pre{font-family:'IBM Plex Mono',monospace;font-size:0.8rem;background:var(--ink);color:#E6E8E3;padding:1.2rem 1.4rem;border-radius:3px;overflow-x:auto;margin:1.2rem 0;line-height:1.6}
+pre .c{color:#888}
+pre .v{color:#F2A900}
+pre .k{color:#7ec8e3}
+table{width:100%;border-collapse:collapse;font-size:0.83rem;margin:1.2rem 0;background:var(--plate);border:2px solid var(--ink)}
+th{text-align:left;padding:0.65rem 0.9rem;border-bottom:2px solid var(--ink);background:var(--enclosure2);font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted)}
+td{padding:0.6rem 0.9rem;border-bottom:1px solid var(--steel);color:var(--body)}
+tr:hover td{background:#ECEEE9}
+td.mono{font-family:'IBM Plex Mono',monospace;font-size:0.78rem}
+td.formula{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--amber-ink)}
+.callout{background:var(--plate);border:1.5px solid var(--ink);border-left:4px solid var(--safety);padding:1rem 1.2rem;border-radius:2px;margin:1.5rem 0;font-size:0.88rem;color:var(--body);line-height:1.6}
+.callout strong{color:var(--ink)}
+.callout.tip{border-left-color:var(--run)}
+.callout.warn{border-left-color:var(--bad)}
+.step-num{display:inline-block;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.85rem;background:var(--ink);color:var(--safety);padding:2px 8px;border-radius:2px;margin-right:8px;letter-spacing:0.05em}
+.cta-box{background:var(--ink);color:var(--enclosure);padding:2rem 2.2rem;border-radius:3px;margin:3rem 0;display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
+.cta-box h3{color:var(--safety);margin:0 0 0.4rem;font-size:1.2rem;border:none;padding:0}
+.cta-box p{color:#B9BDB6;font-size:0.85rem;margin:0}
+.cta-box a{background:var(--safety);color:var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.cta-box a:hover{background:#fff}
+.download-box{border:2px solid var(--ink);background:var(--enclosure2);padding:1.4rem 1.8rem;border-radius:3px;margin:2rem 0;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.download-box h3{margin:0 0 0.3rem;font-size:1rem;border:none;padding:0;font-family:'IBM Plex Mono',monospace;color:var(--ink)}
+.download-box p{margin:0;font-size:0.82rem;color:var(--muted);max-width:46ch}
+.download-box a{background:var(--ink);color:var(--enclosure);padding:0.6rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.download-box a:hover{background:var(--safety);color:var(--ink)}
+footer{border-top:2px solid var(--ink);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;color:var(--muted);flex-wrap:wrap;gap:1rem;background:var(--enclosure2)}
+.footer-logo{font-family:'Saira Condensed',sans-serif;color:var(--ink);font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--ink)}
+@media(max-width:640px){nav .nav-links{display:none}.article-wrap{padding:2rem 1.2rem 4rem}h1{font-size:2rem}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}td,th{white-space:normal;word-break:break-word}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+
+@media(max-width:680px){pre,code{white-space:pre-wrap;word-break:break-word;max-width:100%;overflow-x:auto}}
+
+/* family slogan band, slim (2026-10-22) */
+.slogan-band.slim{background:var(--safety,#F2A900);border-bottom:2px solid var(--ink,#16181A);padding:0.5rem 1rem;text-align:center;color:var(--ink,#16181A);display:flex;gap:0.3rem 1rem;justify-content:center;align-items:baseline;flex-wrap:wrap}
+.slogan-band.slim .sb-main{font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.3rem;line-height:1.1;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim .sb-sub{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim a{color:var(--ink,#16181A);font-weight:700}
+@media(max-width:768px){.slogan-band.slim .sb-main{font-size:1.05rem}.slogan-band.slim .sb-sub{display:none}}
+</style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/#guides"},{"@type": "ListItem","position": 3,"name": "Victron GX Modbus TCP","item": "https://modbusmanager.com/victron-gx-modbus-tcp.html"}]}
+</script>
+<style id="site-nav">
+/* site menu (tools/web-research/site-nav.js) */
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop.nd-has>.nav-drop-label{color:var(--ink,#16181A);font-weight:600}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;display:none;z-index:200}
+.nav-drop:hover>.nav-drop-menu,.nav-drop:focus-within>.nav-drop-menu{display:block}
+.nd-box{display:flex;flex-direction:column;background:var(--enclosure2,#e8e9e4);border:1px solid var(--ink,#16181A);border-radius:3px;box-shadow:0 6px 20px rgba(0,0,0,0.18);padding:0.35rem 0;min-width:210px}
+.nav-drop-menu a,.nd-glabel{display:flex;align-items:center;gap:0.55rem;padding:0.45rem 1rem;white-space:nowrap;text-transform:none;font-family:'IBM Plex Mono',monospace;font-size:0.78rem;letter-spacing:0.02em;color:var(--ink,#16181A);text-decoration:none;background:none;border:none;text-align:left;cursor:pointer;width:100%;box-sizing:border-box}
+.nav-drop-menu a:hover,.nd-glabel:hover,.nd-group:hover>.nd-glabel,.nd-group.open>.nd-glabel{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+.nav-drop-menu .ni{display:inline-block;width:1.25rem;text-align:center;flex:none;font-size:0.9rem;line-height:1}
+.nav-drop-menu a.nd-sub{padding-left:2.1rem;font-size:0.75rem}
+.nav-drop-menu .nd-hot{color:#9A6700;font-weight:600}
+.nav-drop-menu a[aria-current="page"]{font-weight:700;box-shadow:inset 3px 0 0 var(--safety,#F2A900)}
+.nd-group.nd-has>.nd-glabel{font-weight:700}
+.nd-arrow{margin-left:auto;padding-left:1rem;font-size:0.7rem;color:var(--muted,#5F5E5A);display:inline-block;transform-origin:calc(50% + 0.5rem) 50%}
+.nd-group{position:relative}
+.nd-flyout{display:none;position:absolute;left:100%;top:-0.4rem;padding-left:0.25rem;z-index:210}
+.nd-group:hover>.nd-flyout,.nd-group:focus-within>.nd-flyout,.nd-group.open>.nd-flyout{display:block}
+.nd-head{font-family:'IBM Plex Mono',monospace;font-size:0.64rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted,#5F5E5A);padding:0.55rem 1rem 0.15rem;border-top:1px solid var(--steel,#B9BDB6);margin-top:0.25rem}
+.nd-box>.nd-head:first-child{border-top:none;margin-top:0}
+@media(max-width:768px){
+nav .nav-links.open{align-items:stretch;text-align:left}
+nav .nav-links.open .nav-drop{padding-bottom:0;margin-bottom:0}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu{position:static;display:block;padding:0;margin:0.3rem 0 0.2rem}
+nav .nav-links.open .nd-box{border:none;box-shadow:none;background:none;padding:0;min-width:0}
+nav .nav-links.open .nav-drop-menu a,nav .nav-links.open .nd-glabel{padding:0.4rem 0;font-size:0.82rem;white-space:normal}
+nav .nav-links.open .nav-drop-menu a.nd-sub{padding-left:1.8rem}
+nav .nav-links.open .nd-flyout a[aria-current="page"]{padding-left:0.6rem}
+nav .nav-links.open .nd-flyout{position:static;padding:0 0 0.3rem 1.8rem;display:none}
+nav .nav-links.open .nd-group:hover>.nd-flyout,nav .nav-links.open .nd-group:focus-within>.nd-flyout{display:none}
+nav .nav-links.open .nd-group.open>.nd-flyout{display:block}
+nav .nav-links.open .nd-group.open>.nd-glabel,nav .nav-links.open .nd-group:hover>.nd-glabel{background:none}
+nav .nav-links.open .nd-group.open .nd-arrow{transform:rotate(90deg)}
+nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label" tabindex="0">Features &#9662;</span>
+      <div class="nav-drop-menu"><div class="nd-box">
+        <a href="/modbus-scanner.html" class="nd-hot"><span class="ni">&#128269;&#65039;</span>Modbus Scanner</a>
+        <a href="/modbus-rtu-over-tcp.html" class="nd-sub"><span class="ni">&#128257;&#65039;</span>RTU over TCP</a>
+        <a href="/modbus-tcp-security-tls.html" class="nd-sub"><span class="ni">&#128274;&#65039;</span>Modbus TCP Security (TLS)</a>
+        <a href="/modbus-hmi-dashboard.html"><span class="ni">&#128202;&#65039;</span>HMI Dashboard</a>
+        <a href="/modbus-hmi-runtime.html" class="nd-sub"><span class="ni">&#128421;&#65039;</span>HMI Runtime (OEM)</a>
+        <a href="/modbus-data-logger-software.html"><span class="ni">&#128200;&#65039;</span>Data Logger</a>
+        <a href="/modbus-rtu-rs485-data-logger.html" class="nd-sub"><span class="ni">&#128223;&#65039;</span>RTU / RS-485 Logging</a>
+        <a href="/modbus-logging-interval-deadband.html" class="nd-sub"><span class="ni">&#9201;&#65039;</span>Interval &amp; Deadband</a>
+        <a href="/modbus-to-csv-logging.html" class="nd-sub"><span class="ni">&#128196;&#65039;</span>CSV Export</a>
+        <a href="/modbus-alarm-software.html"><span class="ni">&#128276;&#65039;</span>Alarms</a>
+        <a href="/modbus-gateway-software.html"><span class="ni">&#128256;&#65039;</span>Gateway</a>
+        <a href="/modbus-to-mqtt.html" class="nd-sub"><span class="ni">&#128225;&#65039;</span>Modbus to MQTT</a>
+        <a href="/modbus-structured-text-scripting.html"><span class="ni">&#127991;&#65039;</span>Tags &amp; Structured Text</a>
+      </div></div>
+    </li>
+    <li class="nav-drop nd-has">
+      <span class="nav-drop-label" tabindex="0">Guides &#9662;</span>
+      <div class="nav-drop-menu"><div class="nd-box">
+        <div class="nd-group nd-has">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9728;&#65039;</span>Solar &amp; inverters<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+            <a href="/huawei-sun2000-modbus.html">Huawei SUN2000</a>
+            <a href="/huawei-sun2000-home-assistant.html">SUN2000 &rarr; Home Assistant</a>
+            <a href="/sungrow-inverter-modbus.html">Sungrow Inverters</a>
+            <a href="/sunspec-modbus-sma-fronius-solaredge.html">SunSpec: SMA, Fronius, SolarEdge</a>
+            <a href="/victron-gx-modbus-tcp.html" aria-current="page">Victron Cerbo GX</a>
+            <a href="/goodwe-et-hybrid-modbus.html">GoodWe ET Hybrid</a>
+            <a href="/deye-sunsynk-growatt-modbus.html">Deye, Sunsynk &amp; Growatt</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9889;&#65039;</span>Energy meters<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+            <a href="/schneider-pm3200-modbus.html">Schneider PM3250</a>
+            <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+            <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+            <a href="/eastron-sdm230-sdm72-modbus.html">Eastron SDM230 / SDM72</a>
+            <a href="/carlo-gavazzi-em24-em340-modbus.html">Carlo Gavazzi EM340 / EM24</a>
+            <a href="/janitza-umg-96-pa-modbus.html">Janitza UMG 96-PA</a>
+            <a href="/wattnode-modbus.html">WattNode</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9881;&#65039;</span>Drives &amp; EC fans<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+            <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+            <a href="/abb-ach580-modbus.html">ABB ACH580</a>
+            <a href="/danfoss-vlt-fc102-fc302-modbus.html">Danfoss FC 102 / FC 302</a>
+            <a href="/schneider-altivar-atv320-atv630-modbus.html">Schneider ATV320 / ATV630</a>
+            <a href="/siemens-sinamics-g120-modbus.html">Siemens SINAMICS G120</a>
+            <a href="/powerflex-525-modbus.html">PowerFlex 525</a>
+            <a href="/durapulse-gs20-modbus.html">DURApulse GS20</a>
+            <a href="/yaskawa-v1000-modbus.html">Yaskawa V1000</a>
+            <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+            <a href="/modbus-vfd-speed-reference.html">VFD Speed Registers</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#127981;&#65039;</span>Siemens PLCs<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200 HMI</a>
+            <a href="/siemens-s7-put-get.html">Siemens S7 PUT/GET</a>
+          </div></div>
+        </div>
+        <a href="/manual.html"><span class="ni">&#128214;&#65039;</span>Documentation</a>
+        <a href="/modbus-poll-alternative.html"><span class="ni">&#9878;&#65039;</span>vs Modbus Poll</a>
+      </div></div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+    <li><a href="https://bacmanager.com">BACManager &#8599;</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.8/Modbus.Manager.Pro.Setup.1.9.8.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-Victron-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/v1.4.13/Modbus.Manager.Setup.1.4.13.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-Victron-Nav', 'product': 'standard', 'value': 1})">Download free trial</a>
+  </div>
+</nav>
+<div class="slogan-band slim">
+  <span class="sb-main">Every device. One tool. Pay once.</span>
+  <span class="sb-sub">Modbus &middot; BACnet &middot; Siemens S7 &middot; one-time licence &middot; also from us: <a href="https://bacmanager.com">BACManager&nbsp;&#8599;</a></span>
+</div>
+<div class="hazard"></div>
+
+<div class="article-wrap">
+
+  <div class="breadcrumb">
+    <a href="/">ModbusManager</a> &rsaquo; Guides &rsaquo; Victron GX Modbus TCP
+  </div>
+
+  <h1>Victron Cerbo GX Modbus TCP: Unit-IDs, Registers and Scale Factors</h1>
+
+  <p class="lead">A Victron GX device &mdash; Cerbo GX, Color Control GX, Venus GX or the GX built into a MultiPlus-II &mdash; is a Modbus TCP gateway to everything connected to it: inverter/chargers, solar chargers, batteries, meters. The Unit-ID picks the device, the register picks the value, and nearly every first attempt fails on the Unit-ID. This page covers enabling the server, the Unit-IDs, the system registers, the scale factors and the error codes, from Victron's own manual and register list.</p>
+
+  <figure style="margin:1.8rem 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink)">
+    <img src="/victron-gx-dashboard.png" width="1320" height="825" loading="lazy" decoding="async"
+         alt="ModbusManager Pro dashboard for a Victron Cerbo GX energy storage system: energy flow with 3.2 kW solar, battery at 68 % charging with 1.4 kW, 1.2 kW house load and 0.6 kW export to the grid; battery voltage, current and state; active input grid; VE.Bus state bulk; AC in and out voltages; input current limit; VE.Bus error none; switch on; and a trend of PV, battery and grid power"
+         style="width:100%;height:auto;display:block">
+    <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">
+      The free workspace below on a simulated Cerbo GX &mdash; system values on Unit-ID 100, the MultiPlus on 227.
+    </figcaption>
+  </figure>
+
+  <h2>Enable the Modbus TCP Server</h2>
+  <p>Modbus TCP is <strong>disabled by default</strong>. On the GX go to Settings &rarr; Integrations &rarr; Modbus TCP server (on older firmware Settings &rarr; Services &rarr; Modbus-TCP) and enable it. The server listens on TCP port 502. The same menu lists <strong>Available services</strong> &mdash; every connected device with its Unit-ID &mdash; and shows the <strong>last error</strong>, which is the fastest way to see why a request failed.</p>
+
+  <h2>Unit-ID Selects the Device</h2>
+  <p>The GX answers for every device behind it; the Unit-ID in the request says which one. Victron's preferred IDs:</p>
+  <table>
+    <tr><th>Unit-ID</th><th>Device</th></tr>
+    <tr><td class="mono">100</td><td><strong>com.victronenergy.system</strong> &mdash; the whole-system values (0 maps to the same; use 100)</td></tr>
+    <tr><td class="mono">227</td><td>Cerbo GX VE.Bus port: MultiPlus / Quattro</td></tr>
+    <tr><td class="mono">228</td><td>MultiPlus-II GX / EasySolar-II GX VE.Bus port</td></tr>
+    <tr><td class="mono">242</td><td>Venus GX VE.Bus port</td></tr>
+    <tr><td class="mono">246</td><td>Color Control GX VE.Bus port</td></tr>
+    <tr><td class="mono">223 / 224 / 226</td><td>Cerbo GX VE.Direct ports (solar chargers, battery monitors)</td></tr>
+    <tr><td class="mono">225</td><td>CAN-bus BMS</td></tr>
+  </table>
+  <p>Since Venus OS 2.60 Unit-IDs are assigned dynamically: the table gives the preferred ones, but the <strong>Available services</strong> list on your GX is the truth. They do not change after a reboot. Units in a parallel or three-phase system are not addressed one by one &mdash; read the totals.</p>
+
+  <h2>System Registers (Unit-ID 100)</h2>
+  <p>Function code 3 or 4 &mdash; Victron says there is no difference. Addresses go on the wire as listed. <em>Scale</em> is Victron's scale factor: <strong>divide</strong> the raw value by it.</p>
+  <table>
+    <tr><th>Register</th><th>Value</th><th>Type</th><th>Scale</th></tr>
+    <tr><td class="mono">808&ndash;810</td><td>PV AC-coupled on output L1&ndash;L3</td><td>uint16</td><td>1 (W)</td></tr>
+    <tr><td class="mono">817&ndash;819</td><td>AC consumption L1&ndash;L3</td><td>uint16</td><td>1 (W)</td></tr>
+    <tr><td class="mono">820&ndash;822</td><td>Grid L1&ndash;L3 (+ import, &minus; export)</td><td>int16</td><td>1 (W)</td></tr>
+    <tr><td class="mono">826</td><td>Active input: 0 unknown, 1 grid, 2 generator, 3 shore, 240 none</td><td>uint16</td><td>&mdash;</td></tr>
+    <tr><td class="mono">840</td><td>Battery voltage</td><td>uint16</td><td>10 (V)</td></tr>
+    <tr><td class="mono">841</td><td>Battery current</td><td>int16</td><td>10 (A)</td></tr>
+    <tr><td class="mono">842</td><td>Battery power (+ charging)</td><td>int16</td><td>1 (W)</td></tr>
+    <tr><td class="mono">843</td><td>State of charge</td><td>uint16</td><td>1 (%)</td></tr>
+    <tr><td class="mono">844</td><td>Battery state: 0 idle, 1 charging, 2 discharging</td><td>uint16</td><td>&mdash;</td></tr>
+    <tr><td class="mono">850 / 851</td><td>PV DC-coupled power / current</td><td>uint16 / int16</td><td>1 (W) / 10 (A)</td></tr>
+    <tr><td class="mono">860</td><td>DC system power</td><td>int16</td><td>1 (W)</td></tr>
+    <tr><td class="mono">884&hellip;906</td><td>PV and consumption again as 32-bit</td><td>uint32 / int32</td><td>1 (W)</td></tr>
+  </table>
+  <p>The 16-bit power registers stop at 65 535 W (32 767 W signed). For a larger system use the 32-bit copies from 868 and 884 onwards.</p>
+
+  <h2>Inverter/Charger (VE.Bus, e.g. Unit-ID 227)</h2>
+  <table>
+    <tr><th>Register</th><th>Value</th><th>Scale</th></tr>
+    <tr><td class="mono">3&ndash;5</td><td>AC input voltage L1&ndash;L3</td><td>10 (V)</td></tr>
+    <tr><td class="mono">9</td><td>AC input frequency</td><td>100 (Hz)</td></tr>
+    <tr><td class="mono">12&ndash;14</td><td>AC input power L1&ndash;L3</td><td><strong>0.1</strong> &rarr; raw &times; 10 W</td></tr>
+    <tr><td class="mono">15&ndash;17 / 23&ndash;25</td><td>AC output voltage / power</td><td>10 (V) / 0.1</td></tr>
+    <tr><td class="mono">22</td><td>Active input current limit (writable)</td><td>10 (A)</td></tr>
+    <tr><td class="mono">26 / 27</td><td>Battery voltage / current</td><td>100 (V) / 10 (A)</td></tr>
+    <tr><td class="mono">31</td><td>VE.Bus state: 3 bulk, 4 absorption, 5 float, 8 passthru, 9 inverting&hellip;</td><td>&mdash;</td></tr>
+    <tr><td class="mono">32</td><td>VE.Bus error (0 = none)</td><td>&mdash;</td></tr>
+    <tr><td class="mono">33</td><td>Switch: 1 charger only, 2 inverter only, 3 on, 4 off</td><td>&mdash;</td></tr>
+    <tr><td class="mono">37</td><td>ESS power setpoint phase 1 (writable)</td><td>1 (W)</td></tr>
+  </table>
+  <p>Victron's own example: Unit-ID 246, register 3, the reply 2302 &divide; 10 = 230.2 V AC. Watch the power registers with scale 0.1 &mdash; dividing by 0.1 multiplies by 10.</p>
+
+  <h2>Error Codes</h2>
+  <table>
+    <tr><th>Code</th><th>Meaning on a GX</th></tr>
+    <tr><td class="mono">0x01</td><td>Function not supported (only 3, 4, 6, 16 are)</td></tr>
+    <tr><td class="mono">0x02</td><td>Unit-ID fine, but <strong>a requested register does not exist</strong> for that device &mdash; including a gap inside a block</td></tr>
+    <tr><td class="mono">0x03</td><td>Invalid quantity of registers</td></tr>
+    <tr><td class="mono">0x0A</td><td>Unit-ID in the mapping list, but no device on that port</td></tr>
+    <tr><td class="mono">0x0B</td><td>Unit-ID not in the mapping list at all</td></tr>
+  </table>
+  <p>Reading 1&ndash;100 in one go fails because registers 1 and 2 do not exist; reading 840&ndash;850 fails because 847&ndash;849 are reserved. Read gap-free blocks, as the workspace does.</p>
+
+  <h2>Common Mistakes</h2>
+  <ul>
+    <li><strong>Connection refused:</strong> the Modbus TCP server is not enabled on the GX.</li>
+    <li><strong>Exception 0x0B or 0x0A:</strong> the wrong Unit-ID; check Available services.</li>
+    <li><strong>Exception 0x02 on a block:</strong> the block contains a register the device does not have.</li>
+    <li><strong>Battery 526 V:</strong> scale factor 10 not applied (52.6 V).</li>
+    <li><strong>Inverter power ten times too small:</strong> scale 0.1, so multiply by 10.</li>
+    <li><strong>Trying to write absorption voltage:</strong> configuration settings of a Multi cannot be changed over Modbus.</li>
+  </ul>
+
+  <h2>Step-by-Step: Reading a Cerbo GX with ModbusManager</h2>
+  <ol>
+    <li>Enable the Modbus TCP server on the GX and note the Unit-IDs under Available services.</li>
+    <li>In ModbusManager choose TCP, the GX's IP address, port 502.</li>
+    <li>Read FC03, Unit-ID 100, address 840, quantity 7: battery voltage, current, power, SOC and state.</li>
+    <li>Open the workspace below; change 227 to your VE.Bus Unit-ID if it differs.</li>
+  </ol>
+
+  <h2>Download a Ready-Made Workspace</h2>
+  <ul>
+    <li>Four FC03 polls without gaps: system 817&ndash;826, 840&ndash;846, 850&ndash;851 on Unit-ID 100 and VE.Bus 3&ndash;33 on Unit-ID 227</li>
+    <li>22 register tags with Victron's scale factors applied, plus a script that sums grid and consumption over the phases</li>
+    <li>A dashboard: energy-flow diagram (PV, battery with SOC, grid, house), battery values, active input, VE.Bus state, AC voltages, input limit, error and switch, and a power trend</li>
+  </ul>
+  <div class="callout">
+    <strong>Read-only.</strong> Nothing is written &mdash; no ESS setpoint, no current limit. Set the IP address of your GX in the connection. Tags, script and dashboard are ModbusManager Pro features; Standard opens the poll windows only.
+  </div>
+  <div class="download-box">
+    <div>
+      <h3>Victron_CerboGX.json</h3>
+      <p>Victron Cerbo GX workspace (Unit-ID 100 + 227). Open via Workspace &rsaquo; Open in ModbusManager Pro.</p>
+    </div>
+    <a href="/Victron_CerboGX.json" download>Download Workspace</a>
+  </div>
+
+  <div class="cta-box">
+    <div>
+      <h3>Try it with ModbusManager Pro</h3>
+      <p>Energy-flow element, historian, alarms on SOC, and MQTT to Home Assistant. Free 14-day trial. No credit card. Windows 10/11.</p>
+    </div>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.8/Modbus.Manager.Pro.Setup.1.9.8.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-Victron-Body', 'product': 'pro', 'value': 1})">Download Pro Trial</a>
+  </div>
+
+  <p>The grid meter on a Victron system is often a <a href="/carlo-gavazzi-em24-em340-modbus.html">Carlo Gavazzi EM24 or EM340</a>. Other solar systems: <a href="/deye-sunsynk-growatt-modbus.html">Deye / Sunsynk</a>, <a href="/huawei-sun2000-modbus.html">Huawei SUN2000</a>, <a href="/modbus-to-mqtt.html">Modbus to MQTT</a>.</p>
+
+  <h2>Frequently Asked Questions</h2>
+
+  <h3>Which Unit-ID does a Victron Cerbo GX use for system data?</h3>
+  <p>Unit-ID 100 for com.victronenergy.system: battery 840&ndash;846, PV 850, grid 820&ndash;822, consumption 817&ndash;819. Unit-ID 0 maps to the same data, but Victron recommends 100.</p>
+
+  <h3>How do I enable Modbus TCP on a Victron GX?</h3>
+  <p>It is disabled by default. Enable the Modbus TCP server under Settings &rarr; Integrations (older firmware: Settings &rarr; Services). The same menu lists the Unit-ID of every connected device.</p>
+
+  <h3>What does exception 0x0B mean from a Victron GX?</h3>
+  <p>The Unit-ID is not in the GX's mapping list. 0x0A means it is mapped but no device answers on that port, and 0x02 means the Unit-ID is right but a requested register does not exist.</p>
+
+  <h3>How are Victron Modbus values scaled?</h3>
+  <p>Divide by the scale factor in Victron's register list: battery voltage 840 has factor 10 (526 = 52.6 V); VE.Bus power has factor 0.1, so the raw value is multiplied by 10.</p>
+
+  <h3>What is the Unit-ID of the MultiPlus on a Cerbo GX?</h3>
+  <p>Victron's preferred ID for the Cerbo GX VE.Bus port is 227 (CCGX 246, Venus GX 242, MultiPlus-II GX 228). Since Venus OS 2.60 IDs are assigned dynamically; check Available services on your GX.</p>
+
+  <h2>Sources</h2>
+  <p style="font-size:0.85rem">Victron Energy, <em>GX Modbus-TCP Manual</em> (victronenergy.com), and <em>CCGX-Modbus-TCP-register-list-3.60.xlsx</em> (field list, Unit ID mapping and document versions). Tested against a simulator built from these documents, not a physical GX.</p>
+
+</div>
+
+

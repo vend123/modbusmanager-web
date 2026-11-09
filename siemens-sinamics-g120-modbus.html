@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Siemens SINAMICS G120 Modbus RTU Register Map (CU240E-2)</title>
+<meta name="description" content="SINAMICS G120 CU240B-2 / CU240E-2 on Modbus RTU: p2030 = 2, address switch, STW1 40100, ZSW1 40110, diagnostics 40340, 0x047F. Free workspace.">
+<meta name="keywords" content="SINAMICS G120 Modbus, G120 Modbus RTU, CU240E-2 Modbus registers, G120 Modbus register map, G120 40100 40110, SINAMICS STW1 ZSW1 Modbus, p2030 Modbus RTU, G120 Modbus address p2021, CU240B-2 Modbus, Siemens drive Modbus RTU">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/siemens-sinamics-g120-modbus.html">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:title" content="Siemens SINAMICS G120 Modbus RTU Register Map (CU240E-2)">
+<meta property="og:description" content="Read and control a Siemens SINAMICS G120 over Modbus RTU: which control units have it, the p20xx setup, the fixed register map with scaling, STW1 and ZSW1 bits, and why commands are ignored. Free read-only ModbusManager workspace.">
+<meta property="og:url" content="https://modbusmanager.com/siemens-sinamics-g120-modbus.html">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://modbusmanager.com/og-siemens-g120.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:published_time" content="2026-11-08T00:00:00Z">
+<meta property="article:section" content="Guides">
+<meta property="article:tag" content="Siemens">
+<meta property="article:tag" content="Modbus">
+<meta property="article:tag" content="VFD">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Siemens SINAMICS G120 Modbus RTU Register Map (CU240E-2)">
+<meta name="twitter:description" content="Read and control a Siemens SINAMICS G120 over Modbus RTU: which control units have it, the p20xx setup, the fixed register map with scaling, STW1 and ZSW1 bits, and why commands are ignored. Free read-only ModbusManager workspace.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-siemens-g120.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Siemens SINAMICS G120 Modbus RTU: Register Map, STW1 and ZSW1",
+  "description": "Read and control a Siemens SINAMICS G120 over Modbus RTU: which control units have it, the p20xx setup, the fixed register map with scaling, STW1 and ZSW1 bits, and why commands are ignored. Free read-only ModbusManager workspace.",
+  "url": "https://modbusmanager.com/siemens-sinamics-g120-modbus.html",
+  "image": "https://modbusmanager.com/og-siemens-g120.png",
+  "datePublished": "2026-11-08",
+  "author": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "keywords": "SINAMICS G120 Modbus, G120 Modbus RTU, CU240E-2 Modbus registers, G120 Modbus register map, G120 40100 40110, SINAMICS STW1 ZSW1 Modbus, p2030 Modbus RTU, G120 Modbus address p2021, CU240B-2 Modbus, Siemens drive Modbus RTU"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which SINAMICS G120 control units support Modbus RTU?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The RS-485 variants: CU240B-2 (6SL3244-0BB00-1BA1), CU240E-2 (6SL3244-0BB12-1BA1) and CU240E-2 F (6SL3244-0BB13-1BA1). The DP and PN variants do not."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the G120 Modbus registers for control and status word?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "40100 is control word STW1 and 40101 the main setpoint; 40110 is status word ZSW1 and 40111 the main actual value. On the wire subtract 40001: ZSW1 is address 109."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I set the Modbus address on a G120?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Set p2030 = 2 (Modbus RTU) and p2021 to the address, with the control unit's address switch at 0 — otherwise the switch wins. Power the drive off and on."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is the G120 setpoint scaled on Modbus?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "40101 and 40111 use 4000 hex (16384) = 100 % of the reference speed p2000, which you can read at 40324. Speed in rpm is also at 40341 directly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the G120 ignore my Modbus commands?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "STW1 bit 10 (control via PLC) must be 1, the drive must not be in manual (40349), and after power-up an OFF1 is needed first: 0x047E, then 0x047F."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+.article-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 5rem}
+.breadcrumb{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--muted);margin-bottom:2rem}
+.breadcrumb a{color:var(--muted);text-decoration:none}
+.breadcrumb a:hover{color:var(--ink)}
+h1{font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;line-height:1.05;text-transform:uppercase;letter-spacing:0.01em;margin-bottom:1rem}
+h2{font-family:'Saira Condensed',sans-serif;font-size:1.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin:2.5rem 0 0.8rem;padding-top:0.5rem;border-top:2px solid var(--ink)}
+h3{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.03em;margin:1.5rem 0 0.5rem;color:var(--amber-ink)}
+p{font-size:0.93rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+ul{font-size:0.93rem;color:var(--body);line-height:1.75;margin:0 0 1rem 1.2rem;padding-left:0.6rem}
+li{margin-bottom:0.4rem}
+.lead{font-size:1.05rem;color:var(--ink);line-height:1.7;margin-bottom:2rem;border-left:3px solid var(--safety);padding-left:1rem}
+code{font-family:'IBM Plex Mono',monospace;font-size:0.82rem;background:#fff;border:1px solid var(--steel);padding:1px 5px;border-radius:2px}
+pre{font-family:'IBM Plex Mono',monospace;font-size:0.8rem;background:var(--ink);color:#E6E8E3;padding:1.2rem 1.4rem;border-radius:3px;overflow-x:auto;margin:1.2rem 0;line-height:1.6}
+pre .c{color:#888}
+pre .v{color:#F2A900}
+pre .k{color:#7ec8e3}
+table{width:100%;border-collapse:collapse;font-size:0.83rem;margin:1.2rem 0;background:var(--plate);border:2px solid var(--ink)}
+th{text-align:left;padding:0.65rem 0.9rem;border-bottom:2px solid var(--ink);background:var(--enclosure2);font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted)}
+td{padding:0.6rem 0.9rem;border-bottom:1px solid var(--steel);color:var(--body)}
+tr:hover td{background:#ECEEE9}
+td.mono{font-family:'IBM Plex Mono',monospace;font-size:0.78rem}
+td.formula{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--amber-ink)}
+.callout{background:var(--plate);border:1.5px solid var(--ink);border-left:4px solid var(--safety);padding:1rem 1.2rem;border-radius:2px;margin:1.5rem 0;font-size:0.88rem;color:var(--body);line-height:1.6}
+.callout strong{color:var(--ink)}
+.callout.tip{border-left-color:var(--run)}
+.callout.warn{border-left-color:var(--bad)}
+.step-num{display:inline-block;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.85rem;background:var(--ink);color:var(--safety);padding:2px 8px;border-radius:2px;margin-right:8px;letter-spacing:0.05em}
+.cta-box{background:var(--ink);color:var(--enclosure);padding:2rem 2.2rem;border-radius:3px;margin:3rem 0;display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
+.cta-box h3{color:var(--safety);margin:0 0 0.4rem;font-size:1.2rem;border:none;padding:0}
+.cta-box p{color:#B9BDB6;font-size:0.85rem;margin:0}
+.cta-box a{background:var(--safety);color:var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.cta-box a:hover{background:#fff}
+.download-box{border:2px solid var(--ink);background:var(--enclosure2);padding:1.4rem 1.8rem;border-radius:3px;margin:2rem 0;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.download-box h3{margin:0 0 0.3rem;font-size:1rem;border:none;padding:0;font-family:'IBM Plex Mono',monospace;color:var(--ink)}
+.download-box p{margin:0;font-size:0.82rem;color:var(--muted);max-width:46ch}
+.download-box a{background:var(--ink);color:var(--enclosure);padding:0.6rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.download-box a:hover{background:var(--safety);color:var(--ink)}
+footer{border-top:2px solid var(--ink);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;color:var(--muted);flex-wrap:wrap;gap:1rem;background:var(--enclosure2)}
+.footer-logo{font-family:'Saira Condensed',sans-serif;color:var(--ink);font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--ink)}
+@media(max-width:640px){nav .nav-links{display:none}.article-wrap{padding:2rem 1.2rem 4rem}h1{font-size:2rem}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}td,th{white-space:normal;word-break:break-word}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+
+@media(max-width:680px){pre,code{white-space:pre-wrap;word-break:break-word;max-width:100%;overflow-x:auto}}
+
+/* family slogan band, slim (2026-10-22) */
+.slogan-band.slim{background:var(--safety,#F2A900);border-bottom:2px solid var(--ink,#16181A);padding:0.5rem 1rem;text-align:center;color:var(--ink,#16181A);display:flex;gap:0.3rem 1rem;justify-content:center;align-items:baseline;flex-wrap:wrap}
+.slogan-band.slim .sb-main{font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.3rem;line-height:1.1;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim .sb-sub{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim a{color:var(--ink,#16181A);font-weight:700}
+@media(max-width:768px){.slogan-band.slim .sb-main{font-size:1.05rem}.slogan-band.slim .sb-sub{display:none}}
+</style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/#guides"},{"@type": "ListItem","position": 3,"name": "Siemens SINAMICS G120 Modbus","item": "https://modbusmanager.com/siemens-sinamics-g120-modbus.html"}]}
+</script>
+<style id="site-nav">
+/* site menu (tools/web-research/site-nav.js) */
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop.nd-has>.nav-drop-label{color:var(--ink,#16181A);font-weight:600}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;display:none;z-index:200}
+.nav-drop:hover>.nav-drop-menu,.nav-drop:focus-within>.nav-drop-menu{display:block}
+.nd-box{display:flex;flex-direction:column;background:var(--enclosure2,#e8e9e4);border:1px solid var(--ink,#16181A);border-radius:3px;box-shadow:0 6px 20px rgba(0,0,0,0.18);padding:0.35rem 0;min-width:210px}
+.nav-drop-menu a,.nd-glabel{display:flex;align-items:center;gap:0.55rem;padding:0.45rem 1rem;white-space:nowrap;text-transform:none;font-family:'IBM Plex Mono',monospace;font-size:0.78rem;letter-spacing:0.02em;color:var(--ink,#16181A);text-decoration:none;background:none;border:none;text-align:left;cursor:pointer;width:100%;box-sizing:border-box}
+.nav-drop-menu a:hover,.nd-glabel:hover,.nd-group:hover>.nd-glabel,.nd-group.open>.nd-glabel{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+.nav-drop-menu .ni{display:inline-block;width:1.25rem;text-align:center;flex:none;font-size:0.9rem;line-height:1}
+.nav-drop-menu a.nd-sub{padding-left:2.1rem;font-size:0.75rem}
+.nav-drop-menu .nd-hot{color:#9A6700;font-weight:600}
+.nav-drop-menu a[aria-current="page"]{font-weight:700;box-shadow:inset 3px 0 0 var(--safety,#F2A900)}
+.nd-group.nd-has>.nd-glabel{font-weight:700}
+.nd-arrow{margin-left:auto;padding-left:1rem;font-size:0.7rem;color:var(--muted,#5F5E5A);display:inline-block;transform-origin:calc(50% + 0.5rem) 50%}
+.nd-group{position:relative}
+.nd-flyout{display:none;position:absolute;left:100%;top:-0.4rem;padding-left:0.25rem;z-index:210}
+.nd-group:hover>.nd-flyout,.nd-group:focus-within>.nd-flyout,.nd-group.open>.nd-flyout{display:block}
+.nd-head{font-family:'IBM Plex Mono',monospace;font-size:0.64rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted,#5F5E5A);padding:0.55rem 1rem 0.15rem;border-top:1px solid var(--steel,#B9BDB6);margin-top:0.25rem}
+.nd-box>.nd-head:first-child{border-top:none;margin-top:0}
+@media(max-width:768px){
+nav .nav-links.open{align-items:stretch;text-align:left}
+nav .nav-links.open .nav-drop{padding-bottom:0;margin-bottom:0}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu{position:static;display:block;padding:0;margin:0.3rem 0 0.2rem}
+nav .nav-links.open .nd-box{border:none;box-shadow:none;background:none;padding:0;min-width:0}
+nav .nav-links.open .nav-drop-menu a,nav .nav-links.open .nd-glabel{padding:0.4rem 0;font-size:0.82rem;white-space:normal}
+nav .nav-links.open .nav-drop-menu a.nd-sub{padding-left:1.8rem}
+nav .nav-links.open .nd-flyout a[aria-current="page"]{padding-left:0.6rem}
+nav .nav-links.open .nd-flyout{position:static;padding:0 0 0.3rem 1.8rem;display:none}
+nav .nav-links.open .nd-group:hover>.nd-flyout,nav .nav-links.open .nd-group:focus-within>.nd-flyout{display:none}
+nav .nav-links.open .nd-group.open>.nd-flyout{display:block}
+nav .nav-links.open .nd-group.open>.nd-glabel,nav .nav-links.open .nd-group:hover>.nd-glabel{background:none}
+nav .nav-links.open .nd-group.open .nd-arrow{transform:rotate(90deg)}
+nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label" tabindex="0">Features &#9662;</span>
+      <div class="nav-drop-menu"><div class="nd-box">
+        <a href="/modbus-scanner.html" class="nd-hot"><span class="ni">&#128269;&#65039;</span>Modbus Scanner</a>
+        <a href="/modbus-rtu-over-tcp.html" class="nd-sub"><span class="ni">&#128257;&#65039;</span>RTU over TCP</a>
+        <a href="/modbus-tcp-security-tls.html" class="nd-sub"><span class="ni">&#128274;&#65039;</span>Modbus TCP Security (TLS)</a>
+        <a href="/modbus-hmi-dashboard.html"><span class="ni">&#128202;&#65039;</span>HMI Dashboard</a>
+        <a href="/modbus-hmi-runtime.html" class="nd-sub"><span class="ni">&#128421;&#65039;</span>HMI Runtime (OEM)</a>
+        <a href="/modbus-data-logger-software.html"><span class="ni">&#128200;&#65039;</span>Data Logger</a>
+        <a href="/modbus-rtu-rs485-data-logger.html" class="nd-sub"><span class="ni">&#128223;&#65039;</span>RTU / RS-485 Logging</a>
+        <a href="/modbus-logging-interval-deadband.html" class="nd-sub"><span class="ni">&#9201;&#65039;</span>Interval &amp; Deadband</a>
+        <a href="/modbus-to-csv-logging.html" class="nd-sub"><span class="ni">&#128196;&#65039;</span>CSV Export</a>
+        <a href="/modbus-alarm-software.html"><span class="ni">&#128276;&#65039;</span>Alarms</a>
+        <a href="/modbus-gateway-software.html"><span class="ni">&#128256;&#65039;</span>Gateway</a>
+        <a href="/modbus-to-mqtt.html" class="nd-sub"><span class="ni">&#128225;&#65039;</span>Modbus to MQTT</a>
+        <a href="/modbus-structured-text-scripting.html"><span class="ni">&#127991;&#65039;</span>Tags &amp; Structured Text</a>
+      </div></div>
+    </li>
+    <li class="nav-drop nd-has">
+      <span class="nav-drop-label" tabindex="0">Guides &#9662;</span>
+      <div class="nav-drop-menu"><div class="nd-box">
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9728;&#65039;</span>Solar &amp; inverters<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+            <a href="/huawei-sun2000-modbus.html">Huawei SUN2000</a>
+            <a href="/huawei-sun2000-home-assistant.html">SUN2000 &rarr; Home Assistant</a>
+            <a href="/sungrow-inverter-modbus.html">Sungrow Inverters</a>
+            <a href="/sunspec-modbus-sma-fronius-solaredge.html">SunSpec: SMA, Fronius, SolarEdge</a>
+            <a href="/victron-gx-modbus-tcp.html">Victron Cerbo GX</a>
+            <a href="/goodwe-et-hybrid-modbus.html">GoodWe ET Hybrid</a>
+            <a href="/deye-sunsynk-growatt-modbus.html">Deye, Sunsynk &amp; Growatt</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9889;&#65039;</span>Energy meters<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+            <a href="/schneider-pm3200-modbus.html">Schneider PM3250</a>
+            <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+            <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+            <a href="/eastron-sdm230-sdm72-modbus.html">Eastron SDM230 / SDM72</a>
+            <a href="/carlo-gavazzi-em24-em340-modbus.html">Carlo Gavazzi EM340 / EM24</a>
+            <a href="/janitza-umg-96-pa-modbus.html">Janitza UMG 96-PA</a>
+            <a href="/wattnode-modbus.html">WattNode</a>
+          </div></div>
+        </div>
+        <div class="nd-group nd-has">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9881;&#65039;</span>Drives &amp; EC fans<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+            <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+            <a href="/abb-ach580-modbus.html">ABB ACH580</a>
+            <a href="/danfoss-vlt-fc102-fc302-modbus.html">Danfoss FC 102 / FC 302</a>
+            <a href="/schneider-altivar-atv320-atv630-modbus.html">Schneider ATV320 / ATV630</a>
+            <a href="/siemens-sinamics-g120-modbus.html" aria-current="page">Siemens SINAMICS G120</a>
+            <a href="/powerflex-525-modbus.html">PowerFlex 525</a>
+            <a href="/durapulse-gs20-modbus.html">DURApulse GS20</a>
+            <a href="/yaskawa-v1000-modbus.html">Yaskawa V1000</a>
+            <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+            <a href="/modbus-vfd-speed-reference.html">VFD Speed Registers</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#127981;&#65039;</span>Siemens PLCs<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200 HMI</a>
+            <a href="/siemens-s7-put-get.html">Siemens S7 PUT/GET</a>
+          </div></div>
+        </div>
+        <a href="/manual.html"><span class="ni">&#128214;&#65039;</span>Documentation</a>
+        <a href="/modbus-poll-alternative.html"><span class="ni">&#9878;&#65039;</span>vs Modbus Poll</a>
+      </div></div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+    <li><a href="https://bacmanager.com">BACManager &#8599;</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.8/Modbus.Manager.Pro.Setup.1.9.8.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-G120-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/v1.4.13/Modbus.Manager.Setup.1.4.13.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-G120-Nav', 'product': 'standard', 'value': 1})">Download free trial</a>
+  </div>
+</nav>
+<div class="slogan-band slim">
+  <span class="sb-main">Every device. One tool. Pay once.</span>
+  <span class="sb-sub">Modbus &middot; BACnet &middot; Siemens S7 &middot; one-time licence &middot; also from us: <a href="https://bacmanager.com">BACManager&nbsp;&#8599;</a></span>
+</div>
+<div class="hazard"></div>
+
+<div class="article-wrap">
+
+  <div class="breadcrumb">
+    <a href="/">ModbusManager</a> &rsaquo; Guides &rsaquo; Siemens SINAMICS G120 Modbus
+  </div>
+
+  <h1>Siemens SINAMICS G120 Modbus RTU: Register Map, STW1 and ZSW1</h1>
+
+  <p class="lead">A SINAMICS G120 with a CU240B-2 or CU240E-2 control unit is a Modbus RTU slave once you choose it in p2030 &mdash; and Siemens gives it a fixed register map: control and status words at 40100 and 40110, speed, frequency, current and power from 40340, fault numbers from 40400. This page covers which control units have Modbus at all, the setup parameters, the map with its scaling, and the STW1 / ZSW1 bits, from Siemens's operating instructions and fieldbus function manual.</p>
+
+  <figure style="margin:1.8rem 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink)">
+    <img src="/siemens-g120-dashboard.png" width="1320" height="825" loading="lazy" decoding="async"
+         alt="ModbusManager Pro dashboard for a Siemens SINAMICS G120 on a fan: drive faceplate running at about 40 Hz, 6.5 A, 3.1 kW and 1190 rpm; ZSW1 status word 0xE337 bit by bit; speed, setpoint, torque, DC link, main actual value in percent of p2000, output voltage, energy, manual/auto and fault number, and a speed and current trend"
+         style="width:100%;height:auto;display:block">
+    <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">
+      The free read-only workspace below on a simulated G120 &mdash; 40110 is wire address 109, diagnostics from 40340.
+    </figcaption>
+  </figure>
+
+  <h2>Which Control Units Have Modbus</h2>
+  <table>
+    <tr><th>Control Unit</th><th>Article number</th><th>Fieldbus</th></tr>
+    <tr><td>CU240B-2</td><td class="mono">6SL3244-0BB00-1BA1</td><td><strong>USS, Modbus RTU</strong></td></tr>
+    <tr><td>CU240E-2</td><td class="mono">6SL3244-0BB12-1BA1</td><td><strong>USS, Modbus RTU</strong></td></tr>
+    <tr><td>CU240E-2 F</td><td class="mono">6SL3244-0BB13-1BA1</td><td><strong>USS, Modbus RTU</strong></td></tr>
+    <tr><td>&hellip; DP / DP-F</td><td class="mono">&hellip;-1PA1</td><td>PROFIBUS DP only</td></tr>
+    <tr><td>&hellip; PN / PN-F</td><td class="mono">&hellip;-1FA0</td><td>PROFINET, EtherNet/IP</td></tr>
+  </table>
+  <p>Only the RS-485 variants ending in <strong>-1BA1</strong> speak Modbus RTU. A DP or PN control unit cannot be switched to Modbus by any parameter &mdash; check the article number before planning the wiring.</p>
+
+  <h2>Setup Parameters</h2>
+  <table>
+    <tr><th>Parameter</th><th>Set to</th><th>Factory setting / note</th></tr>
+    <tr><td class="mono">p2030</td><td>2 = Modbus RTU</td><td>Fieldbus protocol selection</td></tr>
+    <tr><td class="mono">p2020</td><td>baud rate code</td><td>7 = 19200 (5 = 4800, 6 = 9600, 8 = 38400 &hellip; 13 = 187500)</td></tr>
+    <tr><td class="mono">p2021</td><td>1&ndash;247</td><td>1 &mdash; <strong>only used when the address switch on the control unit is 0</strong></td></tr>
+    <tr><td class="mono">p2031</td><td>parity</td><td>2 = even (0 = none, 1 = odd)</td></tr>
+    <tr><td class="mono">p2040</td><td>monitoring time</td><td>10 s for Modbus (0 = off)</td></tr>
+    <tr><td class="mono">p2024</td><td>times</td><td>[0] max. telegram processing time 1000 ms</td></tr>
+    <tr><td class="mono">r2029</td><td>&mdash;</td><td>error statistics: good, rejected, framing, overrun, parity, CRC, length</td></tr>
+  </table>
+  <p>The address switch on the control unit wins over p2021. A new address or protocol applies <strong>after the power is switched off and on</strong>. If no process data arrive within p2040 the drive faults; the timeout counts only the process-data registers (40100, 40101, 40110, 40111).</p>
+
+  <h2>Register Map</h2>
+  <p>FC03 reads, FC06 / FC16 write. On the wire the address is the register minus 40001: Siemens's own example reads 40110 with start address <code>006D</code> hex = 109. A register outside the map is answered with an exception.</p>
+  <table>
+    <tr><th>Register</th><th>Wire</th><th>Content</th><th>Scale</th></tr>
+    <tr><td class="mono">40100</td><td class="mono">99</td><td>STW1 control word (R/W)</td><td>bits</td></tr>
+    <tr><td class="mono">40101</td><td class="mono">100</td><td>Main setpoint (R/W)</td><td>4000 hex = 100 % of p2000</td></tr>
+    <tr><td class="mono">40110</td><td class="mono">109</td><td>ZSW1 status word</td><td>bits</td></tr>
+    <tr><td class="mono">40111</td><td class="mono">110</td><td>Main actual value</td><td>4000 hex = 100 % of p2000</td></tr>
+    <tr><td class="mono">40324</td><td class="mono">323</td><td>Reference speed p2000</td><td>rpm</td></tr>
+    <tr><td class="mono">40340 / 40341</td><td class="mono">339 / 340</td><td>Speed setpoint r0020 / speed actual r0022</td><td>rpm</td></tr>
+    <tr><td class="mono">40342</td><td class="mono">341</td><td>Output frequency r0024</td><td>&divide; 100 &rarr; Hz</td></tr>
+    <tr><td class="mono">40343 / 40344</td><td class="mono">342 / 343</td><td>Output voltage r0025 / DC link r0026</td><td>V</td></tr>
+    <tr><td class="mono">40345</td><td class="mono">344</td><td>Current actual r0027</td><td>&divide; 100 &rarr; A</td></tr>
+    <tr><td class="mono">40346</td><td class="mono">345</td><td>Torque r0031</td><td>&divide; 100 &rarr; Nm</td></tr>
+    <tr><td class="mono">40347</td><td class="mono">346</td><td>Active power r0032</td><td>&divide; 100 &rarr; kW</td></tr>
+    <tr><td class="mono">40348</td><td class="mono">347</td><td>Energy r0039</td><td>kWh</td></tr>
+    <tr><td class="mono">40349</td><td class="mono">348</td><td>Control: manual / auto r0807</td><td>0 / 1</td></tr>
+    <tr><td class="mono">40400&hellip;</td><td class="mono">399&hellip;</td><td>Fault numbers r0947[0]&hellip;</td><td>&mdash;</td></tr>
+    <tr><td class="mono">40240&ndash;40245</td><td class="mono">239&ndash;244</td><td>Digital inputs DI 0&ndash;5</td><td>0 / 1</td></tr>
+    <tr><td class="mono">40260&ndash;40263</td><td class="mono">259&ndash;262</td><td>Analog inputs AI 0&ndash;3</td><td>&divide; 100 &rarr; %</td></tr>
+  </table>
+  <p>Any other parameter is reached acyclically through data set 47 in registers 40601&ndash;40722 (40601 control, 40602 = 47 and length, data from 40603).</p>
+
+  <h2>STW1 and ZSW1</h2>
+  <p><strong>STW1 (40100):</strong> bit 0 ON / OFF1, 1 no OFF2 (coast), 2 no OFF3 (quick stop), 3 enable operation, 4&ndash;6 ramp generator and setpoint enable, 7 acknowledge fault on 0&rarr;1, <strong>10 control via PLC</strong> (0 = the drive ignores the Modbus process data), 11 reverse, 13 / 14 motorized potentiometer up / down. Bits 1&ndash;6 and 10 set with bit 0 = 0 gives <code>0x047E</code> (ready); setting bit 0 gives <code>0x047F</code> and the motor runs to the setpoint in 40101.</p>
+  <table>
+    <tr><th>ZSW1 bit</th><th>1 means</th><th>bit</th><th>1 means</th></tr>
+    <tr><td class="mono">0</td><td>Ready for switching on</td><td class="mono">8</td><td>Speed deviation within tolerance</td></tr>
+    <tr><td class="mono">1</td><td>Ready</td><td class="mono">9</td><td>Master control requested</td></tr>
+    <tr><td class="mono">2</td><td>Operation enabled</td><td class="mono">10</td><td>Comparison speed reached</td></tr>
+    <tr><td class="mono">3</td><td><strong>Fault active</strong></td><td class="mono">11</td><td>Current / torque limit reached</td></tr>
+    <tr><td class="mono">4 / 5</td><td>OFF2 / OFF3 inactive</td><td class="mono">13</td><td>No motor overtemperature alarm</td></tr>
+    <tr><td class="mono">6</td><td>Switching on inhibited</td><td class="mono">14</td><td>Motor rotates clockwise</td></tr>
+    <tr><td class="mono">7</td><td>Alarm active</td><td class="mono">15</td><td>Depends on telegram (CDS / no inverter overload alarm)</td></tr>
+  </table>
+  <p>Switching on inhibited (bit 6) after a power-up means the drive needs an OFF1 first: write 0x047E, then 0x047F.</p>
+
+  <h2>Common Mistakes</h2>
+  <ul>
+    <li><strong>No answer at all:</strong> a DP or PN control unit, or p2030 not 2, or no power cycle since.</li>
+    <li><strong>Answers on the wrong address:</strong> the address switch is not 0, so p2021 is ignored.</li>
+    <li><strong>Everything one register off:</strong> 40110 requested as 110; on the wire it is 109.</li>
+    <li><strong>Commands ignored:</strong> STW1 bit 10 (control via PLC) is 0, or the drive is in manual (40349 = 0).</li>
+    <li><strong>Drive faults after 10 s:</strong> p2040 monitoring; poll the process data registers continuously.</li>
+    <li><strong>Frequency 3970 instead of 39.7:</strong> 40342 is Hz &times; 100.</li>
+  </ul>
+
+  <h2>Step-by-Step: Reading a G120 with ModbusManager</h2>
+  <ol>
+    <li>Check the control unit is a -1BA1 type; set the address switch to 0.</li>
+    <li>Set p2030 = 2, p2021 = address, p2020 and p2031 as on the line; power off and on.</li>
+    <li>In ModbusManager choose RTU, 19200, Even, 1 stop bit.</li>
+    <li>Read FC03 address 109, quantity 2: ZSW1 and the actual value.</li>
+    <li>Open the workspace below.</li>
+  </ol>
+
+  <h2>Download a Ready-Made Workspace</h2>
+  <ul>
+    <li>Four FC03 polls: 40110&ndash;40111, the diagnostics 40340&ndash;40349, faults 40400&ndash;40403 and p2000</li>
+    <li>14 tags with the wire address and scaling set</li>
+    <li>A dashboard: drive faceplate, ZSW1 bit by bit, speed, setpoint, torque, DC link, actual value, voltage, energy, manual / auto, fault number and a trend</li>
+  </ul>
+  <div class="callout">
+    <strong>Read-only.</strong> No STW1, no setpoint: Start / Stop on the faceplate are disabled. Unit ID 1. Tags and dashboard are ModbusManager Pro features; Standard opens the poll windows only.
+  </div>
+  <div class="download-box">
+    <div>
+      <h3>Siemens_G120_monitor.json</h3>
+      <p>Siemens SINAMICS G120 read-only workspace. Open via Workspace &rsaquo; Open in ModbusManager Pro.</p>
+    </div>
+    <a href="/Siemens_G120_monitor.json" download>Download Workspace</a>
+  </div>
+
+  <div class="cta-box">
+    <div>
+      <h3>Try it with ModbusManager Pro</h3>
+      <p>Drive faceplate, status bits, historian and alarms &mdash; and S7 PLCs over PUT/GET. Free 14-day trial. No credit card. Windows 10/11.</p>
+    </div>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.8/Modbus.Manager.Pro.Setup.1.9.8.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-G120-Body', 'product': 'pro', 'value': 1})">Download Pro Trial</a>
+  </div>
+
+  <p>The PLC on the same panel: <a href="/siemens-s7-put-get.html">S7-1200 / S7-1500 over PUT/GET</a>. Other drives: <a href="/schneider-altivar-atv320-atv630-modbus.html">Altivar ATV320</a>, <a href="/danfoss-vlt-fc102-fc302-modbus.html">Danfoss FC 102</a>, <a href="/abb-ach580-modbus.html">ABB ACH580</a>.</p>
+
+  <h2>Frequently Asked Questions</h2>
+
+  <h3>Which SINAMICS G120 control units support Modbus RTU?</h3>
+  <p>The RS-485 variants: CU240B-2 (6SL3244-0BB00-1BA1), CU240E-2 (6SL3244-0BB12-1BA1) and CU240E-2 F (6SL3244-0BB13-1BA1). The DP and PN variants do not.</p>
+
+  <h3>What are the G120 Modbus registers for control and status word?</h3>
+  <p>40100 is control word STW1 and 40101 the main setpoint; 40110 is status word ZSW1 and 40111 the main actual value. On the wire subtract 40001: ZSW1 is address 109.</p>
+
+  <h3>How do I set the Modbus address on a G120?</h3>
+  <p>Set p2030 = 2 (Modbus RTU) and p2021 to the address, with the control unit's address switch at 0 &mdash; otherwise the switch wins. Power the drive off and on.</p>
+
+  <h3>How is the G120 setpoint scaled on Modbus?</h3>
+  <p>40101 and 40111 use 4000 hex (16384) = 100 % of the reference speed p2000, which you can read at 40324. Speed in rpm is also at 40341 directly.</p>
+
+  <h3>Why does the G120 ignore my Modbus commands?</h3>
+  <p>STW1 bit 10 (control via PLC) must be 1, the drive must not be in manual (40349), and after power-up an OFF1 is needed first: 0x047E, then 0x047F.</p>
+
+  <h2>Sources</h2>
+  <p style="font-size:0.85rem">Siemens, <em>Converter with the CU240B-2 and CU240E-2 Control Units, Operating Instructions</em> 04/2018, FW V4.7 SP10, A5E34259001B; <em>SINAMICS G120 Fieldbus Function Manual</em> 11/2020, FW V4.7 SP13, A5E34229197C (the edition on Siemens's download server is in Chinese; register numbers and parameter names are the same). Tested against a simulator built from these documents, not a physical drive.</p>
+
+</div>
+
+

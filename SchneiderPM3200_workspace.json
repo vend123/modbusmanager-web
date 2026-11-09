@@ -1,0 +1,973 @@
+{
+  "version": 2,
+  "polls": [
+    {
+      "name": "PM3200 currents (3000-3007)",
+      "fc": 3,
+      "addr": 2999,
+      "qty": 8,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 2999,
+      "chartName": "PM3200 currents (3000-3007) [2999]",
+      "logFile": "log_PM3200_currents_3000_3007_.txt"
+    },
+    {
+      "name": "PM3200 I avg, unbalance, voltages (3010-3033)",
+      "fc": 3,
+      "addr": 3009,
+      "qty": 24,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 3009,
+      "chartName": "PM3200 I avg, unbalance, voltages (3010-3033) [3009]",
+      "logFile": "log_PM3200_I_avg_unbalance_voltages_3010_3033_.txt"
+    },
+    {
+      "name": "PM3200 V avg, unbalance, power, PF (3036-3085)",
+      "fc": 3,
+      "addr": 3035,
+      "qty": 50,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 3035,
+      "chartName": "PM3200 V avg, unbalance, power, PF (3036-3085) [3035]",
+      "logFile": "log_PM3200_V_avg_unbalance_power_PF_3036_3085_.txt"
+    },
+    {
+      "name": "PM3200 tan phi, frequency (3108-3111)",
+      "fc": 3,
+      "addr": 3107,
+      "qty": 4,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 3107,
+      "chartName": "PM3200 tan phi, frequency (3108-3111) [3107]",
+      "logFile": "log_PM3200_tan_phi_frequency_3108_3111_.txt"
+    },
+    {
+      "name": "PM3200 temperature (3132)",
+      "fc": 3,
+      "addr": 3131,
+      "qty": 2,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 3131,
+      "chartName": "PM3200 temperature (3132) [3131]",
+      "logFile": "log_PM3200_temperature_3132_.txt"
+    },
+    {
+      "name": "PM3200 energy Int64 Wh (3204-3211)",
+      "fc": 3,
+      "addr": 3203,
+      "qty": 8,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 3203,
+      "chartName": "PM3200 energy Int64 Wh (3204-3211) [3203]",
+      "logFile": "log_PM3200_energy_Int64_Wh_3204_3211_.txt"
+    },
+    {
+      "name": "PM3200 energy Float32 Wh (45166-45169)",
+      "fc": 3,
+      "addr": 45165,
+      "qty": 4,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 45165,
+      "chartName": "PM3200 energy Float32 Wh (45166-45169) [45165]",
+      "logFile": "log_PM3200_energy_Float32_Wh_45166_45169_.txt"
+    }
+  ],
+  "activePoll": 0,
+  "condColors": {},
+  "scaling": {},
+  "valueNames": {},
+  "chartSeries": [],
+  "slaveBlocks": [],
+  "dashTheme": "modern",
+  "dashFx": true,
+  "dashBgColor": "#0d1117",
+  "dashPages": [
+    {
+      "id": 1,
+      "name": "PM3255",
+      "elements": [
+        {
+          "id": 1,
+          "value": 0,
+          "type": "statictext",
+          "x": 20,
+          "y": 10,
+          "w": 840,
+          "h": 30,
+          "text": "Main LV feeder  ·  Schneider PM3255  ·  Modbus RTU, read-only",
+          "fontSize": 20,
+          "bold": true,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 2,
+          "value": 0,
+          "type": "meter3",
+          "x": 20,
+          "y": 50,
+          "w": 330,
+          "h": 230,
+          "label": "PM3255",
+          "unitId": 1,
+          "nomV": 230,
+          "ratedA": 32,
+          "pUnit": "kW",
+          "vUnbal": 2,
+          "iUnbal": 10,
+          "lostPct": 50,
+          "showLL": true,
+          "showEnergy": true,
+          "view": "full",
+          "phaseColors": "iec",
+          "flagTag": "",
+          "tpl": "pm5000",
+          "pts": {
+            "v1": {
+              "src": "tag",
+              "tagName": "V1N"
+            },
+            "v2": {
+              "src": "tag",
+              "tagName": "V2N"
+            },
+            "v3": {
+              "src": "tag",
+              "tagName": "V3N"
+            },
+            "i1": {
+              "src": "tag",
+              "tagName": "I1"
+            },
+            "i2": {
+              "src": "tag",
+              "tagName": "I2"
+            },
+            "i3": {
+              "src": "tag",
+              "tagName": "I3"
+            },
+            "p1": {
+              "src": "tag",
+              "tagName": "P1"
+            },
+            "p2": {
+              "src": "tag",
+              "tagName": "P2"
+            },
+            "p3": {
+              "src": "tag",
+              "tagName": "P3"
+            },
+            "pt": {
+              "src": "tag",
+              "tagName": "P_total"
+            },
+            "pf1": {
+              "src": "tag",
+              "tagName": "PF1"
+            },
+            "pf2": {
+              "src": "tag",
+              "tagName": "PF2"
+            },
+            "pf3": {
+              "src": "tag",
+              "tagName": "PF3"
+            },
+            "pft": {
+              "src": "tag",
+              "tagName": "PF_total"
+            },
+            "hz": {
+              "src": "tag",
+              "tagName": "Frequency"
+            },
+            "v12": {
+              "src": "tag",
+              "tagName": "V12"
+            },
+            "v23": {
+              "src": "tag",
+              "tagName": "V23"
+            },
+            "v31": {
+              "src": "tag",
+              "tagName": "V31"
+            },
+            "eimp": {
+              "src": "tag",
+              "tagName": "E_imp_kWh"
+            },
+            "eexp": {
+              "src": "tag",
+              "tagName": "E_exp_kWh"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "value": 0,
+          "type": "text",
+          "x": 370,
+          "y": 50,
+          "w": 240,
+          "h": 66,
+          "label": "Energy import · Int64 3204",
+          "unit": "kWh",
+          "decimals": 3,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "E_imp_kWh"
+        },
+        {
+          "id": 4,
+          "value": 0,
+          "type": "text",
+          "x": 620,
+          "y": 50,
+          "w": 240,
+          "h": 66,
+          "label": "Same · Float32 45166",
+          "unit": "kWh",
+          "decimals": 3,
+          "fontSize": 24,
+          "color": "#f0c040",
+          "sourceType": "tag",
+          "tagName": "E_imp_f32_kWh"
+        },
+        {
+          "id": 5,
+          "value": 0,
+          "type": "text",
+          "x": 370,
+          "y": 126,
+          "w": 155,
+          "h": 66,
+          "label": "PF total (3084 decoded)",
+          "unit": "",
+          "decimals": 3,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "PF_total"
+        },
+        {
+          "id": 6,
+          "value": 0,
+          "type": "text",
+          "x": 537,
+          "y": 126,
+          "w": 155,
+          "h": 66,
+          "label": "PF total raw 3084",
+          "unit": "",
+          "decimals": 3,
+          "fontSize": 24,
+          "color": "#9fb3cc",
+          "sourceType": "tag",
+          "tagName": "PF_total_4q"
+        },
+        {
+          "id": 7,
+          "value": 0,
+          "type": "text",
+          "x": 705,
+          "y": 126,
+          "w": 155,
+          "h": 66,
+          "label": "Neutral current",
+          "unit": "A",
+          "decimals": 2,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "I_neutral"
+        },
+        {
+          "id": 8,
+          "value": 0,
+          "type": "text",
+          "x": 370,
+          "y": 202,
+          "w": 155,
+          "h": 66,
+          "label": "Reactive total",
+          "unit": "kVAR",
+          "decimals": 2,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Q_total"
+        },
+        {
+          "id": 9,
+          "value": 0,
+          "type": "text",
+          "x": 537,
+          "y": 202,
+          "w": 155,
+          "h": 66,
+          "label": "Apparent total",
+          "unit": "kVA",
+          "decimals": 2,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "S_total"
+        },
+        {
+          "id": 10,
+          "value": 0,
+          "type": "text",
+          "x": 705,
+          "y": 202,
+          "w": 155,
+          "h": 66,
+          "label": "Meter temperature",
+          "unit": "°C",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Temperature"
+        },
+        {
+          "id": 11,
+          "value": 0,
+          "type": "text",
+          "x": 370,
+          "y": 278,
+          "w": 155,
+          "h": 66,
+          "label": "Tan phi",
+          "unit": "",
+          "decimals": 3,
+          "fontSize": 24,
+          "color": "#9fb3cc",
+          "sourceType": "tag",
+          "tagName": "Tan_phi"
+        },
+        {
+          "id": 12,
+          "value": 0,
+          "type": "text",
+          "x": 537,
+          "y": 278,
+          "w": 155,
+          "h": 66,
+          "label": "Average current",
+          "unit": "A",
+          "decimals": 2,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "I_avg"
+        },
+        {
+          "id": 13,
+          "value": 0,
+          "type": "text",
+          "x": 705,
+          "y": 278,
+          "w": 155,
+          "h": 66,
+          "label": "Frequency",
+          "unit": "Hz",
+          "decimals": 2,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Frequency"
+        },
+        {
+          "id": 14,
+          "value": 0,
+          "type": "multitend",
+          "x": 20,
+          "y": 360,
+          "w": 840,
+          "h": 180,
+          "label": "Total active power (kW) and average current (A)",
+          "maxPoints": 1200,
+          "decimals": 2,
+          "sampleMs": 1000,
+          "items": [
+            {
+              "name": "Total active power 3060",
+              "sourceType": "tag",
+              "tagName": "P_total",
+              "color": "#00d4aa",
+              "value": 0
+            },
+            {
+              "name": "Average current 3010",
+              "sourceType": "tag",
+              "tagName": "I_avg",
+              "color": "#f0c040",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "I1",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 2999,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "A (register 3000, wire 2999)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "I2",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3001,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "A (register 3002, wire 3001)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "I3",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3003,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "A (register 3004, wire 3003)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "I_neutral",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3005,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "A, neutral (register 3006, wire 3005)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "I_avg",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3009,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "A (register 3010, wire 3009)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "V12",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3019,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "V (register 3020, wire 3019)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "V23",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3021,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "V (register 3022, wire 3021)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "V31",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3023,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "V (register 3024, wire 3023)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "V1N",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3027,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "V (register 3028, wire 3027)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "V2N",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3029,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "V (register 3030, wire 3029)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "V3N",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3031,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "V (register 3032, wire 3031)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "P1",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3053,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "kW (register 3054, wire 3053)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "P2",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3055,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "kW (register 3056, wire 3055)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "P3",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3057,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "kW (register 3058, wire 3057)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "P_total",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3059,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "kW (register 3060, wire 3059)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Q_total",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3067,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "kVAR (register 3068, wire 3067)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "S_total",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3075,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "kVA (register 3076, wire 3075)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "PF1_4q",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3077,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "PF phase 1, -2..+2 four-quadrant (register 3078, wire 3077)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "PF2_4q",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3079,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "PF phase 2, -2..+2 (register 3080, wire 3079)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "PF3_4q",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3081,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "PF phase 3, -2..+2 (register 3082, wire 3081)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "PF_total_4q",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3083,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "PF total, -2..+2 four-quadrant (register 3084, wire 3083)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Tan_phi",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3107,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "reactive factor (register 3108, wire 3107)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Frequency",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3109,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "Hz (register 3110, wire 3109)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Temperature",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3131,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "degC (register 3132, wire 3131)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "E_imp_w0",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3203,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "Int64 Wh active energy import, highest word (register 3204, wire 3203)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "E_imp_w1",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3204,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "Int64 Wh, word 2 (register 3205, wire 3204)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "E_imp_w2",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3205,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "Int64 Wh, word 3 (register 3206, wire 3205)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "E_imp_w3",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 3206,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "Int64 Wh, lowest word (register 3207, wire 3206)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "E_imp_f32_Wh",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 45165,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "Wh active energy import as Float32 (register 45166, wire 45165)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "E_exp_f32_Wh",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 45167,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "Wh active energy export as Float32 (register 45168, wire 45167)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "PF_total",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "power factor, from PF_total_4q by the script"
+    },
+    {
+      "name": "PF1",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "power factor phase 1"
+    },
+    {
+      "name": "PF2",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "power factor phase 2"
+    },
+    {
+      "name": "PF3",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "power factor phase 3"
+    },
+    {
+      "name": "E_imp_kWh",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "kWh from the Int64 register 3204 (exact)"
+    },
+    {
+      "name": "E_imp_f32_kWh",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "kWh from the Float32 register 45166 (rounded above 16.8 MWh)"
+    },
+    {
+      "name": "E_exp_kWh",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "kWh exported, from the Float32 register 45168"
+    }
+  ],
+  "script": "(* Schneider PM3200: Power Factor (3078-3084) is \"4Q FP PF\", -2..+2.   *)\n(* Above 1 or below -1 the power factor is leading: 2 - x or -2 - x.      *)\n(* (PM3200 series user manual DOCA0006EN-09, power factor register format) *)\nIF PF_total_4q > 1 THEN PF_total := 2 - PF_total_4q;\nELSIF PF_total_4q < -1 THEN PF_total := -2 - PF_total_4q;\nELSE PF_total := PF_total_4q; END_IF;\nIF PF1_4q > 1 THEN PF1 := 2 - PF1_4q; ELSIF PF1_4q < -1 THEN PF1 := -2 - PF1_4q; ELSE PF1 := PF1_4q; END_IF;\nIF PF2_4q > 1 THEN PF2 := 2 - PF2_4q; ELSIF PF2_4q < -1 THEN PF2 := -2 - PF2_4q; ELSE PF2 := PF2_4q; END_IF;\nIF PF3_4q > 1 THEN PF3 := 2 - PF3_4q; ELSIF PF3_4q < -1 THEN PF3 := -2 - PF3_4q; ELSE PF3 := PF3_4q; END_IF;\n(* Energy: Int64 Wh in four registers, highest word first (3204-3207).    *)\n(* ModbusManager has no Int64 type, so the words are combined here.       *)\nE_imp_kWh := (((E_imp_w0 * 65536.0 + E_imp_w1) * 65536.0 + E_imp_w2) * 65536.0 + E_imp_w3) / 1000.0;\nE_imp_f32_kWh := E_imp_f32_Wh / 1000.0;\nE_exp_kWh := E_exp_f32_Wh / 1000.0;\n",
+  "scriptInterval": "1000",
+  "historianLogging": {
+    "registers": [],
+    "tags": []
+  },
+  "saved": "2026-11-08T12:00:00.000Z"
+}

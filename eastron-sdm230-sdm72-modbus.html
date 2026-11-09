@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eastron SDM230 &amp; SDM72 Modbus Registers (SDM72D-M vs V2)</title>
+<meta name="description" content="Eastron SDM230 and SDM72 Modbus: FC04 input registers, even register count, 30 values max, SDM72D-M nine registers vs SDM72DM-V2. Free workspace.">
+<meta name="keywords" content="Eastron SDM230 Modbus, SDM230 Modbus registers, SDM230 register map, Eastron SDM72 Modbus, SDM72D-M Modbus registers, SDM72DM-V2 Modbus, SDM72 register map, Eastron input registers, SDM230 RS485, SDM72 password 1000">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/eastron-sdm230-sdm72-modbus.html">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:title" content="Eastron SDM230 &amp; SDM72 Modbus Registers (SDM72D-M vs V2)">
+<meta property="og:description" content="Read an Eastron SDM230 and an SDM72 on one RS-485 line: the FC04 register maps, the even-register and 30-value rules, how to tell an SDM72D-M from an SDM72DM-V2, and changing the address. Free ModbusManager workspace.">
+<meta property="og:url" content="https://modbusmanager.com/eastron-sdm230-sdm72-modbus.html">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://modbusmanager.com/og-eastron-sdm230-sdm72.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:published_time" content="2026-11-08T00:00:00Z">
+<meta property="article:section" content="Guides">
+<meta property="article:tag" content="Eastron">
+<meta property="article:tag" content="Modbus">
+<meta property="article:tag" content="Energy meter">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Eastron SDM230 &amp; SDM72 Modbus Registers (SDM72D-M vs V2)">
+<meta name="twitter:description" content="Read an Eastron SDM230 and an SDM72 on one RS-485 line: the FC04 register maps, the even-register and 30-value rules, how to tell an SDM72D-M from an SDM72DM-V2, and changing the address. Free ModbusManager workspace.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-eastron-sdm230-sdm72.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Eastron SDM230 and SDM72 Modbus Registers: One Line, Two Meters",
+  "description": "Read an Eastron SDM230 and an SDM72 on one RS-485 line: the FC04 register maps, the even-register and 30-value rules, how to tell an SDM72D-M from an SDM72DM-V2, and changing the address. Free ModbusManager workspace.",
+  "url": "https://modbusmanager.com/eastron-sdm230-sdm72-modbus.html",
+  "image": "https://modbusmanager.com/og-eastron-sdm230-sdm72.png",
+  "datePublished": "2026-11-08",
+  "author": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "keywords": "Eastron SDM230 Modbus, SDM230 Modbus registers, SDM230 register map, Eastron SDM72 Modbus, SDM72D-M Modbus registers, SDM72DM-V2 Modbus, SDM72 register map, Eastron input registers, SDM230 RS485, SDM72 password 1000"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What are the Modbus registers of the Eastron SDM230?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Input registers read with FC04, Float32: 30001 voltage, 30007 current, 30013 active power in W, 30031 power factor, 30071 frequency, 30073 import kWh and 30075 export kWh. On the wire the address is the register minus 30001, so voltage is address 0."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my Eastron meter return an exception?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Eastron meters require an even number of registers in every request, because each value is a Float32 in two registers, and at most 60 registers (30 values). A request for 1, 3 or 61 registers is refused."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my SDM72 not show voltage or current?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The original SDM72D-M documents only nine registers: total power, import, export and total energy, resettable energies and import / export power. Voltages and currents per phase need the SDM72DM-V2. Read 30001 to tell them apart."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can an SDM230 and an SDM72 share one RS-485 line?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, with different addresses: both ship as address 1, so change one on its display or by writing register 40021 with FC16 while it is alone on the line. Same baud rate and parity on both."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the SDM72 password for Modbus settings?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The protected holding registers need the password written to 40025 first; Eastron's protocol gives 1000 as the default."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+.article-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 5rem}
+.breadcrumb{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--muted);margin-bottom:2rem}
+.breadcrumb a{color:var(--muted);text-decoration:none}
+.breadcrumb a:hover{color:var(--ink)}
+h1{font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;line-height:1.05;text-transform:uppercase;letter-spacing:0.01em;margin-bottom:1rem}
+h2{font-family:'Saira Condensed',sans-serif;font-size:1.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin:2.5rem 0 0.8rem;padding-top:0.5rem;border-top:2px solid var(--ink)}
+h3{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.03em;margin:1.5rem 0 0.5rem;color:var(--amber-ink)}
+p{font-size:0.93rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+ul{font-size:0.93rem;color:var(--body);line-height:1.75;margin:0 0 1rem 1.2rem;padding-left:0.6rem}
+li{margin-bottom:0.4rem}
+.lead{font-size:1.05rem;color:var(--ink);line-height:1.7;margin-bottom:2rem;border-left:3px solid var(--safety);padding-left:1rem}
+code{font-family:'IBM Plex Mono',monospace;font-size:0.82rem;background:#fff;border:1px solid var(--steel);padding:1px 5px;border-radius:2px}
+pre{font-family:'IBM Plex Mono',monospace;font-size:0.8rem;background:var(--ink);color:#E6E8E3;padding:1.2rem 1.4rem;border-radius:3px;overflow-x:auto;margin:1.2rem 0;line-height:1.6}
+pre .c{color:#888}
+pre .v{color:#F2A900}
+pre .k{color:#7ec8e3}
+table{width:100%;border-collapse:collapse;font-size:0.83rem;margin:1.2rem 0;background:var(--plate);border:2px solid var(--ink)}
+th{text-align:left;padding:0.65rem 0.9rem;border-bottom:2px solid var(--ink);background:var(--enclosure2);font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted)}
+td{padding:0.6rem 0.9rem;border-bottom:1px solid var(--steel);color:var(--body)}
+tr:hover td{background:#ECEEE9}
+td.mono{font-family:'IBM Plex Mono',monospace;font-size:0.78rem}
+td.formula{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--amber-ink)}
+.callout{background:var(--plate);border:1.5px solid var(--ink);border-left:4px solid var(--safety);padding:1rem 1.2rem;border-radius:2px;margin:1.5rem 0;font-size:0.88rem;color:var(--body);line-height:1.6}
+.callout strong{color:var(--ink)}
+.callout.tip{border-left-color:var(--run)}
+.callout.warn{border-left-color:var(--bad)}
+.step-num{display:inline-block;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.85rem;background:var(--ink);color:var(--safety);padding:2px 8px;border-radius:2px;margin-right:8px;letter-spacing:0.05em}
+.cta-box{background:var(--ink);color:var(--enclosure);padding:2rem 2.2rem;border-radius:3px;margin:3rem 0;display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
+.cta-box h3{color:var(--safety);margin:0 0 0.4rem;font-size:1.2rem;border:none;padding:0}
+.cta-box p{color:#B9BDB6;font-size:0.85rem;margin:0}
+.cta-box a{background:var(--safety);color:var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.cta-box a:hover{background:#fff}
+.download-box{border:2px solid var(--ink);background:var(--enclosure2);padding:1.4rem 1.8rem;border-radius:3px;margin:2rem 0;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.download-box h3{margin:0 0 0.3rem;font-size:1rem;border:none;padding:0;font-family:'IBM Plex Mono',monospace;color:var(--ink)}
+.download-box p{margin:0;font-size:0.82rem;color:var(--muted);max-width:46ch}
+.download-box a{background:var(--ink);color:var(--enclosure);padding:0.6rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.download-box a:hover{background:var(--safety);color:var(--ink)}
+footer{border-top:2px solid var(--ink);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;color:var(--muted);flex-wrap:wrap;gap:1rem;background:var(--enclosure2)}
+.footer-logo{font-family:'Saira Condensed',sans-serif;color:var(--ink);font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--ink)}
+@media(max-width:640px){nav .nav-links{display:none}.article-wrap{padding:2rem 1.2rem 4rem}h1{font-size:2rem}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}td,th{white-space:normal;word-break:break-word}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+
+@media(max-width:680px){pre,code{white-space:pre-wrap;word-break:break-word;max-width:100%;overflow-x:auto}}
+
+/* family slogan band, slim (2026-10-22) */
+.slogan-band.slim{background:var(--safety,#F2A900);border-bottom:2px solid var(--ink,#16181A);padding:0.5rem 1rem;text-align:center;color:var(--ink,#16181A);display:flex;gap:0.3rem 1rem;justify-content:center;align-items:baseline;flex-wrap:wrap}
+.slogan-band.slim .sb-main{font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.3rem;line-height:1.1;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim .sb-sub{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim a{color:var(--ink,#16181A);font-weight:700}
+@media(max-width:768px){.slogan-band.slim .sb-main{font-size:1.05rem}.slogan-band.slim .sb-sub{display:none}}
+</style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/#guides"},{"@type": "ListItem","position": 3,"name": "Eastron SDM230 / SDM72 Modbus","item": "https://modbusmanager.com/eastron-sdm230-sdm72-modbus.html"}]}
+</script>
+<style id="site-nav">
+/* site menu (tools/web-research/site-nav.js) */
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop.nd-has>.nav-drop-label{color:var(--ink,#16181A);font-weight:600}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;display:none;z-index:200}
+.nav-drop:hover>.nav-drop-menu,.nav-drop:focus-within>.nav-drop-menu{display:block}
+.nd-box{display:flex;flex-direction:column;background:var(--enclosure2,#e8e9e4);border:1px solid var(--ink,#16181A);border-radius:3px;box-shadow:0 6px 20px rgba(0,0,0,0.18);padding:0.35rem 0;min-width:210px}
+.nav-drop-menu a,.nd-glabel{display:flex;align-items:center;gap:0.55rem;padding:0.45rem 1rem;white-space:nowrap;text-transform:none;font-family:'IBM Plex Mono',monospace;font-size:0.78rem;letter-spacing:0.02em;color:var(--ink,#16181A);text-decoration:none;background:none;border:none;text-align:left;cursor:pointer;width:100%;box-sizing:border-box}
+.nav-drop-menu a:hover,.nd-glabel:hover,.nd-group:hover>.nd-glabel,.nd-group.open>.nd-glabel{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+.nav-drop-menu .ni{display:inline-block;width:1.25rem;text-align:center;flex:none;font-size:0.9rem;line-height:1}
+.nav-drop-menu a.nd-sub{padding-left:2.1rem;font-size:0.75rem}
+.nav-drop-menu .nd-hot{color:#9A6700;font-weight:600}
+.nav-drop-menu a[aria-current="page"]{font-weight:700;box-shadow:inset 3px 0 0 var(--safety,#F2A900)}
+.nd-group.nd-has>.nd-glabel{font-weight:700}
+.nd-arrow{margin-left:auto;padding-left:1rem;font-size:0.7rem;color:var(--muted,#5F5E5A);display:inline-block;transform-origin:calc(50% + 0.5rem) 50%}
+.nd-group{position:relative}
+.nd-flyout{display:none;position:absolute;left:100%;top:-0.4rem;padding-left:0.25rem;z-index:210}
+.nd-group:hover>.nd-flyout,.nd-group:focus-within>.nd-flyout,.nd-group.open>.nd-flyout{display:block}
+.nd-head{font-family:'IBM Plex Mono',monospace;font-size:0.64rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted,#5F5E5A);padding:0.55rem 1rem 0.15rem;border-top:1px solid var(--steel,#B9BDB6);margin-top:0.25rem}
+.nd-box>.nd-head:first-child{border-top:none;margin-top:0}
+@media(max-width:768px){
+nav .nav-links.open{align-items:stretch;text-align:left}
+nav .nav-links.open .nav-drop{padding-bottom:0;margin-bottom:0}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu{position:static;display:block;padding:0;margin:0.3rem 0 0.2rem}
+nav .nav-links.open .nd-box{border:none;box-shadow:none;background:none;padding:0;min-width:0}
+nav .nav-links.open .nav-drop-menu a,nav .nav-links.open .nd-glabel{padding:0.4rem 0;font-size:0.82rem;white-space:normal}
+nav .nav-links.open .nav-drop-menu a.nd-sub{padding-left:1.8rem}
+nav .nav-links.open .nd-flyout a[aria-current="page"]{padding-left:0.6rem}
+nav .nav-links.open .nd-flyout{position:static;padding:0 0 0.3rem 1.8rem;display:none}
+nav .nav-links.open .nd-group:hover>.nd-flyout,nav .nav-links.open .nd-group:focus-within>.nd-flyout{display:none}
+nav .nav-links.open .nd-group.open>.nd-flyout{display:block}
+nav .nav-links.open .nd-group.open>.nd-glabel,nav .nav-links.open .nd-group:hover>.nd-glabel{background:none}
+nav .nav-links.open .nd-group.open .nd-arrow{transform:rotate(90deg)}
+nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label" tabindex="0">Features &#9662;</span>
+      <div class="nav-drop-menu"><div class="nd-box">
+        <a href="/modbus-scanner.html" class="nd-hot"><span class="ni">&#128269;&#65039;</span>Modbus Scanner</a>
+        <a href="/modbus-rtu-over-tcp.html" class="nd-sub"><span class="ni">&#128257;&#65039;</span>RTU over TCP</a>
+        <a href="/modbus-tcp-security-tls.html" class="nd-sub"><span class="ni">&#128274;&#65039;</span>Modbus TCP Security (TLS)</a>
+        <a href="/modbus-hmi-dashboard.html"><span class="ni">&#128202;&#65039;</span>HMI Dashboard</a>
+        <a href="/modbus-hmi-runtime.html" class="nd-sub"><span class="ni">&#128421;&#65039;</span>HMI Runtime (OEM)</a>
+        <a href="/modbus-data-logger-software.html"><span class="ni">&#128200;&#65039;</span>Data Logger</a>
+        <a href="/modbus-rtu-rs485-data-logger.html" class="nd-sub"><span class="ni">&#128223;&#65039;</span>RTU / RS-485 Logging</a>
+        <a href="/modbus-logging-interval-deadband.html" class="nd-sub"><span class="ni">&#9201;&#65039;</span>Interval &amp; Deadband</a>
+        <a href="/modbus-to-csv-logging.html" class="nd-sub"><span class="ni">&#128196;&#65039;</span>CSV Export</a>
+        <a href="/modbus-alarm-software.html"><span class="ni">&#128276;&#65039;</span>Alarms</a>
+        <a href="/modbus-gateway-software.html"><span class="ni">&#128256;&#65039;</span>Gateway</a>
+        <a href="/modbus-to-mqtt.html" class="nd-sub"><span class="ni">&#128225;&#65039;</span>Modbus to MQTT</a>
+        <a href="/modbus-structured-text-scripting.html"><span class="ni">&#127991;&#65039;</span>Tags &amp; Structured Text</a>
+      </div></div>
+    </li>
+    <li class="nav-drop nd-has">
+      <span class="nav-drop-label" tabindex="0">Guides &#9662;</span>
+      <div class="nav-drop-menu"><div class="nd-box">
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9728;&#65039;</span>Solar &amp; inverters<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+            <a href="/huawei-sun2000-modbus.html">Huawei SUN2000</a>
+            <a href="/huawei-sun2000-home-assistant.html">SUN2000 &rarr; Home Assistant</a>
+            <a href="/sungrow-inverter-modbus.html">Sungrow Inverters</a>
+            <a href="/sunspec-modbus-sma-fronius-solaredge.html">SunSpec: SMA, Fronius, SolarEdge</a>
+            <a href="/victron-gx-modbus-tcp.html">Victron Cerbo GX</a>
+            <a href="/goodwe-et-hybrid-modbus.html">GoodWe ET Hybrid</a>
+            <a href="/deye-sunsynk-growatt-modbus.html">Deye, Sunsynk &amp; Growatt</a>
+          </div></div>
+        </div>
+        <div class="nd-group nd-has">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9889;&#65039;</span>Energy meters<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+            <a href="/schneider-pm3200-modbus.html">Schneider PM3250</a>
+            <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+            <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+            <a href="/eastron-sdm230-sdm72-modbus.html" aria-current="page">Eastron SDM230 / SDM72</a>
+            <a href="/carlo-gavazzi-em24-em340-modbus.html">Carlo Gavazzi EM340 / EM24</a>
+            <a href="/janitza-umg-96-pa-modbus.html">Janitza UMG 96-PA</a>
+            <a href="/wattnode-modbus.html">WattNode</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9881;&#65039;</span>Drives &amp; EC fans<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+            <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+            <a href="/abb-ach580-modbus.html">ABB ACH580</a>
+            <a href="/danfoss-vlt-fc102-fc302-modbus.html">Danfoss FC 102 / FC 302</a>
+            <a href="/schneider-altivar-atv320-atv630-modbus.html">Schneider ATV320 / ATV630</a>
+            <a href="/siemens-sinamics-g120-modbus.html">Siemens SINAMICS G120</a>
+            <a href="/powerflex-525-modbus.html">PowerFlex 525</a>
+            <a href="/durapulse-gs20-modbus.html">DURApulse GS20</a>
+            <a href="/yaskawa-v1000-modbus.html">Yaskawa V1000</a>
+            <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+            <a href="/modbus-vfd-speed-reference.html">VFD Speed Registers</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#127981;&#65039;</span>Siemens PLCs<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200 HMI</a>
+            <a href="/siemens-s7-put-get.html">Siemens S7 PUT/GET</a>
+          </div></div>
+        </div>
+        <a href="/manual.html"><span class="ni">&#128214;&#65039;</span>Documentation</a>
+        <a href="/modbus-poll-alternative.html"><span class="ni">&#9878;&#65039;</span>vs Modbus Poll</a>
+      </div></div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+    <li><a href="https://bacmanager.com">BACManager &#8599;</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.8/Modbus.Manager.Pro.Setup.1.9.8.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-SDM230-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/v1.4.13/Modbus.Manager.Setup.1.4.13.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-SDM230-Nav', 'product': 'standard', 'value': 1})">Download free trial</a>
+  </div>
+</nav>
+<div class="slogan-band slim">
+  <span class="sb-main">Every device. One tool. Pay once.</span>
+  <span class="sb-sub">Modbus &middot; BACnet &middot; Siemens S7 &middot; one-time licence &middot; also from us: <a href="https://bacmanager.com">BACManager&nbsp;&#8599;</a></span>
+</div>
+<div class="hazard"></div>
+
+<div class="article-wrap">
+
+  <div class="breadcrumb">
+    <a href="/">ModbusManager</a> &rsaquo; Guides &rsaquo; Eastron SDM230 / SDM72 Modbus
+  </div>
+
+  <h1>Eastron SDM230 and SDM72 Modbus Registers: One Line, Two Meters</h1>
+
+  <p class="lead">The Eastron SDM230-Modbus (single-phase, 100 A direct) and the SDM72 (three-phase, 100 A direct) are the meters most often found next to a heat pump, a wallbox or a PV inverter. Both use Eastron's familiar input-register map &mdash; but the SDM72 exists in versions with very different register sets, Eastron's current manuals contain no register list at all, and the meters refuse requests with an odd number of registers. This page covers what Eastron's own documents say, and how to read both meters on one RS-485 line.</p>
+
+  <figure style="margin:1.8rem 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink)">
+    <img src="/eastron-sdm230-sdm72-dashboard.png" width="1320" height="825" loading="lazy" decoding="async"
+         alt="ModbusManager Pro dashboard with two Eastron meters on one RS-485 line: an SDM72DM-V2 house main meter as a three-phase meter with voltages, currents, powers, power factors, energies and a current-unbalance warning, and an SDM230 on a heat pump with power, current, voltage, power factor, phase angle, frequency and energy, plus a trend of house total against heat pump power"
+         style="width:100%;height:auto;display:block">
+    <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">
+      The free workspace below on simulated meters &mdash; SDM72DM-V2 as unit 2, SDM230 as unit 1, both FC04, Float32.
+    </figcaption>
+  </figure>
+
+  <h2>Connection Settings</h2>
+
+  <table>
+    <tr><th>Setting</th><th>SDM230-Modbus</th><th>SDM72D-M (2025 manual)</th></tr>
+    <tr><td>Protocol</td><td>Modbus RTU, RS-485</td><td>Modbus RTU, RS-485, half duplex</td></tr>
+    <tr><td>Baud rate</td><td class="mono">1200&ndash;38400, default 9600</td><td class="mono">2400&ndash;38400, default 9600</td></tr>
+    <tr><td>Parity</td><td class="mono">None / Even / Odd</td><td class="mono">None (default) / Odd / Even</td></tr>
+    <tr><td>Stop bits</td><td class="mono">1 or 2</td><td class="mono">1 or 2</td></tr>
+    <tr><td>Address</td><td class="mono">1&ndash;247, default 1</td><td class="mono">1&ndash;247, default 1</td></tr>
+  </table>
+  <p>Both meters ship as address 1. Two meters on one line will not answer until one of them is renumbered &mdash; on the display, or by writing holding register 40021 (FC16, Float32). The older protocol documents list baud codes only up to 9600 in register 40029 (0 = 2400, 1 = 4800, 2 = 9600, 5 = 1200); the current meters offer 19200 and 38400 on the display.</p>
+
+  <h2>Three Rules for Every Eastron Meter</h2>
+  <h3>1. Input registers, address minus 30001</h3>
+  <p>Measurements are input registers, read with <strong>FC04</strong>. Eastron writes them as 30001, 30007&hellip; and also gives the hex start address: 30001 is <code>00 00</code>, 30007 is <code>00 06</code>. On the wire the address is the number minus 30001. Settings are holding registers: FC03 to read, <strong>FC16</strong> to write.</p>
+  <h3>2. Always an even number of registers</h3>
+  <p>Every value is a Float32 in two registers, and Eastron's protocol says read and write requests must ask an <strong>even number of registers</strong> &mdash; an odd count is answered with an exception. (A single-register read gets an "instrument type specific value" for old SCADA systems, which is not a measurement.) Ask for 2, 4, 40&hellip; never 1, 3 or 41.</p>
+  <h3>3. At most 30 values per request</h3>
+  <p>The SDM230 protocol limits one request to 30 values &mdash; <strong>60 registers</strong>; more is an exception. (Another section of the same document says 40 parameters; stay at 60 registers and it works either way.) Reading 30001&ndash;30080 needs two requests.</p>
+
+  <h2>SDM230-Modbus Registers</h2>
+  <p>FC04, Float32, two registers each. <em>Wire</em> is the 0-based address.</p>
+  <table>
+    <tr><th>Register</th><th>Wire</th><th>Value</th><th>Unit</th></tr>
+    <tr><td class="mono">30001</td><td class="mono">0</td><td>Voltage</td><td>V</td></tr>
+    <tr><td class="mono">30007</td><td class="mono">6</td><td>Current</td><td>A</td></tr>
+    <tr><td class="mono">30013</td><td class="mono">12</td><td>Active power</td><td>W</td></tr>
+    <tr><td class="mono">30019</td><td class="mono">18</td><td>Apparent power</td><td>VA</td></tr>
+    <tr><td class="mono">30025</td><td class="mono">24</td><td>Reactive power</td><td>VAr</td></tr>
+    <tr><td class="mono">30031</td><td class="mono">30</td><td>Power factor</td><td>&mdash;</td></tr>
+    <tr><td class="mono">30037</td><td class="mono">36</td><td>Phase angle</td><td>degrees</td></tr>
+    <tr><td class="mono">30071</td><td class="mono">70</td><td>Frequency</td><td>Hz</td></tr>
+    <tr><td class="mono">30073 / 30075</td><td class="mono">72 / 74</td><td>Import / export active energy</td><td>kWh</td></tr>
+    <tr><td class="mono">30077 / 30079</td><td class="mono">76 / 78</td><td>Import / export reactive energy</td><td>kVArh</td></tr>
+    <tr><td class="mono">30343 / 30345</td><td class="mono">342 / 344</td><td>Total active / reactive energy</td><td>kWh / kVArh</td></tr>
+    <tr><td class="mono">30385 / 30387</td><td class="mono">384 / 386</td><td>Resettable total active / reactive energy</td><td>kWh / kVArh</td></tr>
+    <tr><td class="mono">34877 / 34879</td><td class="mono">4876 / 4878</td><td>Total active energy, tariff 1 / 2</td><td>kWh</td></tr>
+  </table>
+  <p>Power is in <strong>W</strong>, energy in <strong>kWh</strong>. "Total" (30343) is import plus export &mdash; on a PV or battery circuit it grows in both directions, so use 30073 and 30075 separately. The SDM230 has two pulse outputs: pulse 1 configurable (energy type in 40087, width in 40013), pulse 2 fixed at 1000 imp/kWh import.</p>
+
+  <h2>SDM72: Which One Do You Have?</h2>
+  <p>"SDM72" covers meters with very different Modbus maps, and the label on the front does not always tell you which:</p>
+  <table>
+    <tr><th>Version</th><th>Input registers (FC04)</th><th>Source</th></tr>
+    <tr><td><strong>SDM72D-M</strong> (protocol V1.1)</td><td><strong>Nine only:</strong> 30053 total power W, 30073 import kWh, 30075 export kWh, 30343 total kWh, 30385 / 30389 / 30391 resettable total / import / export kWh, 31281 / 31283 import / export power W</td><td>"SDM72D-M Modbus P V1.1"</td></tr>
+    <tr><td><strong>SDM72DM-V2</strong></td><td>Full map like the SDM630: voltages, currents, powers, power factors per phase, line voltages, neutral current, frequency, energies</td><td>"SDM72DM-V2 User Manual V1.1"</td></tr>
+    <tr><td>SDM72D-M (2025 hardware)</td><td>Not in the 2025/2026 user manual</td><td>Ask Eastron for the protocol of your firmware</td></tr>
+  </table>
+  <p><strong>Test it:</strong> read 30001 (wire 0, FC04, quantity 2). A V2 answers with the phase-1 voltage, around 230. The original SDM72D-M documents nothing there &mdash; if you see 0 or an exception, you have the nine-register meter, and only power and energy are available. Plan the panel before you buy: an SDM72D-M cannot give you per-phase currents, whatever the master asks.</p>
+
+  <h3>SDM72DM-V2 main registers</h3>
+  <table>
+    <tr><th>Register</th><th>Wire</th><th>Value</th><th>Unit</th></tr>
+    <tr><td class="mono">30001 / 30003 / 30005</td><td class="mono">0 / 2 / 4</td><td>Voltage L1 / L2 / L3 to N</td><td>V</td></tr>
+    <tr><td class="mono">30007 / 30009 / 30011</td><td class="mono">6 / 8 / 10</td><td>Current L1 / L2 / L3</td><td>A</td></tr>
+    <tr><td class="mono">30013 / 30015 / 30017</td><td class="mono">12 / 14 / 16</td><td>Active power L1 / L2 / L3</td><td>W</td></tr>
+    <tr><td class="mono">30031 / 30033 / 30035</td><td class="mono">30 / 32 / 34</td><td>Power factor L1 / L2 / L3</td><td>&mdash;</td></tr>
+    <tr><td class="mono">30053</td><td class="mono">52</td><td>Total system power</td><td>W</td></tr>
+    <tr><td class="mono">30063</td><td class="mono">62</td><td>Total system power factor</td><td>&mdash;</td></tr>
+    <tr><td class="mono">30071</td><td class="mono">70</td><td>Frequency</td><td>Hz</td></tr>
+    <tr><td class="mono">30073 / 30075</td><td class="mono">72 / 74</td><td>Import / export active energy</td><td>kWh</td></tr>
+    <tr><td class="mono">30201 / 30203 / 30205</td><td class="mono">200 / 202 / 204</td><td>Line voltages L1-L2 / L2-L3 / L3-L1</td><td>V</td></tr>
+    <tr><td class="mono">30225</td><td class="mono">224</td><td>Neutral current</td><td>A</td></tr>
+    <tr><td class="mono">30397</td><td class="mono">396</td><td>Net kWh (import &minus; export)</td><td>kWh</td></tr>
+  </table>
+
+  <h2>Changing Settings over Modbus</h2>
+  <p>Holding registers, one parameter (two registers, Float32) per FC16 message: 40019 parity and stop bits (0 = none / 1 stop, 1 = even, 2 = odd, 3 = none / 2 stop), 40021 address, 40029 baud rate. On the SDM72 the protected settings need the password first, written to <strong>40025</strong> (default 1000). The resettable energy is cleared by writing <code>0003</code> to 461457 on the SDM72. A new address or baud rate applies to the next request &mdash; change the master straight after.</p>
+
+  <h2>Common Mistakes</h2>
+  <ul>
+    <li><strong>Exception on a request that looks right:</strong> an odd register count (1, 3, 41) or more than 60 registers.</li>
+    <li><strong>Nothing answers on a two-meter line:</strong> both are still address 1.</li>
+    <li><strong>Voltage reads 0 on an SDM72:</strong> it is an SDM72D-M with nine registers, not a V2.</li>
+    <li><strong>Power 1000 times too big:</strong> it is W, not kW.</li>
+    <li><strong>Total energy grows while exporting:</strong> 30343 is import + export; use 30073 / 30075, or 30397 net on the V2.</li>
+    <li><strong>FC03 reads nonsense:</strong> measurements are input registers, FC04.</li>
+  </ul>
+
+  <h2>Step-by-Step: Two Meters on One Line with ModbusManager</h2>
+  <ol>
+    <li>Give the second meter address 2 on its display (or write 2.0 to 40021 while it is alone on the line).</li>
+    <li>Wire A to A and B to B, terminate both ends of the line.</li>
+    <li>In ModbusManager choose RTU, 9600 baud, no parity, 1 stop bit (the defaults).</li>
+    <li>Poll FC04 from address 0, quantity 40, unit 1 and then unit 2. Voltage at register 0 confirms each meter.</li>
+    <li>Open the workspace below for both meters on one dashboard.</li>
+  </ol>
+
+  <h2>Download a Ready-Made Workspace</h2>
+  <ul>
+    <li>Seven FC04 polls, each an even number of registers and at most 60: three for the SDM230 (unit 1), four for the SDM72DM-V2 (unit 2)</li>
+    <li>29 tags with the wire address and Float32 set, powers scaled to kW</li>
+    <li>A dashboard: the SDM72 as a three-phase meter, the SDM230 values beside it and a trend of house total against heat pump power</li>
+  </ul>
+  <div class="callout">
+    <strong>Read-only.</strong> Nothing is written. For an SDM72D-M with nine registers, delete the SDM72 phase polls and keep 30053 / 30073 / 30075. Tags and dashboard are ModbusManager Pro features; Standard opens the poll windows only.
+  </div>
+  <div class="download-box">
+    <div>
+      <h3>Eastron_SDM230_SDM72.json</h3>
+      <p>Eastron SDM230 (ID 1) + SDM72DM-V2 (ID 2) workspace. Open via Workspace &rsaquo; Open in ModbusManager Pro.</p>
+    </div>
+    <a href="/Eastron_SDM230_SDM72.json" download>Download Workspace</a>
+  </div>
+
+  <div class="cta-box">
+    <div>
+      <h3>Try it with ModbusManager Pro</h3>
+      <p>Several meters on one line, a three-phase meter element, historian and energy reports. Free 14-day trial. No credit card. Windows 10/11.</p>
+    </div>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.8/Modbus.Manager.Pro.Setup.1.9.8.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-SDM230-Body', 'product': 'pro', 'value': 1})">Download Pro Trial</a>
+  </div>
+
+  <p>Related: the <a href="/eastron-sdm120-modbus.html">SDM120</a> (single-phase, 45 A) and <a href="/eastron-sdm630-modbus.html">SDM630</a> (three-phase, full map) use the same register layout.</p>
+
+  <h2>Frequently Asked Questions</h2>
+
+  <h3>What are the Modbus registers of the Eastron SDM230?</h3>
+  <p>Input registers read with FC04, Float32: 30001 voltage, 30007 current, 30013 active power in W, 30031 power factor, 30071 frequency, 30073 import kWh and 30075 export kWh. On the wire the address is the register minus 30001, so voltage is address 0.</p>
+
+  <h3>Why does my Eastron meter return an exception?</h3>
+  <p>Eastron meters require an even number of registers in every request, because each value is a Float32 in two registers, and at most 60 registers (30 values). A request for 1, 3 or 61 registers is refused.</p>
+
+  <h3>Why does my SDM72 not show voltage or current?</h3>
+  <p>The original SDM72D-M documents only nine registers: total power, import, export and total energy, resettable energies and import / export power. Voltages and currents per phase need the SDM72DM-V2. Read 30001 to tell them apart.</p>
+
+  <h3>Can an SDM230 and an SDM72 share one RS-485 line?</h3>
+  <p>Yes, with different addresses: both ship as address 1, so change one on its display or by writing register 40021 with FC16 while it is alone on the line. Same baud rate and parity on both.</p>
+
+  <h3>What is the SDM72 password for Modbus settings?</h3>
+  <p>The protected holding registers need the password written to 40025 first; Eastron's protocol gives 1000 as the default.</p>
+
+  <h2>Sources</h2>
+  <p style="font-size:0.85rem">Eastron, <em>SDM230-Modbus User Manual</em> V1.9 (2026) and <em>SDM72D-M user manual</em> V1.1 (2026-04-07), both from eastrongroup.com; neither contains a register list. Registers from Eastron's <em>SDM230 Modbus Protocol</em> V1.1 (from Eastron Europe), <em>SDM72D-M Modbus P V1.1</em> and <em>SDM72DM-V2 User Manual</em> V1.1 (2021), the last two as published by distributors. Check the protocol for your meter's firmware with Eastron. The workspace was tested against a simulator built from these documents, not physical meters.</p>
+
+</div>
+
+

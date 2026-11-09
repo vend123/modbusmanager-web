@@ -1,0 +1,849 @@
+{
+  "version": 2,
+  "polls": [
+    {
+      "name": "SDM230 #1 measurements (30001-30040)",
+      "fc": 4,
+      "addr": 0,
+      "qty": 40,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 0,
+      "chartName": "SDM230 #1 measurements (30001-30040) [0]",
+      "logFile": "log_SDM230_1_measurements_30001_30040_.txt"
+    },
+    {
+      "name": "SDM230 #1 Hz + energy (30071-30080)",
+      "fc": 4,
+      "addr": 70,
+      "qty": 10,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 70,
+      "chartName": "SDM230 #1 Hz + energy (30071-30080) [70]",
+      "logFile": "log_SDM230_1_Hz_energy_30071_30080_.txt"
+    },
+    {
+      "name": "SDM230 #1 total kWh (30343-30346)",
+      "fc": 4,
+      "addr": 342,
+      "qty": 4,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 342,
+      "chartName": "SDM230 #1 total kWh (30343-30346) [342]",
+      "logFile": "log_SDM230_1_total_kWh_30343_30346_.txt"
+    },
+    {
+      "name": "SDM72 #2 phases (30001-30036)",
+      "fc": 4,
+      "addr": 0,
+      "qty": 36,
+      "slaveId": 2,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 0,
+      "chartName": "SDM72 #2 phases (30001-30036) [0]",
+      "logFile": "log_SDM72_2_phases_30001_30036_.txt"
+    },
+    {
+      "name": "SDM72 #2 totals (30043-30076)",
+      "fc": 4,
+      "addr": 42,
+      "qty": 34,
+      "slaveId": 2,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 42,
+      "chartName": "SDM72 #2 totals (30043-30076) [42]",
+      "logFile": "log_SDM72_2_totals_30043_30076_.txt"
+    },
+    {
+      "name": "SDM72 #2 line voltages (30201-30208)",
+      "fc": 4,
+      "addr": 200,
+      "qty": 8,
+      "slaveId": 2,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 200,
+      "chartName": "SDM72 #2 line voltages (30201-30208) [200]",
+      "logFile": "log_SDM72_2_line_voltages_30201_30208_.txt"
+    },
+    {
+      "name": "SDM72 #2 total + net kWh (30343-30346)",
+      "fc": 4,
+      "addr": 342,
+      "qty": 4,
+      "slaveId": 2,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 342,
+      "chartName": "SDM72 #2 total + net kWh (30343-30346) [342]",
+      "logFile": "log_SDM72_2_total_net_kWh_30343_30346_.txt"
+    }
+  ],
+  "activePoll": 0,
+  "condColors": {},
+  "scaling": {},
+  "valueNames": {},
+  "chartSeries": [],
+  "slaveBlocks": [],
+  "dashTheme": "modern",
+  "dashFx": true,
+  "dashBgColor": "#0d1117",
+  "dashPages": [
+    {
+      "id": 1,
+      "name": "Main + heat pump",
+      "elements": [
+        {
+          "id": 1,
+          "value": 0,
+          "type": "statictext",
+          "x": 20,
+          "y": 10,
+          "w": 840,
+          "h": 30,
+          "text": "House main SDM72 (ID 2)  +  heat pump SDM230 (ID 1)  ·  one RS-485 line, read-only",
+          "fontSize": 18,
+          "bold": true,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 2,
+          "value": 0,
+          "type": "meter3",
+          "x": 20,
+          "y": 50,
+          "w": 330,
+          "h": 270,
+          "label": "Main · SDM72DM-V2 · ID 2",
+          "unitId": 2,
+          "nomV": 230,
+          "ratedA": 63,
+          "pUnit": "kW",
+          "vUnbal": 2,
+          "iUnbal": 10,
+          "lostPct": 50,
+          "showLL": true,
+          "showEnergy": true,
+          "view": "full",
+          "phaseColors": "iec",
+          "flagTag": "",
+          "tpl": "sdm630",
+          "pts": {
+            "v1": {
+              "src": "tag",
+              "tagName": "M_V1"
+            },
+            "v2": {
+              "src": "tag",
+              "tagName": "M_V2"
+            },
+            "v3": {
+              "src": "tag",
+              "tagName": "M_V3"
+            },
+            "i1": {
+              "src": "tag",
+              "tagName": "M_I1"
+            },
+            "i2": {
+              "src": "tag",
+              "tagName": "M_I2"
+            },
+            "i3": {
+              "src": "tag",
+              "tagName": "M_I3"
+            },
+            "p1": {
+              "src": "tag",
+              "tagName": "M_P1"
+            },
+            "p2": {
+              "src": "tag",
+              "tagName": "M_P2"
+            },
+            "p3": {
+              "src": "tag",
+              "tagName": "M_P3"
+            },
+            "pt": {
+              "src": "tag",
+              "tagName": "M_P_total"
+            },
+            "pf1": {
+              "src": "tag",
+              "tagName": "M_PF1"
+            },
+            "pf2": {
+              "src": "tag",
+              "tagName": "M_PF2"
+            },
+            "pf3": {
+              "src": "tag",
+              "tagName": "M_PF3"
+            },
+            "pft": {
+              "src": "tag",
+              "tagName": "M_PF_total"
+            },
+            "hz": {
+              "src": "tag",
+              "tagName": "M_Freq"
+            },
+            "v12": {
+              "src": "tag",
+              "tagName": "M_V12"
+            },
+            "v23": {
+              "src": "tag",
+              "tagName": "M_V23"
+            },
+            "v31": {
+              "src": "tag",
+              "tagName": "M_V31"
+            },
+            "eimp": {
+              "src": "tag",
+              "tagName": "M_Import_kWh"
+            },
+            "eexp": {
+              "src": "tag",
+              "tagName": "M_Export_kWh"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "value": 0,
+          "type": "statictext",
+          "x": 370,
+          "y": 50,
+          "w": 490,
+          "h": 24,
+          "text": "Heat pump · SDM230 · ID 1",
+          "fontSize": 15,
+          "bold": true,
+          "color": "#9fb3cc"
+        },
+        {
+          "id": 4,
+          "value": 0,
+          "type": "text",
+          "x": 370,
+          "y": 80,
+          "w": 155,
+          "h": 66,
+          "label": "Power",
+          "unit": "kW",
+          "decimals": 2,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "HP_Power_kW"
+        },
+        {
+          "id": 5,
+          "value": 0,
+          "type": "text",
+          "x": 537,
+          "y": 80,
+          "w": 155,
+          "h": 66,
+          "label": "Current",
+          "unit": "A",
+          "decimals": 2,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "HP_Current"
+        },
+        {
+          "id": 6,
+          "value": 0,
+          "type": "text",
+          "x": 705,
+          "y": 80,
+          "w": 155,
+          "h": 66,
+          "label": "Voltage",
+          "unit": "V",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "HP_Voltage"
+        },
+        {
+          "id": 7,
+          "value": 0,
+          "type": "text",
+          "x": 370,
+          "y": 156,
+          "w": 155,
+          "h": 66,
+          "label": "Power factor",
+          "unit": "",
+          "decimals": 3,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "HP_PF"
+        },
+        {
+          "id": 8,
+          "value": 0,
+          "type": "text",
+          "x": 537,
+          "y": 156,
+          "w": 155,
+          "h": 66,
+          "label": "Phase angle",
+          "unit": "°",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#9fb3cc",
+          "sourceType": "tag",
+          "tagName": "HP_Angle"
+        },
+        {
+          "id": 9,
+          "value": 0,
+          "type": "text",
+          "x": 705,
+          "y": 156,
+          "w": 155,
+          "h": 66,
+          "label": "Frequency",
+          "unit": "Hz",
+          "decimals": 2,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "HP_Freq"
+        },
+        {
+          "id": 10,
+          "value": 0,
+          "type": "text",
+          "x": 370,
+          "y": 232,
+          "w": 240,
+          "h": 66,
+          "label": "Import",
+          "unit": "kWh",
+          "decimals": 2,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "HP_Import_kWh"
+        },
+        {
+          "id": 11,
+          "value": 0,
+          "type": "text",
+          "x": 620,
+          "y": 232,
+          "w": 240,
+          "h": 66,
+          "label": "Total (30343)",
+          "unit": "kWh",
+          "decimals": 2,
+          "fontSize": 24,
+          "color": "#9fb3cc",
+          "sourceType": "tag",
+          "tagName": "HP_Total_kWh"
+        },
+        {
+          "id": 12,
+          "value": 0,
+          "type": "multitend",
+          "x": 20,
+          "y": 340,
+          "w": 840,
+          "h": 200,
+          "label": "House total vs heat pump (kW)",
+          "maxPoints": 1200,
+          "decimals": 2,
+          "sampleMs": 1000,
+          "items": [
+            {
+              "name": "House total 30053 (ID 2)",
+              "sourceType": "tag",
+              "tagName": "M_P_total",
+              "color": "#00d4aa",
+              "value": 0
+            },
+            {
+              "name": "Heat pump 30013 (ID 1)",
+              "sourceType": "tag",
+              "tagName": "HP_Power_kW",
+              "color": "#f0c040",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "HP_Voltage",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM230 V (30001, wire 0)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "HP_Current",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 6,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM230 A (30007, wire 6)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "HP_Power_kW",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 12,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM230 active power, W -> kW (30013, wire 12)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "HP_PF",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 30,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM230 power factor (30031, wire 30)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "HP_Angle",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 36,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM230 phase angle, degrees (30037, wire 36)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "HP_Freq",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 70,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM230 Hz (30071, wire 70)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "HP_Import_kWh",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 72,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM230 import kWh (30073, wire 72)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "HP_Export_kWh",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 74,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM230 export kWh (30075, wire 74)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "HP_Total_kWh",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 342,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM230 total kWh (30343, wire 342)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "M_V1",
+      "type": "register",
+      "slaveId": 2,
+      "regType": "inputRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM72 V L1-N (30001, wire 0)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "M_V2",
+      "type": "register",
+      "slaveId": 2,
+      "regType": "inputRegisters",
+      "address": 2,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM72 V L2-N (30003, wire 2)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "M_V3",
+      "type": "register",
+      "slaveId": 2,
+      "regType": "inputRegisters",
+      "address": 4,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM72 V L3-N (30005, wire 4)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "M_I1",
+      "type": "register",
+      "slaveId": 2,
+      "regType": "inputRegisters",
+      "address": 6,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM72 A L1 (30007, wire 6)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "M_I2",
+      "type": "register",
+      "slaveId": 2,
+      "regType": "inputRegisters",
+      "address": 8,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM72 A L2 (30009, wire 8)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "M_I3",
+      "type": "register",
+      "slaveId": 2,
+      "regType": "inputRegisters",
+      "address": 10,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM72 A L3 (30011, wire 10)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "M_P1",
+      "type": "register",
+      "slaveId": 2,
+      "regType": "inputRegisters",
+      "address": 12,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM72 kW L1 (30013, wire 12)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "M_P2",
+      "type": "register",
+      "slaveId": 2,
+      "regType": "inputRegisters",
+      "address": 14,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM72 kW L2 (30015, wire 14)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "M_P3",
+      "type": "register",
+      "slaveId": 2,
+      "regType": "inputRegisters",
+      "address": 16,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM72 kW L3 (30017, wire 16)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "M_PF1",
+      "type": "register",
+      "slaveId": 2,
+      "regType": "inputRegisters",
+      "address": 30,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM72 PF L1 (30031, wire 30)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "M_PF2",
+      "type": "register",
+      "slaveId": 2,
+      "regType": "inputRegisters",
+      "address": 32,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM72 PF L2 (30033, wire 32)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "M_PF3",
+      "type": "register",
+      "slaveId": 2,
+      "regType": "inputRegisters",
+      "address": 34,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM72 PF L3 (30035, wire 34)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "M_P_total",
+      "type": "register",
+      "slaveId": 2,
+      "regType": "inputRegisters",
+      "address": 52,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM72 total system power, W -> kW (30053, wire 52)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "M_PF_total",
+      "type": "register",
+      "slaveId": 2,
+      "regType": "inputRegisters",
+      "address": 62,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM72 total PF (30063, wire 62)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "M_Freq",
+      "type": "register",
+      "slaveId": 2,
+      "regType": "inputRegisters",
+      "address": 70,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM72 Hz (30071, wire 70)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "M_Import_kWh",
+      "type": "register",
+      "slaveId": 2,
+      "regType": "inputRegisters",
+      "address": 72,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM72 import kWh (30073, wire 72)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "M_Export_kWh",
+      "type": "register",
+      "slaveId": 2,
+      "regType": "inputRegisters",
+      "address": 74,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM72 export kWh (30075, wire 74)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "M_V12",
+      "type": "register",
+      "slaveId": 2,
+      "regType": "inputRegisters",
+      "address": 200,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM72 V L1-L2 (30201, wire 200)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "M_V23",
+      "type": "register",
+      "slaveId": 2,
+      "regType": "inputRegisters",
+      "address": 202,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM72 V L2-L3 (30203, wire 202)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "M_V31",
+      "type": "register",
+      "slaveId": 2,
+      "regType": "inputRegisters",
+      "address": 204,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "description": "SDM72 V L3-L1 (30205, wire 204)",
+      "scale": 1,
+      "offset": 0
+    }
+  ],
+  "script": "",
+  "scriptInterval": "1000",
+  "historianLogging": {
+    "registers": [],
+    "tags": []
+  },
+  "saved": "2026-11-08T12:00:00.000Z"
+}

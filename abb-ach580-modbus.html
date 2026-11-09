@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABB ACH580 Modbus RTU Registers, Setup &amp; Start Problems</title>
+<meta name="description" content="ABB ACH580 Modbus RTU: holding registers, group 58 setup, control word 0x047F, 20000 = 46.02 scaling, DI4 start interlock, Act2 = 0. Free workspace.">
+<meta name="keywords" content="ABB ACH580 Modbus, ACH580 Modbus RTU, ACH580 Modbus registers, ACH580 Modbus register map, ACH580 control word, ACH580 status word, ACH580 embedded fieldbus, ACH580 58.01, ACH580 start interlock DI4, ACH580 AFEE, ACH580 6681 EFB comm loss, ABB HVAC drive Modbus">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/abb-ach580-modbus.html">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:title" content="ABB ACH580 Modbus RTU Registers, Setup &amp; Start Problems">
+<meta property="og:description" content="Read and control an ABB ACH580 HVAC drive over Modbus RTU: the embedded fieldbus registers, group 58 settings, the start sequence, reading any parameter in 32-bit, and why the drive will not start until DI4 is closed. Free read-only ModbusManager workspace.">
+<meta property="og:url" content="https://modbusmanager.com/abb-ach580-modbus.html">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://modbusmanager.com/og-abb-ach580-modbus.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:published_time" content="2026-11-08T00:00:00Z">
+<meta property="article:section" content="Guides">
+<meta property="article:tag" content="ABB">
+<meta property="article:tag" content="Modbus">
+<meta property="article:tag" content="VFD">
+<meta property="article:tag" content="HVAC">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ABB ACH580 Modbus RTU Registers, Setup &amp; Start Problems">
+<meta name="twitter:description" content="Read and control an ABB ACH580 HVAC drive over Modbus RTU: the embedded fieldbus registers, group 58 settings, the start sequence, reading any parameter in 32-bit, and why the drive will not start until DI4 is closed. Free read-only ModbusManager workspace.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-abb-ach580-modbus.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "ABB ACH580 Modbus RTU: Registers, Setup and Why It Won't Start",
+  "description": "Read and control an ABB ACH580 HVAC drive over Modbus RTU: the embedded fieldbus registers, group 58 settings, the start sequence, reading any parameter in 32-bit, and why the drive will not start until DI4 is closed. Free read-only ModbusManager workspace.",
+  "url": "https://modbusmanager.com/abb-ach580-modbus.html",
+  "image": "https://modbusmanager.com/og-abb-ach580-modbus.png",
+  "datePublished": "2026-11-08",
+  "author": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "keywords": "ABB ACH580 Modbus, ACH580 Modbus RTU, ACH580 Modbus registers, ACH580 Modbus register map, ACH580 control word, ACH580 status word, ACH580 embedded fieldbus, ACH580 58.01, ACH580 start interlock DI4, ACH580 AFEE, ACH580 6681 EFB comm loss, ABB HVAC drive Modbus"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the Modbus address of the ACH580 status word?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Holding register 400004, which is address 3 on the wire (FC03). The control word is 400001 (address 0), the frequency reference 400002 (address 1) and Actual value 1 400005 (address 4)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the ACH580 support Modbus TCP?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not on its own: the embedded fieldbus is Modbus RTU on RS-485. Modbus TCP needs an FMBT-21 or FENA-21 option module, or an RTU-to-TCP gateway."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does Actual value 2 always read 0?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "By default 58.29 EFB act2 type is Transparent and 58.32 EFB act2 transparent source is Not selected, so register 400006 carries nothing. Set a source or read the parameter directly, e.g. 01.07 Motor current at 420214."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why won't my ACH580 start over Modbus?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most often the start interlock: in the HVAC default 20.41 Start interlock 1 is DI4, and with DI4 open the drive shows warning AFEE and does not start. Also check the panel is in Auto, 20.01 is Embedded fieldbus and bit 10 of the control word is set (0x047F, not 0x000F)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is the ACH580 frequency scaled on Modbus?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Reference 1 and Actual value 1 use 20000 = 46.02 Frequency scaling (50 or 60 Hz) in the default scalar control. Read 01.06 at 420212 in 32-bit instead and the value is simply Hz × 100."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+.article-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 5rem}
+.breadcrumb{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--muted);margin-bottom:2rem}
+.breadcrumb a{color:var(--muted);text-decoration:none}
+.breadcrumb a:hover{color:var(--ink)}
+h1{font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;line-height:1.05;text-transform:uppercase;letter-spacing:0.01em;margin-bottom:1rem}
+h2{font-family:'Saira Condensed',sans-serif;font-size:1.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin:2.5rem 0 0.8rem;padding-top:0.5rem;border-top:2px solid var(--ink)}
+h3{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.03em;margin:1.5rem 0 0.5rem;color:var(--amber-ink)}
+p{font-size:0.93rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+ul{font-size:0.93rem;color:var(--body);line-height:1.75;margin:0 0 1rem 1.2rem;padding-left:0.6rem}
+li{margin-bottom:0.4rem}
+.lead{font-size:1.05rem;color:var(--ink);line-height:1.7;margin-bottom:2rem;border-left:3px solid var(--safety);padding-left:1rem}
+code{font-family:'IBM Plex Mono',monospace;font-size:0.82rem;background:#fff;border:1px solid var(--steel);padding:1px 5px;border-radius:2px}
+pre{font-family:'IBM Plex Mono',monospace;font-size:0.8rem;background:var(--ink);color:#E6E8E3;padding:1.2rem 1.4rem;border-radius:3px;overflow-x:auto;margin:1.2rem 0;line-height:1.6}
+pre .c{color:#888}
+pre .v{color:#F2A900}
+pre .k{color:#7ec8e3}
+table{width:100%;border-collapse:collapse;font-size:0.83rem;margin:1.2rem 0;background:var(--plate);border:2px solid var(--ink)}
+th{text-align:left;padding:0.65rem 0.9rem;border-bottom:2px solid var(--ink);background:var(--enclosure2);font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted)}
+td{padding:0.6rem 0.9rem;border-bottom:1px solid var(--steel);color:var(--body)}
+tr:hover td{background:#ECEEE9}
+td.mono{font-family:'IBM Plex Mono',monospace;font-size:0.78rem}
+td.formula{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--amber-ink)}
+.callout{background:var(--plate);border:1.5px solid var(--ink);border-left:4px solid var(--safety);padding:1rem 1.2rem;border-radius:2px;margin:1.5rem 0;font-size:0.88rem;color:var(--body);line-height:1.6}
+.callout strong{color:var(--ink)}
+.callout.tip{border-left-color:var(--run)}
+.callout.warn{border-left-color:var(--bad)}
+.step-num{display:inline-block;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.85rem;background:var(--ink);color:var(--safety);padding:2px 8px;border-radius:2px;margin-right:8px;letter-spacing:0.05em}
+.cta-box{background:var(--ink);color:var(--enclosure);padding:2rem 2.2rem;border-radius:3px;margin:3rem 0;display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
+.cta-box h3{color:var(--safety);margin:0 0 0.4rem;font-size:1.2rem;border:none;padding:0}
+.cta-box p{color:#B9BDB6;font-size:0.85rem;margin:0}
+.cta-box a{background:var(--safety);color:var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.cta-box a:hover{background:#fff}
+.download-box{border:2px solid var(--ink);background:var(--enclosure2);padding:1.4rem 1.8rem;border-radius:3px;margin:2rem 0;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.download-box h3{margin:0 0 0.3rem;font-size:1rem;border:none;padding:0;font-family:'IBM Plex Mono',monospace;color:var(--ink)}
+.download-box p{margin:0;font-size:0.82rem;color:var(--muted);max-width:46ch}
+.download-box a{background:var(--ink);color:var(--enclosure);padding:0.6rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.download-box a:hover{background:var(--safety);color:var(--ink)}
+footer{border-top:2px solid var(--ink);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;color:var(--muted);flex-wrap:wrap;gap:1rem;background:var(--enclosure2)}
+.footer-logo{font-family:'Saira Condensed',sans-serif;color:var(--ink);font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--ink)}
+@media(max-width:640px){nav .nav-links{display:none}.article-wrap{padding:2rem 1.2rem 4rem}h1{font-size:2rem}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}td,th{white-space:normal;word-break:break-word}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+
+@media(max-width:680px){pre,code{white-space:pre-wrap;word-break:break-word;max-width:100%;overflow-x:auto}}
+
+/* family slogan band, slim (2026-10-22) */
+.slogan-band.slim{background:var(--safety,#F2A900);border-bottom:2px solid var(--ink,#16181A);padding:0.5rem 1rem;text-align:center;color:var(--ink,#16181A);display:flex;gap:0.3rem 1rem;justify-content:center;align-items:baseline;flex-wrap:wrap}
+.slogan-band.slim .sb-main{font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.3rem;line-height:1.1;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim .sb-sub{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim a{color:var(--ink,#16181A);font-weight:700}
+@media(max-width:768px){.slogan-band.slim .sb-main{font-size:1.05rem}.slogan-band.slim .sb-sub{display:none}}
+</style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/#guides"},{"@type": "ListItem","position": 3,"name": "ABB ACH580 Modbus","item": "https://modbusmanager.com/abb-ach580-modbus.html"}]}
+</script>
+<style id="site-nav">
+/* site menu (tools/web-research/site-nav.js) */
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop.nd-has>.nav-drop-label{color:var(--ink,#16181A);font-weight:600}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;display:none;z-index:200}
+.nav-drop:hover>.nav-drop-menu,.nav-drop:focus-within>.nav-drop-menu{display:block}
+.nd-box{display:flex;flex-direction:column;background:var(--enclosure2,#e8e9e4);border:1px solid var(--ink,#16181A);border-radius:3px;box-shadow:0 6px 20px rgba(0,0,0,0.18);padding:0.35rem 0;min-width:210px}
+.nav-drop-menu a,.nd-glabel{display:flex;align-items:center;gap:0.55rem;padding:0.45rem 1rem;white-space:nowrap;text-transform:none;font-family:'IBM Plex Mono',monospace;font-size:0.78rem;letter-spacing:0.02em;color:var(--ink,#16181A);text-decoration:none;background:none;border:none;text-align:left;cursor:pointer;width:100%;box-sizing:border-box}
+.nav-drop-menu a:hover,.nd-glabel:hover,.nd-group:hover>.nd-glabel,.nd-group.open>.nd-glabel{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+.nav-drop-menu .ni{display:inline-block;width:1.25rem;text-align:center;flex:none;font-size:0.9rem;line-height:1}
+.nav-drop-menu a.nd-sub{padding-left:2.1rem;font-size:0.75rem}
+.nav-drop-menu .nd-hot{color:#9A6700;font-weight:600}
+.nav-drop-menu a[aria-current="page"]{font-weight:700;box-shadow:inset 3px 0 0 var(--safety,#F2A900)}
+.nd-group.nd-has>.nd-glabel{font-weight:700}
+.nd-arrow{margin-left:auto;padding-left:1rem;font-size:0.7rem;color:var(--muted,#5F5E5A);display:inline-block;transform-origin:calc(50% + 0.5rem) 50%}
+.nd-group{position:relative}
+.nd-flyout{display:none;position:absolute;left:100%;top:-0.4rem;padding-left:0.25rem;z-index:210}
+.nd-group:hover>.nd-flyout,.nd-group:focus-within>.nd-flyout,.nd-group.open>.nd-flyout{display:block}
+.nd-head{font-family:'IBM Plex Mono',monospace;font-size:0.64rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted,#5F5E5A);padding:0.55rem 1rem 0.15rem;border-top:1px solid var(--steel,#B9BDB6);margin-top:0.25rem}
+.nd-box>.nd-head:first-child{border-top:none;margin-top:0}
+@media(max-width:768px){
+nav .nav-links.open{align-items:stretch;text-align:left}
+nav .nav-links.open .nav-drop{padding-bottom:0;margin-bottom:0}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu{position:static;display:block;padding:0;margin:0.3rem 0 0.2rem}
+nav .nav-links.open .nd-box{border:none;box-shadow:none;background:none;padding:0;min-width:0}
+nav .nav-links.open .nav-drop-menu a,nav .nav-links.open .nd-glabel{padding:0.4rem 0;font-size:0.82rem;white-space:normal}
+nav .nav-links.open .nav-drop-menu a.nd-sub{padding-left:1.8rem}
+nav .nav-links.open .nd-flyout a[aria-current="page"]{padding-left:0.6rem}
+nav .nav-links.open .nd-flyout{position:static;padding:0 0 0.3rem 1.8rem;display:none}
+nav .nav-links.open .nd-group:hover>.nd-flyout,nav .nav-links.open .nd-group:focus-within>.nd-flyout{display:none}
+nav .nav-links.open .nd-group.open>.nd-flyout{display:block}
+nav .nav-links.open .nd-group.open>.nd-glabel,nav .nav-links.open .nd-group:hover>.nd-glabel{background:none}
+nav .nav-links.open .nd-group.open .nd-arrow{transform:rotate(90deg)}
+nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label" tabindex="0">Features &#9662;</span>
+      <div class="nav-drop-menu"><div class="nd-box">
+        <a href="/modbus-scanner.html" class="nd-hot"><span class="ni">&#128269;&#65039;</span>Modbus Scanner</a>
+        <a href="/modbus-rtu-over-tcp.html" class="nd-sub"><span class="ni">&#128257;&#65039;</span>RTU over TCP</a>
+        <a href="/modbus-tcp-security-tls.html" class="nd-sub"><span class="ni">&#128274;&#65039;</span>Modbus TCP Security (TLS)</a>
+        <a href="/modbus-hmi-dashboard.html"><span class="ni">&#128202;&#65039;</span>HMI Dashboard</a>
+        <a href="/modbus-hmi-runtime.html" class="nd-sub"><span class="ni">&#128421;&#65039;</span>HMI Runtime (OEM)</a>
+        <a href="/modbus-data-logger-software.html"><span class="ni">&#128200;&#65039;</span>Data Logger</a>
+        <a href="/modbus-rtu-rs485-data-logger.html" class="nd-sub"><span class="ni">&#128223;&#65039;</span>RTU / RS-485 Logging</a>
+        <a href="/modbus-logging-interval-deadband.html" class="nd-sub"><span class="ni">&#9201;&#65039;</span>Interval &amp; Deadband</a>
+        <a href="/modbus-to-csv-logging.html" class="nd-sub"><span class="ni">&#128196;&#65039;</span>CSV Export</a>
+        <a href="/modbus-alarm-software.html"><span class="ni">&#128276;&#65039;</span>Alarms</a>
+        <a href="/modbus-gateway-software.html"><span class="ni">&#128256;&#65039;</span>Gateway</a>
+        <a href="/modbus-to-mqtt.html" class="nd-sub"><span class="ni">&#128225;&#65039;</span>Modbus to MQTT</a>
+        <a href="/modbus-structured-text-scripting.html"><span class="ni">&#127991;&#65039;</span>Tags &amp; Structured Text</a>
+      </div></div>
+    </li>
+    <li class="nav-drop nd-has">
+      <span class="nav-drop-label" tabindex="0">Guides &#9662;</span>
+      <div class="nav-drop-menu"><div class="nd-box">
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9728;&#65039;</span>Solar &amp; inverters<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+            <a href="/huawei-sun2000-modbus.html">Huawei SUN2000</a>
+            <a href="/huawei-sun2000-home-assistant.html">SUN2000 &rarr; Home Assistant</a>
+            <a href="/sungrow-inverter-modbus.html">Sungrow Inverters</a>
+            <a href="/sunspec-modbus-sma-fronius-solaredge.html">SunSpec: SMA, Fronius, SolarEdge</a>
+            <a href="/victron-gx-modbus-tcp.html">Victron Cerbo GX</a>
+            <a href="/goodwe-et-hybrid-modbus.html">GoodWe ET Hybrid</a>
+            <a href="/deye-sunsynk-growatt-modbus.html">Deye, Sunsynk &amp; Growatt</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9889;&#65039;</span>Energy meters<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+            <a href="/schneider-pm3200-modbus.html">Schneider PM3250</a>
+            <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+            <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+            <a href="/eastron-sdm230-sdm72-modbus.html">Eastron SDM230 / SDM72</a>
+            <a href="/carlo-gavazzi-em24-em340-modbus.html">Carlo Gavazzi EM340 / EM24</a>
+            <a href="/janitza-umg-96-pa-modbus.html">Janitza UMG 96-PA</a>
+            <a href="/wattnode-modbus.html">WattNode</a>
+          </div></div>
+        </div>
+        <div class="nd-group nd-has">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9881;&#65039;</span>Drives &amp; EC fans<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+            <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+            <a href="/abb-ach580-modbus.html" aria-current="page">ABB ACH580</a>
+            <a href="/danfoss-vlt-fc102-fc302-modbus.html">Danfoss FC 102 / FC 302</a>
+            <a href="/schneider-altivar-atv320-atv630-modbus.html">Schneider ATV320 / ATV630</a>
+            <a href="/siemens-sinamics-g120-modbus.html">Siemens SINAMICS G120</a>
+            <a href="/powerflex-525-modbus.html">PowerFlex 525</a>
+            <a href="/durapulse-gs20-modbus.html">DURApulse GS20</a>
+            <a href="/yaskawa-v1000-modbus.html">Yaskawa V1000</a>
+            <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+            <a href="/modbus-vfd-speed-reference.html">VFD Speed Registers</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#127981;&#65039;</span>Siemens PLCs<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200 HMI</a>
+            <a href="/siemens-s7-put-get.html">Siemens S7 PUT/GET</a>
+          </div></div>
+        </div>
+        <a href="/manual.html"><span class="ni">&#128214;&#65039;</span>Documentation</a>
+        <a href="/modbus-poll-alternative.html"><span class="ni">&#9878;&#65039;</span>vs Modbus Poll</a>
+      </div></div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+    <li><a href="https://bacmanager.com">BACManager &#8599;</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.8/Modbus.Manager.Pro.Setup.1.9.8.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ACH580-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/v1.4.13/Modbus.Manager.Setup.1.4.13.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-ACH580-Nav', 'product': 'standard', 'value': 1})">Download free trial</a>
+  </div>
+</nav>
+<div class="slogan-band slim">
+  <span class="sb-main">Every device. One tool. Pay once.</span>
+  <span class="sb-sub">Modbus &middot; BACnet &middot; Siemens S7 &middot; one-time licence &middot; also from us: <a href="https://bacmanager.com">BACManager&nbsp;&#8599;</a></span>
+</div>
+<div class="hazard"></div>
+
+<div class="article-wrap">
+
+  <div class="breadcrumb">
+    <a href="/">ModbusManager</a> &rsaquo; Guides &rsaquo; ABB ACH580 Modbus
+  </div>
+
+  <h1>ABB ACH580 Modbus RTU: Registers, Setup and Why It Won't Start</h1>
+
+  <p class="lead">The ABB ACH580 HVAC drive has a Modbus RTU slave built in &mdash; the embedded fieldbus (EFB) on terminals 29&ndash;31. The register map is ABB's standard one, but the ACH580's HVAC defaults catch people out: the drive refuses to start until <strong>DI4</strong> is closed, Actual value 2 reads <strong>zero</strong> until you configure it, and whether a lost BMS stops the fan depends on a parameter whose default changed between manual editions. This page covers the registers, the group 58 setup, the control word and those three traps, all from ABB's firmware manual.</p>
+
+  <figure style="margin:1.8rem 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink)">
+    <img src="/abb-ach580-modbus-dashboard.png" width="1320" height="825" loading="lazy" decoding="async"
+         alt="ModbusManager Pro dashboard for an ABB ACH580 supply fan drive: drive faceplate running at about 45 Hz, 11 A and 5.4 kW; ABB Drives status word 0x0337 bit by bit; digital inputs with the DI4 start interlock on; no active warning or fault; torque, DC link, motor voltage and drive temperature; a frequency and current trend; Act1 in Hz and Act2 reading 0 by default"
+         style="width:100%;height:auto;display:block">
+    <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">
+      The free read-only workspace below on a simulated ACH580 with the register map on this page &mdash; status word at 400004, parameters read directly in 32-bit, low word first.
+    </figcaption>
+  </figure>
+
+  <h2>Connection Settings (Parameter Group 58)</h2>
+
+  <p>The EFB is <strong>Modbus RTU only</strong> on RS-485 (the same port also speaks BACnet MS/TP and N2; 58.01 picks one). For Modbus TCP you need an option module (FMBT-21 or FENA-21) or a gateway. Wire <code>29 B+</code>, <code>30 A-</code> and <code>31 DGND</code> on X5; the termination (S4) and bias (S5) switches are next to it &mdash; on only at the ends of the line.</p>
+
+  <table>
+    <tr><th>Parameter</th><th>Set to</th><th>Default / note</th></tr>
+    <tr><td class="mono">58.01 Protocol enable</td><td>Modbus RTU</td><td>Off until you choose it</td></tr>
+    <tr><td class="mono">58.03 Node address</td><td>1&ndash;247</td><td class="mono">1</td></tr>
+    <tr><td class="mono">58.04 Baud rate</td><td>as the master</td><td class="mono">19.2 kbps</td></tr>
+    <tr><td class="mono">58.05 Parity</td><td>as the master</td><td class="mono">8 EVEN 1</td></tr>
+    <tr><td class="mono">58.14 Communication loss action</td><td>Fault (or Speed ref safe)</td><td><strong>No action</strong> in Rev J &mdash; see below</td></tr>
+    <tr><td class="mono">58.15 Communication loss mode</td><td>&mdash;</td><td>Cw / Ref1 / Ref2: only writes reset the timer</td></tr>
+    <tr><td class="mono">58.16 Communication loss time</td><td>&mdash;</td><td class="mono">30.0 s</td></tr>
+    <tr><td class="mono">58.25 Control profile</td><td>ABB Drives</td><td>ABB Drives (DCU Profile also possible)</td></tr>
+    <tr><td class="mono">58.33 Addressing mode</td><td>Mode 0</td><td>Mode 0</td></tr>
+    <tr><td class="mono">58.34 Word order</td><td>&mdash;</td><td>LO-HI (low word first)</td></tr>
+    <tr><td class="mono">20.01 Ext1 commands</td><td>Embedded fieldbus</td><td>start / stop from Modbus</td></tr>
+    <tr><td class="mono">28.11 Ext1 frequency ref1</td><td>EFB ref1</td><td>scalar control (the ACH580 default); 22.11 in vector</td></tr>
+    <tr><td class="mono">58.06 Communication control</td><td>Refresh settings</td><td>group 58 changes take effect only after this or a reboot</td></tr>
+    <tr><td class="mono">96.07 Parameter save manually</td><td>Save</td><td>keeps the values after power-off</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>Nothing changes after you edit group 58?</strong> The new protocol, address and baud rate only apply after <code>58.06 = Refresh settings</code> or a power cycle. After power-up there is also a 30-second delay before the communication-loss supervision starts.
+  </div>
+
+  <h2>Holding Register Map</h2>
+
+  <p>All registers are holding registers: read with FC03, written with FC06 or FC16. ABB numbers them 400001&hellip;; on the wire the address is that number minus 400001.</p>
+
+  <table>
+    <tr><th>ABB register</th><th>Wire</th><th>Default content</th><th>Selected by</th></tr>
+    <tr><td class="mono">400001</td><td class="mono">0</td><td>Control word (CW 16bit)</td><td class="mono">58.101</td></tr>
+    <tr><td class="mono">400002</td><td class="mono">1</td><td>Reference 1 (Ref1 16bit)</td><td class="mono">58.102</td></tr>
+    <tr><td class="mono">400003</td><td class="mono">2</td><td>Reference 2 (Ref2 16bit)</td><td class="mono">58.103</td></tr>
+    <tr><td class="mono">400004</td><td class="mono">3</td><td>Status word (SW 16bit)</td><td class="mono">58.104</td></tr>
+    <tr><td class="mono">400005</td><td class="mono">4</td><td>Actual value 1 (Act1 16bit)</td><td class="mono">58.105</td></tr>
+    <tr><td class="mono">400006</td><td class="mono">5</td><td>Actual value 2 (Act2 16bit) &mdash; <strong>0 by default</strong></td><td class="mono">58.106</td></tr>
+    <tr><td class="mono">400007&ndash;400014</td><td class="mono">6&ndash;13</td><td>Data I/O 7&ndash;14, None (read 0) until set</td><td class="mono">58.107&ndash;58.114</td></tr>
+    <tr><td class="mono">400090&ndash;400095</td><td class="mono">89&ndash;94</td><td>Error registers of the last query</td><td>&mdash;</td></tr>
+    <tr><td class="mono">400101&hellip;</td><td class="mono">100&hellip;</td><td>Any parameter, by 58.33 (next section)</td><td>&mdash;</td></tr>
+  </table>
+
+  <h3>Scaling of the references and actual values</h3>
+  <p>The ACH580 ships in <strong>scalar</strong> motor control (99.04), so with the default type <em>Speed or frequency</em> both Ref1 and Act1 are a <strong>frequency</strong>: <code>20000 = 46.02 Frequency scaling</code>, which is 50.00 Hz or 60.00 Hz depending on the drive's 50/60 Hz setting. Act1 = 17966 on a 50 Hz drive is 17966 &times; 50 / 20000 = 44.9 Hz. In vector control they become speed, with 20000 = 46.01. Negative values (two's complement) mean reverse.</p>
+
+  <div class="callout tip">
+    <strong>Act2 reads 0 on a running drive:</strong> that is the default, not a fault. 58.29 EFB act2 type is <em>Transparent</em> and its source 58.32 is <em>Not selected</em>. Point 58.32 at a signal (or set 58.29 to a type), or simply read the parameter you want directly, as below.
+  </div>
+
+  <h2>Reading Any Parameter Directly</h2>
+
+  <p>With 58.33 Addressing mode at its default <strong>Mode 0</strong> every parameter has two addresses, so you do not have to map anything into Data I/O first:</p>
+  <ul>
+    <li><strong>16-bit:</strong> 400000 + 100 &times; group + index &mdash; 01.06 is 400106 (wire 105). Scaled by the 16-bit fieldbus equivalent: for 01.06 that is 46.02 again, for 01.07 it is 46.05 (default 10000 A = 10000, i.e. whole amps).</li>
+    <li><strong>32-bit:</strong> 420000 + 200 &times; group + 2 &times; index &mdash; 01.06 is 420212 (wire 20211), two registers, <strong>low word first</strong> (58.34 LO-HI). The 32-bit scaling is fixed and finer: 100 = 1 Hz, 100 = 1 A.</li>
+  </ul>
+
+  <table>
+    <tr><th>Parameter</th><th>32-bit register</th><th>Wire</th><th>Scale (FbEq32)</th></tr>
+    <tr><td>01.06 Output frequency</td><td class="mono">420212</td><td class="mono">20211</td><td class="formula">&divide; 100 &rarr; Hz</td></tr>
+    <tr><td>01.07 Motor current</td><td class="mono">420214</td><td class="mono">20213</td><td class="formula">&divide; 100 &rarr; A</td></tr>
+    <tr><td>01.10 Motor torque</td><td class="mono">420220</td><td class="mono">20219</td><td class="formula">&divide; 10 &rarr; %</td></tr>
+    <tr><td>01.11 DC voltage</td><td class="mono">420222</td><td class="mono">20221</td><td class="formula">&divide; 100 &rarr; V</td></tr>
+    <tr><td>01.13 Output voltage</td><td class="mono">420226</td><td class="mono">20225</td><td class="formula">V</td></tr>
+    <tr><td>01.14 Output power</td><td class="mono">420228</td><td class="mono">20227</td><td class="formula">&divide; 100 &rarr; kW</td></tr>
+    <tr><td>05.11 Inverter temperature</td><td class="mono">421022</td><td class="mono">21021</td><td class="formula">&divide; 10 &rarr; % of fault limit</td></tr>
+  </table>
+  <table>
+    <tr><th>Parameter</th><th>16-bit register</th><th>Wire</th><th>Content</th></tr>
+    <tr><td>04.01 Tripping fault</td><td class="mono">400401</td><td class="mono">400</td><td>Fault code (hex in the manual: 6681 = 0x6681)</td></tr>
+    <tr><td>04.06 Active warning 1</td><td class="mono">400406</td><td class="mono">405</td><td>Warning code, e.g. 0xAFEE</td></tr>
+    <tr><td>10.02 DI delayed status</td><td class="mono">401002</td><td class="mono">1001</td><td>Bits 0&ndash;5 = DI1&ndash;DI6</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>Read blocks without gaps.</strong> A parameter that does not exist (01.04, 01.05, 01.12, 04.04&hellip;) has no register, and a block read that crosses one is answered with exception 02 &mdash; the whole block, not just the gap. 01.06&ndash;01.11 is one clean block of 12 registers; 01.13&ndash;01.14 is the next.
+  </div>
+
+  <h2>Control Word: Start, Stop, Reset</h2>
+
+  <p>ABB Drives profile, register 400001 (wire 0). Bit 10 <em>REMOTE_CMD</em> must be 1 for the drive to take commands from Modbus, which is why every value below has 0x400 in it. ABB's sequence for the ACH580:</p>
+
+  <table>
+    <tr><th>Step</th><th>Write to 400001</th><th>Result</th></tr>
+    <tr><td>Start 1</td><td class="mono">1142 (0x0476)</td><td>NOT READY TO SWITCH ON</td></tr>
+    <tr><td>Start 2</td><td class="mono">1150 (0x047E)</td><td>READY TO SWITCH ON (stopped) &mdash; once SW bit 0 = 1</td></tr>
+    <tr><td>Start 3</td><td class="mono">1151 (0x047F)</td><td>OPERATION (running) with the reference in 400002</td></tr>
+    <tr><td>Stop</td><td class="mono">1143 (0x0477)</td><td>Stop by 21.03 Stop mode &mdash; ABB's preferred stop</td></tr>
+    <tr><td>Ramp stop</td><td class="mono">1150 (0x047E)</td><td>OFF1 ramp stop (cannot be interrupted)</td></tr>
+    <tr><td>Coast stop</td><td class="mono">1149 (0x047D)</td><td>OFF2 emergency coast</td></tr>
+    <tr><td>Emergency ramp</td><td class="mono">1147 (0x047B)</td><td>OFF3 emergency ramp stop</td></tr>
+    <tr><td>Fault reset</td><td>rising edge of bit 7</td><td>e.g. 0x04F6, then back to 0x0476</td></tr>
+  </table>
+
+  <p>The status word at 400004 (wire 3) answers: bit 0 ready to switch on, 1 ready to run, 2 running, 3 fault, 7 warning, 8 at setpoint, 9 remote. A running drive at speed under Modbus control reads <code>0x0337</code>. The same bits are also readable one by one as discrete inputs (FC02, 100001&hellip;) and the control word bits as coils (FC01/FC05, 000001&hellip;); the digital inputs DI1&ndash;DI6 follow at 100033&ndash;100038.</p>
+
+  <h2>Why the ACH580 Won't Start from Modbus</h2>
+
+  <p>The control word is right, the status word says <em>ready</em>, and nothing turns. On an ACH580 it is usually one of these, in this order:</p>
+  <ul>
+    <li><strong>Warning AFEE Start interlock 1.</strong> In the HVAC default configuration 20.41 Start interlock 1 is wired to <strong>DI4</strong> (damper end switch, safety chain). With DI4 open the drive will not start, whatever Modbus says. Read 10.02 bit 3 or warning 04.06 = 0xAFEE. Close DI4 or set 20.41 to <em>Not used</em> if there is no interlock.</li>
+    <li><strong>Warning AFED Run permissive.</strong> 20.40 has a source that is off. Not used by default, but often set at commissioning.</li>
+    <li><strong>Panel in Hand or Off.</strong> Local control from the panel always overrides the external location. Status word bit 9 (remote) is 0. Press <em>Auto</em>.</li>
+    <li><strong>20.01 is not Embedded fieldbus,</strong> or the reference source (28.11, or 22.11 in vector) is not EFB ref1 &mdash; the drive starts but runs to the wrong reference.</li>
+    <li><strong>Bit 10 REMOTE_CMD missing:</strong> writing 0x0007 or 0x000F instead of 0x0477 / 0x047F.</li>
+    <li><strong>Safe torque off</strong> open on X4 &mdash; both channels must be closed for any start.</li>
+  </ul>
+
+  <h2>Communication Loss: Check 58.14 on Your Drive</h2>
+
+  <p>The current firmware manual (3AXD50000027537 Rev J, 2026) lists <strong>58.14 Communication loss action = No action</strong> as the default: if the master stops, the drive keeps running on the last command. Older editions of the same manual list <em>Fault</em>, so read 58.14 on the panel rather than trusting either. When it is <em>Fault</em>, the drive trips with <strong>6681 EFB comm loss</strong> after 58.16 (30 s) &mdash; but only when control or the reference is expected from the EFB. Other choices: Last speed, Speed ref safe (22.41 / 28.41), Fault always, Warning (A7CE).</p>
+  <p>Mind 58.15: with the default <em>Cw / Ref1 / Ref2</em> only a <strong>write</strong> of the control word or a reference resets the timer. A BMS that starts the fan once and then only reads will, with 58.14 = Fault, trip the drive 30 s later. Write the control word cyclically (ModbusManager's periodic write does this), or set 58.15 to <em>Any message</em>.</p>
+
+  <h2>Diagnostics Built into the EFB</h2>
+  <ul>
+    <li><strong>Error registers 400090&ndash;400095</strong> describe the last failed query: 400091 the function code, 400092 the error (02h value out of limits, 03h faulty index, 05h wrong data type), 400093 the register that failed, 400094 / 400095 the last good write and read. Write 1 to 400090 to clear them.</li>
+    <li><strong>FC 2Bh / 0Eh Read Device Identification</strong> returns vendor "ABB", the product code and product name "ACH580" &mdash; a quick way to confirm what is on the address.</li>
+    <li><strong>58.08&ndash;58.12</strong> on the panel count received and transmitted packets, UART errors and CRC errors; a rising CRC count means wiring or termination, not addressing.</li>
+  </ul>
+
+  <h2>Common Mistakes</h2>
+  <ul>
+    <li><strong>Everything is one register off:</strong> 400001 was requested as address 1. The control word is wire address 0, the status word 3.</li>
+    <li><strong>Frequency reads 17966 instead of 44.9:</strong> Ref1 / Act1 are in 20000 = 46.02 units, not Hz &times; 10.</li>
+    <li><strong>Act2 is always 0:</strong> the default (Transparent, Not selected). Configure 58.29 / 58.32 or read 01.07 directly.</li>
+    <li><strong>32-bit values are huge:</strong> combined high word first. The ACH580 sends the low word first (58.34 LO-HI).</li>
+    <li><strong>Exception 02 on a block that "should" exist:</strong> it crosses a parameter index that does not exist.</li>
+    <li><strong>Group 58 edits ignored:</strong> no 58.06 Refresh settings and no reboot.</li>
+    <li><strong>The fan stops 30 s after the BMS starts it:</strong> 58.14 = Fault and the BMS only reads (58.15 Cw / Ref1 / Ref2).</li>
+  </ul>
+
+  <h2>Step-by-Step: Reading an ACH580 with ModbusManager</h2>
+  <ol>
+    <li>Wire a USB&ndash;RS-485 adapter to X5: 29 B+, 30 A-, 31 DGND. Termination on at the adapter end and at the last drive.</li>
+    <li>Set 58.01 Modbus RTU, 58.03 the address, then 58.06 Refresh settings. Keep 19.2 kbps, 8 EVEN 1 unless the line uses something else.</li>
+    <li>In ModbusManager choose RTU, the COM port, 19200 baud, Even parity, 1 stop bit.</li>
+    <li>Poll FC03 from address 0, quantity 6. The status word (address 3) should show bit 0 (ready to switch on) and bit 9 (remote) once 20.01 is Embedded fieldbus and the panel is in Auto; it reads 0x0337 when the drive runs at setpoint.</li>
+    <li>Open the workspace below to get the parameters, DI4 and the warning and fault codes as named, scaled values on a dashboard.</li>
+  </ol>
+
+  <h2>Download a Ready-Made Workspace</h2>
+  <ul>
+    <li>Seven FC03 polls: status word and actual values (400001&ndash;400006), the 32-bit parameters 01.06&ndash;01.11, 01.13&ndash;01.14 and 05.11, DI status 10.02, tripping fault 04.01 and active warning 04.06</li>
+    <li>14 register tags with the wire address, Int32 low word first and the scale already set</li>
+    <li>A dashboard: drive faceplate, ABB Drives status word bits, DI1&ndash;DI6 with the DI4 start interlock, warning and fault codes as text (AFEE, AFED, A7CE, 6681&hellip;), torque, DC link, motor voltage, drive temperature, Act1 / Act2 as they arrive (Act2 = 0 by default) and a frequency and current trend</li>
+  </ul>
+  <div class="callout">
+    <strong>Read-only.</strong> The workspace writes nothing: no control word, no reference, and Start / Stop on the faceplate are disabled. It is safe to open on a drive in service. Unit ID 1; change it in the polls and tags if your drive has another address. Tags and dashboard are ModbusManager Pro features; Standard opens the poll windows only.
+  </div>
+  <div class="download-box">
+    <div>
+      <h3>ABB_ACH580_Modbus_monitor.json</h3>
+      <p>ABB ACH580 read-only monitor workspace. Open via Workspace &rsaquo; Open in ModbusManager Pro.</p>
+    </div>
+    <a href="/ABB_ACH580_Modbus_monitor.json" download>Download Workspace</a>
+  </div>
+
+  <div class="cta-box">
+    <div>
+      <h3>Try it with ModbusManager Pro</h3>
+      <p>Faceplate, status bits, historian and alarms for your drives. Free 14-day trial. No credit card. Windows 10/11.</p>
+    </div>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.8/Modbus.Manager.Pro.Setup.1.9.8.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-ACH580-Body', 'product': 'pro', 'value': 1})">Download Pro Trial</a>
+  </div>
+
+  <p>On BACnet instead? The <a href="https://bacmanager.com/abb-ach580-bacnet.html">ACH580 BACnet points list</a> covers the same drive over MS/TP. For the general-purpose sibling see the <a href="/abb-acs580-modbus.html">ACS580 Modbus guide</a>, and for references and scaling across brands the <a href="/modbus-vfd-speed-reference.html">VFD speed reference guide</a>.</p>
+
+  <h2>Frequently Asked Questions</h2>
+
+  <h3>What is the Modbus address of the ACH580 status word?</h3>
+  <p>Holding register 400004, which is address 3 on the wire (FC03). The control word is 400001 (address 0), the frequency reference 400002 (address 1) and Actual value 1 400005 (address 4).</p>
+
+  <h3>Does the ACH580 support Modbus TCP?</h3>
+  <p>Not on its own: the embedded fieldbus is Modbus RTU on RS-485. Modbus TCP needs an FMBT-21 or FENA-21 option module, or an RTU-to-TCP gateway.</p>
+
+  <h3>Why does Actual value 2 always read 0?</h3>
+  <p>By default 58.29 EFB act2 type is Transparent and 58.32 EFB act2 transparent source is Not selected, so register 400006 carries nothing. Set a source or read the parameter directly, e.g. 01.07 Motor current at 420214.</p>
+
+  <h3>Why won't my ACH580 start over Modbus?</h3>
+  <p>Most often the start interlock: in the HVAC default 20.41 Start interlock 1 is DI4, and with DI4 open the drive shows warning AFEE and does not start. Also check the panel is in Auto, 20.01 is Embedded fieldbus and bit 10 of the control word is set (0x047F, not 0x000F).</p>
+
+  <h3>How is the ACH580 frequency scaled on Modbus?</h3>
+  <p>Reference 1 and Actual value 1 use 20000 = 46.02 Frequency scaling (50 or 60 Hz) in the default scalar control. Read 01.06 at 420212 in 32-bit instead and the value is simply Hz &times; 100.</p>
+
+  <h2>Sources</h2>
+  <p style="font-size:0.85rem">ABB, <em>ACH580 HVAC control program firmware manual</em>, 3AXD50000027537 Rev J (2026-02-23): chapter "Modbus RTU control through the embedded fieldbus interface (EFB)" (pp. 287&ndash;313), parameter groups 01, 04, 05, 10, 20, 46, 58 and 99 (pp. 397&ndash;405, 477, 620&ndash;625), the additional parameter data (pp. 735&ndash;748) and the HVAC default I/O. Public download from the ABB library. The 58.14 default of Fault comes from the earlier Rev C (2017). Check the manual for your firmware version; the workspace was tested against a simulator built from this manual, not a physical drive.</p>
+
+</div>
+
+<div class="hazard"></div>
+<div class="divider-line"></div>
+
+<!-- GATEWAY CROSS-LINK -->
+<section class="section">
+  <div class="sec-label">// more than one drive</div>
+  <h2 class="sec-title">Every fan and pump drive in one map</h2>
+  <div style="max-width:820px;margin:0 auto;background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem">
+    <p style="color:var(--body);line-height:1.75;margin:0 0 1.1rem">An air handler has a supply fan, a return fan and pumps, each an ACH580 on the same RS-485 line. ModbusManager Pro can poll them all and republish status, frequency and current as one Modbus TCP map for the BMS or a PLC &mdash; one master on the line, many readers on the network.</p>
+    <a href="/modbus-gateway-software.html" style="font-family:'IBM Plex Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">Modbus gateway software &rarr;</a>
+  </div>
+</section>
+<footer class="sf" id="support">
+  <div class="sf-cols">
+    <div class="sf-col"><div class="sf-h">Features</div>
+      <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+      <a href="/modbus-data-logger-software.html">Data Logger</a>
+      <a href="/modbus-rtu-rs485-data-logger.html">RTU logging</a>
+      <a href="/modbus-to-csv-logging.html">CSV export</a>
+      <a href="/modbus-alarm-software.html">Alarms</a>
+      <a href="/modbus-gateway-software.html">Gateway</a>
+      <a href="/modbus-to-mqtt.html">Modbus to MQTT</a>
+      <a href="/modbus-structured-text-scripting.html">Tags &amp; scripting</a>
+    </div>
+    <div class="sf-col"><div class="sf-h">Devices</div>
+      <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+      <a href="/modbus-vfd-speed-reference.html">VFD drives</a>
+      <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    </div>
+    <div class="sf-col"><div class="sf-h">Help</div>
+      <a href="/manual.html">Documentation</a>
+      <a href="/#install">Install notes</a>
+      <a href="/linux-mac.html">Linux / Pi / Mac waitlist</a>
+      <a href="mailto:support@modbusmanager.com">Support</a>
+    </div>
+    <div class="sf-col"><div class="sf-h">Company</div>
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/license-terms.html">License terms</a>
+      <a href="https://bacmanager.com">BACManager (BACnet) &#8599;</a>
+    </div>
+  </div>
+  <div class="sf-bot"><span class="sf-logo">ModbusManager</span><span>Every device. One tool. Pay once.</span><span>&copy; 2026 E-Netter O&Uuml;</span><a href="mailto:support@modbusmanager.com">support@modbusmanager.com</a></div>
+</footer>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+<script src="/email-capture.js" defer></script>
+
+<script>
+/* Download buttons (2026-10-26): the installer is fetched on a click, not
+   through the link's href, so crawlers that follow every link no longer count
+   as downloads on GitHub. data-dl is the address without https://.
+   Each click is also counted in our own Google Sheet (Apps Script), cookie
+   consent or not: site, product, version, page, referrer, language, time
+   zone. No cookies, no IP address. The download never waits for it.
+   A workspace (.json or .zip on this site) is counted as product "Workspace" with
+   the file name as its version, a manual (.pdf) as product "Manual"; both
+   download as before. */
+function dlCount(product, version) {
+  try {
+    navigator.sendBeacon('https://script.google.com/macros/s/AKfycbyx9RacY_l5KDK0RBBmLk41uKv3McyR_UJmCTWqnRqklh6fYgeXvYecddcQDGzRx5-F/exec', JSON.stringify({
+      site: location.hostname, product: product, version: version,
+      page: location.pathname, referrer: document.referrer, lang: navigator.language,
+      tz: (window.Intl && Intl.DateTimeFormat().resolvedOptions().timeZone) || ''
+    }));
+  } catch (err) {}
+}
+document.addEventListener('click', function (e) {
+  if (!e.target.closest) return;
+  var w = e.target.closest('a[href$=".json"], a[href$=".zip"]');
+  if (w) { dlCount('Workspace', (w.getAttribute('href').match(/([^\/]+)\.(?:json|zip)$/) || [])[1] || ''); return; }
+  var m = e.target.closest('a[href$=".pdf"]');
+  if (m) { dlCount('Manual', (m.getAttribute('href').match(/([^\/]+)\.pdf$/) || [])[1] || ''); return; }
+  var a = e.target.closest('a[data-dl]');
+  if (!a || e.defaultPrevented) return;
+  e.preventDefault();
+  var dl = a.getAttribute('data-dl');
+  dlCount(/bacmanager/i.test(dl) ? 'BACManager' : (/Pro\.Setup|pro-v/i.test(dl) ? 'ModbusManager Pro' : 'ModbusManager Standard'),
+    (dl.match(/(\d+(?:\.\d+)+)\.exe$/) || [])[1] || '');
+  window.location.href = 'https://' + dl;
+});
+</script>
+</body>
+</html>
