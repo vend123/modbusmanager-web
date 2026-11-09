@@ -1,14 +1,42 @@
 /* ModbusManager — vabatahtlik e-posti kogumine allalaadimise järel.
  * Allalaadimine algab KOHE (link on avalik, värav ei kaitse midagi).
  * Seejärel ilmub pehme paneel: meeldetuletus + boonusfailid.
- * Torustik: see vorm -> Make.com webhook -> Google Sheet + Gmail.
+ * Torustik: see vorm -> Google Apps Script web app (doPost) -> Google Sheet + Gmail.
+ * Since 2026-11-09 no Make.com (code: tools/trial-signups/Signups.gs).
  * GDPR: nõusoleku-linnuke ei ole ette märgitud; privacy.html mainib kogumist.
  */
 (function () {
   'use strict';
 
-  var WEBHOOK = 'https://hook.eu1.make.com/gaspnwphnxp8cvufudbb1rmcd266jgix';
+  var WEBHOOK = 'https://script.google.com/macros/s/AKfycbxl_gHA5pCEQhF9OY5dRx1qufJqQWye186SrgK9YjZ3yz2dm6yFRxC27nkUEp-kUBKD/exec';
   var SHOWN_KEY = 'mm_email_panel_shown';
+  var QUEUE_KEY = 'mm_email_queue';
+
+  // text/plain + no-cors: a simple request Apps Script accepts. Its answer
+  // cannot be read, so only a network failure counts as a failure: the
+  // request is tried 3 times, then kept in localStorage and sent again on
+  // the next page view (the script drops a repeat of the same e-mail).
+  function post(payload) {
+    return fetch(WEBHOOK, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+  }
+  function postRetry(payload, tries) {
+    return post(payload).catch(function (err) {
+      if (tries <= 1) throw err;
+      return new Promise(function (r) { setTimeout(r, 1500); }).then(function () { return postRetry(payload, tries - 1); });
+    });
+  }
+  function queueLoad() { try { return JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]'); } catch (e) { return []; } }
+  function queueSave(q) { try { if (q.length) localStorage.setItem(QUEUE_KEY, JSON.stringify(q.slice(-5))); else localStorage.removeItem(QUEUE_KEY); } catch (e) {} }
+  function flushQueue() {
+    var q = queueLoad();
+    if (!q.length) return;
+    queueSave([]);
+    q.forEach(function (p) { post(p).catch(function () { queueSave(queueLoad().concat([p])); }); });
+  }
 
   // Tuvasta allalaadimislingid (GitHub releases .exe). Since 2026-10-26 the
   // address is in data-dl (the click starts the download, see the page's
@@ -48,6 +76,8 @@
       'We\u2019ll send a heads-up before the 14-day trial expires \u2014 plus ready-made ' +
       'workspace files and the user manual to get you polling faster. No spam.</p>' +
       '<div id="mmEmailForm">' +
+        '<input id="mmEmailHp" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" ' +
+        'style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">' +
         '<input id="mmEmailInput" type="email" inputmode="email" autocomplete="email" ' +
         'placeholder="you@company.com" style="width:100%;box-sizing:border-box;padding:11px 13px;' +
         'font-size:15px;border:1px solid #ccc;border-radius:6px;margin-bottom:12px;outline:none">' +
@@ -123,20 +153,18 @@
         consent: true,
         page: location.pathname,
         referrer: document.referrer || '',
+        website: (overlay.querySelector('#mmEmailHp') || {}).value || '',
         ts: new Date().toISOString()
       };
 
-      fetch(WEBHOOK, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      }).then(function () {
+      postRetry(payload, 3).then(function () {
         track('email_submit', product);
         overlay.querySelector('#mmEmailForm').style.display = 'none';
         overlay.querySelector('#mmEmailDone').style.display = 'block';
         setTimeout(close, 2200);
       }).catch(function () {
-        // Isegi kui webhook ebaõnnestub, ära blokeeri kasutajat
+        // Isegi kui webhook ebaõnnestub, ära blokeeri kasutajat; saada järgmisel lehevaatamisel uuesti
+        queueSave(queueLoad().concat([payload]));
         btn.disabled = false; btn.textContent = 'Send me the reminder';
         track('email_error', product);
         overlay.querySelector('#mmEmailForm').style.display = 'none';
@@ -145,6 +173,8 @@
       });
     };
   }
+
+  flushQueue();
 
   // Haaki kõik allalaadimislingid — allalaadimist EI takista, paneel tuleb peale
   document.addEventListener('click', function (e) {

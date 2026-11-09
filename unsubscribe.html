@@ -408,11 +408,13 @@ function doUnsub() {
     return;
   }
   btn.disabled = true; btn.textContent = 'Removing\u2026';
-  // TEINE Make.com webhook — loobumiste jaoks (loo eraldi stsenaarium)
-  var UNSUB_WEBHOOK = 'https://hook.eu1.make.com/gaspnwphnxp8cvufudbb1rmcd266jgix';
+  // Google Apps Script web app (tools/trial-signups/Signups.gs) sets Status = unsubscribed; no Make.com since 2026-11-09.
+  // text/plain + no-cors: its answer cannot be read, so a request that went out counts.
+  var UNSUB_WEBHOOK = 'https://script.google.com/macros/s/AKfycbxl_gHA5pCEQhF9OY5dRx1qufJqQWye186SrgK9YjZ3yz2dm6yFRxC27nkUEp-kUBKD/exec';
   fetch(UNSUB_WEBHOOK, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify({ email: email, action: 'unsubscribe', ts: new Date().toISOString() })
   }).then(function () {
     document.getElementById('unsubForm').innerHTML =
