@@ -42,7 +42,7 @@
   "description": "How to read and control an ABB ACS880 industrial drive over Modbus RTU using ModbusManager: embedded fieldbus on the XD2D port (group 58) or FSCA-01 adapter, ABB Drives profile control word, status word, references and actual values.",
   "url": "https://modbusmanager.com/abb-acs580-modbus.html",
   "datePublished": "2026-06-30",
-  "dateModified": "2026-11-03",
+  "dateModified": "2026-11-10",
   "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
   "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
 },
@@ -479,10 +479,10 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
       <tr><td>1</td><td>0x0476</td><td class="hl">Prepare: ready-on, no run yet</td></tr>
       <tr><td>2</td><td>0x047F</td><td class="hl">Run: drive accelerates to the reference</td></tr>
       <tr><td>3</td><td>0x0476</td><td class="hl">Stop (ramp down) &mdash; clears the run bit</td></tr>
-      <tr><td>Fault</td><td>0x0480 (rising edge of bit 7)</td><td class="hl">Fault reset</td></tr>
+      <tr><td>Fault</td><td>0x04F6, then 0x0476</td><td class="hl">Fault reset: the stop word with bit 7 set, a rising edge of bit 7 (0x0480 would also clear OFF1&ndash;OFF3)</td></tr>
     </tbody>
   </table>
-  <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.6;font-size:0.9rem"><strong>Important:</strong> the master must keep sending the control word and reference periodically (every 200&ndash;500 ms). If transmission stops, the ACS880 trips fault 6681 (communication loss). Use ModbusManager&rsquo;s periodic write to hold the run command alive.</p>
+  <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.6;font-size:0.9rem"><strong>Important:</strong> the master must keep sending the control word and reference periodically (every 200&ndash;500 ms). With communication loss mode 58.15 at <em>Cw / Ref1 / Ref2</em>, only a write resets the timer, so a master that just keeps reading still lets it run out: when the writes stop and 58.14 is set to a fault, the ACS880 trips fault 6681 (communication loss) after 58.16. Check 58.14&ndash;58.16 on the drive.</p>
 </section>
 
 <div class="divider-line"></div>
@@ -501,7 +501,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 <section class="section">
   <div class="sec-label">// why modbusmanager</div>
   <h2 class="sec-title">A practical tool for ABB drives</h2>
-  <p style="max-width:780px;margin:0 auto;text-align:center;color:var(--muted);line-height:1.7">ModbusManager reads and writes any ACS880 register directly, with periodic writes to hold the control word alive and a serial monitor to see every frame. The Standard edition ($49) covers polling, writing and the serial monitor &mdash; enough to start, stop and monitor a drive. The Pro edition ($119) adds a <a href="/modbus-hmi-dashboard.html">drag-and-drop dashboard</a>, a <a href="/modbus-data-logger-software.html">data logging Historian</a> with CSV export, and an <a href="/modbus-alarm-software.html">alarm system</a> &mdash; all running locally on Windows, with no SCADA server or cloud account.</p>
+  <p style="max-width:780px;margin:0 auto;text-align:center;color:var(--muted);line-height:1.7">ModbusManager reads and writes any ACS880 register directly, with a serial monitor to see every frame. The Standard edition ($49) covers polling, writing and the serial monitor &mdash; enough to start, stop and monitor a drive. The Pro edition ($119) adds a <a href="/modbus-hmi-dashboard.html">drag-and-drop dashboard</a>, a <a href="/modbus-data-logger-software.html">data logging Historian</a> with CSV export, and an <a href="/modbus-alarm-software.html">alarm system</a> &mdash; all running locally on Windows, with no SCADA server or cloud account.</p>
 </section>
 
 <div class="divider-line"></div>

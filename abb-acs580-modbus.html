@@ -42,7 +42,7 @@
   "description": "How to read and control an ABB ACS580 variable frequency drive over Modbus RTU using ModbusManager: control word, status word, frequency reference, actual values and the ABB Drives profile.",
   "url": "https://modbusmanager.com/abb-acs580-modbus.html",
   "datePublished": "2026-06-30",
-  "dateModified": "2026-11-08",
+  "dateModified": "2026-11-10",
   "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
   "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
 },
@@ -52,7 +52,7 @@
   "mainEntity": [
     {"@type": "Question", "name": "What Modbus settings does an ABB ACS580 use?", "acceptedAnswer": {"@type": "Answer", "text": "The ACS580 has an embedded fieldbus (EFB) that runs as a Modbus RTU slave on RS-485. Set the protocol to Modbus RTU in parameter group 58, choose a node address and baud rate (commonly 9600 or 19200), and match parity and stop bits in ModbusManager. The drive supports RTU only, not ASCII."}},
     {"@type": "Question", "name": "Which register is the ACS580 control word?", "acceptedAnswer": {"@type": "Answer", "text": "In the ABB Drives profile the control word is Modbus holding register 40001, the frequency/speed reference is 40002, and the status word is 40004. These are the core registers for remote start, stop and speed control."}},
-    {"@type": "Question", "name": "How do I start an ACS580 over Modbus?", "acceptedAnswer": {"@type": "Answer", "text": "Set the command source to embedded fieldbus, then write the ABB Drives control word sequence to register 40001: typically 0x0476 then 0x047F to give the run command, together with a reference in 40002. ModbusManager must keep sending frames periodically (every 200-500 ms) or the drive trips on communication loss."}},
+    {"@type": "Question", "name": "How do I start an ACS580 over Modbus?", "acceptedAnswer": {"@type": "Answer", "text": "Set the command source to embedded fieldbus, then write the ABB Drives control word sequence to register 40001: typically 0x0476 then 0x047F to give the run command, together with a reference in 40002. The master must keep writing them periodically (every 200-500 ms) or the drive can trip on communication loss."}},
     {"@type": "Question", "name": "Why does the ACS580 not run when I write the control word?", "acceptedAnswer": {"@type": "Answer", "text": "Common causes: the command source is not set to EFB, the control word bit sequence is incomplete, or the master is not transmitting continuously so the drive trips fault 6681 (communication loss). Send the control word and reference together periodically rather than as one-shot commands."}},
     {"@type": "Question", "name": "Can I monitor ACS580 speed and current with ModbusManager?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Read the status word at 40004 and the actual values at 40005 and 40006 for output frequency and current. Power is not mapped by default: set 58.107 Data I/O 7 to 01.14 Output power and it appears at 40007. With ModbusManager Pro you can log them to the Historian, chart trends and set alarms on limits."}}
   ]
@@ -500,10 +500,10 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
       <tr><td>1</td><td>0x0476</td><td class="hl">Prepare: ready-on, no run yet</td></tr>
       <tr><td>2</td><td>0x047F</td><td class="hl">Run: drive accelerates to the reference</td></tr>
       <tr><td>3</td><td>0x0476</td><td class="hl">Stop (ramp down) &mdash; clears the run bit</td></tr>
-      <tr><td>Fault</td><td>0x0480 (rising edge of bit 7)</td><td class="hl">Fault reset</td></tr>
+      <tr><td>Fault</td><td>0x04F6, then 0x0476</td><td class="hl">Fault reset: the stop word with bit 7 set, a rising edge of bit 7 (0x0480 would also clear OFF1&ndash;OFF3)</td></tr>
     </tbody>
   </table>
-  <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.6;font-size:0.9rem"><strong>Important:</strong> the master must keep sending the control word and reference periodically (every 200&ndash;500 ms). If transmission stops, the ACS580 trips fault 6681 (communication loss). Use ModbusManager&rsquo;s periodic write to hold the run command alive.</p>
+  <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.6;font-size:0.9rem"><strong>Important:</strong> the master must keep sending the control word and reference periodically (every 200&ndash;500 ms). With communication loss mode 58.15 at <em>Cw / Ref1 / Ref2</em>, only a write resets the timer, so a master that just keeps reading still lets it run out: when the writes stop and 58.14 is set to a fault, the ACS580 trips fault 6681 (communication loss) after 58.16. Check 58.14&ndash;58.16 on the drive.</p>
 </section>
 
 <div class="divider-line"></div>
@@ -516,7 +516,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
   <div class="steps">
     <div class="step"><div class="step-label">Step 1</div><div class="step-title">Connect</div><div class="step-text">Wire RS-485 A/B/ground to the drive&rsquo;s EFB terminals. Set par. group 58 to Modbus RTU with a node address and baud rate, and set the command source to embedded fieldbus. In ModbusManager pick RTU with matching baud, parity and the drive&rsquo;s slave address.</div></div>
     <div class="step"><div class="step-label">Step 2</div><div class="step-title">Monitor</div><div class="step-text">Read holding register 40004 (status word, address 3) and the mapped actual values from 40005 (address 4) to confirm communication. You should see the drive&rsquo;s ready/running state and live feedback before you try to control it.</div></div>
-    <div class="step"><div class="step-label">Step 3</div><div class="step-title">Control &amp; log</div><div class="step-text">Write the control word sequence to 40001 (address 0) with a reference in 40002 (address 1) to start the drive, sending periodically. Log feedback to the <a href="/modbus-data-logger-software.html">Historian</a>, build a <a href="/modbus-hmi-dashboard.html">dashboard</a>, or set <a href="/modbus-alarm-software.html">alarms</a> on overcurrent or faults.</div></div>
+    <div class="step"><div class="step-label">Step 3</div><div class="step-title">Control &amp; log</div><div class="step-text">Write the control word sequence to 40001 (address 0) with a reference in 40002 (address 1) to start the drive, and keep writing them while it runs. Log feedback to the <a href="/modbus-data-logger-software.html">Historian</a>, build a <a href="/modbus-hmi-dashboard.html">dashboard</a>, or set <a href="/modbus-alarm-software.html">alarms</a> on overcurrent or faults.</div></div>
   </div>
 </section>
 
@@ -526,7 +526,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 <section class="section">
   <div class="sec-label">// why modbusmanager</div>
   <h2 class="sec-title">A practical tool for ABB drives</h2>
-  <p style="max-width:780px;margin:0 auto;text-align:center;color:var(--muted);line-height:1.7">ModbusManager reads and writes any ACS580 register directly, with periodic writes to hold the control word alive and a serial monitor to see every frame. The Standard edition ($49) covers polling, writing and the serial monitor &mdash; enough to start, stop and monitor a drive. The Pro edition ($119) adds a <a href="/modbus-hmi-dashboard.html">drag-and-drop dashboard</a>, a <a href="/modbus-data-logger-software.html">data logging Historian</a> with CSV export, and an <a href="/modbus-alarm-software.html">alarm system</a> &mdash; all running locally on Windows, with no SCADA server or cloud account.</p>
+  <p style="max-width:780px;margin:0 auto;text-align:center;color:var(--muted);line-height:1.7">ModbusManager reads and writes any ACS580 register directly, with a serial monitor to see every frame. The Standard edition ($49) covers polling, writing and the serial monitor &mdash; enough to start, stop and monitor a drive. The Pro edition ($119) adds a <a href="/modbus-hmi-dashboard.html">drag-and-drop dashboard</a>, a <a href="/modbus-data-logger-software.html">data logging Historian</a> with CSV export, and an <a href="/modbus-alarm-software.html">alarm system</a> &mdash; all running locally on Windows, with no SCADA server or cloud account.</p>
 </section>
 
 <div class="divider-line"></div>
@@ -538,7 +538,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
   <div class="faq-list">
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What Modbus settings does an ABB ACS580 use?<span class="icon">+</span></div><div class="faq-a">The ACS580 has an embedded fieldbus (EFB) that runs as a Modbus RTU slave on RS-485. Set the protocol to Modbus RTU in parameter group 58, choose a node address and baud rate (commonly 9600 or 19200), and match parity and stop bits in ModbusManager. The drive supports RTU only, not ASCII.</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Which register is the ACS580 control word?<span class="icon">+</span></div><div class="faq-a">In the ABB Drives profile the control word is Modbus holding register 40001, the frequency/speed reference is 40002, and the status word is 40004. These are the core registers for remote start, stop and speed control.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I start an ACS580 over Modbus?<span class="icon">+</span></div><div class="faq-a">Set the command source to embedded fieldbus, then write the ABB Drives control word sequence to register 40001: typically 0x0476 then 0x047F to give the run command, together with a reference in 40002. ModbusManager must keep sending frames periodically (every 200-500 ms) or the drive trips on communication loss.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I start an ACS580 over Modbus?<span class="icon">+</span></div><div class="faq-a">Set the command source to embedded fieldbus, then write the ABB Drives control word sequence to register 40001: typically 0x0476 then 0x047F to give the run command, together with a reference in 40002. The master must keep writing them periodically (every 200-500 ms) or the drive can trip on communication loss.</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Why does the ACS580 not run when I write the control word?<span class="icon">+</span></div><div class="faq-a">Common causes: the command source is not set to EFB, the control word bit sequence is incomplete, or the master is not transmitting continuously so the drive trips fault 6681 (communication loss). Send the control word and reference together periodically rather than as one-shot commands.</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I monitor ACS580 speed and current with ModbusManager?<span class="icon">+</span></div><div class="faq-a">Yes. Read the status word at 40004 and the actual values at 40005 and 40006 for output frequency and current. Power is not mapped by default: set 58.107 Data I/O 7 to 01.14 Output power and it appears at 40007. With ModbusManager Pro you can log them to the Historian, chart trends and set alarms on limits.</div></div>
   </div>
