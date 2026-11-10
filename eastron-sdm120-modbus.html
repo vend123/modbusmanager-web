@@ -113,6 +113,10 @@ nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;paddi
 .step::before{counter-increment:step;content:counter(step);font-family:'Saira Condensed',sans-serif;font-size:2.5rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.5rem;right:1rem;line-height:1}
 .step-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--amber-ink);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem}
 .step-title{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.5rem}
+.step h3{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin:0 2rem 0.5rem 0}
+.step p{font-size:0.85rem;color:var(--body);line-height:1.65}
+.step-num{display:none}
+@media(min-width:769px){.steps.three{grid-template-columns:repeat(3,1fr)}}
 .step-text{font-size:0.85rem;color:var(--body);line-height:1.65}
 
 /* TAG ENGINE */
@@ -397,7 +401,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 <section class="section">
   <h2 class="sec-title">Modbus settings</h2>
   <p style="max-width:760px;margin:1.2rem auto 1.6rem;text-align:center;color:var(--muted);line-height:1.7">The SDM120 talks Modbus RTU over its 2-wire RS-485 terminals. Factory defaults below &mdash; all of them can be changed from the front-button set-up menu or by writing the holding registers.</p>
-  <div style="overflow-x:auto"><table class="reg-table" style="max-width:720px;margin:0 auto">
+  <div style="overflow-x:auto"><table class="compare-table" style="max-width:720px;margin:0 auto">
     <tr><th>Setting</th><th>Default / options</th></tr>
     <tr><td>Protocol</td><td>Modbus RTU, 2-wire RS-485</td></tr>
     <tr><td>Slave address</td><td>1 (range 1&ndash;247)</td></tr>
@@ -418,7 +422,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 <section class="section">
   <h2 class="sec-title">SDM120 measurement registers</h2>
   <p style="max-width:760px;margin:1.2rem auto 1.6rem;text-align:center;color:var(--muted);line-height:1.7">Every value is an IEEE&nbsp;754 FLOAT32 held in <strong>two consecutive input registers</strong>, read with FC04. Addresses below are the documentation form (3xxxx) with the on-wire hex offset &mdash; ModbusManager accepts either with the Base&nbsp;0/1 selector.</p>
-  <div style="overflow-x:auto"><table class="reg-table" style="max-width:860px;margin:0 auto">
+  <div style="overflow-x:auto"><table class="compare-table" style="max-width:860px;margin:0 auto">
     <tr><th>Register</th><th>Hex offset</th><th>Parameter</th><th>Unit</th></tr>
     <tr><td>30001</td><td>0x0000</td><td>Voltage</td><td>V</td></tr>
     <tr><td>30007</td><td>0x0006</td><td>Current</td><td>A</td></tr>
@@ -439,7 +443,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 
 <section class="section">
   <h2 class="sec-title">Read an SDM120 in three steps</h2>
-  <div class="steps">
+  <div class="steps three">
     <div class="step"><div class="step-num">1</div><h3>Connect RS-485</h3><p>Wire A/B from your USB-RS485 adapter to terminals 9 (B-) and 10 (A+), open ModbusManager &rsaquo; Connect &rsaquo; RTU, pick the COM port and set <strong>2400 baud, 8N1</strong>, slave ID 1 (or your meter&rsquo;s settings).</p></div>
     <div class="step"><div class="step-num">2</div><h3>Poll FC04</h3><p>Create a poll window: function code 04, start address 0 (register 30001; enter 1 if you switch the window to Base&nbsp;1), quantity 80. The grid fills with raw registers &mdash; select the <strong>Float32</strong> display column and real voltages and watts appear.</p></div>
     <div class="step"><div class="step-num">3</div><h3>Or load the workspace</h3><p>Skip the setup: open the free SDM120 workspace above. Polls, FLOAT32 tags and a live dashboard with gauges and a power trend are pre-configured &mdash; just match the slave ID and serial settings.</p></div>
@@ -457,7 +461,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 <!-- FAQ -->
 <section class="section">
   <h2 class="sec-title">SDM120 Modbus &mdash; FAQ</h2>
-  <div class="faq">
+  <div class="faq-list">
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">I get garbage values like 1.4e-42 instead of 230 V &mdash; why?<span class="icon">+</span></div><div class="faq-a">Your word order is inverted. The SDM120 sends FLOAT32 values high-word-first (big-endian, ABCD). If your master combines the two registers low-word-first you get nonsense. In ModbusManager select the Float32 column with big-endian byte order (the default) &mdash; or use the swap button if your gateway reorders words.</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Do the SDM120CT, SDM220 and SDM230 use the same registers?<span class="icon">+</span></div><div class="faq-a">Essentially yes. The core measurement block &mdash; voltage 30001, current 30007, power 30013, frequency 30071, energies 30073+ &mdash; is the same FLOAT32 layout across the SDM120 family, the CT-operated SDM120CT, and the SDM220/SDM230. Some variants add extra registers (demand values, CT ratio on CT models); verify extras against your variant&rsquo;s protocol PDF.</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Why does reading a single register return an error?<span class="icon">+</span></div><div class="faq-a">Every value is a two-register FLOAT32, and the meter requires the start address and the quantity to be even. Reading one register &mdash; or starting mid-pair &mdash; returns an exception on most firmware. Always poll pairs: start 0x0000, quantity 2, 4, &hellip; up to 80.</div></div>

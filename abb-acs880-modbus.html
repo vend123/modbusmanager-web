@@ -118,6 +118,10 @@ nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;paddi
 .step::before{counter-increment:step;content:counter(step);font-family:'Saira Condensed',sans-serif;font-size:2.5rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.5rem;right:1rem;line-height:1}
 .step-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--amber-ink);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem}
 .step-title{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.5rem}
+.step h3{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin:0 2rem 0.5rem 0}
+.step p{font-size:0.85rem;color:var(--body);line-height:1.65}
+.step-num{display:none}
+@media(min-width:769px){.steps.three{grid-template-columns:repeat(3,1fr)}}
 .step-text{font-size:0.85rem;color:var(--body);line-height:1.65}
 
 /* TAG ENGINE */
@@ -468,7 +472,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 <section class="section">
   <div class="sec-label">// quick start</div>
   <h2 class="sec-title">Test an ACS880 in three steps</h2>
-  <div class="steps">
+  <div class="steps three">
     <div class="step"><div class="step-num">1</div><h3>Wire the XD2D port</h3><p>Connect your USB-RS485 adapter to the XD2D terminals (B, A, BGND) on the ZCU control unit. In group 58 set 58.01 = Modbus RTU, note 58.03/58.04/58.05, then set <strong>58.06 = Refresh</strong>. With an FSCA-01, wire its X1 terminals instead.</p></div>
     <div class="step"><div class="step-num">2</div><h3>Connect and poll</h3><p>ModbusManager &rsaquo; Connect &rsaquo; RTU: pick the COM port and match the drive &mdash; 19200 baud, 8E1 by default. Poll FC03 from address 0 (register 40001), quantity 10: control word, references, status word and actual values appear live.</p></div>
     <div class="step"><div class="step-num">3</div><h3>Monitor safely</h3><p>Load the read-only workspace above for a dashboard with ready/running/fault lamps &mdash; it never writes the control word. When you do want to test control, use the control-word sequence documented above with the motor safely decoupled.</p></div>
@@ -487,7 +491,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 <section class="section">
   <div class="sec-label">// common questions</div>
   <h2 class="sec-title">ABB ACS880 Modbus &mdash; FAQ</h2>
-  <div class="faq">
+  <div class="faq-list">
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does the ACS880 have Modbus built in, or do I need an adapter?<span class="icon">+</span></div><div class="faq-a">Both options exist. The embedded fieldbus (EFB) runs Modbus RTU on the XD2D drive-to-drive connector of the ZCU control unit &mdash; configured in group 58, no extra hardware. The FSCA-01 adapter (+K458) is the optional route when you want a dedicated, galvanically isolated RS-485 port; it is configured in groups 50&ndash;53 instead.</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">My group 58 changes don&rsquo;t take effect &mdash; why?<span class="icon">+</span></div><div class="faq-a">Group 58 settings are only applied after you set parameter <strong>58.06 to Refresh</strong>. Change the node address, baud or profile, then refresh &mdash; the EFB restarts with the new settings.</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Which registers hold the actual values (speed, current)?<span class="icon">+</span></div><div class="faq-a">Registers 40005 onward are mapped through the EFB data I/O parameters 58.101&ndash;58.124. A typical mapping puts motor speed (par. 1.1), current (1.7) and DC voltage (1.11) there as 16-bit words, but it is configurable &mdash; check your drive&rsquo;s 58.1xx settings and scale accordingly (e.g. speed scaling via 46.01).</div></div>

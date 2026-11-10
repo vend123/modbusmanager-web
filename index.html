@@ -51,6 +51,7 @@ nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;paddi
 .np-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.9rem}
 .hero h1{font-family:'Saira Condensed',sans-serif;font-size:3.4rem;font-weight:700;line-height:0.98;color:var(--ink);margin-bottom:1rem;letter-spacing:0.01em;text-transform:uppercase}
 .hero h1 .accent{color:var(--amber-ink)}
+@media(max-width:768px){.install-grid{grid-template-columns:1fr!important}}
 .hero-desc{font-size:0.95rem;color:var(--body);line-height:1.7;margin-bottom:1.4rem;max-width:480px}
 .np-specs{display:grid;grid-template-columns:repeat(4,1fr);border:1.5px solid var(--ink);font-family:'IBM Plex Mono',monospace;margin-bottom:1.4rem;background:#fff}
 .np-specs>div{padding:8px 10px;border-right:1px solid var(--ink)}
@@ -948,7 +949,7 @@ document.addEventListener('keydown', function(e){
   <h2 class="sec-title">What Windows will show you</h2>
   <p class="sec-sub">The installer is signed, but it is new. Here is what to expect and how to verify it.</p>
 
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;max-width:1000px;margin:0 auto">
+  <div class="install-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;max-width:1000px;margin:0 auto">
 
     <div>
       <p style="margin:0 0 1rem;color:var(--body)">On first run Windows may show a blue Defender SmartScreen panel saying it prevented an unrecognized app from starting. This is a reputation check, not a virus warning. SmartScreen counts how many people have downloaded and run a given build; a new release starts that count at zero regardless of who signed it.</p>
