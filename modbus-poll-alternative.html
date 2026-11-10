@@ -110,6 +110,14 @@ nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;paddi
 .widget-name{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem}
 .widget-desc{font-size:0.85rem;color:var(--body);line-height:1.65}
 
+/* FEATURE CARDS */
+.feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
+.feat{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem}
+.feat-icon{font-size:1.6rem;margin-bottom:0.7rem}
+.feat h3{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem}
+.feat p{font-size:0.85rem;color:var(--body);line-height:1.65}
+@media(max-width:768px){.feat-grid{grid-template-columns:1fr}}
+
 /* STEPS */
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;counter-reset:step}
 .step{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem;position:relative}

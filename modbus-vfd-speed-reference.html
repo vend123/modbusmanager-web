@@ -117,6 +117,7 @@ nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;paddi
 .step::before{counter-increment:step;content:counter(step);font-family:'Saira Condensed',sans-serif;font-size:2.5rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.5rem;right:1rem;line-height:1}
 .step-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--amber-ink);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem}
 .step-title{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.5rem}
+@media(min-width:769px){.steps.three{grid-template-columns:repeat(3,1fr)}}
 .step-text{font-size:0.85rem;color:var(--body);line-height:1.65}
 
 /* TAG ENGINE */
@@ -467,7 +468,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
   <h2 class="sec-title">The address is the easy part</h2>
   <p class="sec-sub">Finding the register takes one look at the manual. Working out what number to put in it is where commissioning days go. Is 6000 equal to 60.00 Hz, or 60 percent of maximum, or 6000 rpm? Published tables disagree, and the answer shifts with the drive's own maximum frequency setting. You do not have to guess: the drive will tell you.</p>
 
-  <div class="steps" style="grid-template-columns:repeat(3,1fr)">
+  <div class="steps three">
     <div class="step">
       <div class="step-label">// step</div>
       <div class="step-title">Write a mid value</div>
