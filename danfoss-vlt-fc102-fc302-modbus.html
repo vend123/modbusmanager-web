@@ -636,8 +636,8 @@ function dlCount(product, version) {
 }
 document.addEventListener('click', function (e) {
   if (!e.target.closest) return;
-  var w = e.target.closest('a[href$=".json"], a[href$=".zip"]');
-  if (w) { dlCount('Workspace', (w.getAttribute('href').match(/([^\/]+)\.(?:json|zip)$/) || [])[1] || ''); return; }
+  var w = e.target.closest('a[href$=".json"], a[href$=".zip"], a[href$=".zap15_1"]');
+  if (w) { dlCount('Workspace', (w.getAttribute('href').match(/([^\/]+)\.(?:json|zip|zap15_1)$/) || [])[1] || ''); return; }
   var m = e.target.closest('a[href$=".pdf"]');
   if (m) { dlCount('Manual', (m.getAttribute('href').match(/([^\/]+)\.pdf$/) || [])[1] || ''); return; }
   var a = e.target.closest('a[data-dl]');
