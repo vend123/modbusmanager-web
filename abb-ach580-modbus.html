@@ -124,6 +124,10 @@ nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;paddi
 .nav-cta:hover{color:#fff}
 .hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
 .article-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 5rem}
+.section{max-width:860px;margin:0 auto;padding:1rem 2rem 4.5rem}
+.sec-label{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem}
+.sec-title{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;line-height:1.1;margin-bottom:1.4rem}
+@media(max-width:640px){.section{padding:0.5rem 1.2rem 3.5rem}.sec-title{font-size:1.7rem}}
 .breadcrumb{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--muted);margin-bottom:2rem}
 .breadcrumb a{color:var(--muted);text-decoration:none}
 .breadcrumb a:hover{color:var(--ink)}
@@ -156,7 +160,7 @@ td.formula{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--a
 .cta-box a{background:var(--safety);color:var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
 .cta-box a:hover{background:#fff}
 .download-box{border:2px solid var(--ink);background:var(--enclosure2);padding:1.4rem 1.8rem;border-radius:3px;margin:2rem 0;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;justify-content:space-between}
-.download-box h3{margin:0 0 0.3rem;font-size:1rem;border:none;padding:0;font-family:'IBM Plex Mono',monospace;color:var(--ink)}
+.download-box h3{margin:0 0 0.3rem;font-size:1rem;border:none;padding:0;overflow-wrap:anywhere;font-family:'IBM Plex Mono',monospace;color:var(--ink)}
 .download-box p{margin:0;font-size:0.82rem;color:var(--muted);max-width:46ch}
 .download-box a{background:var(--ink);color:var(--enclosure);padding:0.6rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
 .download-box a:hover{background:var(--safety);color:var(--ink)}
@@ -230,7 +234,23 @@ nav .nav-links.open{display:flex!important;flex-direction:column;position:absolu
 .nd-group:hover>.nd-flyout,.nd-group:focus-within>.nd-flyout,.nd-group.open>.nd-flyout{display:block}
 .nd-head{font-family:'IBM Plex Mono',monospace;font-size:0.64rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted,#5F5E5A);padding:0.55rem 1rem 0.15rem;border-top:1px solid var(--steel,#B9BDB6);margin-top:0.25rem}
 .nd-box>.nd-head:first-child{border-top:none;margin-top:0}
-@media(max-width:768px){
+/* tablet (769-1100px): logo, six menu items and the button need ~840px; below that the menu
+   wrapped to two or three lines and the download button ran off the screen (2026-11-10).
+   769-900px gets the ☰ menu as on phones (the pages' own phone rules stop at 768px);
+   901-1100px keeps the row, tighter. The small text download link repeats the button,
+   so it goes in this range, as it already does on phones. */
+@media(min-width:769px) and (max-width:1100px){
+nav{gap:1rem!important;padding-left:1.2rem!important;padding-right:1.2rem!important}
+nav .nav-links{gap:1.1rem!important;letter-spacing:0.02em!important;white-space:nowrap}
+nav>div>a:not(.nav-cta){display:none!important}
+nav .nav-cta{white-space:nowrap;padding:0.45rem 0.9rem!important}
+}
+@media(min-width:769px) and (max-width:900px){
+nav .nav-burger{display:block!important;margin-left:auto}
+nav .nav-links{display:none!important}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15);white-space:normal;margin:0!important}
+}
+@media(max-width:900px){
 nav .nav-links.open{align-items:stretch;text-align:left}
 nav .nav-links.open .nav-drop{padding-bottom:0;margin-bottom:0}
 nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
@@ -246,6 +266,20 @@ nav .nav-links.open .nd-group.open>.nd-glabel,nav .nav-links.open .nd-group:hove
 nav .nav-links.open .nd-group.open .nd-arrow{transform:rotate(90deg)}
 nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
 }
+</style>
+<style id="sf-css">
+footer.sf{display:block;text-align:left;padding:2.2rem 3rem 1.6rem;border-top:2px solid var(--ink,#16181A);background:var(--enclosure2,#E8EAE5);color:var(--muted,#5F5E5A);font-family:'Archivo',sans-serif;font-size:.92rem}
+footer.sf a{color:var(--muted,#5F5E5A);text-decoration:none}
+footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
+.sf-cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.6rem 2rem;max-width:1100px}
+.sf-col{display:flex;flex-direction:column;gap:.45rem;min-width:0}
+.sf-h{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink,#16181A);font-weight:600;margin-bottom:.2rem}
+.sf-bot{display:flex;flex-wrap:wrap;gap:.6rem 1.6rem;align-items:baseline;justify-content:space-between;border-top:1px solid var(--steel,#B9BDB6);margin-top:1.8rem;padding-top:1rem;font-size:.85rem}
+.sf-logo{font-family:'Saira Condensed',sans-serif;color:var(--ink,#16181A);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+@media(max-width:768px){footer.sf{padding:1.8rem 1.2rem}.sf-cols{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:1100px){.sec-label,.eyebrow,.np-eyebrow,.np-specs span,.step-label,.def-label,.toc-label,.c-label,.q-k,.plan-label,.os-tag,.pro-tag,.ed,.sb-sub,.sb-sub a,.nd-head,.also-label,figcaption{font-size:11px!important}}
+.sf-swipe{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--amber-ink,#8A6200);text-align:right;margin:.3rem 0 .4rem}
+.sf-swipe[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -324,6 +358,7 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
             <a href="/siemens-s7-put-get.html">Siemens S7 PUT/GET</a>
           </div></div>
         </div>
+        <a href="/register-map-service.html"><span class="ni">&#128203;&#65039;</span>Register Map from your PDF</a>
         <a href="/manual.html"><span class="ni">&#128214;&#65039;</span>Documentation</a>
         <a href="/modbus-poll-alternative.html"><span class="ni">&#9878;&#65039;</span>vs Modbus Poll</a>
       </div></div>
@@ -554,8 +589,6 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
 </div>
 
 <div class="hazard"></div>
-<div class="divider-line"></div>
-
 <!-- GATEWAY CROSS-LINK -->
 <section class="section">
   <div class="sec-label">// more than one drive</div>
@@ -596,6 +629,15 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
     </div>
   </div>
   <div class="sf-bot"><span class="sf-logo">ModbusManager</span><span>Every device. One tool. Pay once.</span><span>&copy; 2026 E-Netter O&Uuml;</span><a href="mailto:support@modbusmanager.com">support@modbusmanager.com</a></div>
+<script id="sf-js">(function(){
+  function box(t){for(var e=t,i=0;e&&i<3;e=e.parentElement,i++){var o=getComputedStyle(e).overflowX;if(o==='auto'||o==='scroll')return e}return null}
+  function check(b){var h=b.previousElementSibling,wide=b.scrollWidth>b.clientWidth+4;
+    if(!h||!h.classList.contains('sf-swipe')){if(!wide)return;h=document.createElement('div');h.className='sf-swipe';h.textContent='Table continues \u2014 swipe sideways \u2192';b.parentNode.insertBefore(h,b);
+      b.addEventListener('scroll',function(){if(b.scrollLeft>20)h.hidden=true},{passive:true})}
+    if(!wide)h.hidden=true;else if(b.scrollLeft<=20)h.hidden=false}
+  function run(){var seen=[];document.querySelectorAll('table').forEach(function(t){var b=box(t);if(b&&seen.indexOf(b)<0){seen.push(b);check(b);if(window.ResizeObserver)new ResizeObserver(function(){check(b)}).observe(b)}})}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+})();</script>
 </footer>
 
 
@@ -658,8 +700,8 @@ function dlCount(product, version) {
 }
 document.addEventListener('click', function (e) {
   if (!e.target.closest) return;
-  var w = e.target.closest('a[href$=".json"], a[href$=".zip"]');
-  if (w) { dlCount('Workspace', (w.getAttribute('href').match(/([^\/]+)\.(?:json|zip)$/) || [])[1] || ''); return; }
+  var w = e.target.closest('a[href$=".json"], a[href$=".zip"], a[href$=".zap15_1"]');
+  if (w) { dlCount('Workspace', (w.getAttribute('href').match(/([^\/]+)\.(?:json|zip|zap15_1)$/) || [])[1] || ''); return; }
   var m = e.target.closest('a[href$=".pdf"]');
   if (m) { dlCount('Manual', (m.getAttribute('href').match(/([^\/]+)\.pdf$/) || [])[1] || ''); return; }
   var a = e.target.closest('a[data-dl]');
