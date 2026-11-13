@@ -520,21 +520,23 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
     <strong>Poll rate:</strong> The SmartLogger updates its internal data cache every 1–5 minutes depending on configuration. Polling faster than the cache refresh rate returns stale values — a scan rate of 60 seconds per window is typically sufficient.
   </div>
 
-  <h2>Calculating Plant KPIs with Tags (Pro)</h2>
+  <h2>Plant KPIs Without a Script (Pro)</h2>
 
-  <p>ModbusManager Pro includes a tag engine where you can write Structured Text expressions to compute derived values across multiple poll windows. For a 24-inverter plant, a tag that sums active power across all inverters looks like:</p>
+  <p>Every 32-bit value on this page is a pair of registers, high word first. In ModbusManager Pro a <strong>register tag</strong> reads the pair itself: give it data type <code>INT32</code> (or <code>UINT32</code> for the energy counters) and a scale, and the tag holds the finished number. The plant totals need nothing more:</p>
 
-  <pre><span class="c">// Total active power — sum I32 pairs from all 24 inverters</span>
-<span class="k">plant_kw</span> := <span class="v">0.0</span>;
-<span class="k">FOR</span> i := <span class="v">1</span> <span class="k">TO</span> <span class="v">24</span> <span class="k">DO</span>
-  hi := reg[<span class="v">51000</span> + <span class="v">25</span>*(i-<span class="v">1</span>) + <span class="v">0</span>];
-  lo := reg[<span class="v">51000</span> + <span class="v">25</span>*(i-<span class="v">1</span>) + <span class="v">1</span>];
-  raw := (hi SHL <span class="v">16</span>) OR lo;
-  <span class="k">IF</span> raw > <span class="v">2147483647</span> <span class="k">THEN</span> raw := raw - <span class="v">4294967296</span>; <span class="k">END_IF</span>
-  plant_kw := plant_kw + (raw / <span class="v">1000.0</span>);
-<span class="k">END_FOR</span>;</pre>
+  <table>
+    <thead><tr><th>Tag</th><th>Address</th><th>Data type</th><th>Scale</th><th>Reads</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">plant_P_kW</td><td class="mono">40525</td><td>INT32</td><td>0.001</td><td>total active power, kW</td></tr>
+      <tr><td class="mono">plant_Q_kVar</td><td class="mono">40544</td><td>INT32</td><td>0.001</td><td>total reactive power, kvar</td></tr>
+      <tr><td class="mono">plant_Etot_kWh</td><td class="mono">40560</td><td>UINT32</td><td>0.1</td><td>total energy yield, kWh</td></tr>
+      <tr><td class="mono">plant_Eday_kWh</td><td class="mono">40562</td><td>UINT32</td><td>0.1</td><td>today's yield, kWh</td></tr>
+    </tbody>
+  </table>
 
-  <p>The result can be bound to a Dashboard gauge or KPI element for a live plant overview visible in full-screen runtime mode.</p>
+  <p>For the 24 inverters themselves, the Dashboard's <strong>Device Table</strong> does the counting: one row per inverter, the row's address stepping by 25, a column per value with its own data type and gain &mdash; I32 active power &divide; 1000, I16 DC current &divide; 100, power factor &divide; 1000, cabinet temperature &divide; 10. The table sums the power column across all rows, shows the status as a coloured word (on-grid, derating, night, <strong>no comm</strong> for 0xB000) and opens any inverter's full detail with a click. No hi/lo tags, no Structured Text.</p>
+
+  <p>A tag or a table can be bound to a Dashboard KPI card for a live plant overview visible in full-screen runtime mode.</p>
 
   <p>A live gauge answers what the plant is doing now. The question that follows a commissioning
   visit is usually a different one &mdash; what did inverter 7 do overnight, and when did that
@@ -546,18 +548,18 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 
   <h2>Download a Ready-Made Workspace</h2>
 
-  <p>Rather than building all 24 poll windows, scaling rules, tags and dashboard elements by hand, you can start from a complete example workspace. It contains:</p>
+  <p>Rather than building all 24 poll windows, tags and dashboard elements by hand, you can start from a complete example workspace. It contains:</p>
 
   <ul>
-    <li>24 inverter poll windows (start address 51000, step 25, FC03)</li>
-    <li>Scaling for DC current (÷100), power factor (÷1000) and cabinet temperature (÷10)</li>
-    <li>Status enum names for the SmartLogger-added codes (0xB000, 0xC000)</li>
-    <li>Tags that combine the I32 active-power pairs into kW per inverter, plus plant-level totals</li>
-    <li>A Dashboard overview page with per-inverter status lamps and clickable popup windows</li>
+    <li>24 inverter poll windows (start address 51000, step 25, FC03, logic device ID 0) and the plant-level windows</li>
+    <li>Plant totals as INT32 / UINT32 register tags with their gain &mdash; no script</li>
+    <li>One Dashboard page: plant power, today's yield, total yield and plant status, and a Device Table with all 24 inverters &mdash; status, active power, DC current, power factor, cabinet temperature, with the power summed</li>
+    <li>Status names for the SUN2000 states and the SmartLogger-added codes (0xB000 no comm, 0xC000 updating)</li>
+    <li>A click on an inverter row opens its detail: reactive and input power, insulation resistance, fault and warning codes</li>
   </ul>
 
   <div class="callout warn">
-    <strong>Requires ModbusManager Pro:</strong> this workspace uses the tag engine and Dashboard HMI, which are Pro features. Opening it in Standard will load the poll windows, but the tags and dashboard will not function. Verify the register map against your own SmartLogger firmware before relying on the values.
+    <strong>Requires ModbusManager Pro 1.9.7 or newer:</strong> this workspace uses register tags and the Dashboard's Device Table, which are Pro features. Opening it in Standard will load the poll windows, but the tags and dashboard will not function. Verify the register map against your own SmartLogger firmware before relying on the values.
   </div>
 
   <div class="download-box">
