@@ -40,7 +40,7 @@
   "description": "How to name Modbus registers as tags and compute derived values with IEC 61131-3 Structured Text in ModbusManager Pro, including exactly which ST constructs the interpreter supports and which it does not.",
   "url": "https://modbusmanager.com/modbus-structured-text-scripting.html",
   "datePublished": "2026-09-21",
-  "dateModified": "2026-09-21",
+  "dateModified": "2026-11-13",
   "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
   "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
 },
@@ -49,7 +49,7 @@
   "@type": "FAQPage",
   "mainEntity": [
     {"@type": "Question", "name": "How do I calculate power from Modbus registers when the meter doesn't report it?", "acceptedAnswer": {"@type": "Answer", "text": "Name the registers you do have as tags, then write a Structured Text script that computes the value into an internal tag. A three-phase meter that reports line voltage, current and power factor gives you kilowatts as 1.732 * V * I * PF / 1000. The internal tag then behaves like any other tag: it can be shown on a dashboard, logged by the Historian and used in an alarm."}},
-    {"@type": "Question", "name": "Which Structured Text constructs does ModbusManager support?", "acceptedAnswer": {"@type": "Answer", "text": "Comments in (* *), assignment with :=, equality with a single = and inequality with <>, the comparison operators, TRUE and FALSE, AND, OR and NOT, the full IF / THEN / ELSIF / ELSE / END_IF chain, and FOR ... TO ... DO ... END_FOR. WHILE, REPEAT, CASE, MOD and XOR are reserved words but are not translated, so they will not run as Structured Text. The script box also accepts plain JavaScript, which is the practical way to use a while loop or a switch."}},
+    {"@type": "Question", "name": "Which Structured Text constructs does ModbusManager support?", "acceptedAnswer": {"@type": "Answer", "text": "Comments in (* *), assignment with :=, equality with a single = and inequality with <>, the comparison operators, TRUE and FALSE, AND, OR, NOT, XOR, MOD, the full IF / THEN / ELSIF / ELSE / END_IF chain, CASE ... OF (values, lists, ranges, ELSE), FOR ... TO ... BY ... DO, WHILE ... DO ... END_WHILE, REPEAT ... UNTIL ... END_REPEAT, EXIT and RETURN, and the standard function blocks TON, TOF, TP, R_TRIG, F_TRIG, CTU, CTD, CTUD, SR and RS declared in VAR ... END_VAR. The script box also accepts plain JavaScript."}},
     {"@type": "Question", "name": "What is the difference between a register tag and an internal tag?", "acceptedAnswer": {"@type": "Answer", "text": "A register tag (REG) is bound to a real register by slave ID, register type and address, and its value tracks the live device. An internal tag (INT) exists only inside the tool and holds a computed or stored value, normally written by a Structured Text script. Scripts read register tags and write internal tags."}},
     {"@type": "Question", "name": "Can a script with an endless loop freeze the application?", "acceptedAnswer": {"@type": "Answer", "text": "No. Scripts run in a separate worker thread with a 2000 ms timeout. A loop that never exits is terminated and reported as a timeout, while polling, the dashboard and the rest of the application keep running. This was a real failure mode in an earlier design where the script ran on the main thread and a bad loop hung the whole tool."}},
     {"@type": "Question", "name": "Why won't ModbusManager let me name a tag AND, TRUE or process?", "acceptedAnswer": {"@type": "Answer", "text": "Tag names are used directly as variable names in the compiled script, so a name that collides with a Structured Text keyword or with a shadowed global breaks compilation — and it breaks every script, not only the one using that tag. Names must be valid identifiers: they cannot contain spaces or hyphens, cannot start with a digit, and cannot be a reserved word."}},
@@ -475,7 +475,7 @@ Power_kW <span class="ck">:=</span> 1.732 * Line_V * Amps_Avg
 <section class="section">
   <div class="sec-label">// what the interpreter actually does</div>
   <h2 class="sec-title">The supported syntax, in full</h2>
-  <p class="sec-sub">Structured Text is a large language and this is a subset of it. Publishing the exact boundary is more useful than implying the whole standard is there and letting you find the edge with a script that silently fails, so here is the complete list.</p>
+  <p class="sec-sub">Structured Text is a large language and this is a subset of it. Publishing the exact boundary is more useful than implying the whole standard is there and letting you find the edge with a script that silently fails, so here is the complete list. <b>? Help</b> in the script editor shows the same list with an example to copy.</p>
 
   <div style="overflow-x:auto;margin-top:20px">
   <table class="compare-table" style="min-width:560px">
@@ -488,21 +488,27 @@ Power_kW <span class="ck">:=</span> 1.732 * Line_V * Amps_Avg
       <tr><td class="mono">=</td><td class="yes">&#10003; equality (not assignment)</td></tr>
       <tr><td class="mono">&lt;&gt; &nbsp; &lt;= &nbsp; &gt;= &nbsp; &lt; &nbsp; &gt;</td><td class="yes">&#10003; comparisons</td></tr>
       <tr><td class="mono">TRUE &nbsp; FALSE</td><td class="yes">&#10003; supported</td></tr>
-      <tr><td class="mono">AND &nbsp; OR &nbsp; NOT</td><td class="yes">&#10003; supported</td></tr>
+      <tr><td class="mono">AND &nbsp; OR &nbsp; XOR &nbsp; NOT</td><td class="yes">&#10003; supported</td></tr>
+      <tr><td class="mono">+ &nbsp; - &nbsp; * &nbsp; / &nbsp; MOD</td><td class="yes">&#10003; arithmetic</td></tr>
       <tr class="hl"><td class="mono">IF / THEN / ELSIF / ELSE / END_IF</td><td class="yes">&#10003; the full chain</td></tr>
-      <tr><td class="mono">FOR &hellip; TO &hellip; DO / END_FOR</td><td class="yes">&#10003; supported</td></tr>
-      <tr><td class="mono">WHILE / END_WHILE</td><td class="no">&mdash; not translated</td></tr>
-      <tr><td class="mono">REPEAT / UNTIL / END_REPEAT</td><td class="no">&mdash; not translated</td></tr>
-      <tr><td class="mono">CASE / OF / END_CASE</td><td class="no">&mdash; not translated</td></tr>
-      <tr><td class="mono">MOD &nbsp; XOR</td><td class="no">&mdash; not translated</td></tr>
-      <tr><td class="mono">FOR &hellip; BY &lt;step&gt;</td><td class="no">&mdash; step not translated</td></tr>
+      <tr><td class="mono">CASE x OF 1: &hellip; 2, 3: &hellip; 4..9: &hellip; ELSE &hellip; END_CASE</td><td class="yes">&#10003; values, lists, ranges, ELSE, nested</td></tr>
+      <tr><td class="mono">FOR &hellip; TO &hellip; BY &lt;step&gt; DO / END_FOR</td><td class="yes">&#10003; the step may be negative</td></tr>
+      <tr><td class="mono">WHILE &hellip; DO / END_WHILE</td><td class="yes">&#10003; supported</td></tr>
+      <tr><td class="mono">REPEAT / UNTIL / END_REPEAT</td><td class="yes">&#10003; supported</td></tr>
+      <tr><td class="mono">EXIT &nbsp; RETURN</td><td class="yes">&#10003; leave the loop / end the script</td></tr>
+      <tr><td class="mono">VAR &hellip; END_VAR</td><td class="yes">&#10003; declares function block instances</td></tr>
+      <tr class="hl"><td class="mono">TON &nbsp; TOF &nbsp; TP</td><td class="yes">&#10003; timers; times as T#5s, T#500ms, T#1m30s</td></tr>
+      <tr><td class="mono">R_TRIG &nbsp; F_TRIG</td><td class="yes">&#10003; rising / falling edge</td></tr>
+      <tr><td class="mono">CTU &nbsp; CTD &nbsp; CTUD</td><td class="yes">&#10003; counters</td></tr>
+      <tr><td class="mono">SR &nbsp; RS</td><td class="yes">&#10003; latches (set wins / reset wins)</td></tr>
+      <tr><td class="mono">FUNCTION, FUNCTION_BLOCK of your own, arrays, STRUCT</td><td class="no">&mdash; not available</td></tr>
     </tbody>
   </table>
   </div>
 
   <div class="definition-box" style="margin-top:24px">
     <div class="def-label">// the escape hatch</div>
-    <p>The script box also accepts <strong>plain JavaScript</strong>, and the two mix freely in one script because Structured Text is translated into JavaScript before it runs. So a lower-case <span class="mono">while</span> loop, a <span class="mono">switch</span>, the <span class="mono">%</span> operator and the whole <span class="mono">Math</span> library all work, even though their ST spellings do not. If you need <span class="mono">MOD</span>, write <span class="mono">%</span>. If you need <span class="mono">CASE</span>, write <span class="mono">switch</span>. That is also why the reserved-word list below includes JavaScript keywords as well as ST ones.</p>
+    <p>The script box also accepts <strong>plain JavaScript</strong>, and the two mix freely in one script because Structured Text is translated into JavaScript before it runs. So the whole <span class="mono">Math</span> library works (<span class="mono">Math.sqrt</span>, <span class="mono">Math.round</span>, <span class="mono">Math.max</span>&hellip;), and so does anything else JavaScript has that Structured Text lacks. That is also why the reserved-word list below includes JavaScript keywords as well as ST ones.</p>
   </div>
 </section>
 
@@ -548,7 +554,7 @@ Power_kW <span class="ck">:=</span> 1.732 * Line_V * Amps_Avg
   <h2 class="sec-title">Tags and Structured Text: common questions</h2>
   <div class="faq-list" style="margin-top:18px">
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I calculate power from Modbus registers when the meter doesn't report it?<span class="icon">+</span></div><div class="faq-a">Name the registers you do have as tags, then write a Structured Text script that computes the value into an internal tag. A three-phase meter that reports line voltage, current and power factor gives you kilowatts as <span class="mono">1.732 * V * I * PF / 1000</span>. The internal tag then behaves like any other tag: it can be shown on a dashboard, logged by the Historian and used in an alarm.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Which Structured Text constructs are supported?<span class="icon">+</span></div><div class="faq-a">Comments in <span class="mono">(* *)</span>, assignment with <span class="mono">:=</span>, equality with a single <span class="mono">=</span> and inequality with <span class="mono">&lt;&gt;</span>, the comparison operators, <span class="mono">TRUE</span> and <span class="mono">FALSE</span>, <span class="mono">AND</span>, <span class="mono">OR</span> and <span class="mono">NOT</span>, the full <span class="mono">IF / THEN / ELSIF / ELSE / END_IF</span> chain, and <span class="mono">FOR &hellip; TO &hellip; DO &hellip; END_FOR</span>. <span class="mono">WHILE</span>, <span class="mono">REPEAT</span>, <span class="mono">CASE</span>, <span class="mono">MOD</span> and <span class="mono">XOR</span> are reserved words but are not translated, so they will not run as Structured Text. The script box also accepts plain JavaScript, which is the practical way to use a while loop or a switch.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Which Structured Text constructs are supported?<span class="icon">+</span></div><div class="faq-a">Comments in <span class="mono">(* *)</span>, assignment with <span class="mono">:=</span>, equality with a single <span class="mono">=</span> and inequality with <span class="mono">&lt;&gt;</span>, the comparison operators, <span class="mono">TRUE</span> and <span class="mono">FALSE</span>, <span class="mono">AND</span>, <span class="mono">OR</span>, <span class="mono">NOT</span>, <span class="mono">XOR</span>, <span class="mono">MOD</span>, the full <span class="mono">IF / THEN / ELSIF / ELSE / END_IF</span> chain, <span class="mono">CASE &hellip; OF</span>, <span class="mono">FOR &hellip; TO &hellip; BY &hellip; DO</span>, <span class="mono">WHILE</span>, <span class="mono">REPEAT &hellip; UNTIL</span>, <span class="mono">EXIT</span> and <span class="mono">RETURN</span>, and the standard function blocks <span class="mono">TON TOF TP R_TRIG F_TRIG CTU CTD CTUD SR RS</span>, declared in <span class="mono">VAR &hellip; END_VAR</span>. The script box also accepts plain JavaScript.</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the difference between a register tag and an internal tag?<span class="icon">+</span></div><div class="faq-a">A register tag (REG) is bound to a real register by slave ID, register type and address, and its value tracks the live device. An internal tag (INT) exists only inside the tool and holds a computed or stored value, normally written by a Structured Text script. Scripts read register tags and write internal tags.</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can a script with an endless loop freeze the application?<span class="icon">+</span></div><div class="faq-a">No. Scripts run in a separate worker thread with a 2000 ms timeout. A loop that never exits is terminated and reported as a timeout, while polling, the dashboard and the rest of the application keep running. This was a real failure mode in an earlier design where the script ran on the main thread and a bad loop hung the whole tool.</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Why won't it let me name a tag AND, TRUE or process?<span class="icon">+</span></div><div class="faq-a">Tag names are used directly as variable names in the compiled script, so a name that collides with a Structured Text keyword or with a hidden global breaks compilation — and it breaks every script, not only the one using that tag. Names must be valid identifiers: no spaces or hyphens, not starting with a digit, and not a reserved word.</div></div>
