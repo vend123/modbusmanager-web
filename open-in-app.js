@@ -12,21 +12,20 @@
     b.className = a.className;
     b.setAttribute('data-open-ws', file);
     b.textContent = '\u25B6 Open in ModbusManager';
-    b.title = 'Opens this workspace in ModbusManager on this PC (asks before replacing yours)';
+    b.title = 'Opens this workspace in ModbusManager Pro 1.9.9 or newer on this PC (asks before replacing yours)';
     if (!a.className) b.style.marginRight = '0.8rem';
     b.addEventListener('click', function () {
-      // no app answered the link: the page keeps the focus and stays visible
-      var left = false, mark = function () { left = true; };
-      window.addEventListener('blur', mark, { once: true });
-      document.addEventListener('visibilitychange', mark, { once: true });
+      // An older version, or none, does not know the link: nothing opens, or
+      // Windows offers to look for an app (which takes the focus, so the focus
+      // tells nothing). Unless the page went away, say what the button needs.
       setTimeout(function () {
-        if (left || document.getElementById('oia-note-' + file)) return;
+        if (document.hidden || document.getElementById('oia-note-' + file)) return;
         var n = document.createElement('div');
         n.id = 'oia-note-' + file;
         n.style.cssText = 'font-size:0.85rem;margin:0.5rem 0;color:inherit;opacity:0.85';
-        n.innerHTML = 'Nothing opened? ModbusManager is not installed here yet &mdash; <a href="/#download">download the free 14-day trial</a>, or use the .json file below with <i>Open workspace</i>.';
+        n.innerHTML = 'Nothing opened? This button needs <b>ModbusManager Pro 1.9.9 or newer</b> on this PC. With an older version, or none, <a href="/#download">download the latest ModbusManager</a> (it installs over the old one), or download the .json file below and use <i>Open workspace</i>.';
         b.parentNode.insertBefore(n, b.nextSibling && b.nextSibling.nextSibling ? b.nextSibling.nextSibling : null);
-      }, 2000);
+      }, 1500);
     });
     a.parentNode.insertBefore(b, a);
     if (a.className) a.parentNode.insertBefore(document.createTextNode(' '), a);
