@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NIBE S-series Modbus TCP: S1255 Registers, Degree Minutes</title>
+<meta name="description" content="NIBE S1155/S1255 Modbus TCP: switch it on in menu 7.5.9, port 502, FC04 measurements, FC03 settings, degree minutes, 20-register limit. Free workspace.">
+<meta name="keywords" content="NIBE Modbus TCP, NIBE S1255 Modbus, NIBE S1155 Modbus, NIBE Modbus register list, NIBE degree minutes Modbus, SMO S40 Modbus, NIBE heat pump Modbus, menu 7.5.9 Modbus">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/nibe-s-series-modbus.html">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:title" content="NIBE S-series Modbus TCP: S1255 Registers, Degree Minutes">
+<meta property="og:description" content="Read a NIBE S-series heat pump over its built-in Modbus TCP: switching it on in menu 7.5.9, the register IDs for temperatures, compressor and alarms, degree minutes low word first, and the 20-registers-per-query limit.">
+<meta property="og:url" content="https://modbusmanager.com/nibe-s-series-modbus.html">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://modbusmanager.com/og-nibe-s.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:published_time" content="2026-11-14T00:00:00Z">
+<meta property="article:section" content="Guides">
+<meta property="article:tag" content="NIBE">
+<meta property="article:tag" content="Modbus">
+<meta property="article:tag" content="Heat pump">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NIBE S-series Modbus TCP: S1255 Registers, Degree Minutes">
+<meta name="twitter:description" content="Read a NIBE S-series heat pump over its built-in Modbus TCP: switching it on in menu 7.5.9, the register IDs for temperatures, compressor and alarms, degree minutes low word first, and the 20-registers-per-query limit.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-nibe-s.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "NIBE S-series Modbus TCP: Register IDs, Degree Minutes and the 20-Register Limit",
+  "description": "Read a NIBE S-series heat pump over its built-in Modbus TCP: switching it on in menu 7.5.9, the register IDs for temperatures, compressor and alarms, degree minutes low word first, and the 20-registers-per-query limit.",
+  "url": "https://modbusmanager.com/nibe-s-series-modbus.html",
+  "image": "https://modbusmanager.com/og-nibe-s.png",
+  "datePublished": "2026-11-14",
+  "author": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "keywords": "NIBE Modbus TCP, NIBE S1255 Modbus, NIBE S1155 Modbus, NIBE Modbus register list, NIBE degree minutes Modbus, SMO S40 Modbus, NIBE heat pump Modbus, menu 7.5.9 Modbus"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does a NIBE S1255 need a MODBUS 40 accessory?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The S-series has Modbus TCP built in: activate it in menu 7.5.9 and connect to port 502. MODBUS 40 was the RS-485 accessory for the older F-series."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my Modbus read from a NIBE heat pump fail?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "NIBE answers at most 20 registers per query and 100 per second, only to clients on private IP ranges, and only for IDs the unit has. Read short runs of existing IDs with FC04 for measurements and FC03 for settings."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where are degree minutes in the NIBE Modbus map?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Holding register 11 (FC03), signed 32-bit divided by 10, read as the pair 11-12 with the low word first. It can be written, but only with FC16."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the NIBE register ID the Modbus address?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, the ID goes on the wire as it is. The CSV export from menu 7.5.9 writes 3xxxx / 4xxxx numbers, which are the ID plus 30001 or 40001."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which NIBE register shows the compressor running?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Input register 1100: 0 off, 1 on. The compressor frequency is input 1046 divided by 10 (Hz); on an S2125 outdoor unit it is 1803 for slave 1."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+.article-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 5rem}
+.section{max-width:860px;margin:0 auto;padding:1rem 2rem 4.5rem}
+.sec-label{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem}
+.sec-title{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;line-height:1.1;margin-bottom:1.4rem}
+@media(max-width:640px){.section{padding:0.5rem 1.2rem 3.5rem}.sec-title{font-size:1.7rem}}
+.breadcrumb{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--muted);margin-bottom:2rem}
+.breadcrumb a{color:var(--muted);text-decoration:none}
+.breadcrumb a:hover{color:var(--ink)}
+h1{font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;line-height:1.05;text-transform:uppercase;letter-spacing:0.01em;margin-bottom:1rem}
+h2{font-family:'Saira Condensed',sans-serif;font-size:1.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin:2.5rem 0 0.8rem;padding-top:0.5rem;border-top:2px solid var(--ink)}
+h3{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.03em;margin:1.5rem 0 0.5rem;color:var(--amber-ink)}
+p{font-size:0.93rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+ul{font-size:0.93rem;color:var(--body);line-height:1.75;margin:0 0 1rem 1.2rem;padding-left:0.6rem}
+li{margin-bottom:0.4rem}
+.lead{font-size:1.05rem;color:var(--ink);line-height:1.7;margin-bottom:2rem;border-left:3px solid var(--safety);padding-left:1rem}
+code{font-family:'IBM Plex Mono',monospace;font-size:0.82rem;background:#fff;border:1px solid var(--steel);padding:1px 5px;border-radius:2px}
+pre{font-family:'IBM Plex Mono',monospace;font-size:0.8rem;background:var(--ink);color:#E6E8E3;padding:1.2rem 1.4rem;border-radius:3px;overflow-x:auto;margin:1.2rem 0;line-height:1.6}
+pre .c{color:#888}
+pre .v{color:#F2A900}
+pre .k{color:#7ec8e3}
+table{width:100%;border-collapse:collapse;font-size:0.83rem;margin:1.2rem 0;background:var(--plate);border:2px solid var(--ink)}
+th{text-align:left;padding:0.65rem 0.9rem;border-bottom:2px solid var(--ink);background:var(--enclosure2);font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted)}
+td{padding:0.6rem 0.9rem;border-bottom:1px solid var(--steel);color:var(--body)}
+tr:hover td{background:#ECEEE9}
+td.mono{font-family:'IBM Plex Mono',monospace;font-size:0.78rem}
+td.formula{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--amber-ink)}
+.callout{background:var(--plate);border:1.5px solid var(--ink);border-left:4px solid var(--safety);padding:1rem 1.2rem;border-radius:2px;margin:1.5rem 0;font-size:0.88rem;color:var(--body);line-height:1.6}
+.callout strong{color:var(--ink)}
+.callout.tip{border-left-color:var(--run)}
+.callout.warn{border-left-color:var(--bad)}
+.step-num{display:inline-block;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.85rem;background:var(--ink);color:var(--safety);padding:2px 8px;border-radius:2px;margin-right:8px;letter-spacing:0.05em}
+.cta-box{background:var(--ink);color:var(--enclosure);padding:2rem 2.2rem;border-radius:3px;margin:3rem 0;display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
+.cta-box h3{color:var(--safety);margin:0 0 0.4rem;font-size:1.2rem;border:none;padding:0}
+.cta-box p{color:#B9BDB6;font-size:0.85rem;margin:0}
+.cta-box a{background:var(--safety);color:var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.cta-box a:hover{background:#fff}
+.download-box{border:2px solid var(--ink);background:var(--enclosure2);padding:1.4rem 1.8rem;border-radius:3px;margin:2rem 0;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.download-box h3{margin:0 0 0.3rem;font-size:1rem;border:none;padding:0;overflow-wrap:anywhere;font-family:'IBM Plex Mono',monospace;color:var(--ink)}
+.download-box p{margin:0;font-size:0.82rem;color:var(--muted);max-width:46ch}
+.download-box a{background:var(--ink);color:var(--enclosure);padding:0.6rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.download-box a:hover{background:var(--safety);color:var(--ink)}
+footer{border-top:2px solid var(--ink);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;color:var(--muted);flex-wrap:wrap;gap:1rem;background:var(--enclosure2)}
+.footer-logo{font-family:'Saira Condensed',sans-serif;color:var(--ink);font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--ink)}
+@media(max-width:640px){nav .nav-links{display:none}.article-wrap{padding:2rem 1.2rem 4rem}h1{font-size:2rem}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}td,th{white-space:normal;word-break:break-word}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+
+@media(max-width:680px){pre,code{white-space:pre-wrap;word-break:break-word;max-width:100%;overflow-x:auto}}
+
+/* family slogan band, slim (2026-10-22) */
+.slogan-band.slim{background:var(--safety,#F2A900);border-bottom:2px solid var(--ink,#16181A);padding:0.5rem 1rem;text-align:center;color:var(--ink,#16181A);display:flex;gap:0.3rem 1rem;justify-content:center;align-items:baseline;flex-wrap:wrap}
+.slogan-band.slim .sb-main{font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.3rem;line-height:1.1;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim .sb-sub{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim a{color:var(--ink,#16181A);font-weight:700}
+@media(max-width:768px){.slogan-band.slim .sb-main{font-size:1.05rem}.slogan-band.slim .sb-sub{display:none}}
+</style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/modbus-device-guides.html"},{"@type": "ListItem","position": 3,"name": "NIBE S-series Modbus TCP","item": "https://modbusmanager.com/nibe-s-series-modbus.html"}]}
+</script>
+<style id="sf-css">
+footer.sf{display:block;text-align:left;padding:2.2rem 3rem 1.6rem;border-top:2px solid var(--ink,#16181A);background:var(--enclosure2,#E8EAE5);color:var(--muted,#5F5E5A);font-family:'Archivo',sans-serif;font-size:.92rem}
+footer.sf a{color:var(--muted,#5F5E5A);text-decoration:none}
+footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
+.sf-cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.6rem 2rem;max-width:1100px}
+.sf-col{display:flex;flex-direction:column;gap:.45rem;min-width:0}
+.sf-h{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink,#16181A);font-weight:600;margin-bottom:.2rem}
+.sf-bot{display:flex;flex-wrap:wrap;gap:.6rem 1.6rem;align-items:baseline;justify-content:space-between;border-top:1px solid var(--steel,#B9BDB6);margin-top:1.8rem;padding-top:1rem;font-size:.85rem}
+.sf-logo{font-family:'Saira Condensed',sans-serif;color:var(--ink,#16181A);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+@media(max-width:768px){footer.sf{padding:1.8rem 1.2rem}.sf-cols{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:1100px){.sec-label,.eyebrow,.np-eyebrow,.np-specs span,.step-label,.def-label,.toc-label,.c-label,.q-k,.plan-label,.os-tag,.pro-tag,.ed,.sb-sub,.sb-sub a,.nd-head,.also-label,figcaption{font-size:11px!important}}
+.sf-swipe{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--amber-ink,#8A6200);text-align:right;margin:.3rem 0 .4rem}
+.sf-swipe[hidden]{display:none}
+</style>
+<style id="site-nav">
+/* site menu (tools/web-research/site-nav.js) */
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop.nd-has>.nav-drop-label{color:var(--ink,#16181A);font-weight:600}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;display:none;z-index:200}
+.nav-drop:hover>.nav-drop-menu,.nav-drop:focus-within>.nav-drop-menu{display:block}
+.nd-box{display:flex;flex-direction:column;background:var(--enclosure2,#e8e9e4);border:1px solid var(--ink,#16181A);border-radius:3px;box-shadow:0 6px 20px rgba(0,0,0,0.18);padding:0.35rem 0;min-width:210px}
+.nav-drop-menu a,.nd-glabel{display:flex;align-items:center;gap:0.55rem;padding:0.45rem 1rem;white-space:nowrap;text-transform:none;font-family:'IBM Plex Mono',monospace;font-size:0.78rem;letter-spacing:0.02em;color:var(--ink,#16181A);text-decoration:none;background:none;border:none;text-align:left;cursor:pointer;width:100%;box-sizing:border-box}
+.nav-drop-menu a:hover,.nd-glabel:hover,.nd-group:hover>.nd-glabel,.nd-group.open>.nd-glabel{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+.nav-drop-menu .ni{display:inline-block;width:1.25rem;text-align:center;flex:none;font-size:0.9rem;line-height:1}
+.nav-drop-menu a.nd-sub{padding-left:2.1rem;font-size:0.75rem}
+.nav-drop-menu .nd-hot{color:#9A6700;font-weight:600}
+.nav-drop-menu a[aria-current="page"]{font-weight:700;box-shadow:inset 3px 0 0 var(--safety,#F2A900)}
+.nd-group.nd-has>.nd-glabel{font-weight:700}
+.nd-arrow{margin-left:auto;padding-left:1rem;font-size:0.7rem;color:var(--muted,#5F5E5A);display:inline-block;transform-origin:calc(50% + 0.5rem) 50%}
+.nd-group{position:relative}
+.nd-flyout{display:none;position:absolute;left:100%;top:-0.4rem;padding-left:0.25rem;z-index:210}
+.nd-group:hover>.nd-flyout,.nd-group:focus-within>.nd-flyout,.nd-group.open>.nd-flyout{display:block}
+.nd-head{font-family:'IBM Plex Mono',monospace;font-size:0.64rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted,#5F5E5A);padding:0.55rem 1rem 0.15rem;border-top:1px solid var(--steel,#B9BDB6);margin-top:0.25rem}
+.nd-box>.nd-head:first-child{border-top:none;margin-top:0}
+/* tablet (769-1100px): logo, six menu items and the button need ~840px; below that the menu
+   wrapped to two or three lines and the download button ran off the screen (2026-11-10).
+   769-900px gets the ☰ menu as on phones (the pages' own phone rules stop at 768px);
+   901-1100px keeps the row, tighter. The small text download link repeats the button,
+   so it goes in this range, as it already does on phones. */
+@media(min-width:769px) and (max-width:1100px){
+nav{gap:1rem!important;padding-left:1.2rem!important;padding-right:1.2rem!important}
+nav .nav-links{gap:1.1rem!important;letter-spacing:0.02em!important;white-space:nowrap}
+nav>div>a:not(.nav-cta){display:none!important}
+nav .nav-cta{white-space:nowrap;padding:0.45rem 0.9rem!important}
+}
+@media(min-width:769px) and (max-width:900px){
+nav .nav-burger{display:block!important;margin-left:auto}
+nav .nav-links{display:none!important}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15);white-space:normal;margin:0!important}
+}
+@media(max-width:900px){
+nav .nav-links.open{align-items:stretch;text-align:left}
+nav .nav-links.open .nav-drop{padding-bottom:0;margin-bottom:0}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu{position:static;display:block;padding:0;margin:0.3rem 0 0.2rem}
+nav .nav-links.open .nd-box{border:none;box-shadow:none;background:none;padding:0;min-width:0}
+nav .nav-links.open .nav-drop-menu a,nav .nav-links.open .nd-glabel{padding:0.4rem 0;font-size:0.82rem;white-space:normal}
+nav .nav-links.open .nav-drop-menu a.nd-sub{padding-left:1.8rem}
+nav .nav-links.open .nd-flyout a[aria-current="page"]{padding-left:0.6rem}
+nav .nav-links.open .nd-flyout{position:static;padding:0 0 0.3rem 1.8rem;display:none}
+nav .nav-links.open .nd-group:hover>.nd-flyout,nav .nav-links.open .nd-group:focus-within>.nd-flyout{display:none}
+nav .nav-links.open .nd-group.open>.nd-flyout{display:block}
+nav .nav-links.open .nd-group.open>.nd-glabel,nav .nav-links.open .nd-group:hover>.nd-glabel{background:none}
+nav .nav-links.open .nd-group.open .nd-arrow{transform:rotate(90deg)}
+nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label" tabindex="0">Features &#9662;</span>
+      <div class="nav-drop-menu"><div class="nd-box">
+        <a href="/modbus-scanner.html" class="nd-hot"><span class="ni">&#128269;&#65039;</span>Modbus Scanner</a>
+        <a href="/modbus-rtu-over-tcp.html" class="nd-sub"><span class="ni">&#128257;&#65039;</span>RTU over TCP</a>
+        <a href="/modbus-tcp-security-tls.html" class="nd-sub"><span class="ni">&#128274;&#65039;</span>Modbus TCP Security (TLS)</a>
+        <a href="/modbus-hmi-dashboard.html"><span class="ni">&#128202;&#65039;</span>HMI Dashboard</a>
+        <a href="/modbus-hmi-runtime.html" class="nd-sub"><span class="ni">&#128421;&#65039;</span>HMI Runtime (OEM)</a>
+        <a href="/modbus-data-logger-software.html"><span class="ni">&#128200;&#65039;</span>Data Logger</a>
+        <a href="/modbus-rtu-rs485-data-logger.html" class="nd-sub"><span class="ni">&#128223;&#65039;</span>RTU / RS-485 Logging</a>
+        <a href="/modbus-logging-interval-deadband.html" class="nd-sub"><span class="ni">&#9201;&#65039;</span>Interval &amp; Deadband</a>
+        <a href="/modbus-to-csv-logging.html" class="nd-sub"><span class="ni">&#128196;&#65039;</span>CSV Export</a>
+        <a href="/modbus-alarm-software.html"><span class="ni">&#128276;&#65039;</span>Alarms</a>
+        <a href="/modbus-gateway-software.html"><span class="ni">&#128256;&#65039;</span>Gateway</a>
+        <a href="/modbus-to-mqtt.html" class="nd-sub"><span class="ni">&#128225;&#65039;</span>Modbus to MQTT</a>
+        <a href="/modbus-structured-text-scripting.html"><span class="ni">&#127991;&#65039;</span>Tags &amp; Structured Text</a>
+      </div></div>
+    </li>
+    <li class="nav-drop nd-has">
+      <span class="nav-drop-label" tabindex="0">Guides &#9662;</span>
+      <div class="nav-drop-menu"><div class="nd-box">
+        <a href="/modbus-device-guides.html"><span class="ni">&#128218;&#65039;</span>All guides</a>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9728;&#65039;</span>Solar &amp; inverters<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+            <a href="/huawei-sun2000-modbus.html">Huawei SUN2000</a>
+            <a href="/huawei-sun2000-home-assistant.html">SUN2000 &rarr; Home Assistant</a>
+            <a href="/sungrow-inverter-modbus.html">Sungrow Inverters</a>
+            <a href="/sunspec-modbus-sma-fronius-solaredge.html">SunSpec: SMA, Fronius, SolarEdge</a>
+            <a href="/victron-gx-modbus-tcp.html">Victron Cerbo GX</a>
+            <a href="/goodwe-et-hybrid-modbus.html">GoodWe ET Hybrid</a>
+            <a href="/deye-sunsynk-growatt-modbus.html">Deye, Sunsynk &amp; Growatt</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9889;&#65039;</span>Energy meters<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+            <a href="/schneider-pm3200-modbus.html">Schneider PM3250</a>
+            <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+            <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+            <a href="/eastron-sdm230-sdm72-modbus.html">Eastron SDM230 / SDM72</a>
+            <a href="/carlo-gavazzi-em24-em340-modbus.html">Carlo Gavazzi EM340 / EM24</a>
+            <a href="/janitza-umg-96-pa-modbus.html">Janitza UMG 96-PA</a>
+            <a href="/wattnode-modbus.html">WattNode</a>
+          </div></div>
+        </div>
+        <div class="nd-group nd-has">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9832;&#65039;</span>Heat pumps &amp; HVAC<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/nibe-s-series-modbus.html" aria-current="page">NIBE S-series heat pumps</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9881;&#65039;</span>Drives &amp; EC fans<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+            <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+            <a href="/abb-ach580-modbus.html">ABB ACH580</a>
+            <a href="/danfoss-vlt-fc102-fc302-modbus.html">Danfoss FC 102 / FC 302</a>
+            <a href="/schneider-altivar-atv320-atv630-modbus.html">Schneider ATV320 / ATV630</a>
+            <a href="/siemens-sinamics-g120-modbus.html">Siemens SINAMICS G120</a>
+            <a href="/powerflex-525-modbus.html">PowerFlex 525</a>
+            <a href="/durapulse-gs20-modbus.html">DURApulse GS20</a>
+            <a href="/yaskawa-v1000-modbus.html">Yaskawa V1000</a>
+            <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+            <a href="/modbus-vfd-speed-reference.html">VFD Speed Registers</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#127981;&#65039;</span>Siemens PLCs<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200 HMI</a>
+            <a href="/siemens-s7-put-get.html">Siemens S7 PUT/GET</a>
+          </div></div>
+        </div>
+        <a href="/register-map-service.html"><span class="ni">&#128203;&#65039;</span>Register Map from your PDF</a>
+        <a href="/manual.html"><span class="ni">&#128214;&#65039;</span>Documentation</a>
+        <a href="/modbus-poll-alternative.html"><span class="ni">&#9878;&#65039;</span>vs Modbus Poll</a>
+      </div></div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+    <li><a href="https://bacmanager.com">BACManager &#8599;</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.10/Modbus.Manager.Pro.Setup.1.9.10.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-NIBE-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/v1.4.14/Modbus.Manager.Setup.1.4.14.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-NIBE-Nav', 'product': 'standard', 'value': 1})">Download free trial</a>
+  </div>
+</nav>
+<div class="slogan-band slim">
+  <span class="sb-main">Every device. One tool. Pay once.</span>
+  <span class="sb-sub">Modbus &middot; BACnet &middot; Siemens S7 &middot; one-time licence &middot; also from us: <a href="https://bacmanager.com">BACManager&nbsp;&#8599;</a></span>
+</div>
+<div class="hazard"></div>
+
+<div class="article-wrap">
+
+  <div class="breadcrumb">
+    <a href="/">ModbusManager</a> &rsaquo; Guides &rsaquo; NIBE S-series Modbus TCP
+  </div>
+
+  <h1>NIBE S-series Modbus TCP: Register IDs, Degree Minutes and the 20-Register Limit</h1>
+
+  <p class="lead">NIBE's S-series heat pumps &mdash; S1155, S1255, S1156, S1256 and the SMO S40 controller with an S2125 outdoor unit &mdash; have Modbus TCP built in. No MODBUS 40 card (that was the F-series RTU accessory): switch it on in the menu and read the heat pump on port 502. NIBE publishes the register list; this guide covers switching it on, the IDs a monitoring dashboard needs, the 32-bit word order, and the limits that make a too-big read fail.</p>
+
+  <figure style="margin:1.8rem 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink)">
+    <img src="/nibe-s1255-dashboard.png" width="1320" height="825" loading="lazy" decoding="async"
+         alt="ModbusManager Pro dashboard for a NIBE S1255 heat pump: heat pump element running at 2.2 kW with supply 35.2 °C and return 29.6 °C, outdoor 2.3 °C, prioritisation Heat, operating mode Auto, degree minutes -62.8, calculated supply 35.5 °C, compressor 63 Hz, room 21.4 °C, hot water 49.3 °C, brine in 4.0 °C and out 1.3 °C, and a temperature trend"
+         style="width:100%;height:auto;display:block">
+    <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">
+      The free workspace below on a simulated S1255 &mdash; FC04 measurements, FC03 settings, the heat pump element and a trend on a fixed &minus;20&hellip;70 &deg;C axis.
+    </figcaption>
+  </figure>
+
+  <h2>Switch On Modbus TCP</h2>
+  <p>On the heat pump open <strong>menu 7.5.9 &ldquo;Modbus TCP/IP&rdquo;</strong> and activate it; the network settings are in menu 5.2. NIBE requires software 2.2.1 or later. The server listens on <strong>TCP port 502</strong>.</p>
+  <ul>
+    <li><strong>Private networks only:</strong> the heat pump accepts Modbus clients from 10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16. A client on a public address is refused. NIBE warns against exposing the port to the internet.</li>
+    <li><strong>Optional locks in 7.5.9:</strong> an IP address restriction (one trusted client) and &ldquo;Reading Modbus only&rdquo;, which refuses every write.</li>
+    <li><strong>The real list for your unit:</strong> menu 7.5.9 exports the &ldquo;most used&rdquo; or &ldquo;all&rdquo; registers as a CSV file to a USB stick &mdash; only the registers your product and its accessories actually have.</li>
+  </ul>
+
+  <h2>Function Codes, IDs and Word Order</h2>
+  <table>
+    <tr><th>What</th><th>NIBE S-series</th></tr>
+    <tr><td>Measurements</td><td><strong>FC04</strong> input registers</td></tr>
+    <tr><td>Settings</td><td><strong>FC03</strong> read, FC06 write single, FC16 write multiple</td></tr>
+    <tr><td>Address</td><td>The <strong>ID</strong> in NIBE's table goes on the wire as it is. The USB export writes 30002 or 40012 &mdash; that is ID + 30001 / 40001.</td></tr>
+    <tr><td>16-bit values</td><td>s16 / u16; temperatures &divide; 10. u8 and s8 values still take a whole register.</td></tr>
+    <tr><td>32-bit values</td><td><strong>Low word first</strong>: NIBE shows holding 11&ndash;12 as &ldquo;register 12 and register 11&rdquo;. 32-bit values are written with FC16.</td></tr>
+    <tr><td>Limits</td><td>At most <strong>20 registers per query</strong> and 100 registers per second.</td></tr>
+  </table>
+  <p>The same ID means different things in the two tables: <span class="mono">input 11</span> is brine out BT11, <span class="mono">holding 11</span> is degree minutes. The function code is part of the address.</p>
+
+  <h2>Key Registers (S1155 / S1255 / S1156 / S1256)</h2>
+  <table>
+    <tr><th>ID</th><th>FC</th><th>Value</th><th>Type</th><th>Scale</th></tr>
+    <tr><td class="mono">1</td><td>04</td><td>Outdoor temperature BT1</td><td>s16</td><td>&divide; 10 &deg;C</td></tr>
+    <tr><td class="mono">5 / 7</td><td>04</td><td>Supply BT2 / return BT3</td><td>s16</td><td>&divide; 10 &deg;C</td></tr>
+    <tr><td class="mono">8 / 9</td><td>04</td><td>Hot water top BT7 / charging BT6</td><td>s16</td><td>&divide; 10 &deg;C</td></tr>
+    <tr><td class="mono">10 / 11</td><td>04</td><td>Brine in BT10 / brine out BT11</td><td>s16</td><td>&divide; 10 &deg;C</td></tr>
+    <tr><td class="mono">26</td><td>04</td><td>Room temperature BT50</td><td>s16</td><td>&divide; 10 &deg;C</td></tr>
+    <tr><td class="mono">1017</td><td>04</td><td>Calculated supply temperature</td><td>s16</td><td>&divide; 10 &deg;C</td></tr>
+    <tr><td class="mono">1028</td><td>04</td><td>Operating prioritisation: 10 off, 20 hot water, 30 heat, 40 pool, 60 cooling</td><td>u16</td><td>&mdash;</td></tr>
+    <tr><td class="mono">1029</td><td>04</td><td>Additional heat steps</td><td>u16</td><td>&mdash;</td></tr>
+    <tr><td class="mono">1046</td><td>04</td><td>Compressor frequency</td><td>u16</td><td>&divide; 10 Hz</td></tr>
+    <tr><td class="mono">1100</td><td>04</td><td>Compressor status: 0 off, 1 on</td><td>u16</td><td>&mdash;</td></tr>
+    <tr><td class="mono">1102 / 1104</td><td>04</td><td>Heating medium pump GP1 / brine pump speed</td><td>u16</td><td>%</td></tr>
+    <tr><td class="mono">1975</td><td>04</td><td>Alarm number</td><td>u16</td><td>&mdash;</td></tr>
+    <tr><td class="mono">2166</td><td>04</td><td>Instantaneous used power</td><td>u32</td><td>&divide; 10 W</td></tr>
+    <tr><td class="mono">2195</td><td>04</td><td>Active alarm: 0 / 1</td><td>u16</td><td>&mdash;</td></tr>
+    <tr><td class="mono">2196</td><td>04</td><td>Diverter valve QN10: 0 heating, 1 hot water</td><td>u16</td><td>&mdash;</td></tr>
+    <tr><td class="mono">1575&ndash;1585</td><td>04</td><td>Energy: hot water, heat, compressor</td><td>u32</td><td>&divide; 10 kWh</td></tr>
+    <tr><td class="mono">11</td><td>03</td><td><strong>Degree minutes</strong> (read / write)</td><td>s32</td><td>&divide; 10</td></tr>
+    <tr><td class="mono">22</td><td>03</td><td>Reset alarm</td><td>u8</td><td>&mdash;</td></tr>
+    <tr><td class="mono">26 / 30</td><td>03</td><td>Heating curve / curve offset</td><td>s8</td><td>&mdash;</td></tr>
+    <tr><td class="mono">56</td><td>03</td><td>Hot water demand: 0 small, 1 medium, 2 large, 4 smart control</td><td>u8</td><td>&mdash;</td></tr>
+    <tr><td class="mono">237</td><td>03</td><td>Operating mode: 0 auto, 1 manual, 2 additional heat only</td><td>u8</td><td>&mdash;</td></tr>
+  </table>
+  <p>SMO S40 uses the same IDs for BT1, BT7, BT6, BT50 and QN10, plus 39 (external supply BT25) and 88 (return BT71). An S2125 outdoor unit is read through the indoor unit, with separate IDs per slave &mdash; slave 1: 1803 compressor Hz &divide; 10, 1805 defrost (0 off, 1 active, 2 passive), 1621 outdoor BT28, 400 alarm number; slave 2 has its own numbers (1789, 1791, 910).</p>
+
+  <h2>Degree Minutes</h2>
+  <p>Degree minutes (holding 11, s32 &divide; 10) is the heat pump's heat balance: below zero it is behind the heating demand, and the compressor and additional heat start at set thresholds. It is the most useful single value to trend, and it is 32-bit low word first &mdash; read 11&ndash;12 as one pair. Read high word first, a value of &minus;60.0 turns into a number in the millions.</p>
+
+  <h2>Common Mistakes</h2>
+  <ul>
+    <li><strong>Connection refused:</strong> Modbus TCP not activated in 7.5.9, the client on a public address, or an IP restriction set to another PC.</li>
+    <li><strong>A read fails as a whole:</strong> more than 20 registers in the request, or the request covers an ID your unit does not have. Read runs of IDs that exist.</li>
+    <li><strong>Brine at &minus;600 &deg;C:</strong> holding 11 (degree minutes) read with FC03 where input 11 (BT11) was meant &mdash; or the other way round.</li>
+    <li><strong>Degree minutes in the millions:</strong> the 32-bit pair combined high word first.</li>
+    <li><strong>Curve offset 65 535:</strong> an s8 value read as unsigned.</li>
+    <li><strong>Writes refused:</strong> &ldquo;Reading Modbus only&rdquo; is on, or a 32-bit value was written with FC06 instead of FC16.</li>
+    <li><strong>A register stopped answering after an update:</strong> registers depend on software version and installed accessories; export the CSV again from 7.5.9.</li>
+  </ul>
+
+  <h2>Step-by-Step: Reading an S1255 with ModbusManager</h2>
+  <ol>
+    <li>Activate Modbus TCP in menu 7.5.9 and note the heat pump's IP address (menu 5.2).</li>
+    <li>In ModbusManager choose TCP, that address, port 502, from a PC on the same private network.</li>
+    <li>Read FC04, address 7, quantity 5: return, hot water top, hot water charging, brine in, brine out &mdash; &divide; 10 for &deg;C.</li>
+    <li>Read FC03, address 11, quantity 2 and tick Swap: degree minutes &divide; 10.</li>
+    <li>Open the workspace below for the rest.</li>
+  </ol>
+
+  <h2>Download a Ready-Made Workspace</h2>
+  <ul>
+    <li>16 polls, each on a run of IDs that exists, every 5 s &mdash; well inside 20 registers per query and 100 per second</li>
+    <li>22 register tags with NIBE's types and scales: temperatures, compressor, pumps, used power and degree minutes (32-bit low word first)</li>
+    <li>A dashboard: the heat pump element (running, alarm, power, supply and return), outdoor temperature, prioritisation, operating mode, degree minutes, brine and hot water, and a temperature trend</li>
+  </ul>
+  <div class="callout">
+    <strong>Read-only.</strong> Nothing is written &mdash; no degree minutes, no operating mode. Set your heat pump's IP address in the connection. The IDs are those of an S1155/S1255; an SMO S40 shares most of them, check the CSV export. Tags and dashboard are ModbusManager Pro features; Standard opens the poll windows only.
+  </div>
+  <div class="download-box">
+    <div>
+      <h3>NIBE_S1255.json</h3>
+      <p>NIBE S-series heat pump workspace (Modbus TCP). Open via Workspace &rsaquo; Open in ModbusManager Pro, or from the in-app Device library.</p>
+    </div>
+    <a href="/NIBE_S1255.json" download>Download Workspace</a>
+  </div>
+
+  <div class="cta-box">
+    <div>
+      <h3>Try it with ModbusManager Pro</h3>
+      <p>Heat pump element, historian for degree minutes, alarms on the alarm register, and MQTT to Home Assistant. Free 14-day trial. No credit card. Windows 10/11.</p>
+    </div>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.10/Modbus.Manager.Pro.Setup.1.9.10.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-NIBE-Body', 'product': 'pro', 'value': 1})">Download Pro Trial</a>
+  </div>
+
+  <p>The energy meter beside a heat pump is often an <a href="/eastron-sdm230-sdm72-modbus.html">Eastron SDM230 or SDM72</a>. Heat pump to Home Assistant: the <a href="/modbus-to-mqtt.html">Modbus to MQTT</a> gateway publishes the same tags with discovery.</p>
+
+  <h2>Frequently Asked Questions</h2>
+
+  <h3>Does a NIBE S1255 need a MODBUS 40 accessory?</h3>
+  <p>No. The S-series has Modbus TCP built in: activate it in menu 7.5.9 and connect to port 502. MODBUS 40 was the RS-485 accessory for the older F-series.</p>
+
+  <h3>Why does my Modbus read from a NIBE heat pump fail?</h3>
+  <p>NIBE answers at most 20 registers per query and 100 per second, only to clients on private IP ranges, and only for IDs the unit has. Read short runs of existing IDs with FC04 for measurements and FC03 for settings.</p>
+
+  <h3>Where are degree minutes in the NIBE Modbus map?</h3>
+  <p>Holding register 11 (FC03), signed 32-bit divided by 10, read as the pair 11&ndash;12 with the low word first. It can be written, but only with FC16.</p>
+
+  <h3>Is the NIBE register ID the Modbus address?</h3>
+  <p>Yes, the ID goes on the wire as it is. The CSV export from menu 7.5.9 writes 3xxxx / 4xxxx numbers, which are the ID plus 30001 or 40001.</p>
+
+  <h3>Which NIBE register shows the compressor running?</h3>
+  <p>Input register 1100: 0 off, 1 on. The compressor frequency is input 1046 divided by 10 (Hz); on an S2125 outdoor unit it is 1803 for slave 1.</p>
+
+  <h2>Sources</h2>
+  <p style="font-size:0.85rem">NIBE, <em>Technical information &mdash; Modbus S-series</em>, M12676EN, TIF EN 2608 (published 2026-02-18), assetstore.nibe.se. How the IDs map to wire addresses is not stated in the document; it follows the CSV export format and the open-source NIBE library. Tested against a simulator built from this document, not against a physical heat pump.</p>
+
+</div>
+
+<div class="hazard"></div>
+<!-- GATEWAY CROSS-LINK -->
+<section class="section">
+  <div class="sec-label">// beyond the heat pump</div>
+  <h2 class="sec-title">The heat pump plus the rest of the house</h2>
+  <div style="max-width:820px;margin:0 auto;background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem">
+    <p style="color:var(--body);line-height:1.75;margin:0 0 1.1rem">ModbusManager Pro reads the heat pump next to its energy meter, the PV inverter and the battery, and republishes the values as one Modbus TCP map or as MQTT topics with Home Assistant discovery.</p>
+    <a href="/modbus-gateway-software.html" style="font-family:'IBM Plex Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">Modbus gateway software &rarr;</a>
+  </div>
+</section>
+<footer class="sf" id="support">
+  <div class="sf-cols">
+    <div class="sf-col"><div class="sf-h">Features</div>
+      <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+      <a href="/modbus-data-logger-software.html">Data Logger</a>
+      <a href="/modbus-rtu-rs485-data-logger.html">RTU logging</a>
+      <a href="/modbus-to-csv-logging.html">CSV export</a>
+      <a href="/modbus-alarm-software.html">Alarms</a>
+      <a href="/modbus-gateway-software.html">Gateway</a>
+      <a href="/modbus-to-mqtt.html">Modbus to MQTT</a>
+      <a href="/modbus-structured-text-scripting.html">Tags &amp; scripting</a>
+    </div>
+    <div class="sf-col"><div class="sf-h">Devices</div>
+      <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+      <a href="/modbus-vfd-speed-reference.html">VFD drives</a>
+      <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    </div>
+    <div class="sf-col"><div class="sf-h">Help</div>
+      <a href="/manual.html">Documentation</a>
+      <a href="/#install">Install notes</a>
+      <a href="/linux-mac.html">Linux / Pi / Mac waitlist</a>
+      <a href="mailto:support@modbusmanager.com">Support</a>
+    </div>
+    <div class="sf-col"><div class="sf-h">Company</div>
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/license-terms.html">License terms</a>
+      <a href="https://bacmanager.com">BACManager (BACnet) &#8599;</a>
+    </div>
+  </div>
+  <div class="sf-bot"><span class="sf-logo">ModbusManager</span><span>Every device. One tool. Pay once.</span><span>&copy; 2026 E-Netter O&Uuml;</span><a href="mailto:support@modbusmanager.com">support@modbusmanager.com</a></div>
+<script id="sf-js">(function(){
+  function box(t){for(var e=t,i=0;e&&i<3;e=e.parentElement,i++){var o=getComputedStyle(e).overflowX;if(o==='auto'||o==='scroll')return e}return null}
+  function check(b){var h=b.previousElementSibling,wide=b.scrollWidth>b.clientWidth+4;
+    if(!h||!h.classList.contains('sf-swipe')){if(!wide)return;h=document.createElement('div');h.className='sf-swipe';h.textContent='Table continues \u2014 swipe sideways \u2192';b.parentNode.insertBefore(h,b);
+      b.addEventListener('scroll',function(){if(b.scrollLeft>20)h.hidden=true},{passive:true})}
+    if(!wide)h.hidden=true;else if(b.scrollLeft<=20)h.hidden=false}
+  function run(){var seen=[];document.querySelectorAll('table').forEach(function(t){var b=box(t);if(b&&seen.indexOf(b)<0){seen.push(b);check(b);if(window.ResizeObserver)new ResizeObserver(function(){check(b)}).observe(b)}})}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+})();</script>
+</footer>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+<script src="/email-capture.js" defer></script>
+
+<script>
+/* Download buttons (2026-10-26): the installer is fetched on a click, not
+   through the link's href, so crawlers that follow every link no longer count
+   as downloads on GitHub. data-dl is the address without https://.
+   Each click is also counted in our own Google Sheet (Apps Script), cookie
+   consent or not: site, product, version, page, referrer, language, time
+   zone. No cookies, no IP address. The download never waits for it.
+   A workspace (.json or .zip on this site) is counted as product "Workspace" with
+   the file name as its version, a manual (.pdf) as product "Manual"; both
+   download as before. */
+function dlCount(product, version) {
+  try {
+    navigator.sendBeacon('https://script.google.com/macros/s/AKfycbyx9RacY_l5KDK0RBBmLk41uKv3McyR_UJmCTWqnRqklh6fYgeXvYecddcQDGzRx5-F/exec', JSON.stringify({
+      site: location.hostname, product: product, version: version,
+      page: location.pathname, referrer: document.referrer, lang: navigator.language,
+      tz: (window.Intl && Intl.DateTimeFormat().resolvedOptions().timeZone) || ''
+    }));
+  } catch (err) {}
+}
+document.addEventListener('click', function (e) {
+  if (!e.target.closest) return;
+  var w = e.target.closest('a[href$=".json"], a[href$=".zip"], a[href$=".zap15_1"]');
+  if (w) { dlCount('Workspace', (w.getAttribute('href').match(/([^\/]+)\.(?:json|zip|zap15_1)$/) || [])[1] || ''); return; }
+  var m = e.target.closest('a[href$=".pdf"]');
+  if (m) { dlCount('Manual', (m.getAttribute('href').match(/([^\/]+)\.pdf$/) || [])[1] || ''); return; }
+  var a = e.target.closest('a[data-dl]');
+  if (!a || e.defaultPrevented) return;
+  e.preventDefault();
+  var dl = a.getAttribute('data-dl');
+  dlCount(/bacmanager/i.test(dl) ? 'BACManager' : (/Pro\.Setup|pro-v/i.test(dl) ? 'ModbusManager Pro' : 'ModbusManager Standard'),
+    (dl.match(/(\d+(?:\.\d+)+)\.exe$/) || [])[1] || '');
+  window.location.href = 'https://' + dl;
+});
+</script>
+<script src="/open-in-app.js" defer></script>
+</body>
+</html>

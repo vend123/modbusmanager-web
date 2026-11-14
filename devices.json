@@ -1,6 +1,6 @@
 {
   "about": "The device library ModbusManager and BACManager read (Device library, Open in app). One entry per ready workspace on this site.",
-  "updated": "2026-11-09",
+  "updated": "2026-11-14",
   "devices": [
     {
       "id": "eastron-sdm630",
@@ -181,6 +181,15 @@
       "desc": "Hybrid inverter at address 247: PV strings, battery and SOC, energy flow, work mode",
       "ws": "GoodWe_ET_Hybrid.json",
       "page": "goodwe-et-hybrid-modbus.html"
+    },
+    {
+      "id": "nibe-s",
+      "name": "NIBE S-series heat pump",
+      "cat": "hvac",
+      "proto": "Modbus TCP",
+      "desc": "S1155 / S1255: temperatures, compressor, degree minutes, power and alarms",
+      "ws": "NIBE_S1255.json",
+      "page": "nibe-s-series-modbus.html"
     },
     {
       "id": "ebmpapst-ec",

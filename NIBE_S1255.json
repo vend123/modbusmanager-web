@@ -1,0 +1,1011 @@
+{
+  "version": 2,
+  "polls": [
+    {
+      "name": "Outdoor BT1 (input 1)",
+      "fc": 4,
+      "addr": 1,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 1,
+      "chartName": "Outdoor BT1 (input 1) [1]",
+      "logFile": "log_Outdoor_BT1_input_1_.txt"
+    },
+    {
+      "name": "Supply BT2 (input 5)",
+      "fc": 4,
+      "addr": 5,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 5,
+      "chartName": "Supply BT2 (input 5) [5]",
+      "logFile": "log_Supply_BT2_input_5_.txt"
+    },
+    {
+      "name": "Return, hot water, brine (input 7-11)",
+      "fc": 4,
+      "addr": 7,
+      "qty": 5,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 7,
+      "chartName": "Return, hot water, brine (input 7-11) [7]",
+      "logFile": "log_Return_hot_water_brine_input_7_11_.txt"
+    },
+    {
+      "name": "Room BT50 (input 26)",
+      "fc": 4,
+      "addr": 26,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 26,
+      "chartName": "Room BT50 (input 26) [26]",
+      "logFile": "log_Room_BT50_input_26_.txt"
+    },
+    {
+      "name": "Calculated supply (input 1017)",
+      "fc": 4,
+      "addr": 1017,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 1017,
+      "chartName": "Calculated supply (input 1017) [1017]",
+      "logFile": "log_Calculated_supply_input_1017_.txt"
+    },
+    {
+      "name": "Prioritisation, add. heat (input 1028-1029)",
+      "fc": 4,
+      "addr": 1028,
+      "qty": 2,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 1028,
+      "chartName": "Prioritisation, add. heat (input 1028-1029) [1028]",
+      "logFile": "log_Prioritisation_add_heat_input_1028_1029_.txt"
+    },
+    {
+      "name": "Compressor Hz (input 1046)",
+      "fc": 4,
+      "addr": 1046,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 1046,
+      "chartName": "Compressor Hz (input 1046) [1046]",
+      "logFile": "log_Compressor_Hz_input_1046_.txt"
+    },
+    {
+      "name": "Compressor status (input 1100)",
+      "fc": 4,
+      "addr": 1100,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 1100,
+      "chartName": "Compressor status (input 1100) [1100]",
+      "logFile": "log_Compressor_status_input_1100_.txt"
+    },
+    {
+      "name": "Pump GP1 (input 1102)",
+      "fc": 4,
+      "addr": 1102,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 1102,
+      "chartName": "Pump GP1 (input 1102) [1102]",
+      "logFile": "log_Pump_GP1_input_1102_.txt"
+    },
+    {
+      "name": "Brine pump GP2 (input 1104)",
+      "fc": 4,
+      "addr": 1104,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 1104,
+      "chartName": "Brine pump GP2 (input 1104) [1104]",
+      "logFile": "log_Brine_pump_GP2_input_1104_.txt"
+    },
+    {
+      "name": "Alarm number (input 1975)",
+      "fc": 4,
+      "addr": 1975,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 1975,
+      "chartName": "Alarm number (input 1975) [1975]",
+      "logFile": "log_Alarm_number_input_1975_.txt"
+    },
+    {
+      "name": "Used power (input 2166-2167, u32)",
+      "fc": 4,
+      "addr": 2166,
+      "qty": 2,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 2166,
+      "chartName": "Used power (input 2166-2167, u32) [2166]",
+      "logFile": "log_Used_power_input_2166_2167_u32_.txt"
+    },
+    {
+      "name": "Alarm, QN10 (input 2195-2196)",
+      "fc": 4,
+      "addr": 2195,
+      "qty": 2,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 2195,
+      "chartName": "Alarm, QN10 (input 2195-2196) [2195]",
+      "logFile": "log_Alarm_QN10_input_2195_2196_.txt"
+    },
+    {
+      "name": "Degree minutes (holding 11-12, s32)",
+      "fc": 3,
+      "addr": 11,
+      "qty": 2,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 11,
+      "chartName": "Degree minutes (holding 11-12, s32) [11]",
+      "logFile": "log_Degree_minutes_holding_11_12_s32_.txt"
+    },
+    {
+      "name": "Hot water demand (holding 56)",
+      "fc": 3,
+      "addr": 56,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 56,
+      "chartName": "Hot water demand (holding 56) [56]",
+      "logFile": "log_Hot_water_demand_holding_56_.txt"
+    },
+    {
+      "name": "Operating mode (holding 237)",
+      "fc": 3,
+      "addr": 237,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 237,
+      "chartName": "Operating mode (holding 237) [237]",
+      "logFile": "log_Operating_mode_holding_237_.txt"
+    }
+  ],
+  "activePoll": 0,
+  "condColors": {},
+  "scaling": {},
+  "valueNames": {},
+  "chartSeries": [],
+  "slaveBlocks": [],
+  "dashTheme": "modern",
+  "dashFx": true,
+  "dashBgColor": "#0d1117",
+  "dashPages": [
+    {
+      "id": 1,
+      "name": "NIBE S1255",
+      "elements": [
+        {
+          "id": 1,
+          "value": 0,
+          "type": "statictext",
+          "x": 20,
+          "y": 10,
+          "w": 840,
+          "h": 30,
+          "text": "NIBE S1255  ·  Modbus TCP 502  ·  FC04 measurements, FC03 settings",
+          "fontSize": 20,
+          "bold": true,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 2,
+          "value": 0,
+          "type": "heatpump",
+          "x": 20,
+          "y": 50,
+          "w": 250,
+          "h": 170,
+          "label": "S1255 heat pump",
+          "powerUnit": "kW",
+          "items": [
+            {
+              "role": "run",
+              "name": "Compressor 1100",
+              "sourceType": "tag",
+              "tagName": "Comp_On"
+            },
+            {
+              "role": "fault",
+              "name": "Alarm 2195",
+              "sourceType": "tag",
+              "tagName": "Alarm_Active"
+            },
+            {
+              "role": "power",
+              "name": "Used power 2166",
+              "sourceType": "tag",
+              "tagName": "Power_kW"
+            },
+            {
+              "role": "tFlow",
+              "name": "Supply BT2",
+              "sourceType": "tag",
+              "tagName": "BT2_Supply"
+            },
+            {
+              "role": "tReturn",
+              "name": "Return BT3",
+              "sourceType": "tag",
+              "tagName": "BT3_Return"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "value": 0,
+          "type": "outdoor",
+          "x": 20,
+          "y": 230,
+          "w": 250,
+          "h": 100,
+          "label": "Outdoor BT1",
+          "frostAt": 0,
+          "items": [
+            {
+              "role": "temp",
+              "name": "BT1",
+              "sourceType": "tag",
+              "tagName": "BT1_Outdoor"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "value": 0,
+          "type": "multistate",
+          "x": 290,
+          "y": 50,
+          "w": 280,
+          "h": 66,
+          "label": "Prioritisation 1028",
+          "states": "10=Off:#9fb3cc,20=Hot water:#f0c040,30=Heat:#3fd28a,40=Pool:#58a6ff,60=Cooling:#58a6ff",
+          "sourceType": "tag",
+          "tagName": "Priority"
+        },
+        {
+          "id": 5,
+          "value": 0,
+          "type": "multistate",
+          "x": 580,
+          "y": 50,
+          "w": 280,
+          "h": 66,
+          "label": "Operating mode 237",
+          "states": "0=Auto:#3fd28a,1=Manual:#f0c040,2=Add. heat only:#f85149",
+          "sourceType": "tag",
+          "tagName": "Op_Mode"
+        },
+        {
+          "id": 6,
+          "value": 0,
+          "type": "text",
+          "x": 290,
+          "y": 126,
+          "w": 140,
+          "h": 66,
+          "label": "Degree minutes 11",
+          "unit": "DM",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Degree_Min"
+        },
+        {
+          "id": 7,
+          "value": 0,
+          "type": "text",
+          "x": 440,
+          "y": 126,
+          "w": 140,
+          "h": 66,
+          "label": "Calc. supply 1017",
+          "unit": "°C",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Calc_Supply"
+        },
+        {
+          "id": 8,
+          "value": 0,
+          "type": "text",
+          "x": 590,
+          "y": 126,
+          "w": 140,
+          "h": 66,
+          "label": "Compressor 1046",
+          "unit": "Hz",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Comp_Hz"
+        },
+        {
+          "id": 9,
+          "value": 0,
+          "type": "text",
+          "x": 740,
+          "y": 126,
+          "w": 120,
+          "h": 66,
+          "label": "Room BT50",
+          "unit": "°C",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "BT50_Room"
+        },
+        {
+          "id": 10,
+          "value": 0,
+          "type": "text",
+          "x": 290,
+          "y": 202,
+          "w": 140,
+          "h": 66,
+          "label": "Hot water BT7",
+          "unit": "°C",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "BT7_HW_Top"
+        },
+        {
+          "id": 11,
+          "value": 0,
+          "type": "text",
+          "x": 440,
+          "y": 202,
+          "w": 140,
+          "h": 66,
+          "label": "Brine in BT10",
+          "unit": "°C",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "BT10_Brine_In"
+        },
+        {
+          "id": 12,
+          "value": 0,
+          "type": "text",
+          "x": 590,
+          "y": 202,
+          "w": 140,
+          "h": 66,
+          "label": "Brine out BT11",
+          "unit": "°C",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "BT11_Brine_Out"
+        },
+        {
+          "id": 13,
+          "value": 0,
+          "type": "text",
+          "x": 740,
+          "y": 202,
+          "w": 120,
+          "h": 66,
+          "label": "Brine pump",
+          "unit": "%",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "GP2_Brine_Pump"
+        },
+        {
+          "id": 14,
+          "value": 0,
+          "type": "multistate",
+          "x": 290,
+          "y": 278,
+          "w": 280,
+          "h": 52,
+          "label": "Diverter QN10 2196",
+          "states": "0=Heating:#3fd28a,1=Hot water:#f0c040",
+          "sourceType": "tag",
+          "tagName": "QN10"
+        },
+        {
+          "id": 15,
+          "value": 0,
+          "type": "multistate",
+          "x": 580,
+          "y": 278,
+          "w": 280,
+          "h": 52,
+          "label": "Alarm number 1975",
+          "states": "0=No alarm:#3fd28a",
+          "sourceType": "tag",
+          "tagName": "Alarm_No"
+        },
+        {
+          "id": 16,
+          "value": 0,
+          "type": "multitend",
+          "x": 20,
+          "y": 345,
+          "w": 840,
+          "h": 195,
+          "label": "Supply, return, hot water and outdoor (°C)",
+          "maxPoints": 1200,
+          "decimals": 1,
+          "sampleMs": 5000,
+          "yMin": -20,
+          "yMax": 70,
+          "items": [
+            {
+              "name": "Supply BT2",
+              "sourceType": "tag",
+              "tagName": "BT2_Supply",
+              "color": "#f85149",
+              "value": 0
+            },
+            {
+              "name": "Return BT3",
+              "sourceType": "tag",
+              "tagName": "BT3_Return",
+              "color": "#58a6ff",
+              "value": 0
+            },
+            {
+              "name": "Hot water BT7",
+              "sourceType": "tag",
+              "tagName": "BT7_HW_Top",
+              "color": "#f0c040",
+              "value": 0
+            },
+            {
+              "name": "Outdoor BT1",
+              "sourceType": "tag",
+              "tagName": "BT1_Outdoor",
+              "color": "#3fd28a",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "BT1_Outdoor",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 1,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "outdoor temperature °C (input 1)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "BT2_Supply",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 5,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "supply line °C (input 5)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "BT3_Return",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 7,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "return line °C (input 7)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "BT7_HW_Top",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 8,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "hot water top °C (input 8)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "BT6_HW_Charge",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 9,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "hot water charging °C (input 9)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "BT10_Brine_In",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 10,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "brine in °C (input 10)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "BT11_Brine_Out",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 11,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "brine out °C (input 11)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "BT50_Room",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 26,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "room temperature °C (input 26)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Calc_Supply",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 1017,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "calculated supply temperature °C (input 1017)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Priority",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 1028,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "10 off, 20 hot water, 30 heat, 40 pool, 60 cooling (input 1028)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Add_Heat_Steps",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 1029,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "additional heat steps (input 1029)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Comp_Hz",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 1046,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "compressor frequency Hz (input 1046)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Comp_On",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 1100,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "compressor 0 off, 1 on (input 1100)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "GP1_Pump",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 1102,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "heating medium pump GP1 % (input 1102)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "GP2_Brine_Pump",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 1104,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "brine pump % (input 1104)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Alarm_No",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 1975,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "alarm number (input 1975)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Power_kW",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 2166,
+      "dataType": "uint32",
+      "wordOrder": "little",
+      "description": "instantaneous used power, u32 /10 W, low word first (input 2166)",
+      "scale": 0.0001,
+      "offset": 0
+    },
+    {
+      "name": "Alarm_Active",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 2195,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "active alarm 0/1 (input 2195)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "QN10",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 2196,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "diverter valve 0 heating, 1 hot water (input 2196)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Degree_Min",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 11,
+      "dataType": "int32",
+      "wordOrder": "little",
+      "description": "degree minutes, s32 /10, low word first (holding 11)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "HW_Demand",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 56,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "0 small, 1 medium, 2 large, 4 smart control (holding 56)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Op_Mode",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 237,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "0 auto, 1 manual, 2 additional heat only (holding 237)",
+      "scale": 1,
+      "offset": 0
+    }
+  ],
+  "script": "",
+  "scriptInterval": "1000",
+  "historianLogging": {
+    "registers": [],
+    "tags": []
+  },
+  "saved": "2026-11-14T12:00:00.000Z"
+}
