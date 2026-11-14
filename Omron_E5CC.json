@@ -1,0 +1,507 @@
+{
+  "version": 2,
+  "polls": [
+    {
+      "name": "PV, status, SP, CT, MV 0x2000-0x2005",
+      "fc": 3,
+      "addr": 8192,
+      "qty": 6,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 8192,
+      "chartName": "PV, status, SP, CT, MV 0x2000-0x2005 [8192]",
+      "logFile": "log_PV_status_SP_CT_MV_0x2000_0x2005.txt"
+    },
+    {
+      "name": "Set point, alarm 1 0x2103-0x2105",
+      "fc": 3,
+      "addr": 8451,
+      "qty": 3,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 8451,
+      "chartName": "Set point, alarm 1 0x2103-0x2105 [8451]",
+      "logFile": "log_Set_point_alarm_1_0x2103_0x2105.txt"
+    },
+    {
+      "name": "Status words 0x2406-0x2407",
+      "fc": 3,
+      "addr": 9222,
+      "qty": 2,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 9222,
+      "chartName": "Status words 0x2406-0x2407 [9222]",
+      "logFile": "log_Status_words_0x2406_0x2407.txt"
+    },
+    {
+      "name": "Decimal Point Monitor 0x2410",
+      "fc": 3,
+      "addr": 9232,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 10000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 9232,
+      "chartName": "Decimal Point Monitor 0x2410 [9232]",
+      "logFile": "log_Decimal_Point_Monitor_0x2410.txt"
+    }
+  ],
+  "activePoll": 0,
+  "condColors": {},
+  "scaling": {},
+  "valueNames": {},
+  "chartSeries": [],
+  "slaveBlocks": [],
+  "dashTheme": "modern",
+  "dashFx": true,
+  "dashBgColor": "#0d1117",
+  "dashPages": [
+    {
+      "id": 1,
+      "name": "E5CC",
+      "elements": [
+        {
+          "id": 1,
+          "value": 0,
+          "type": "statictext",
+          "x": 20,
+          "y": 10,
+          "w": 840,
+          "h": 30,
+          "text": "Omron E5CC  ·  Modbus RTU 9600 8E1  ·  2-byte map from 0x2000, no decimal point",
+          "fontSize": 20,
+          "bold": true,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 2,
+          "value": 0,
+          "type": "pid",
+          "x": 20,
+          "y": 50,
+          "w": 340,
+          "h": 270,
+          "label": "TIC-101 oven zone",
+          "unit": "°C",
+          "decimals": 1,
+          "scale": 1,
+          "outScale": 1,
+          "autoValue": 1,
+          "outUnit": "%",
+          "items": [
+            {
+              "role": "pv",
+              "name": "PV 0x2000",
+              "sourceType": "tag",
+              "tagName": "PV"
+            },
+            {
+              "role": "sp",
+              "name": "SP 0x2103",
+              "sourceType": "tag",
+              "tagName": "SP"
+            },
+            {
+              "role": "out",
+              "name": "MV 0x2004",
+              "sourceType": "tag",
+              "tagName": "MV_Heat"
+            },
+            {
+              "role": "mode",
+              "name": "Auto (status bit 26)",
+              "sourceType": "tag",
+              "tagName": "Auto"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "value": 0,
+          "type": "multistate",
+          "x": 380,
+          "y": 50,
+          "w": 230,
+          "h": 66,
+          "label": "RUN/STOP (status bit 24)",
+          "states": "0=RUN:#3fd28a,1=STOP:#f85149",
+          "sourceType": "tag",
+          "tagName": "Stopped"
+        },
+        {
+          "id": 4,
+          "value": 0,
+          "type": "multistate",
+          "x": 630,
+          "y": 50,
+          "w": 230,
+          "h": 66,
+          "label": "Alarm 1 (status bit 12)",
+          "states": "0=OK:#3fd28a,1=ALARM:#f85149",
+          "sourceType": "tag",
+          "tagName": "Alarm1"
+        },
+        {
+          "id": 5,
+          "value": 0,
+          "type": "text",
+          "x": 380,
+          "y": 126,
+          "w": 230,
+          "h": 66,
+          "label": "Heater current 0x2003",
+          "unit": "A",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Heater_A"
+        },
+        {
+          "id": 6,
+          "value": 0,
+          "type": "text",
+          "x": 630,
+          "y": 126,
+          "w": 230,
+          "h": 66,
+          "label": "Internal SP 0x2002",
+          "unit": "°C",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Internal_SP"
+        },
+        {
+          "id": 7,
+          "value": 0,
+          "type": "text",
+          "x": 380,
+          "y": 202,
+          "w": 230,
+          "h": 66,
+          "label": "Alarm value 1 0x2104",
+          "unit": "°C",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "AL1"
+        },
+        {
+          "id": 8,
+          "value": 0,
+          "type": "multistate",
+          "x": 630,
+          "y": 202,
+          "w": 230,
+          "h": 66,
+          "label": "Input error (status bit 6)",
+          "states": "0=Sensor OK:#3fd28a,1=Input error:#f85149",
+          "sourceType": "tag",
+          "tagName": "Input_Error"
+        },
+        {
+          "id": 9,
+          "value": 0,
+          "type": "text",
+          "x": 380,
+          "y": 278,
+          "w": 230,
+          "h": 66,
+          "label": "Decimal point 0x2410",
+          "unit": "digits",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Decimals"
+        },
+        {
+          "id": 10,
+          "value": 0,
+          "type": "multistate",
+          "x": 630,
+          "y": 278,
+          "w": 230,
+          "h": 56,
+          "label": "Mode (status bit 26)",
+          "states": "0=Auto:#3fd28a,1=Manual:#f0c040",
+          "sourceType": "tag",
+          "tagName": "Manual"
+        },
+        {
+          "id": 11,
+          "value": 0,
+          "type": "multitend",
+          "x": 20,
+          "y": 345,
+          "w": 840,
+          "h": 195,
+          "label": "PV and SP (°C), MV heating (%)",
+          "maxPoints": 1200,
+          "decimals": 1,
+          "sampleMs": 1000,
+          "yMin": 0,
+          "yMax": 200,
+          "items": [
+            {
+              "name": "PV 0x2000",
+              "sourceType": "tag",
+              "tagName": "PV",
+              "color": "#f85149",
+              "value": 0
+            },
+            {
+              "name": "SP 0x2103",
+              "sourceType": "tag",
+              "tagName": "SP",
+              "color": "#3fd28a",
+              "value": 0
+            },
+            {
+              "name": "MV 0x2004",
+              "sourceType": "tag",
+              "tagName": "MV_Heat",
+              "color": "#f0c040",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "PV",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 8192,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "process value °C (decimal point 1) (0x2000)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Internal_SP",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 8194,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "internal set point °C (0x2002)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Heater_A",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 8195,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "heater current 1, A (0x2003)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "MV_Heat",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 8196,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "MV heating % (0x2004)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "SP",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 8451,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "set point °C (0x2103)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "AL1",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 8452,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "alarm value 1 (0x2104)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Status_Lo",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 9222,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "status bits 0-15: 6 input error, 8 heating output, 12-14 alarm 1-3 (0x2406)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Status_Hi",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 9223,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "status bits 16-31: 24 RUN/STOP (1 = stop), 25 comms writing, 26 manual (0x2407)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Decimals",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 9232,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "Decimal Point Monitor: digits after the point (0x2410)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Stopped",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "1 when the controller is in STOP (status bit 24)"
+    },
+    {
+      "name": "Manual",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "1 in manual mode (status bit 26)"
+    },
+    {
+      "name": "Auto",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "1 in auto mode, for the faceplate"
+    },
+    {
+      "name": "Alarm1",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "alarm 1 output (status bit 12)"
+    },
+    {
+      "name": "Input_Error",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "input error (status bit 6)"
+    }
+  ],
+  "script": "(* E5CC status words: bit n of the high word is status bit 16 + n *)\nStopped := ((Status_Hi - (Status_Hi MOD 256)) / 256) MOD 2;\nManual := ((Status_Hi - (Status_Hi MOD 1024)) / 1024) MOD 2;\nAuto := 1 - Manual;\nAlarm1 := ((Status_Lo - (Status_Lo MOD 4096)) / 4096) MOD 2;\nInput_Error := ((Status_Lo - (Status_Lo MOD 64)) / 64) MOD 2;\n",
+  "scriptInterval": "1000",
+  "historianLogging": {
+    "registers": [],
+    "tags": []
+  },
+  "saved": "2026-11-14T12:00:00.000Z"
+}

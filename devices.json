@@ -237,6 +237,15 @@
       "page": "siemens-s7-put-get.html"
     },
     {
+      "id": "omron-e5cc",
+      "name": "Omron E5CC temperature controller",
+      "cat": "plc",
+      "proto": "Modbus RTU",
+      "desc": "PV, set point, MV, heater current and status bits on a PID faceplate",
+      "ws": "Omron_E5CC.json",
+      "page": "omron-e5cc-modbus.html"
+    },
+    {
       "id": "sun2000-ha",
       "name": "Huawei SUN2000 → Home Assistant",
       "cat": "ha",
