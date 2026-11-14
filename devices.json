@@ -210,6 +210,15 @@
       "page": "coolmaster-vrf-modbus.html"
     },
     {
+      "id": "grundfos-magna3",
+      "name": "Grundfos MAGNA3 (CIM 200 / 500)",
+      "cat": "pumps",
+      "proto": "Modbus RTU / TCP",
+      "desc": "Circulator: head, flow, speed, power, temperatures, alarm and status bits",
+      "ws": "Grundfos_MAGNA3_CIM.json",
+      "page": "grundfos-magna3-cim-modbus.html"
+    },
+    {
       "id": "ebmpapst-ec",
       "name": "ebm-papst EC fans (16 on one bus)",
       "cat": "hvac",
