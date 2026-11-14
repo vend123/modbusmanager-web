@@ -1,0 +1,839 @@
+{
+  "version": 2,
+  "polls": [
+    {
+      "name": "Metrology 50512-50573 (legacy, 10 W)",
+      "fc": 3,
+      "addr": 50512,
+      "qty": 62,
+      "slaveId": 1,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 50512,
+      "chartName": "Metrology 50512-50573 (legacy, 10 W) [50512]",
+      "logFile": "log_Metrology_50512_50573_legacy_10_W_.txt"
+    },
+    {
+      "name": "THD V / U 37144-37151",
+      "fc": 3,
+      "addr": 37144,
+      "qty": 8,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 37144,
+      "chartName": "THD V / U 37144-37151 [37144]",
+      "logFile": "log_THD_V_U_37144_37151.txt"
+    },
+    {
+      "name": "THD I 18757-18760",
+      "fc": 3,
+      "addr": 18757,
+      "qty": 4,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 18757,
+      "chartName": "THD I 18757-18760 [18757]",
+      "logFile": "log_THD_I_18757_18760.txt"
+    },
+    {
+      "name": "Energy 19843-19848",
+      "fc": 3,
+      "addr": 19843,
+      "qty": 6,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 19843,
+      "chartName": "Energy 19843-19848 [19843]",
+      "logFile": "log_Energy_19843_19848.txt"
+    }
+  ],
+  "activePoll": 0,
+  "condColors": {},
+  "scaling": {},
+  "valueNames": {},
+  "chartSeries": [],
+  "slaveBlocks": [],
+  "dashTheme": "modern",
+  "dashFx": true,
+  "dashBgColor": "#0d1117",
+  "dashPages": [
+    {
+      "id": 1,
+      "name": "DIRIS A-40",
+      "elements": [
+        {
+          "id": 1,
+          "value": 0,
+          "type": "statictext",
+          "x": 20,
+          "y": 10,
+          "w": 840,
+          "h": 30,
+          "text": "Socomec DIRIS A-40  ·  FC03, addresses as listed  ·  legacy block 50512",
+          "fontSize": 20,
+          "bold": true,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 2,
+          "value": 0,
+          "type": "meter3",
+          "x": 20,
+          "y": 50,
+          "w": 360,
+          "h": 280,
+          "label": "DIRIS A-40 incomer",
+          "unitId": 1,
+          "nomV": 230,
+          "ratedA": 160,
+          "pUnit": "kW",
+          "vUnbal": 2,
+          "iUnbal": 10,
+          "lostPct": 50,
+          "showLL": true,
+          "showEnergy": true,
+          "view": "full",
+          "phaseColors": "iec",
+          "flagTag": "",
+          "pts": {
+            "v1": {
+              "src": "tag",
+              "tagName": "V1N"
+            },
+            "v2": {
+              "src": "tag",
+              "tagName": "V2N"
+            },
+            "v3": {
+              "src": "tag",
+              "tagName": "V3N"
+            },
+            "v12": {
+              "src": "tag",
+              "tagName": "U12"
+            },
+            "v23": {
+              "src": "tag",
+              "tagName": "U23"
+            },
+            "v31": {
+              "src": "tag",
+              "tagName": "U31"
+            },
+            "i1": {
+              "src": "tag",
+              "tagName": "I1"
+            },
+            "i2": {
+              "src": "tag",
+              "tagName": "I2"
+            },
+            "i3": {
+              "src": "tag",
+              "tagName": "I3"
+            },
+            "p1": {
+              "src": "tag",
+              "tagName": "P1_kW"
+            },
+            "p2": {
+              "src": "tag",
+              "tagName": "P2_kW"
+            },
+            "p3": {
+              "src": "tag",
+              "tagName": "P3_kW"
+            },
+            "pt": {
+              "src": "tag",
+              "tagName": "P_kW"
+            },
+            "pf1": {
+              "src": "tag",
+              "tagName": "PF1"
+            },
+            "pf2": {
+              "src": "tag",
+              "tagName": "PF2"
+            },
+            "pf3": {
+              "src": "tag",
+              "tagName": "PF3"
+            },
+            "pft": {
+              "src": "tag",
+              "tagName": "PF"
+            },
+            "hz": {
+              "src": "tag",
+              "tagName": "Hz"
+            },
+            "eimp": {
+              "src": "tag",
+              "tagName": "Ea_imp_kWh"
+            },
+            "eexp": {
+              "src": "tag",
+              "tagName": "Ea_exp_kWh"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "value": 0,
+          "type": "text",
+          "x": 400,
+          "y": 50,
+          "w": 118,
+          "h": 66,
+          "label": "THD V1 37144",
+          "unit": "%",
+          "decimals": 2,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "THD_V1"
+        },
+        {
+          "id": 4,
+          "value": 0,
+          "type": "text",
+          "x": 524,
+          "y": 50,
+          "w": 118,
+          "h": 66,
+          "label": "THD V2 37145",
+          "unit": "%",
+          "decimals": 2,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "THD_V2"
+        },
+        {
+          "id": 5,
+          "value": 0,
+          "type": "text",
+          "x": 648,
+          "y": 50,
+          "w": 118,
+          "h": 66,
+          "label": "THD V3 37146",
+          "unit": "%",
+          "decimals": 2,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "THD_V3"
+        },
+        {
+          "id": 6,
+          "value": 0,
+          "type": "text",
+          "x": 772,
+          "y": 50,
+          "w": 88,
+          "h": 66,
+          "label": "Neutral 50534",
+          "unit": "A",
+          "decimals": 1,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "In_A"
+        },
+        {
+          "id": 7,
+          "value": 0,
+          "type": "text",
+          "x": 400,
+          "y": 126,
+          "w": 118,
+          "h": 66,
+          "label": "THD I1 18757",
+          "unit": "%",
+          "decimals": 1,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "THD_I1"
+        },
+        {
+          "id": 8,
+          "value": 0,
+          "type": "text",
+          "x": 524,
+          "y": 126,
+          "w": 118,
+          "h": 66,
+          "label": "THD I2 18758",
+          "unit": "%",
+          "decimals": 1,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "THD_I2"
+        },
+        {
+          "id": 9,
+          "value": 0,
+          "type": "text",
+          "x": 648,
+          "y": 126,
+          "w": 118,
+          "h": 66,
+          "label": "THD I3 18759",
+          "unit": "%",
+          "decimals": 1,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "THD_I3"
+        },
+        {
+          "id": 10,
+          "value": 0,
+          "type": "text",
+          "x": 772,
+          "y": 126,
+          "w": 88,
+          "h": 66,
+          "label": "THD In 18760",
+          "unit": "%",
+          "decimals": 1,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "THD_In"
+        },
+        {
+          "id": 11,
+          "value": 0,
+          "type": "text",
+          "x": 400,
+          "y": 202,
+          "w": 150,
+          "h": 66,
+          "label": "Reactive 50538",
+          "unit": "kvar",
+          "decimals": 1,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Q_kvar"
+        },
+        {
+          "id": 12,
+          "value": 0,
+          "type": "text",
+          "x": 560,
+          "y": 202,
+          "w": 140,
+          "h": 66,
+          "label": "Total PF 50542",
+          "unit": "",
+          "decimals": 3,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "PF"
+        },
+        {
+          "id": 13,
+          "value": 0,
+          "type": "text",
+          "x": 710,
+          "y": 202,
+          "w": 150,
+          "h": 66,
+          "label": "Frequency 50526",
+          "unit": "Hz",
+          "decimals": 2,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Hz"
+        },
+        {
+          "id": 14,
+          "value": 0,
+          "type": "text",
+          "x": 400,
+          "y": 278,
+          "w": 230,
+          "h": 66,
+          "label": "Ea+ 19843",
+          "unit": "kWh",
+          "decimals": 0,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Ea_imp_kWh"
+        },
+        {
+          "id": 15,
+          "value": 0,
+          "type": "text",
+          "x": 640,
+          "y": 278,
+          "w": 220,
+          "h": 66,
+          "label": "Ea- 19846",
+          "unit": "kWh",
+          "decimals": 0,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Ea_exp_kWh"
+        },
+        {
+          "id": 16,
+          "value": 0,
+          "type": "multitend",
+          "x": 20,
+          "y": 350,
+          "w": 840,
+          "h": 190,
+          "label": "Total active power (kW) and THD I1 (%)",
+          "maxPoints": 1200,
+          "decimals": 1,
+          "sampleMs": 1000,
+          "yMin": 0,
+          "yMax": 100,
+          "items": [
+            {
+              "name": "P total 50536",
+              "sourceType": "tag",
+              "tagName": "P_kW",
+              "color": "#f0c040",
+              "value": 0
+            },
+            {
+              "name": "THD I1 18757",
+              "sourceType": "tag",
+              "tagName": "THD_I1",
+              "color": "#f85149",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "V1N",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50520,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "V1 L-N V (50520)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "V2N",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50522,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "V2 L-N V (50522)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "V3N",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50524,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "V3 L-N V (50524)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "U12",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50514,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "U12 V (50514)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "U23",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50516,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "U23 V (50516)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "U31",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50518,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "U31 V (50518)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "Hz",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50526,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "frequency Hz, /100 (50526)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "I1",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50528,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "I1 A (register in mA) (50528)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "I2",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50530,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "I2 A (50530)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "I3",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50532,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "I3 A (50532)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "In_A",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50534,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "neutral current A (\"In\" is a reserved word) (50534)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "P_kW",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50536,
+      "dataType": "int32",
+      "wordOrder": "big",
+      "description": "total active power kW (register in 10 W) (50536)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "Q_kvar",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50538,
+      "dataType": "int32",
+      "wordOrder": "big",
+      "description": "total reactive power kvar (10 var) (50538)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "PF",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50542,
+      "dataType": "int32",
+      "wordOrder": "big",
+      "description": "total PF, - leading, + lagging (50542)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "P1_kW",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50544,
+      "dataType": "int32",
+      "wordOrder": "big",
+      "description": "P1 kW (50544)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "P2_kW",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50546,
+      "dataType": "int32",
+      "wordOrder": "big",
+      "description": "P2 kW (50546)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "P3_kW",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50548,
+      "dataType": "int32",
+      "wordOrder": "big",
+      "description": "P3 kW (50548)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "PF1",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50562,
+      "dataType": "int32",
+      "wordOrder": "big",
+      "description": "PF1 (50562)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "PF2",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50564,
+      "dataType": "int32",
+      "wordOrder": "big",
+      "description": "PF2 (50564)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "PF3",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 50566,
+      "dataType": "int32",
+      "wordOrder": "big",
+      "description": "PF3 (50566)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "THD_V1",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 37144,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "THD V1 % (37144)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "THD_V2",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 37145,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "THD V2 % (37145)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "THD_V3",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 37146,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "THD V3 % (37146)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "THD_I1",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 18757,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "THD I1 % (18757)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "THD_I2",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 18758,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "THD I2 % (18758)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "THD_I3",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 18759,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "THD I3 % (18759)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "THD_In",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 18760,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "THD In % (18760)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "Ea_imp_kWh",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19843,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "total active energy imported kWh (residual 0.1 Wh in 19845) (19843)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Ea_exp_kWh",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 19846,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "total active energy exported kWh (19846)",
+      "scale": 1,
+      "offset": 0
+    }
+  ],
+  "script": "",
+  "scriptInterval": "1000",
+  "historianLogging": {
+    "registers": [],
+    "tags": []
+  },
+  "saved": "2026-11-14T12:00:00.000Z"
+}

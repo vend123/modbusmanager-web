@@ -66,6 +66,15 @@
       "page": "janitza-umg-96-pa-modbus.html"
     },
     {
+      "id": "socomec-diris-a40",
+      "name": "Socomec DIRIS A-40",
+      "cat": "meters",
+      "proto": "Modbus RTU / TCP",
+      "desc": "Power analyser: three-phase values, THD of voltage and current, energy",
+      "ws": "Socomec_DIRIS_A40.json",
+      "page": "socomec-diris-a40-modbus.html"
+    },
+    {
       "id": "abb-acs580",
       "name": "ABB ACS580",
       "cat": "drives",
