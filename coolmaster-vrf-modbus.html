@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoolMasterNet VRF Modbus: Virtual Addresses, Unit ID 80</title>
+<meta name="description" content="CoolMasterNet Modbus for Daikin, Mitsubishi, LG VRF: Virtual Addresses, unit ID 80, the 16-address block per indoor unit, fault 65535. Free workspace.">
+<meta name="keywords" content="CoolMasterNet Modbus, CoolAutomation Modbus, VRF Modbus, Daikin VRV Modbus, Mitsubishi City Multi Modbus, CoolMaster Modbus register, VRF indoor unit Modbus, CoolMasterNet virtual address">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/coolmaster-vrf-modbus.html">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:title" content="CoolMasterNet VRF Modbus: Virtual Addresses, Unit ID 80">
+<meta property="og:description" content="Read VRF indoor units through a CoolAutomation CoolMasterNet: assigning Virtual Addresses, unit ID 80, the 16-address block per unit, setpoint x10, malfunction 65535 = unit offline, and the 17-or-16 addressing question.">
+<meta property="og:url" content="https://modbusmanager.com/coolmaster-vrf-modbus.html">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://modbusmanager.com/og-coolmaster-vrf.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:published_time" content="2026-11-14T00:00:00Z">
+<meta property="article:section" content="Guides">
+<meta property="article:tag" content="CoolAutomation">
+<meta property="article:tag" content="Modbus">
+<meta property="article:tag" content="VRF">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CoolMasterNet VRF Modbus: Virtual Addresses, Unit ID 80">
+<meta name="twitter:description" content="Read VRF indoor units through a CoolAutomation CoolMasterNet: assigning Virtual Addresses, unit ID 80, the 16-address block per unit, setpoint x10, malfunction 65535 = unit offline, and the 17-or-16 addressing question.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-coolmaster-vrf.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "CoolMasterNet VRF Modbus: Virtual Addresses, Unit ID 80 and the 16-Address Block",
+  "description": "Read VRF indoor units through a CoolAutomation CoolMasterNet: assigning Virtual Addresses, unit ID 80, the 16-address block per unit, setpoint x10, malfunction 65535 = unit offline, and the 17-or-16 addressing question.",
+  "url": "https://modbusmanager.com/coolmaster-vrf-modbus.html",
+  "image": "https://modbusmanager.com/og-coolmaster-vrf.png",
+  "datePublished": "2026-11-14",
+  "author": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "keywords": "CoolMasterNet Modbus, CoolAutomation Modbus, VRF Modbus, Daikin VRV Modbus, Mitsubishi City Multi Modbus, CoolMaster Modbus register, VRF indoor unit Modbus, CoolMasterNet virtual address"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the default Modbus address of a CoolMasterNet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Slave address 80 (0x50) on RS-485, 9600 8N1. It is changed with line myid, and the value is given in hex. Modbus TCP uses port 502 and is off until you enable it and reboot."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I find the Modbus register of a VRF indoor unit on a CoolMasterNet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Give the unit a Virtual Address (va command). Its 16-address block starts at VA x 16 + 1 in CoolAutomation's numbering, which is VA x 16 on the wire: VA1 mode is holding 16 (17 in 1-based tools). Check on your gateway which one yours answers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does malfunction code 65535 mean on a CoolMasterNet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The gateway has lost communication with that indoor unit. 0 means no fault; any other value is the brand's own code (Daikin numbers translate to A1, E0, H0 and so on)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the setpoint read 240?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Setpoint and room temperature are multiplied by 10: 240 is 24.0 °C."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use an Intesis template on a CoolMasterNet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The mode numbers differ (CoolMaster 0 = Cool, Intesis 0 = Auto and 4 = Cool), and so do the addresses. Each gateway has its own map."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+.article-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 5rem}
+.section{max-width:860px;margin:0 auto;padding:1rem 2rem 4.5rem}
+.sec-label{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem}
+.sec-title{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;line-height:1.1;margin-bottom:1.4rem}
+@media(max-width:640px){.section{padding:0.5rem 1.2rem 3.5rem}.sec-title{font-size:1.7rem}}
+.breadcrumb{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--muted);margin-bottom:2rem}
+.breadcrumb a{color:var(--muted);text-decoration:none}
+.breadcrumb a:hover{color:var(--ink)}
+h1{font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;line-height:1.05;text-transform:uppercase;letter-spacing:0.01em;margin-bottom:1rem}
+h2{font-family:'Saira Condensed',sans-serif;font-size:1.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin:2.5rem 0 0.8rem;padding-top:0.5rem;border-top:2px solid var(--ink)}
+h3{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.03em;margin:1.5rem 0 0.5rem;color:var(--amber-ink)}
+p{font-size:0.93rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+ul{font-size:0.93rem;color:var(--body);line-height:1.75;margin:0 0 1rem 1.2rem;padding-left:0.6rem}
+li{margin-bottom:0.4rem}
+.lead{font-size:1.05rem;color:var(--ink);line-height:1.7;margin-bottom:2rem;border-left:3px solid var(--safety);padding-left:1rem}
+code{font-family:'IBM Plex Mono',monospace;font-size:0.82rem;background:#fff;border:1px solid var(--steel);padding:1px 5px;border-radius:2px}
+pre{font-family:'IBM Plex Mono',monospace;font-size:0.8rem;background:var(--ink);color:#E6E8E3;padding:1.2rem 1.4rem;border-radius:3px;overflow-x:auto;margin:1.2rem 0;line-height:1.6}
+pre .c{color:#888}
+pre .v{color:#F2A900}
+pre .k{color:#7ec8e3}
+table{width:100%;border-collapse:collapse;font-size:0.83rem;margin:1.2rem 0;background:var(--plate);border:2px solid var(--ink)}
+th{text-align:left;padding:0.65rem 0.9rem;border-bottom:2px solid var(--ink);background:var(--enclosure2);font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted)}
+td{padding:0.6rem 0.9rem;border-bottom:1px solid var(--steel);color:var(--body)}
+tr:hover td{background:#ECEEE9}
+td.mono{font-family:'IBM Plex Mono',monospace;font-size:0.78rem}
+td.formula{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--amber-ink)}
+.callout{background:var(--plate);border:1.5px solid var(--ink);border-left:4px solid var(--safety);padding:1rem 1.2rem;border-radius:2px;margin:1.5rem 0;font-size:0.88rem;color:var(--body);line-height:1.6}
+.callout strong{color:var(--ink)}
+.callout.tip{border-left-color:var(--run)}
+.callout.warn{border-left-color:var(--bad)}
+.step-num{display:inline-block;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.85rem;background:var(--ink);color:var(--safety);padding:2px 8px;border-radius:2px;margin-right:8px;letter-spacing:0.05em}
+.cta-box{background:var(--ink);color:var(--enclosure);padding:2rem 2.2rem;border-radius:3px;margin:3rem 0;display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
+.cta-box h3{color:var(--safety);margin:0 0 0.4rem;font-size:1.2rem;border:none;padding:0}
+.cta-box p{color:#B9BDB6;font-size:0.85rem;margin:0}
+.cta-box a{background:var(--safety);color:var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.cta-box a:hover{background:#fff}
+.download-box{border:2px solid var(--ink);background:var(--enclosure2);padding:1.4rem 1.8rem;border-radius:3px;margin:2rem 0;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.download-box h3{margin:0 0 0.3rem;font-size:1rem;border:none;padding:0;overflow-wrap:anywhere;font-family:'IBM Plex Mono',monospace;color:var(--ink)}
+.download-box p{margin:0;font-size:0.82rem;color:var(--muted);max-width:46ch}
+.download-box a{background:var(--ink);color:var(--enclosure);padding:0.6rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.download-box a:hover{background:var(--safety);color:var(--ink)}
+footer{border-top:2px solid var(--ink);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;color:var(--muted);flex-wrap:wrap;gap:1rem;background:var(--enclosure2)}
+.footer-logo{font-family:'Saira Condensed',sans-serif;color:var(--ink);font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--ink)}
+@media(max-width:640px){nav .nav-links{display:none}.article-wrap{padding:2rem 1.2rem 4rem}h1{font-size:2rem}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}td,th{white-space:normal;word-break:break-word}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+
+@media(max-width:680px){pre,code{white-space:pre-wrap;word-break:break-word;max-width:100%;overflow-x:auto}}
+
+/* family slogan band, slim (2026-10-22) */
+.slogan-band.slim{background:var(--safety,#F2A900);border-bottom:2px solid var(--ink,#16181A);padding:0.5rem 1rem;text-align:center;color:var(--ink,#16181A);display:flex;gap:0.3rem 1rem;justify-content:center;align-items:baseline;flex-wrap:wrap}
+.slogan-band.slim .sb-main{font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.3rem;line-height:1.1;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim .sb-sub{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim a{color:var(--ink,#16181A);font-weight:700}
+@media(max-width:768px){.slogan-band.slim .sb-main{font-size:1.05rem}.slogan-band.slim .sb-sub{display:none}}
+</style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/modbus-device-guides.html"},{"@type": "ListItem","position": 3,"name": "CoolMasterNet VRF Modbus","item": "https://modbusmanager.com/coolmaster-vrf-modbus.html"}]}
+</script>
+<style id="sf-css">
+footer.sf{display:block;text-align:left;padding:2.2rem 3rem 1.6rem;border-top:2px solid var(--ink,#16181A);background:var(--enclosure2,#E8EAE5);color:var(--muted,#5F5E5A);font-family:'Archivo',sans-serif;font-size:.92rem}
+footer.sf a{color:var(--muted,#5F5E5A);text-decoration:none}
+footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
+.sf-cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.6rem 2rem;max-width:1100px}
+.sf-col{display:flex;flex-direction:column;gap:.45rem;min-width:0}
+.sf-h{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink,#16181A);font-weight:600;margin-bottom:.2rem}
+.sf-bot{display:flex;flex-wrap:wrap;gap:.6rem 1.6rem;align-items:baseline;justify-content:space-between;border-top:1px solid var(--steel,#B9BDB6);margin-top:1.8rem;padding-top:1rem;font-size:.85rem}
+.sf-logo{font-family:'Saira Condensed',sans-serif;color:var(--ink,#16181A);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+@media(max-width:768px){footer.sf{padding:1.8rem 1.2rem}.sf-cols{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:1100px){.sec-label,.eyebrow,.np-eyebrow,.np-specs span,.step-label,.def-label,.toc-label,.c-label,.q-k,.plan-label,.os-tag,.pro-tag,.ed,.sb-sub,.sb-sub a,.nd-head,.also-label,figcaption{font-size:11px!important}}
+.sf-swipe{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--amber-ink,#8A6200);text-align:right;margin:.3rem 0 .4rem}
+.sf-swipe[hidden]{display:none}
+</style>
+<style id="site-nav">
+/* site menu (tools/web-research/site-nav.js) */
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop.nd-has>.nav-drop-label{color:var(--ink,#16181A);font-weight:600}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;display:none;z-index:200}
+.nav-drop:hover>.nav-drop-menu,.nav-drop:focus-within>.nav-drop-menu{display:block}
+.nd-box{display:flex;flex-direction:column;background:var(--enclosure2,#e8e9e4);border:1px solid var(--ink,#16181A);border-radius:3px;box-shadow:0 6px 20px rgba(0,0,0,0.18);padding:0.35rem 0;min-width:210px}
+.nav-drop-menu a,.nd-glabel{display:flex;align-items:center;gap:0.55rem;padding:0.45rem 1rem;white-space:nowrap;text-transform:none;font-family:'IBM Plex Mono',monospace;font-size:0.78rem;letter-spacing:0.02em;color:var(--ink,#16181A);text-decoration:none;background:none;border:none;text-align:left;cursor:pointer;width:100%;box-sizing:border-box}
+.nav-drop-menu a:hover,.nd-glabel:hover,.nd-group:hover>.nd-glabel,.nd-group.open>.nd-glabel{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+.nav-drop-menu .ni{display:inline-block;width:1.25rem;text-align:center;flex:none;font-size:0.9rem;line-height:1}
+.nav-drop-menu a.nd-sub{padding-left:2.1rem;font-size:0.75rem}
+.nav-drop-menu .nd-hot{color:#9A6700;font-weight:600}
+.nav-drop-menu a[aria-current="page"]{font-weight:700;box-shadow:inset 3px 0 0 var(--safety,#F2A900)}
+.nd-group.nd-has>.nd-glabel{font-weight:700}
+.nd-arrow{margin-left:auto;padding-left:1rem;font-size:0.7rem;color:var(--muted,#5F5E5A);display:inline-block;transform-origin:calc(50% + 0.5rem) 50%}
+.nd-group{position:relative}
+.nd-flyout{display:none;position:absolute;left:100%;top:-0.4rem;padding-left:0.25rem;z-index:210}
+.nd-group:hover>.nd-flyout,.nd-group:focus-within>.nd-flyout,.nd-group.open>.nd-flyout{display:block}
+.nd-head{font-family:'IBM Plex Mono',monospace;font-size:0.64rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted,#5F5E5A);padding:0.55rem 1rem 0.15rem;border-top:1px solid var(--steel,#B9BDB6);margin-top:0.25rem}
+.nd-box>.nd-head:first-child{border-top:none;margin-top:0}
+/* tablet (769-1100px): logo, six menu items and the button need ~840px; below that the menu
+   wrapped to two or three lines and the download button ran off the screen (2026-11-10).
+   769-900px gets the ☰ menu as on phones (the pages' own phone rules stop at 768px);
+   901-1100px keeps the row, tighter. The small text download link repeats the button,
+   so it goes in this range, as it already does on phones. */
+@media(min-width:769px) and (max-width:1100px){
+nav{gap:1rem!important;padding-left:1.2rem!important;padding-right:1.2rem!important}
+nav .nav-links{gap:1.1rem!important;letter-spacing:0.02em!important;white-space:nowrap}
+nav>div>a:not(.nav-cta){display:none!important}
+nav .nav-cta{white-space:nowrap;padding:0.45rem 0.9rem!important}
+}
+@media(min-width:769px) and (max-width:900px){
+nav .nav-burger{display:block!important;margin-left:auto}
+nav .nav-links{display:none!important}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15);white-space:normal;margin:0!important}
+}
+@media(max-width:900px){
+nav .nav-links.open{align-items:stretch;text-align:left}
+nav .nav-links.open .nav-drop{padding-bottom:0;margin-bottom:0}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu{position:static;display:block;padding:0;margin:0.3rem 0 0.2rem}
+nav .nav-links.open .nd-box{border:none;box-shadow:none;background:none;padding:0;min-width:0}
+nav .nav-links.open .nav-drop-menu a,nav .nav-links.open .nd-glabel{padding:0.4rem 0;font-size:0.82rem;white-space:normal}
+nav .nav-links.open .nav-drop-menu a.nd-sub{padding-left:1.8rem}
+nav .nav-links.open .nd-flyout a[aria-current="page"]{padding-left:0.6rem}
+nav .nav-links.open .nd-flyout{position:static;padding:0 0 0.3rem 1.8rem;display:none}
+nav .nav-links.open .nd-group:hover>.nd-flyout,nav .nav-links.open .nd-group:focus-within>.nd-flyout{display:none}
+nav .nav-links.open .nd-group.open>.nd-flyout{display:block}
+nav .nav-links.open .nd-group.open>.nd-glabel,nav .nav-links.open .nd-group:hover>.nd-glabel{background:none}
+nav .nav-links.open .nd-group.open .nd-arrow{transform:rotate(90deg)}
+nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label" tabindex="0">Features &#9662;</span>
+      <div class="nav-drop-menu"><div class="nd-box">
+        <a href="/modbus-scanner.html" class="nd-hot"><span class="ni">&#128269;&#65039;</span>Modbus Scanner</a>
+        <a href="/modbus-rtu-over-tcp.html" class="nd-sub"><span class="ni">&#128257;&#65039;</span>RTU over TCP</a>
+        <a href="/modbus-tcp-security-tls.html" class="nd-sub"><span class="ni">&#128274;&#65039;</span>Modbus TCP Security (TLS)</a>
+        <a href="/modbus-hmi-dashboard.html"><span class="ni">&#128202;&#65039;</span>HMI Dashboard</a>
+        <a href="/modbus-hmi-runtime.html" class="nd-sub"><span class="ni">&#128421;&#65039;</span>HMI Runtime (OEM)</a>
+        <a href="/modbus-data-logger-software.html"><span class="ni">&#128200;&#65039;</span>Data Logger</a>
+        <a href="/modbus-rtu-rs485-data-logger.html" class="nd-sub"><span class="ni">&#128223;&#65039;</span>RTU / RS-485 Logging</a>
+        <a href="/modbus-logging-interval-deadband.html" class="nd-sub"><span class="ni">&#9201;&#65039;</span>Interval &amp; Deadband</a>
+        <a href="/modbus-to-csv-logging.html" class="nd-sub"><span class="ni">&#128196;&#65039;</span>CSV Export</a>
+        <a href="/modbus-alarm-software.html"><span class="ni">&#128276;&#65039;</span>Alarms</a>
+        <a href="/modbus-gateway-software.html"><span class="ni">&#128256;&#65039;</span>Gateway</a>
+        <a href="/modbus-to-mqtt.html" class="nd-sub"><span class="ni">&#128225;&#65039;</span>Modbus to MQTT</a>
+        <a href="/modbus-structured-text-scripting.html"><span class="ni">&#127991;&#65039;</span>Tags &amp; Structured Text</a>
+      </div></div>
+    </li>
+    <li class="nav-drop nd-has">
+      <span class="nav-drop-label" tabindex="0">Guides &#9662;</span>
+      <div class="nav-drop-menu"><div class="nd-box">
+        <a href="/modbus-device-guides.html"><span class="ni">&#128218;&#65039;</span>All guides</a>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9728;&#65039;</span>Solar &amp; inverters<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+            <a href="/huawei-sun2000-modbus.html">Huawei SUN2000</a>
+            <a href="/huawei-sun2000-home-assistant.html">SUN2000 &rarr; Home Assistant</a>
+            <a href="/sungrow-inverter-modbus.html">Sungrow Inverters</a>
+            <a href="/sunspec-modbus-sma-fronius-solaredge.html">SunSpec: SMA, Fronius, SolarEdge</a>
+            <a href="/victron-gx-modbus-tcp.html">Victron Cerbo GX</a>
+            <a href="/goodwe-et-hybrid-modbus.html">GoodWe ET Hybrid</a>
+            <a href="/deye-sunsynk-growatt-modbus.html">Deye, Sunsynk &amp; Growatt</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9889;&#65039;</span>Energy meters<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+            <a href="/schneider-pm3200-modbus.html">Schneider PM3250</a>
+            <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+            <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+            <a href="/eastron-sdm230-sdm72-modbus.html">Eastron SDM230 / SDM72</a>
+            <a href="/carlo-gavazzi-em24-em340-modbus.html">Carlo Gavazzi EM340 / EM24</a>
+            <a href="/janitza-umg-96-pa-modbus.html">Janitza UMG 96-PA</a>
+            <a href="/wattnode-modbus.html">WattNode</a>
+          </div></div>
+        </div>
+        <div class="nd-group nd-has">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9832;&#65039;</span>Heat pumps &amp; HVAC<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/nibe-s-series-modbus.html">NIBE S-series heat pumps</a>
+            <a href="/coolmaster-vrf-modbus.html" aria-current="page">CoolMasterNet VRF</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9881;&#65039;</span>Drives &amp; EC fans<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+            <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+            <a href="/abb-ach580-modbus.html">ABB ACH580</a>
+            <a href="/danfoss-vlt-fc102-fc302-modbus.html">Danfoss FC 102 / FC 302</a>
+            <a href="/schneider-altivar-atv320-atv630-modbus.html">Schneider ATV320 / ATV630</a>
+            <a href="/siemens-sinamics-g120-modbus.html">Siemens SINAMICS G120</a>
+            <a href="/powerflex-525-modbus.html">PowerFlex 525</a>
+            <a href="/durapulse-gs20-modbus.html">DURApulse GS20</a>
+            <a href="/yaskawa-v1000-modbus.html">Yaskawa V1000</a>
+            <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+            <a href="/modbus-vfd-speed-reference.html">VFD Speed Registers</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#127981;&#65039;</span>Siemens PLCs<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200 HMI</a>
+            <a href="/siemens-s7-put-get.html">Siemens S7 PUT/GET</a>
+          </div></div>
+        </div>
+        <a href="/register-map-service.html"><span class="ni">&#128203;&#65039;</span>Register Map from your PDF</a>
+        <a href="/manual.html"><span class="ni">&#128214;&#65039;</span>Documentation</a>
+        <a href="/modbus-poll-alternative.html"><span class="ni">&#9878;&#65039;</span>vs Modbus Poll</a>
+      </div></div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+    <li><a href="https://bacmanager.com">BACManager &#8599;</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.10/Modbus.Manager.Pro.Setup.1.9.10.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-CoolMaster-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/v1.4.14/Modbus.Manager.Setup.1.4.14.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-CoolMaster-Nav', 'product': 'standard', 'value': 1})">Download free trial</a>
+  </div>
+</nav>
+<div class="slogan-band slim">
+  <span class="sb-main">Every device. One tool. Pay once.</span>
+  <span class="sb-sub">Modbus &middot; BACnet &middot; Siemens S7 &middot; one-time licence &middot; also from us: <a href="https://bacmanager.com">BACManager&nbsp;&#8599;</a></span>
+</div>
+<div class="hazard"></div>
+
+<div class="article-wrap">
+
+  <div class="breadcrumb">
+    <a href="/">ModbusManager</a> &rsaquo; Guides &rsaquo; CoolMasterNet VRF Modbus
+  </div>
+
+  <h1>CoolMasterNet VRF Modbus: Virtual Addresses, Unit ID 80 and the 16-Address Block</h1>
+
+  <p class="lead">A CoolAutomation CoolMasterNet sits on the VRF bus of a Daikin, Mitsubishi Electric, Samsung, LG, Toshiba or other system and gives every indoor unit the same Modbus block: on/off, mode, fan speed, setpoint, room temperature and the malfunction code. One map for every brand &mdash; once you know how the Virtual Address turns into a register number, which is where most integrations go wrong by one.</p>
+
+  <figure style="margin:1.8rem 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink)">
+    <img src="/coolmaster-vrf-dashboard.png" width="1320" height="825" loading="lazy" decoding="async"
+         alt="ModbusManager Pro dashboard for four VRF indoor units behind a CoolMasterNet: Office 1 cooling at 25.3 °C room with setpoint 24.0 and fan Med, Office 2 stopped, the meeting room on fan only, Reception offline with malfunction 65535, and a room temperature trend"
+         style="width:100%;height:auto;display:block">
+    <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">
+      The free workspace below on a simulated CoolMasterNet &mdash; four Virtual Addresses, one of them not answering the gateway.
+    </figcaption>
+  </figure>
+
+  <h2>Before Modbus Answers</h2>
+  <ul>
+    <li><strong>Give the indoor units Virtual Addresses (VA).</strong> Nothing has a Modbus address until it has a VA. <span class="mono">va auto</span> assigns them all &mdash; and deletes the previous assignment, so the numbers can change; <span class="mono">va + L1.102 0004</span> assigns one by hand. <span class="mono">va</span> lists them, for example <span class="mono">L1.100 --&gt; 0001 [Hex: 0x0011 | Dec: 00017]</span>.</li>
+    <li><strong>Modbus TCP is off by default.</strong> <span class="mono">modbus IP enable</span>, then reboot. Port 502 (changeable with <span class="mono">modbus server port</span>). The server starts only once Ethernet has a link and an IP address.</li>
+    <li><strong>Modbus RTU</strong> runs on a CoolMaster line set to <span class="mono">line type L3 CG5</span>: default <strong>9600 8N1</strong>, slave address <strong>0x50 = 80</strong>. <span class="mono">line myid L3 51</span> changes the address &mdash; the value is <strong>hex</strong>. Every change needs a reboot.</li>
+  </ul>
+  <p>Several RTU and TCP masters can be connected at the same time.</p>
+
+  <h2>Virtual Address to Register</h2>
+  <p>CoolAutomation gives the base of each indoor unit as <span class="mono">VA &times; 16 + 1</span>: VA1 = 17, VA2 = 33. Each unit has a 16-address block, and the same base applies to the holding, input, coil and discrete-input tables.</p>
+  <div class="callout">
+    <strong>17 or 16?</strong> &ldquo;17&rdquo; reads as a 1-based register number. The Loxone integration guide that CoolAutomation hosts addresses the same register as 16 (&ldquo;IO addresses will start at 16 for VA1&rdquo;), and the workspace on this page uses 16&nbsp;&times;&nbsp;VA on the wire. CoolAutomation's guidelines do not say which, so check on your gateway: read holding 16 and 17 for VA1 &mdash; the mode register holds 0&ndash;6, the fan register 0&ndash;5, and the setpoint two registers on is a number like 240.
+  </div>
+
+  <h2>The Indoor-Unit Block</h2>
+  <table>
+    <tr><th>Offset</th><th>Table</th><th>Value</th></tr>
+    <tr><td class="mono">+0</td><td>holding (FC03/06)</td><td>Mode: 0 Cool, 1 Heat, 2 Auto, 3 Dry, 4 HAUX, 5 Fan, 6 HH</td></tr>
+    <tr><td class="mono">+1</td><td>holding</td><td>Fan speed: 0 Low, 1 Med, 2 High, 3 Auto, 4 Top, 5 Very low</td></tr>
+    <tr><td class="mono">+2</td><td>holding</td><td>Setpoint &times; 10 &deg;C</td></tr>
+    <tr><td class="mono">+3</td><td>holding</td><td>On / off (0 / 1)</td></tr>
+    <tr><td class="mono">+4</td><td>holding</td><td>Filter sign</td></tr>
+    <tr><td class="mono">+5</td><td>holding</td><td>Swing: 0 vertical &hellip; 4 horizontal, 5 auto, 6 off</td></tr>
+    <tr><td class="mono">+6</td><td>holding (read)</td><td>Room temperature &times; 10 &deg;C</td></tr>
+    <tr><td class="mono">+7</td><td>holding (read)</td><td><strong>Malfunction code</strong>: 0 none, <strong>65535 (0xFFFF) = indoor unit lost</strong></td></tr>
+    <tr><td class="mono">+8</td><td>holding</td><td>Wall-controller lock bits: b0 on/off, b1 mode, b2 setpoint, b7 all</td></tr>
+    <tr><td class="mono">+9</td><td>holding</td><td>Setpoint limits: high byte = high &times; 2, low byte = low &times; 2 (0x4020 = 32 / 16 &deg;C)</td></tr>
+    <tr><td class="mono">+1 / +4</td><td>input (FC04)</td><td>Room temperature / setpoint &times; 10</td></tr>
+    <tr><td class="mono">+2, +3</td><td>input</td><td>Malfunction as four ASCII characters (&ldquo;OK&nbsp;&nbsp;&rdquo; = 0x4F4B 0x2020)</td></tr>
+    <tr><td class="mono">+0 / +3</td><td>coil (FC01/05)</td><td>On / off; Inhibit (a window contact: forces the unit off after about 8 s)</td></tr>
+    <tr><td class="mono">+0 / +1</td><td>discrete input (FC02)</td><td>Thermo-on (demand); <strong>indoor communication failure</strong></td></tr>
+  </table>
+  <p>The same quantity is in more than one table &mdash; on/off is holding +3 and coil +0, room temperature holding +6 and input +1. Pick one and stay with it.</p>
+
+  <h2>Malfunction Codes</h2>
+  <p>Holding +7 is 0 with no fault and <strong>0xFFFF when the gateway has lost the indoor unit</strong> (discrete input +1 says the same). Any other value is the brand's own code, as a number to translate: on Daikin 0x11 = A1, 0x30 = E0, 0x40 = H0; Mitsubishi Electric codes read as four decimal digits; LG as two. For a display, the two ASCII input registers give the code as text.</p>
+
+  <h2>Common Mistakes</h2>
+  <ul>
+    <li><strong>No answer at all:</strong> unit id 1 instead of 80; Modbus IP not enabled (or not rebooted); no VAs assigned yet.</li>
+    <li><strong>Every value one register off:</strong> the 17-versus-16 question above.</li>
+    <li><strong>The map changed after adding units:</strong> <span class="mono">va auto</span> renumbered them. Assign VAs by hand on a finished installation.</li>
+    <li><strong>Setpoint 240 &deg;C:</strong> the &times; 10 not applied.</li>
+    <li><strong>A mode that means something else:</strong> CoolMaster's 0 is Cool; Intesis gateways use 0 = Auto, 4 = Cool. A template from one gateway does not fit the other.</li>
+    <li><strong>A fault code of 65535 treated as a brand code:</strong> it means the indoor unit is not talking to the gateway.</li>
+  </ul>
+
+  <h2>Step-by-Step: Reading a CoolMasterNet with ModbusManager</h2>
+  <ol>
+    <li>Assign VAs (<span class="mono">va</span>), enable Modbus IP and reboot.</li>
+    <li>In ModbusManager choose TCP, the gateway's address, port 502, slave ID 80.</li>
+    <li>Read FC03 from 16 &times; VA, 12 registers: mode, fan, setpoint &times; 10, on/off &hellip; room &times; 10, malfunction.</li>
+    <li>Open the workspace below and change the VAs or add units by copying a poll window.</li>
+  </ol>
+
+  <h2>Download a Ready-Made Workspace</h2>
+  <ul>
+    <li>Four FC03 polls, one per indoor unit (VA1&ndash;VA4), unit ID 80</li>
+    <li>32 tags: mode, fan, setpoint and room temperature scaled &divide; 10, on/off, malfunction &mdash; and a script that turns the malfunction code into a fault flag and an offline flag (65535)</li>
+    <li>A dashboard: four VRF indoor-unit elements with room temperature, setpoint, mode and fan speed, the malfunction state of each unit, and a room temperature trend</li>
+  </ul>
+  <div class="callout">
+    <strong>Read-only.</strong> Nothing is written &mdash; no on/off, no setpoint. Set your gateway's IP address and your VAs; if VA1's mode reads at 17 on your gateway, add 1 to every poll address. Tags, script and dashboard are ModbusManager Pro features; Standard opens the poll windows only.
+  </div>
+  <div class="download-box">
+    <div>
+      <h3>CoolMasterNet_VRF.json</h3>
+      <p>CoolMasterNet workspace, four VRF indoor units (Modbus TCP, unit 80). Open via Workspace &rsaquo; Open in ModbusManager Pro, or from the in-app Device library.</p>
+    </div>
+    <a href="/CoolMasterNet_VRF.json" download>Download Workspace</a>
+  </div>
+
+  <div class="cta-box">
+    <div>
+      <h3>Try it with ModbusManager Pro</h3>
+      <p>VRF and indoor-unit faceplates, alarms on malfunction codes, historian, and MQTT to Home Assistant. Free 14-day trial. No credit card. Windows 10/11.</p>
+    </div>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.10/Modbus.Manager.Pro.Setup.1.9.10.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-CoolMaster-Body', 'product': 'pro', 'value': 1})">Download Pro Trial</a>
+  </div>
+
+  <p>The same VRF over BACnet: <a href="https://bacmanager.com/mitsubishi-ae200-bacnet.html">Mitsubishi AE-200</a> and <a href="https://bacmanager.com/daikin-itm-bacnet.html">Daikin iTM</a> on bacmanager.com. A heat pump for the hot water: <a href="/nibe-s-series-modbus.html">NIBE S-series</a>.</p>
+
+  <h2>Frequently Asked Questions</h2>
+
+  <h3>What is the default Modbus address of a CoolMasterNet?</h3>
+  <p>Slave address 80 (0x50) on RS-485, 9600 8N1. It is changed with line myid, and the value is given in hex. Modbus TCP uses port 502 and is off until you enable it and reboot.</p>
+
+  <h3>How do I find the Modbus register of a VRF indoor unit on a CoolMasterNet?</h3>
+  <p>Give the unit a Virtual Address (va command). Its 16-address block starts at VA &times; 16 + 1 in CoolAutomation's numbering, which is VA &times; 16 on the wire: VA1 mode is holding 16 (17 in 1-based tools). Check on your gateway which one yours answers.</p>
+
+  <h3>What does malfunction code 65535 mean on a CoolMasterNet?</h3>
+  <p>The gateway has lost communication with that indoor unit. 0 means no fault; any other value is the brand's own code (Daikin numbers translate to A1, E0, H0 and so on).</p>
+
+  <h3>Why does the setpoint read 240?</h3>
+  <p>Setpoint and room temperature are multiplied by 10: 240 is 24.0 &deg;C.</p>
+
+  <h3>Can I use an Intesis template on a CoolMasterNet?</h3>
+  <p>No. The mode numbers differ (CoolMaster 0 = Cool, Intesis 0 = Auto and 4 = Cool), and so do the addresses. Each gateway has its own map.</p>
+
+  <h2>Sources</h2>
+  <p style="font-size:0.85rem">CoolAutomation, <em>Modbus Integration Guidelines &mdash; CoolMaster, CooLinkBridge, CooLinkHub, CooLinkNet</em>, revision 1.3 (2025-07-17), and <em>CoolMaster Product Line PRM</em>, revision 0.10 (2024-11-01), support.coolautomation.com; the Loxone integration guide hosted there for the wire address of VA1. Tested against a simulator built from these documents, not against a physical gateway.</p>
+
+</div>
+
+<div class="hazard"></div>
+<!-- GATEWAY CROSS-LINK -->
+<section class="section">
+  <div class="sec-label">// beyond the indoor units</div>
+  <h2 class="sec-title">The VRF plus the rest of the building</h2>
+  <div style="max-width:820px;margin:0 auto;background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem">
+    <p style="color:var(--body);line-height:1.75;margin:0 0 1.1rem">ModbusManager Pro reads the VRF gateway next to meters, heat pumps and PLCs, and republishes the values as one Modbus TCP map or as MQTT topics with Home Assistant discovery.</p>
+    <a href="/modbus-gateway-software.html" style="font-family:'IBM Plex Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">Modbus gateway software &rarr;</a>
+  </div>
+</section>
+<footer class="sf" id="support">
+  <div class="sf-cols">
+    <div class="sf-col"><div class="sf-h">Features</div>
+      <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+      <a href="/modbus-data-logger-software.html">Data Logger</a>
+      <a href="/modbus-rtu-rs485-data-logger.html">RTU logging</a>
+      <a href="/modbus-to-csv-logging.html">CSV export</a>
+      <a href="/modbus-alarm-software.html">Alarms</a>
+      <a href="/modbus-gateway-software.html">Gateway</a>
+      <a href="/modbus-to-mqtt.html">Modbus to MQTT</a>
+      <a href="/modbus-structured-text-scripting.html">Tags &amp; scripting</a>
+    </div>
+    <div class="sf-col"><div class="sf-h">Devices</div>
+      <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+      <a href="/modbus-vfd-speed-reference.html">VFD drives</a>
+      <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    </div>
+    <div class="sf-col"><div class="sf-h">Help</div>
+      <a href="/manual.html">Documentation</a>
+      <a href="/#install">Install notes</a>
+      <a href="/linux-mac.html">Linux / Pi / Mac waitlist</a>
+      <a href="mailto:support@modbusmanager.com">Support</a>
+    </div>
+    <div class="sf-col"><div class="sf-h">Company</div>
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/license-terms.html">License terms</a>
+      <a href="https://bacmanager.com">BACManager (BACnet) &#8599;</a>
+    </div>
+  </div>
+  <div class="sf-bot"><span class="sf-logo">ModbusManager</span><span>Every device. One tool. Pay once.</span><span>&copy; 2026 E-Netter O&Uuml;</span><a href="mailto:support@modbusmanager.com">support@modbusmanager.com</a></div>
+<script id="sf-js">(function(){
+  function box(t){for(var e=t,i=0;e&&i<3;e=e.parentElement,i++){var o=getComputedStyle(e).overflowX;if(o==='auto'||o==='scroll')return e}return null}
+  function check(b){var h=b.previousElementSibling,wide=b.scrollWidth>b.clientWidth+4;
+    if(!h||!h.classList.contains('sf-swipe')){if(!wide)return;h=document.createElement('div');h.className='sf-swipe';h.textContent='Table continues \u2014 swipe sideways \u2192';b.parentNode.insertBefore(h,b);
+      b.addEventListener('scroll',function(){if(b.scrollLeft>20)h.hidden=true},{passive:true})}
+    if(!wide)h.hidden=true;else if(b.scrollLeft<=20)h.hidden=false}
+  function run(){var seen=[];document.querySelectorAll('table').forEach(function(t){var b=box(t);if(b&&seen.indexOf(b)<0){seen.push(b);check(b);if(window.ResizeObserver)new ResizeObserver(function(){check(b)}).observe(b)}})}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+})();</script>
+</footer>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+<script src="/email-capture.js" defer></script>
+
+<script>
+/* Download buttons (2026-10-26): the installer is fetched on a click, not
+   through the link's href, so crawlers that follow every link no longer count
+   as downloads on GitHub. data-dl is the address without https://.
+   Each click is also counted in our own Google Sheet (Apps Script), cookie
+   consent or not: site, product, version, page, referrer, language, time
+   zone. No cookies, no IP address. The download never waits for it.
+   A workspace (.json or .zip on this site) is counted as product "Workspace" with
+   the file name as its version, a manual (.pdf) as product "Manual"; both
+   download as before. */
+function dlCount(product, version) {
+  try {
+    navigator.sendBeacon('https://script.google.com/macros/s/AKfycbyx9RacY_l5KDK0RBBmLk41uKv3McyR_UJmCTWqnRqklh6fYgeXvYecddcQDGzRx5-F/exec', JSON.stringify({
+      site: location.hostname, product: product, version: version,
+      page: location.pathname, referrer: document.referrer, lang: navigator.language,
+      tz: (window.Intl && Intl.DateTimeFormat().resolvedOptions().timeZone) || ''
+    }));
+  } catch (err) {}
+}
+document.addEventListener('click', function (e) {
+  if (!e.target.closest) return;
+  var w = e.target.closest('a[href$=".json"], a[href$=".zip"], a[href$=".zap15_1"]');
+  if (w) { dlCount('Workspace', (w.getAttribute('href').match(/([^\/]+)\.(?:json|zip|zap15_1)$/) || [])[1] || ''); return; }
+  var m = e.target.closest('a[href$=".pdf"]');
+  if (m) { dlCount('Manual', (m.getAttribute('href').match(/([^\/]+)\.pdf$/) || [])[1] || ''); return; }
+  var a = e.target.closest('a[data-dl]');
+  if (!a || e.defaultPrevented) return;
+  e.preventDefault();
+  var dl = a.getAttribute('data-dl');
+  dlCount(/bacmanager/i.test(dl) ? 'BACManager' : (/Pro\.Setup|pro-v/i.test(dl) ? 'ModbusManager Pro' : 'ModbusManager Standard'),
+    (dl.match(/(\d+(?:\.\d+)+)\.exe$/) || [])[1] || '');
+  window.location.href = 'https://' + dl;
+});
+</script>
+<script src="/open-in-app.js" defer></script>
+</body>
+</html>

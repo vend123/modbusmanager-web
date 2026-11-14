@@ -192,6 +192,15 @@
       "page": "nibe-s-series-modbus.html"
     },
     {
+      "id": "coolmaster-vrf",
+      "name": "CoolMasterNet VRF (4 indoor units)",
+      "cat": "hvac",
+      "proto": "Modbus TCP",
+      "desc": "Daikin, Mitsubishi, LG and other VRF indoor units: mode, fan, setpoint, room, faults",
+      "ws": "CoolMasterNet_VRF.json",
+      "page": "coolmaster-vrf-modbus.html"
+    },
+    {
       "id": "ebmpapst-ec",
       "name": "ebm-papst EC fans (16 on one bus)",
       "cat": "hvac",

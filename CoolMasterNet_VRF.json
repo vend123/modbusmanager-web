@@ -1,0 +1,818 @@
+{
+  "version": 2,
+  "polls": [
+    {
+      "name": "VA1 Office 1 (holding 16-27)",
+      "fc": 3,
+      "addr": 16,
+      "qty": 12,
+      "slaveId": 80,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 16,
+      "chartName": "VA1 Office 1 (holding 16-27) [16]",
+      "logFile": "log_VA1_Office_1_holding_16_27_.txt"
+    },
+    {
+      "name": "VA2 Office 2 (holding 32-43)",
+      "fc": 3,
+      "addr": 32,
+      "qty": 12,
+      "slaveId": 80,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 32,
+      "chartName": "VA2 Office 2 (holding 32-43) [32]",
+      "logFile": "log_VA2_Office_2_holding_32_43_.txt"
+    },
+    {
+      "name": "VA3 Meeting room (holding 48-59)",
+      "fc": 3,
+      "addr": 48,
+      "qty": 12,
+      "slaveId": 80,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 48,
+      "chartName": "VA3 Meeting room (holding 48-59) [48]",
+      "logFile": "log_VA3_Meeting_room_holding_48_59_.txt"
+    },
+    {
+      "name": "VA4 Reception (holding 64-75)",
+      "fc": 3,
+      "addr": 64,
+      "qty": 12,
+      "slaveId": 80,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 64,
+      "chartName": "VA4 Reception (holding 64-75) [64]",
+      "logFile": "log_VA4_Reception_holding_64_75_.txt"
+    }
+  ],
+  "activePoll": 0,
+  "condColors": {},
+  "scaling": {},
+  "valueNames": {},
+  "chartSeries": [],
+  "slaveBlocks": [],
+  "dashTheme": "modern",
+  "dashFx": true,
+  "dashBgColor": "#0d1117",
+  "dashPages": [
+    {
+      "id": 1,
+      "name": "VRF indoor units",
+      "elements": [
+        {
+          "id": 1,
+          "value": 0,
+          "type": "statictext",
+          "x": 20,
+          "y": 10,
+          "w": 840,
+          "h": 30,
+          "text": "CoolMasterNet  ·  Modbus TCP 502, unit 80  ·  VA n = holding 16·n",
+          "fontSize": 20,
+          "bold": true,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 2,
+          "value": 0,
+          "type": "vrf",
+          "x": 20,
+          "y": 50,
+          "w": 200,
+          "h": 170,
+          "label": "VA1 Office 1",
+          "threshold": 1,
+          "colorOn": "#00d4aa",
+          "colorOff": "#5b6470",
+          "modes": "0=Cool,1=Heat,2=Auto,3=Dry,5=Fan",
+          "fans": "0=Low,1=Med,2=High,3=Auto",
+          "decimals": 1,
+          "view": "values",
+          "items": [
+            {
+              "role": "fault",
+              "name": "Malfunction",
+              "sourceType": "tag",
+              "tagName": "VA1_Fault"
+            },
+            {
+              "role": "mode",
+              "name": "Mode",
+              "sourceType": "tag",
+              "tagName": "VA1_Mode"
+            },
+            {
+              "role": "fan",
+              "name": "Fan",
+              "sourceType": "tag",
+              "tagName": "VA1_Fan"
+            },
+            {
+              "role": "roomT",
+              "name": "Room",
+              "sourceType": "tag",
+              "tagName": "VA1_Room"
+            },
+            {
+              "role": "sp",
+              "name": "Setpoint",
+              "sourceType": "tag",
+              "tagName": "VA1_SP"
+            }
+          ],
+          "sourceType": "tag",
+          "tagName": "VA1_On"
+        },
+        {
+          "id": 3,
+          "value": 0,
+          "type": "multistate",
+          "x": 20,
+          "y": 230,
+          "w": 200,
+          "h": 56,
+          "label": "Malfunction 23",
+          "states": "0=OK:#3fd28a,65535=Unit offline:#f85149",
+          "sourceType": "tag",
+          "tagName": "VA1_Malf"
+        },
+        {
+          "id": 4,
+          "value": 0,
+          "type": "vrf",
+          "x": 232,
+          "y": 50,
+          "w": 200,
+          "h": 170,
+          "label": "VA2 Office 2",
+          "threshold": 1,
+          "colorOn": "#00d4aa",
+          "colorOff": "#5b6470",
+          "modes": "0=Cool,1=Heat,2=Auto,3=Dry,5=Fan",
+          "fans": "0=Low,1=Med,2=High,3=Auto",
+          "decimals": 1,
+          "view": "values",
+          "items": [
+            {
+              "role": "fault",
+              "name": "Malfunction",
+              "sourceType": "tag",
+              "tagName": "VA2_Fault"
+            },
+            {
+              "role": "mode",
+              "name": "Mode",
+              "sourceType": "tag",
+              "tagName": "VA2_Mode"
+            },
+            {
+              "role": "fan",
+              "name": "Fan",
+              "sourceType": "tag",
+              "tagName": "VA2_Fan"
+            },
+            {
+              "role": "roomT",
+              "name": "Room",
+              "sourceType": "tag",
+              "tagName": "VA2_Room"
+            },
+            {
+              "role": "sp",
+              "name": "Setpoint",
+              "sourceType": "tag",
+              "tagName": "VA2_SP"
+            }
+          ],
+          "sourceType": "tag",
+          "tagName": "VA2_On"
+        },
+        {
+          "id": 5,
+          "value": 0,
+          "type": "multistate",
+          "x": 232,
+          "y": 230,
+          "w": 200,
+          "h": 56,
+          "label": "Malfunction 39",
+          "states": "0=OK:#3fd28a,65535=Unit offline:#f85149",
+          "sourceType": "tag",
+          "tagName": "VA2_Malf"
+        },
+        {
+          "id": 6,
+          "value": 0,
+          "type": "vrf",
+          "x": 444,
+          "y": 50,
+          "w": 200,
+          "h": 170,
+          "label": "VA3 Meeting room",
+          "threshold": 1,
+          "colorOn": "#00d4aa",
+          "colorOff": "#5b6470",
+          "modes": "0=Cool,1=Heat,2=Auto,3=Dry,5=Fan",
+          "fans": "0=Low,1=Med,2=High,3=Auto",
+          "decimals": 1,
+          "view": "values",
+          "items": [
+            {
+              "role": "fault",
+              "name": "Malfunction",
+              "sourceType": "tag",
+              "tagName": "VA3_Fault"
+            },
+            {
+              "role": "mode",
+              "name": "Mode",
+              "sourceType": "tag",
+              "tagName": "VA3_Mode"
+            },
+            {
+              "role": "fan",
+              "name": "Fan",
+              "sourceType": "tag",
+              "tagName": "VA3_Fan"
+            },
+            {
+              "role": "roomT",
+              "name": "Room",
+              "sourceType": "tag",
+              "tagName": "VA3_Room"
+            },
+            {
+              "role": "sp",
+              "name": "Setpoint",
+              "sourceType": "tag",
+              "tagName": "VA3_SP"
+            }
+          ],
+          "sourceType": "tag",
+          "tagName": "VA3_On"
+        },
+        {
+          "id": 7,
+          "value": 0,
+          "type": "multistate",
+          "x": 444,
+          "y": 230,
+          "w": 200,
+          "h": 56,
+          "label": "Malfunction 55",
+          "states": "0=OK:#3fd28a,65535=Unit offline:#f85149",
+          "sourceType": "tag",
+          "tagName": "VA3_Malf"
+        },
+        {
+          "id": 8,
+          "value": 0,
+          "type": "vrf",
+          "x": 656,
+          "y": 50,
+          "w": 200,
+          "h": 170,
+          "label": "VA4 Reception",
+          "threshold": 1,
+          "colorOn": "#00d4aa",
+          "colorOff": "#5b6470",
+          "modes": "0=Cool,1=Heat,2=Auto,3=Dry,5=Fan",
+          "fans": "0=Low,1=Med,2=High,3=Auto",
+          "decimals": 1,
+          "view": "values",
+          "items": [
+            {
+              "role": "fault",
+              "name": "Malfunction",
+              "sourceType": "tag",
+              "tagName": "VA4_Fault"
+            },
+            {
+              "role": "mode",
+              "name": "Mode",
+              "sourceType": "tag",
+              "tagName": "VA4_Mode"
+            },
+            {
+              "role": "fan",
+              "name": "Fan",
+              "sourceType": "tag",
+              "tagName": "VA4_Fan"
+            },
+            {
+              "role": "roomT",
+              "name": "Room",
+              "sourceType": "tag",
+              "tagName": "VA4_Room"
+            },
+            {
+              "role": "sp",
+              "name": "Setpoint",
+              "sourceType": "tag",
+              "tagName": "VA4_SP"
+            }
+          ],
+          "sourceType": "tag",
+          "tagName": "VA4_On"
+        },
+        {
+          "id": 9,
+          "value": 0,
+          "type": "multistate",
+          "x": 656,
+          "y": 230,
+          "w": 200,
+          "h": 56,
+          "label": "Malfunction 71",
+          "states": "0=OK:#3fd28a,65535=Unit offline:#f85149",
+          "sourceType": "tag",
+          "tagName": "VA4_Malf"
+        },
+        {
+          "id": 10,
+          "value": 0,
+          "type": "multitend",
+          "x": 20,
+          "y": 300,
+          "w": 840,
+          "h": 240,
+          "label": "Room temperatures (°C)",
+          "maxPoints": 1200,
+          "decimals": 1,
+          "sampleMs": 2000,
+          "yMin": 15,
+          "yMax": 30,
+          "items": [
+            {
+              "name": "VA1 Office 1",
+              "sourceType": "tag",
+              "tagName": "VA1_Room",
+              "color": "#58a6ff",
+              "value": 0
+            },
+            {
+              "name": "VA2 Office 2",
+              "sourceType": "tag",
+              "tagName": "VA2_Room",
+              "color": "#3fd28a",
+              "value": 0
+            },
+            {
+              "name": "VA3 Meeting room",
+              "sourceType": "tag",
+              "tagName": "VA3_Room",
+              "color": "#f0c040",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "VA1_Mode",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 16,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA1 mode: 0 Cool, 1 Heat, 2 Auto, 3 Dry, 5 Fan (holding 16)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "VA1_Fan",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 17,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA1 fan: 0 Low, 1 Med, 2 High, 3 Auto (holding 17)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "VA1_SP",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 18,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA1 setpoint °C, x10 (holding 18)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "VA1_On",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 19,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA1 on/off (holding 19)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "VA1_Room",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 22,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA1 room temperature °C, x10 (holding 22)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "VA1_Malf",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 23,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA1 malfunction code, 0 = none, 65535 = offline (holding 23)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "VA1_Fault",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "VA1: 1 when a malfunction code is set"
+    },
+    {
+      "name": "VA1_Offline",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "VA1: 1 when the gateway lost the indoor unit (65535)"
+    },
+    {
+      "name": "VA2_Mode",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 32,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA2 mode: 0 Cool, 1 Heat, 2 Auto, 3 Dry, 5 Fan (holding 32)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "VA2_Fan",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 33,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA2 fan: 0 Low, 1 Med, 2 High, 3 Auto (holding 33)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "VA2_SP",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 34,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA2 setpoint °C, x10 (holding 34)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "VA2_On",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 35,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA2 on/off (holding 35)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "VA2_Room",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 38,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA2 room temperature °C, x10 (holding 38)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "VA2_Malf",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 39,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA2 malfunction code, 0 = none, 65535 = offline (holding 39)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "VA2_Fault",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "VA2: 1 when a malfunction code is set"
+    },
+    {
+      "name": "VA2_Offline",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "VA2: 1 when the gateway lost the indoor unit (65535)"
+    },
+    {
+      "name": "VA3_Mode",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 48,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA3 mode: 0 Cool, 1 Heat, 2 Auto, 3 Dry, 5 Fan (holding 48)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "VA3_Fan",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 49,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA3 fan: 0 Low, 1 Med, 2 High, 3 Auto (holding 49)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "VA3_SP",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 50,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA3 setpoint °C, x10 (holding 50)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "VA3_On",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 51,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA3 on/off (holding 51)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "VA3_Room",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 54,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA3 room temperature °C, x10 (holding 54)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "VA3_Malf",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 55,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA3 malfunction code, 0 = none, 65535 = offline (holding 55)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "VA3_Fault",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "VA3: 1 when a malfunction code is set"
+    },
+    {
+      "name": "VA3_Offline",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "VA3: 1 when the gateway lost the indoor unit (65535)"
+    },
+    {
+      "name": "VA4_Mode",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 64,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA4 mode: 0 Cool, 1 Heat, 2 Auto, 3 Dry, 5 Fan (holding 64)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "VA4_Fan",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 65,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA4 fan: 0 Low, 1 Med, 2 High, 3 Auto (holding 65)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "VA4_SP",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 66,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA4 setpoint °C, x10 (holding 66)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "VA4_On",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 67,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA4 on/off (holding 67)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "VA4_Room",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 70,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA4 room temperature °C, x10 (holding 70)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "VA4_Malf",
+      "type": "register",
+      "slaveId": 80,
+      "regType": "holdingRegisters",
+      "address": 71,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "VA4 malfunction code, 0 = none, 65535 = offline (holding 71)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "VA4_Fault",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "VA4: 1 when a malfunction code is set"
+    },
+    {
+      "name": "VA4_Offline",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "VA4: 1 when the gateway lost the indoor unit (65535)"
+    }
+  ],
+  "script": "(* CoolMasterNet: holding +7 is the malfunction code. 0 = no fault,\n   65535 = the gateway lost the indoor unit; anything else is a brand code. *)\nIF VA1_Malf = 65535 THEN VA1_Offline := 1; VA1_Fault := 1;\nELSIF VA1_Malf <> 0 THEN VA1_Offline := 0; VA1_Fault := 1;\nELSE VA1_Offline := 0; VA1_Fault := 0; END_IF;\nIF VA2_Malf = 65535 THEN VA2_Offline := 1; VA2_Fault := 1;\nELSIF VA2_Malf <> 0 THEN VA2_Offline := 0; VA2_Fault := 1;\nELSE VA2_Offline := 0; VA2_Fault := 0; END_IF;\nIF VA3_Malf = 65535 THEN VA3_Offline := 1; VA3_Fault := 1;\nELSIF VA3_Malf <> 0 THEN VA3_Offline := 0; VA3_Fault := 1;\nELSE VA3_Offline := 0; VA3_Fault := 0; END_IF;\nIF VA4_Malf = 65535 THEN VA4_Offline := 1; VA4_Fault := 1;\nELSIF VA4_Malf <> 0 THEN VA4_Offline := 0; VA4_Fault := 1;\nELSE VA4_Offline := 0; VA4_Fault := 0; END_IF;\n",
+  "scriptInterval": "1000",
+  "historianLogging": {
+    "registers": [],
+    "tags": []
+  },
+  "saved": "2026-11-14T12:00:00.000Z"
+}
