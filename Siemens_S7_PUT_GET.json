@@ -230,7 +230,9 @@
           "decimals": 1,
           "w": 840,
           "h": 240,
-          "sampleMs": 1000
+          "sampleMs": 1000,
+          "yMin": 0,
+          "yMax": 50
         }
       ]
     }

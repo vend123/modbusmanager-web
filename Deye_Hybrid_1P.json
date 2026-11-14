@@ -314,7 +314,9 @@
           "decimals": 0,
           "w": 840,
           "h": 260,
-          "sampleMs": 1000
+          "sampleMs": 1000,
+          "yMin": 0,
+          "yMax": 6000
         }
       ]
     }
