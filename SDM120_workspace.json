@@ -265,7 +265,9 @@
           "tagName": "power_w",
           "unit": "W",
           "min": 0,
-          "max": 10000
+          "max": 10000,
+          "yMin": 0,
+          "yMax": 10000
         }
       ]
     }

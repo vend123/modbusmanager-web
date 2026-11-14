@@ -462,7 +462,9 @@
           "sourceType": "tag",
           "tagName": "power_total",
           "unit": "kW",
-          "color": "#f0c040"
+          "color": "#f0c040",
+          "yMin": 0,
+          "yMax": 20
         }
       ]
     }
