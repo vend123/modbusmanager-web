@@ -37,7 +37,7 @@
   "description": "How to read an Eastron SDM630 three-phase energy meter over Modbus RTU using ModbusManager: full register map, FLOAT32 decoding, FC04 input registers, serial settings and live data.",
   "url": "https://modbusmanager.com/eastron-sdm630-modbus.html",
   "datePublished": "2026-06-30",
-  "dateModified": "2026-11-03",
+  "dateModified": "2026-11-14",
   "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
   "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
 },
@@ -45,7 +45,7 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {"@type": "Question", "name": "What function code does the SDM630 use?", "acceptedAnswer": {"@type": "Answer", "text": "The SDM630 measurement values are input registers, read with Modbus function code 04 (not 03). Reading a measurement with FC03 returns an exception, so set your tool to FC04 for live values."}},
+    {"@type": "Question", "name": "What function code does the SDM630 use?", "acceptedAnswer": {"@type": "Answer", "text": "The SDM630 measurement values are input registers, read with Modbus function code 04 (not 03). Reading the same address with FC03 does not fail: it reads the holding register there, a setting (at address 0 that is 40001, the demand time), not the measurement. Set your tool to FC04 for live values."}},
     {"@type": "Question", "name": "What format are SDM630 registers?", "acceptedAnswer": {"@type": "Answer", "text": "Every measurement is a 32-bit IEEE 754 float spanning two consecutive registers, high word first (big-endian word order). Always read two registers per value and decode as FLOAT32."}},
     {"@type": "Question", "name": "What Modbus settings does the SDM630 use?", "acceptedAnswer": {"@type": "Answer", "text": "The SDM630 is a Modbus RTU slave over 2-wire RS-485. Baud rate is selectable (2400 to 38400), set from the front panel along with the node address and parity. A common default is 9600 baud."}},
     {"@type": "Question", "name": "Can I use the SDM630 register map with other meters?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The SDM630 layout is the de facto reference for three-phase energy meters. Eastron variants and many Carlo Gavazzi meters follow the same FLOAT32 pattern for voltage, current and power."}},
@@ -535,7 +535,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
   <p class="sec-sub">From wiring to live values in a few minutes.</p>
   <div class="steps">
     <div class="step"><div class="step-label">Step 1</div><div class="step-title">Connect</div><div class="step-text">Wire RS-485 A (+) and B (-) to the meter&rsquo;s comm terminals with 120&nbsp;&Omega; shielded twisted pair. In ModbusManager pick RTU with the meter&rsquo;s baud rate (default 9600), parity and slave address.</div></div>
-    <div class="step"><div class="step-label">Step 2</div><div class="step-title">Poll &amp; decode</div><div class="step-text">Add a poll on <strong>input registers (FC04)</strong> starting at address 0 (register 30001). Set the display type to FLOAT32 so each register pair becomes a real value. Using FC03 here returns an exception &mdash; measurements are input registers.</div></div>
+    <div class="step"><div class="step-label">Step 2</div><div class="step-title">Poll &amp; decode</div><div class="step-text">Add a poll on <strong>input registers (FC04)</strong> starting at address 0 (register 30001). Set the display type to FLOAT32 so each register pair becomes a real value. With FC03 the meter still answers, but from its holding registers: address 0 is then 40001, the demand time, not the L1 voltage &mdash; measurements are input registers.</div></div>
     <div class="step"><div class="step-label">Step 3</div><div class="step-title">Visualise &amp; log</div><div class="step-text">Map the values to a <a href="/modbus-hmi-dashboard.html">dashboard</a> for a live panel, log them to the <a href="/modbus-data-logger-software.html">Historian</a> for energy studies, or set <a href="/modbus-alarm-software.html">alarms</a> on over-voltage or over-current.</div></div>
   </div>
 </section>
@@ -556,7 +556,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
   <div class="sec-label">// frequently asked questions</div>
   <h2 class="sec-title">SDM630 Modbus &mdash; FAQ</h2>
   <div class="faq-list">
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What function code does the SDM630 use?<span class="icon">+</span></div><div class="faq-a">The SDM630 measurement values are input registers, read with Modbus function code 04 (not 03). Configuration parameters use holding registers with FC03 read and FC16 write. Reading a measurement with FC03 returns an exception, so set your tool to FC04 for live values.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What function code does the SDM630 use?<span class="icon">+</span></div><div class="faq-a">The SDM630 measurement values are input registers, read with Modbus function code 04 (not 03). Configuration parameters use holding registers with FC03 read and FC16 write. Reading the same address with FC03 does not fail: it reads the holding register there, a setting (at address 0 that is 40001, the demand time), not the measurement. Set your tool to FC04 for live values.</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What format are SDM630 registers?<span class="icon">+</span></div><div class="faq-a">Every measurement is a 32-bit IEEE 754 float spanning two consecutive registers, high word first (big-endian word order). There are no integer-with-scale-factor registers in the measurement area, so always read two registers per value and decode as FLOAT32.</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What Modbus settings does the SDM630 use?<span class="icon">+</span></div><div class="faq-a">The SDM630 is a Modbus RTU slave over 2-wire RS-485. Baud rate is selectable (2400, 4800, 9600, 19200, 38400), set from the front panel along with the node address and parity. A common default is 9600 baud, no parity, but check the meter's display.</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I read the SDM630 register map with other meters?<span class="icon">+</span></div><div class="faq-a">Yes. The SDM630 layout is the de facto reference for three-phase energy meters. Eastron variants (SDM630MCT, SDM630-TCP) and many Carlo Gavazzi meters follow the same FLOAT32, two-register-per-value pattern for voltage, current and power, though some addresses differ.</div></div>
