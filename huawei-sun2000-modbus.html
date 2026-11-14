@@ -210,6 +210,20 @@ nav .nav-links.open{display:flex!important;flex-direction:column;position:absolu
   gtag('config', 'G-42Q8HEKC0X');
 </script>
 <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": "Huawei SUN2000 Modbus TCP: exception 02, 32-bit pairs and status",
+  "description": "A Huawei SUN2000 inverter over Modbus TCP through its SDongle: port 502 and the unit ID, function code 3 for every register, exception 02 when a request runs into an address Huawei does not define, active power 32080 as a signed 32-bit pair with gain 1000, reactive power 32082 reading 65535 one word at a time, device status 32089, and the ready-made workspace from the device library.",
+  "thumbnailUrl": "https://modbusmanager.com/sun2000-video-thumb.jpg",
+  "uploadDate": "2026-11-14",
+  "duration": "PT2M42S",
+  "embedUrl": "https://www.youtube-nocookie.com/embed/-dvQdsa_oDw",
+  "contentUrl": "https://www.youtube.com/watch?v=-dvQdsa_oDw",
+  "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
+}
+</script>
+<script type="application/ld+json">
 {"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/#guides"},{"@type": "ListItem","position": 3,"name": "Huawei SUN2000 Guide","item": "https://modbusmanager.com/huawei-sun2000-modbus.html"}]}
 </script>
 <style id="site-nav">
@@ -389,13 +403,35 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
   <p class="lead">How to read a Huawei SUN2000 inverter <strong>directly</strong> over Modbus TCP or RS485 &mdash; through the SDongle, the inverter's own network port, or the RS485 terminals. Connection settings, the registers that matter for monitoring, their gains and data types, the power meter and battery registers, and the mistakes that make a SUN2000 return exceptions or nonsense. Behind a SmartLogger the registers are remapped &mdash; for that case see the <a href="/huawei-smartlogger-modbus.html">SmartLogger guide</a>. Other inverters: <a href="/sungrow-inverter-modbus.html">Sungrow</a>.</p>
 
   <figure style="margin:1.8rem 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink)">
-    <img src="/sun2000-dashboard.png" width="1320" height="825" loading="lazy" decoding="async"
-         alt="ModbusManager Pro dashboard for a Huawei SUN2000-10KTL inverter: active power gauge 7.9 kW, status On-grid, today's and total yield, grid export, efficiency, PV1 and PV2 voltage and current, and a trend of DC input against AC output"
-         style="width:100%;height:auto;display:block">
+    <div id="sunVideo" style="position:relative;cursor:pointer;line-height:0" onclick="sunPlayVideo()"
+         role="button" tabindex="0" aria-label="Play the Huawei SUN2000 Modbus TCP video"
+         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();sunPlayVideo();}">
+      <img src="/sun2000-video-thumb.jpg" width="1280" height="800" loading="lazy" decoding="async"
+           alt="ModbusManager Pro dashboard for a Huawei SUN2000-10KTL inverter: active power gauge 7.5 kW, status On-grid, today's and total yield, grid export, efficiency, PV1 and PV2 voltage and current, and a trend of DC input against AC output"
+           style="width:100%;height:auto;display:block">
+      <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(22,24,26,.35)">
+        <span style="display:flex;align-items:center;justify-content:center;width:78px;height:78px;border-radius:50%;background:var(--safety);color:var(--ink);font-size:30px;padding-left:6px">&#9654;</span>
+      </span>
+      <span style="position:absolute;right:10px;bottom:10px;background:rgba(22,24,26,.85);color:#E6E8E3;font-family:'IBM Plex Mono',monospace;font-size:.72rem;padding:2px 7px;border-radius:2px">2:42</span>
+    </div>
     <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">
-      The free workspace below, reading a simulated SUN2000-10KTL-M1 with the register map on this page. Every value is a scaled register tag.
+      Video: Modbus TCP through the SDongle, exception 02 on an undefined block, the 32-bit pairs at 32080 and 32082, status 32089, and the free workspace below from the device library &mdash; against a simulated SUN2000-10KTL-M1.
     </figcaption>
   </figure>
+  <script>
+  function sunPlayVideo() {
+    var box = document.getElementById('sunVideo');
+    if (!box || box.dataset.loaded) return;
+    box.dataset.loaded = '1';
+    box.innerHTML = '<div style="position:relative;padding-top:62.5%">' +
+      '<iframe src="https://www.youtube-nocookie.com/embed/-dvQdsa_oDw?autoplay=1&rel=0" ' +
+      'title="Huawei SUN2000 Modbus TCP: exception 02, 32-bit pairs and status" ' +
+      'style="position:absolute;inset:0;width:100%;height:100%;border:0" ' +
+      'allow="accelerometer; autoplay; encrypted-media; picture-in-picture" ' +
+      'allowfullscreen></iframe></div>';
+    if (typeof gtag === 'function') gtag('event', 'video_play', { event_category: 'Video', event_label: 'SUN2000-Guide' });
+  }
+  </script>
 
   <h2>Connection Settings</h2>
 
