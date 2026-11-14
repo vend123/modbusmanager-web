@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Modbus Device Guides: Inverters, Meters, Drives, PLCs</title>
-<meta name="description" content="32 Modbus guides: Huawei, Sungrow, Victron, Eastron, Schneider, ABB, Danfoss, Siemens and more — register maps from vendor documents, traps, free workspaces.">
+<meta name="description" content="42 Modbus guides: Huawei, Sungrow, Victron, Eastron, Schneider, ABB, Danfoss, Siemens and more — register maps from vendor documents, traps, free workspaces.">
 <meta name="keywords" content="Modbus device guides, Modbus register map, Modbus inverter, Modbus energy meter, Modbus VFD, Modbus PLC">
 <meta name="author" content="ModbusManager">
 <meta name="robots" content="index, follow">
@@ -362,7 +362,7 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
 
   <h1>Modbus Device Guides and How-tos</h1>
 
-  <p class="lead">Every guide on this site in one place: 32 pages on reading real devices over Modbus &mdash; inverters, energy meters, drives, PLCs &mdash; and on the protocol details that trip people up. Each device guide has its register map from the vendor's own documents, the traps an integrator meets, and most come with a free ModbusManager workspace you can open and point at your device.</p>
+  <p class="lead">Every guide on this site in one place: 42 pages on reading real devices over Modbus &mdash; inverters, energy meters, drives, PLCs &mdash; and on the protocol details that trip people up. Each device guide has its register map from the vendor's own documents, the traps an integrator meets, and most come with a free ModbusManager workspace you can open and point at your device.</p>
 
   <style>
   .gh-group{margin:2rem 0 0}
@@ -384,6 +384,12 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
       <a class="gh-card" href="/victron-gx-modbus-tcp.html"><span class="gh-name">Victron Cerbo GX</span><span class="gh-ws">free workspace</span><span class="gh-desc">Victron GX Modbus TCP: enable the server, Unit-ID 100 for system data, 227 for the MultiPlus, registers 840-850, scale factors, 0x0A/0x0B. Free workspace.</span></a>
       <a class="gh-card" href="/goodwe-et-hybrid-modbus.html"><span class="gh-name">GoodWe ET Hybrid</span><span class="gh-ws">free workspace</span><span class="gh-desc">GoodWe ET / EH hybrid inverter Modbus: factory address 247, 9600 8N1, FC03, PV at 35103, battery 35180, SOC 37007, work and battery mode. Free workspace.</span></a>
       <a class="gh-card" href="/deye-sunsynk-growatt-modbus.html"><span class="gh-name">Deye, Sunsynk &amp; Growatt</span><span class="gh-ws">free workspace</span><span class="gh-desc">Deye, Sunsynk and Growatt hybrid inverter Modbus registers: battery SOC, grid and load power, signs, FC03 vs FC04, word order, RS485 settings, free workspace.</span></a>
+      <a class="gh-card" href="/lufft-ws-weather-sensor-modbus.html"><span class="gh-name">Lufft WS weather sensors</span><span class="gh-ws">free workspace</span><span class="gh-desc">Lufft WS200-WS600 weather sensor Modbus RTU: switch from UMB with the Config Tool, 19200 8E1, Reg. Addr. vs Reg. No., 65535 = not fitted. Free workspace.</span></a>
+  </div>
+
+  <h2 class="gh-group">EV charging</h2>
+  <div class="gh-grid">
+      <a class="gh-card" href="/alfen-eve-modbus.html"><span class="gh-name">Alfen Eve EV charger</span><span class="gh-ws">free workspace</span><span class="gh-desc">Alfen Eve (NG9xx) Modbus TCP: licence, unit ID 200 station / 1 socket, FLOAT32 meter, Mode 3 state string, max current every 60 s. Free workspace.</span></a>
   </div>
 
   <h2 class="gh-group">Energy meters</h2>
@@ -395,7 +401,16 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
       <a class="gh-card" href="/eastron-sdm230-sdm72-modbus.html"><span class="gh-name">Eastron SDM230 / SDM72</span><span class="gh-ws">free workspace</span><span class="gh-desc">Eastron SDM230 and SDM72 Modbus: FC04 input registers, even register count, 30 values max, SDM72D-M nine registers vs SDM72DM-V2. Free workspace.</span></a>
       <a class="gh-card" href="/carlo-gavazzi-em24-em340-modbus.html"><span class="gh-name">Carlo Gavazzi EM340 / EM24</span><span class="gh-ws">free workspace</span><span class="gh-desc">Carlo Gavazzi EM340 / EM24 Modbus: physical = Modicom - 300001, INT32 low word first, V x10, A x1000, FC03 = FC04, EM24 E1 192.168.1.10. Free workspace.</span></a>
       <a class="gh-card" href="/janitza-umg-96-pa-modbus.html"><span class="gh-name">Janitza UMG 96-PA</span><span class="gh-ws">free workspace</span><span class="gh-desc">Janitza UMG 96-PA Modbus: the 19000 Float32 block, W and Wh units, little-endian at address + 32768, baud rate Auto, address 1-250. Free workspace.</span></a>
+      <a class="gh-card" href="/socomec-diris-a40-modbus.html"><span class="gh-name">Socomec DIRIS A-40</span><span class="gh-ws">free workspace</span><span class="gh-desc">Socomec DIRIS A-40 Modbus table: legacy block 50512 (power in 10 W) vs 18476 (W), frequency Hz/100 vs mHz, THD and harmonics. Free workspace.</span></a>
       <a class="gh-card" href="/wattnode-modbus.html"><span class="gh-name">WattNode</span><span class="gh-desc">Why a new WattNode reads voltage correctly but power wrong, which register fixes it, and how to commission the meter over RS-485 in minutes.</span></a>
+  </div>
+
+  <h2 class="gh-group">Heat pumps &amp; HVAC</h2>
+  <div class="gh-grid">
+      <a class="gh-card" href="/nibe-s-series-modbus.html"><span class="gh-name">NIBE S-series heat pumps</span><span class="gh-ws">free workspace</span><span class="gh-desc">NIBE S1155/S1255 Modbus TCP: switch it on in menu 7.5.9, port 502, FC04 measurements, FC03 settings, degree minutes, 20-register limit. Free workspace.</span></a>
+      <a class="gh-card" href="/coolmaster-vrf-modbus.html"><span class="gh-name">CoolMasterNet VRF</span><span class="gh-ws">free workspace</span><span class="gh-desc">CoolMasterNet Modbus for Daikin, Mitsubishi, LG VRF: Virtual Addresses, unit ID 80, the 16-address block per indoor unit, fault 65535. Free workspace.</span></a>
+      <a class="gh-card" href="/grundfos-magna3-cim-modbus.html"><span class="gh-name">Grundfos MAGNA3 (CIM)</span><span class="gh-ws">free workspace</span><span class="gh-desc">Grundfos MAGNA3 Modbus via CIM 200 (RTU 19200 8E1) or CIM 500 (TCP): register X = wire X-1, remote access bit, setpoint in %. Free workspace.</span></a>
+      <a class="gh-card" href="/carel-pco-modbus.html"><span class="gh-name">Carel pCO (chiller / AHU)</span><span class="gh-ws">free workspace</span><span class="gh-desc">Carel pCO Modbus: D[n] = coil n, A[n] = register n x 10, I[n] = register 128 + n, the threshold, n or n+1, and a chiller example. Free workspace.</span></a>
   </div>
 
   <h2 class="gh-group">Drives &amp; EC fans</h2>
@@ -417,6 +432,13 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
   <div class="gh-grid">
       <a class="gh-card" href="/modbus-hmi-siemens-s7-1200.html"><span class="gh-name">Siemens S7-1200 HMI</span><span class="gh-desc">Turn ModbusManager Pro into a live HMI for your S7-1200 over Modbus TCP. Free demo project with SCL code and workspace you can run on real hardware.</span></a>
       <a class="gh-card" href="/siemens-s7-put-get.html"><span class="gh-name">Siemens S7 PUT/GET</span><span class="gh-ws">free workspace</span><span class="gh-desc">Read and write Siemens S7-1200/1500 DBs, merkers and I/O from a PC over PUT/GET: TIA settings, address format, HMI, logging and an S7-Modbus gateway.</span></a>
+  </div>
+
+  <h2 class="gh-group">Controllers</h2>
+  <div class="gh-grid">
+      <a class="gh-card" href="/omron-e5cc-modbus.html"><span class="gh-name">Omron E5CC temperature controller</span><span class="gh-ws">free workspace</span><span class="gh-desc">Omron E5CC Modbus RTU: switch PSEL from CompoWay/F, 4-byte map at 0x0000 vs 2-byte at 0x2000, Decimal Point Monitor, RUN/STOP bit. Free workspace.</span></a>
+      <a class="gh-card" href="/danfoss-ak-cc-350-modbus.html"><span class="gh-name">Danfoss AK-CC 350 case controller</span><span class="gh-ws">free workspace</span><span class="gh-desc">Danfoss AK-CC 350 case controller Modbus: PNU minus one, temperatures as one register x 0.1, r00 cutout, EKC state, alarm bits 20000+. Free workspace.</span></a>
+      <a class="gh-card" href="/deepsea-dse7320-modbus.html"><span class="gh-name">Deep Sea DSE7320 generator</span><span class="gh-ws">free workspace</span><span class="gh-desc">DSE7320 MKII Modbus RTU via GenComm: address = page x 256 + offset, 8N1, sentinels like 0xFFFF, alarm flags, start/stop keys. Free workspace.</span></a>
   </div>
 
   <h2 class="gh-group">Modbus how-to</h2>
