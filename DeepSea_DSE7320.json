@@ -1,0 +1,1010 @@
+{
+  "version": 2,
+  "polls": [
+    {
+      "name": "Page 3: control mode, flags (772-774)",
+      "fc": 3,
+      "addr": 772,
+      "qty": 3,
+      "slaveId": 10,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 772,
+      "chartName": "Page 3: control mode, flags (772-774) [772]",
+      "logFile": "log_Page_3_control_mode_flags_772_774_.txt"
+    },
+    {
+      "name": "Page 4: engine, generator, mains (1024-1065)",
+      "fc": 3,
+      "addr": 1024,
+      "qty": 42,
+      "slaveId": 10,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 1024,
+      "chartName": "Page 4: engine, generator, mains (1024-1065) [1024]",
+      "logFile": "log_Page_4_engine_generator_mains_1024_1065_.txt"
+    },
+    {
+      "name": "Page 6: totals, PF (1536-1558)",
+      "fc": 3,
+      "addr": 1536,
+      "qty": 23,
+      "slaveId": 10,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 1536,
+      "chartName": "Page 6: totals, PF (1536-1558) [1536]",
+      "logFile": "log_Page_6_totals_PF_1536_1558_.txt"
+    },
+    {
+      "name": "Page 7: run time, kWh, starts (1798-1809)",
+      "fc": 3,
+      "addr": 1798,
+      "qty": 12,
+      "slaveId": 10,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 1798,
+      "chartName": "Page 7: run time, kWh, starts (1798-1809) [1798]",
+      "logFile": "log_Page_7_run_time_kWh_starts_1798_1809_.txt"
+    },
+    {
+      "name": "Page 154: named alarms (39425-39429)",
+      "fc": 3,
+      "addr": 39425,
+      "qty": 5,
+      "slaveId": 10,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 39425,
+      "chartName": "Page 154: named alarms (39425-39429) [39425]",
+      "logFile": "log_Page_154_named_alarms_39425_39429_.txt"
+    }
+  ],
+  "activePoll": 0,
+  "condColors": {},
+  "scaling": {},
+  "valueNames": {},
+  "chartSeries": [],
+  "slaveBlocks": [],
+  "dashTheme": "modern",
+  "dashFx": true,
+  "dashBgColor": "#0d1117",
+  "dashPages": [
+    {
+      "id": 1,
+      "name": "DSE7320",
+      "elements": [
+        {
+          "id": 1,
+          "value": 0,
+          "type": "statictext",
+          "x": 20,
+          "y": 10,
+          "w": 840,
+          "h": 30,
+          "text": "Deep Sea DSE7320 MKII  ·  GenComm: page x 256 + offset  ·  RTU 8N1, address 10",
+          "fontSize": 20,
+          "bold": true,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 2,
+          "value": 0,
+          "type": "gen",
+          "x": 20,
+          "y": 50,
+          "w": 150,
+          "h": 130,
+          "label": "G1 200 kVA",
+          "items": [
+            {
+              "role": "run",
+              "name": "Engine running",
+              "sourceType": "tag",
+              "tagName": "Gen_Run"
+            },
+            {
+              "role": "fault",
+              "name": "Shutdown / trip",
+              "sourceType": "tag",
+              "tagName": "Gen_Fault"
+            },
+            {
+              "role": "power",
+              "name": "kW (page 6)",
+              "sourceType": "tag",
+              "tagName": "Gen_kW"
+            },
+            {
+              "role": "volt",
+              "name": "L1-N",
+              "sourceType": "tag",
+              "tagName": "Gen_V1"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "value": 0,
+          "type": "ats",
+          "x": 180,
+          "y": 50,
+          "w": 160,
+          "h": 130,
+          "label": "AMF transfer",
+          "items": [
+            {
+              "role": "pos1",
+              "name": "On mains",
+              "sourceType": "tag",
+              "tagName": "On_Mains"
+            },
+            {
+              "role": "pos2",
+              "name": "On generator",
+              "sourceType": "tag",
+              "tagName": "On_Gen"
+            },
+            {
+              "role": "av1",
+              "name": "Mains available",
+              "sourceType": "tag",
+              "tagName": "Mains_OK"
+            },
+            {
+              "role": "av2",
+              "name": "Generator available",
+              "sourceType": "tag",
+              "tagName": "Gen_Avail"
+            },
+            {
+              "role": "auto",
+              "name": "Auto",
+              "sourceType": "tag",
+              "tagName": "Auto"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "value": 0,
+          "type": "meter3",
+          "x": 20,
+          "y": 190,
+          "w": 320,
+          "h": 145,
+          "label": "Generator",
+          "unitId": 10,
+          "nomV": 230,
+          "ratedA": 290,
+          "pUnit": "kW",
+          "vUnbal": 2,
+          "iUnbal": 10,
+          "lostPct": 50,
+          "showLL": false,
+          "showEnergy": false,
+          "view": "compact",
+          "phaseColors": "iec",
+          "flagTag": "",
+          "pts": {
+            "v1": {
+              "src": "tag",
+              "tagName": "Gen_V1"
+            },
+            "v2": {
+              "src": "tag",
+              "tagName": "Gen_V2"
+            },
+            "v3": {
+              "src": "tag",
+              "tagName": "Gen_V3"
+            },
+            "i1": {
+              "src": "tag",
+              "tagName": "Gen_I1"
+            },
+            "i2": {
+              "src": "tag",
+              "tagName": "Gen_I2"
+            },
+            "i3": {
+              "src": "tag",
+              "tagName": "Gen_I3"
+            },
+            "p1": {
+              "src": "tag",
+              "tagName": "Gen_P1"
+            },
+            "p2": {
+              "src": "tag",
+              "tagName": "Gen_P2"
+            },
+            "p3": {
+              "src": "tag",
+              "tagName": "Gen_P3"
+            },
+            "pt": {
+              "src": "tag",
+              "tagName": "Gen_kW"
+            },
+            "pft": {
+              "src": "tag",
+              "tagName": "Gen_PF"
+            },
+            "hz": {
+              "src": "tag",
+              "tagName": "Gen_Hz"
+            }
+          }
+        },
+        {
+          "id": 5,
+          "value": 0,
+          "type": "multistate",
+          "x": 360,
+          "y": 50,
+          "w": 250,
+          "h": 66,
+          "label": "Control mode (772)",
+          "states": "0=Stop:#f85149,1=Auto:#3fd28a,2=Manual:#f0c040,3=Test on load:#f0c040,6=Test off load:#f0c040,7=Off:#9fb3cc",
+          "sourceType": "tag",
+          "tagName": "Control_Mode"
+        },
+        {
+          "id": 6,
+          "value": 0,
+          "type": "multistate",
+          "x": 620,
+          "y": 50,
+          "w": 240,
+          "h": 66,
+          "label": "Alarms (774 flags)",
+          "states": "0=No alarm:#3fd28a,1024=Warning:#f0c040,2048=Electrical trip:#f85149,4096=Shutdown:#f85149",
+          "sourceType": "tag",
+          "tagName": "Flags"
+        },
+        {
+          "id": 7,
+          "value": 0,
+          "type": "text",
+          "x": 360,
+          "y": 126,
+          "w": 125,
+          "h": 66,
+          "label": "Engine 1030",
+          "unit": "rpm",
+          "decimals": 0,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Engine_rpm"
+        },
+        {
+          "id": 8,
+          "value": 0,
+          "type": "text",
+          "x": 495,
+          "y": 126,
+          "w": 125,
+          "h": 66,
+          "label": "Oil 1024",
+          "unit": "kPa",
+          "decimals": 0,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Oil_kPa"
+        },
+        {
+          "id": 9,
+          "value": 0,
+          "type": "text",
+          "x": 630,
+          "y": 126,
+          "w": 125,
+          "h": 66,
+          "label": "Coolant 1025",
+          "unit": "°C",
+          "decimals": 0,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Coolant_C"
+        },
+        {
+          "id": 10,
+          "value": 0,
+          "type": "text",
+          "x": 765,
+          "y": 126,
+          "w": 95,
+          "h": 66,
+          "label": "Fuel 1027",
+          "unit": "%",
+          "decimals": 0,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Fuel_pct"
+        },
+        {
+          "id": 11,
+          "value": 0,
+          "type": "text",
+          "x": 360,
+          "y": 202,
+          "w": 125,
+          "h": 66,
+          "label": "Battery 1029",
+          "unit": "V",
+          "decimals": 1,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Battery_V"
+        },
+        {
+          "id": 12,
+          "value": 0,
+          "type": "text",
+          "x": 495,
+          "y": 202,
+          "w": 125,
+          "h": 66,
+          "label": "Load 1558",
+          "unit": "%",
+          "decimals": 1,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Load_pct"
+        },
+        {
+          "id": 13,
+          "value": 0,
+          "type": "text",
+          "x": 630,
+          "y": 202,
+          "w": 125,
+          "h": 66,
+          "label": "Mains 1060",
+          "unit": "V",
+          "decimals": 1,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Mains_V1"
+        },
+        {
+          "id": 14,
+          "value": 0,
+          "type": "text",
+          "x": 765,
+          "y": 202,
+          "w": 95,
+          "h": 66,
+          "label": "Starts",
+          "unit": "",
+          "decimals": 0,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Starts"
+        },
+        {
+          "id": 15,
+          "value": 0,
+          "type": "text",
+          "x": 360,
+          "y": 278,
+          "w": 260,
+          "h": 66,
+          "label": "Run hours",
+          "unit": "h",
+          "decimals": 0,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Run_h"
+        },
+        {
+          "id": 16,
+          "value": 0,
+          "type": "text",
+          "x": 630,
+          "y": 278,
+          "w": 230,
+          "h": 66,
+          "label": "Generator kWh",
+          "unit": "kWh",
+          "decimals": 0,
+          "fontSize": 22,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Gen_kWh"
+        },
+        {
+          "id": 17,
+          "value": 0,
+          "type": "multitend",
+          "x": 20,
+          "y": 350,
+          "w": 840,
+          "h": 190,
+          "label": "Generator load (kW and % of full power)",
+          "maxPoints": 1200,
+          "decimals": 1,
+          "sampleMs": 1000,
+          "yMin": 0,
+          "yMax": 200,
+          "items": [
+            {
+              "name": "kW (1536)",
+              "sourceType": "tag",
+              "tagName": "Gen_kW",
+              "color": "#f0c040",
+              "value": 0
+            },
+            {
+              "name": "% of full power (1558)",
+              "sourceType": "tag",
+              "tagName": "Load_pct",
+              "color": "#58a6ff",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "Control_Mode",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 772,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "control mode: 0 stop, 1 auto, 2 manual, 3 test on load, 6 test off load, 7 off (page 3 offset 4 = 772)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Flags",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 774,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "flags: 13/16 shutdown, 12/16 electrical trip, 11/16 warning (page 3 offset 6 = 774)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Oil_kPa",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1024,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "oil pressure kPa (page 4 offset 0 = 1024)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Coolant_C",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1025,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "coolant temperature °C (page 4 offset 1 = 1025)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Fuel_pct",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1027,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "fuel level % (page 4 offset 3 = 1027)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Battery_V",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1029,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "battery V (page 4 offset 5 = 1029)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Engine_rpm",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1030,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "engine speed rpm (page 4 offset 6 = 1030)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Gen_Hz",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1031,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "generator frequency Hz (page 4 offset 7 = 1031)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Gen_V1",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1032,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "generator L1-N V (page 4 offset 8 = 1032)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Gen_V2",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1034,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "generator L2-N V (page 4 offset 10 = 1034)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Gen_V3",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1036,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "generator L3-N V (page 4 offset 12 = 1036)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Gen_V12",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1038,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "generator L1-L2 V (page 4 offset 14 = 1038)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Gen_V23",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1040,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "generator L2-L3 V (page 4 offset 16 = 1040)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Gen_V31",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1042,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "generator L3-L1 V (page 4 offset 18 = 1042)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Gen_I1",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1044,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "generator L1 A (page 4 offset 20 = 1044)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Gen_I2",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1046,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "generator L2 A (page 4 offset 22 = 1046)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Gen_I3",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1048,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "generator L3 A (page 4 offset 24 = 1048)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Gen_P1",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1052,
+      "dataType": "int32",
+      "wordOrder": "big",
+      "description": "generator L1 kW (register W) (page 4 offset 28 = 1052)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "Gen_P2",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1054,
+      "dataType": "int32",
+      "wordOrder": "big",
+      "description": "generator L2 kW (page 4 offset 30 = 1054)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "Gen_P3",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1056,
+      "dataType": "int32",
+      "wordOrder": "big",
+      "description": "generator L3 kW (page 4 offset 32 = 1056)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "Mains_Hz",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1059,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "mains frequency Hz (page 4 offset 35 = 1059)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Mains_V1",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1060,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "mains L1-N V (page 4 offset 36 = 1060)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Gen_kW",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1536,
+      "dataType": "int32",
+      "wordOrder": "big",
+      "description": "generator total kW (register W) (page 6 offset 0 = 1536)",
+      "scale": 0.001,
+      "offset": 0
+    },
+    {
+      "name": "Gen_PF",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1557,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "average power factor (page 6 offset 21 = 1557)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "Load_pct",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1558,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "% of full power (page 6 offset 22 = 1558)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Run_s",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1798,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "engine run time s (page 7 offset 6 = 1798)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Gen_kWh",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1800,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "generator positive kWh (page 7 offset 8 = 1800)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Starts",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 1808,
+      "dataType": "uint32",
+      "wordOrder": "big",
+      "description": "number of starts (page 7 offset 16 = 1808)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Alarms_1",
+      "type": "register",
+      "slaveId": 10,
+      "regType": "holdingRegisters",
+      "address": 39425,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "named alarms: emergency stop, low oil pressure, high coolant, low coolant (4 bits each, 1 = not active) (page 154 offset 1 = 39425)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Gen_Run",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "1 while the engine turns (rpm > 300)"
+    },
+    {
+      "name": "Shutdown",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "page 3 flag 13/16"
+    },
+    {
+      "name": "Trip",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "page 3 flag 12/16"
+    },
+    {
+      "name": "Warning",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "page 3 flag 11/16"
+    },
+    {
+      "name": "Gen_Fault",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "shutdown or electrical trip"
+    },
+    {
+      "name": "Mains_OK",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "1 when mains voltage is there"
+    },
+    {
+      "name": "Gen_Avail",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "1 when the generator voltage is there"
+    },
+    {
+      "name": "On_Mains",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "1 when the load is on mains (no generator load, mains there)"
+    },
+    {
+      "name": "On_Gen",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "1 when the generator carries load"
+    },
+    {
+      "name": "Auto",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "1 in auto mode"
+    },
+    {
+      "name": "Run_h",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "engine run time hours"
+    }
+  ],
+  "script": "(* GenComm page 3 flags: bit n/16 is bit n-1 from the right *)\nShutdown := ((Flags - (Flags MOD 4096)) / 4096) MOD 2;\nTrip := ((Flags - (Flags MOD 2048)) / 2048) MOD 2;\nWarning := ((Flags - (Flags MOD 1024)) / 1024) MOD 2;\nIF Shutdown = 1 OR Trip = 1 THEN Gen_Fault := 1; ELSE Gen_Fault := 0; END_IF;\nIF Engine_rpm > 300 THEN Gen_Run := 1; ELSE Gen_Run := 0; END_IF;\nIF Mains_V1 > 180 THEN Mains_OK := 1; ELSE Mains_OK := 0; END_IF;\nIF Gen_V1 > 180 THEN Gen_Avail := 1; ELSE Gen_Avail := 0; END_IF;\nIF Gen_kW > 1 THEN On_Gen := 1; ELSE On_Gen := 0; END_IF;\nIF On_Gen = 0 AND Mains_OK = 1 THEN On_Mains := 1; ELSE On_Mains := 0; END_IF;\nIF Control_Mode = 1 THEN Auto := 1; ELSE Auto := 0; END_IF;\nRun_h := Run_s / 3600;\n",
+  "scriptInterval": "1000",
+  "historianLogging": {
+    "registers": [],
+    "tags": []
+  },
+  "saved": "2026-11-14T12:00:00.000Z"
+}

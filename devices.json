@@ -255,6 +255,15 @@
       "page": "omron-e5cc-modbus.html"
     },
     {
+      "id": "deepsea-dse7320",
+      "name": "Deep Sea DSE7320 MKII (AMF genset)",
+      "cat": "plc",
+      "proto": "Modbus RTU (GenComm)",
+      "desc": "Generator controller: engine, generator and mains values, control mode, alarms, run hours",
+      "ws": "DeepSea_DSE7320.json",
+      "page": "deepsea-dse7320-modbus.html"
+    },
+    {
       "id": "sun2000-ha",
       "name": "Huawei SUN2000 → Home Assistant",
       "cat": "ha",
