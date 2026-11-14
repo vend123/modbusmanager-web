@@ -192,6 +192,15 @@
       "page": "goodwe-et-hybrid-modbus.html"
     },
     {
+      "id": "lufft-ws",
+      "name": "Lufft WS501 weather sensor",
+      "cat": "solar",
+      "proto": "Modbus RTU",
+      "desc": "Wind, global radiation, temperature, humidity, pressure on weather elements",
+      "ws": "Lufft_WS501.json",
+      "page": "lufft-ws-weather-sensor-modbus.html"
+    },
+    {
       "id": "nibe-s",
       "name": "NIBE S-series heat pump",
       "cat": "hvac",

@@ -1,0 +1,434 @@
+{
+  "version": 2,
+  "polls": [
+    {
+      "name": "Input registers 0-50 (Reg. Addr.)",
+      "fc": 4,
+      "addr": 0,
+      "qty": 51,
+      "slaveId": 1,
+      "interval": 10000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 0,
+      "chartName": "Input registers 0-50 (Reg. Addr.) [0]",
+      "logFile": "log_Input_registers_0_50_Reg_Addr_.txt"
+    }
+  ],
+  "activePoll": 0,
+  "condColors": {},
+  "scaling": {},
+  "valueNames": {},
+  "chartSeries": [],
+  "slaveBlocks": [],
+  "dashTheme": "modern",
+  "dashFx": true,
+  "dashBgColor": "#0d1117",
+  "dashPages": [
+    {
+      "id": 1,
+      "name": "WS501",
+      "elements": [
+        {
+          "id": 1,
+          "value": 0,
+          "type": "statictext",
+          "x": 20,
+          "y": 10,
+          "w": 840,
+          "h": 30,
+          "text": "Lufft WS501-UMB  ·  Modbus RTU 19200 8E1  ·  FC04 at \"Reg. Addr.\", 16-bit x factor",
+          "fontSize": 20,
+          "bold": true,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 2,
+          "value": 0,
+          "type": "windcompass",
+          "x": 20,
+          "y": 50,
+          "w": 270,
+          "h": 200,
+          "label": "Wind",
+          "unit": "m/s",
+          "items": [
+            {
+              "role": "dir",
+              "name": "Direction 18",
+              "sourceType": "tag",
+              "tagName": "Wind_Dir"
+            },
+            {
+              "role": "speed",
+              "name": "Speed 42",
+              "sourceType": "tag",
+              "tagName": "Wind_Speed"
+            },
+            {
+              "role": "gust",
+              "name": "Max 44",
+              "sourceType": "tag",
+              "tagName": "Wind_Max"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "value": 0,
+          "type": "irradiance",
+          "x": 310,
+          "y": 50,
+          "w": 270,
+          "h": 120,
+          "label": "Global radiation 27",
+          "max": 1200,
+          "items": [
+            {
+              "role": "irr",
+              "name": "W/m²",
+              "sourceType": "tag",
+              "tagName": "Radiation"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "value": 0,
+          "type": "outdoor",
+          "x": 600,
+          "y": 50,
+          "w": 260,
+          "h": 120,
+          "label": "Outdoor",
+          "frostAt": 0,
+          "items": [
+            {
+              "role": "temp",
+              "name": "Air 31",
+              "sourceType": "tag",
+              "tagName": "Air_Temp"
+            },
+            {
+              "role": "rh",
+              "name": "RH 10",
+              "sourceType": "tag",
+              "tagName": "RH"
+            },
+            {
+              "role": "press",
+              "name": "Pressure 14",
+              "sourceType": "tag",
+              "tagName": "Pressure_hPa"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "value": 0,
+          "type": "text",
+          "x": 310,
+          "y": 184,
+          "w": 170,
+          "h": 66,
+          "label": "Dew point 35",
+          "unit": "°C",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Dew_Point"
+        },
+        {
+          "id": 6,
+          "value": 0,
+          "type": "text",
+          "x": 490,
+          "y": 184,
+          "w": 170,
+          "h": 66,
+          "label": "Wind chill 39",
+          "unit": "°C",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Wind_Chill"
+        },
+        {
+          "id": 7,
+          "value": 0,
+          "type": "multistate",
+          "x": 670,
+          "y": 184,
+          "w": 190,
+          "h": 66,
+          "label": "Rain sensor (50)",
+          "states": "0=Not fitted:#9fb3cc,1=Fitted:#3fd28a",
+          "sourceType": "tag",
+          "tagName": "Rain_Sensor"
+        },
+        {
+          "id": 8,
+          "value": 0,
+          "type": "multistate",
+          "x": 20,
+          "y": 262,
+          "w": 270,
+          "h": 60,
+          "label": "Device status (1)",
+          "states": "0=OK:#3fd28a",
+          "sourceType": "tag",
+          "tagName": "Device_Status"
+        },
+        {
+          "id": 9,
+          "value": 0,
+          "type": "text",
+          "x": 310,
+          "y": 262,
+          "w": 270,
+          "h": 66,
+          "label": "Pressure 14",
+          "unit": "hPa",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Pressure_hPa"
+        },
+        {
+          "id": 10,
+          "value": 0,
+          "type": "text",
+          "x": 600,
+          "y": 262,
+          "w": 260,
+          "h": 66,
+          "label": "Relative humidity 10",
+          "unit": "%",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "RH"
+        },
+        {
+          "id": 11,
+          "value": 0,
+          "type": "multitend",
+          "x": 20,
+          "y": 340,
+          "w": 840,
+          "h": 200,
+          "label": "Air temperature and dew point (°C), wind speed (m/s)",
+          "maxPoints": 40,
+          "decimals": 1,
+          "sampleMs": 10000,
+          "yMin": -10,
+          "yMax": 30,
+          "items": [
+            {
+              "name": "Air 31",
+              "sourceType": "tag",
+              "tagName": "Air_Temp",
+              "color": "#f85149",
+              "value": 0
+            },
+            {
+              "name": "Dew point 35",
+              "sourceType": "tag",
+              "tagName": "Dew_Point",
+              "color": "#58a6ff",
+              "value": 0
+            },
+            {
+              "name": "Wind 42",
+              "sourceType": "tag",
+              "tagName": "Wind_Speed",
+              "color": "#3fd28a",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "Device_Status",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 1,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "device status (Reg. Addr. 1 = Reg. No. 2)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "RH",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 10,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "relative humidity act. % (Reg. Addr. 10 = Reg. No. 11)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Pressure_hPa",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 14,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "relative air pressure act. hPa (Reg. Addr. 14 = Reg. No. 15)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Wind_Dir",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 18,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "wind direction act. ° (Reg. Addr. 18 = Reg. No. 19)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Precip_Type",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 25,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "precipitation type: 0 none, 60 rain, 70 snow; 65535 = no sensor (Reg. Addr. 25 = Reg. No. 26)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Radiation",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 27,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "global radiation act. W/m² (Reg. Addr. 27 = Reg. No. 28)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Air_Temp",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 31,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "air temperature act. °C (Reg. Addr. 31 = Reg. No. 32)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Dew_Point",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 35,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "dew point act. °C (Reg. Addr. 35 = Reg. No. 36)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Wind_Chill",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 39,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "wind chill °C (Reg. Addr. 39 = Reg. No. 40)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Wind_Speed",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 42,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "wind speed act. m/s (Reg. Addr. 42 = Reg. No. 43)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Wind_Max",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 44,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "wind speed max m/s (gust over the averaging interval) (Reg. Addr. 44 = Reg. No. 45)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Precip_mmh",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "inputRegisters",
+      "address": 50,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "precipitation intensity mm/h; 65535 = no sensor (Reg. Addr. 50 = Reg. No. 51)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "Rain_Sensor",
+      "type": "internal",
+      "slaveId": 0,
+      "regType": "holdingRegisters",
+      "address": 0,
+      "dataType": "float32",
+      "wordOrder": "big",
+      "value": 0,
+      "description": "1 when a precipitation sensor answers (intensity is not 65535)"
+    }
+  ],
+  "script": "(* Lufft WS: 65535 (unsigned) / 32767 (signed) = sensor not fitted or error *)\nIF Precip_mmh >= 655.35 THEN Rain_Sensor := 0; ELSE Rain_Sensor := 1; END_IF;\n",
+  "scriptInterval": "1000",
+  "historianLogging": {
+    "registers": [],
+    "tags": []
+  },
+  "saved": "2026-11-14T12:00:00.000Z"
+}
