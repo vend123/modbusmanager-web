@@ -1,0 +1,587 @@
+{
+  "version": 2,
+  "polls": [
+    {
+      "name": "Digital D1-D104 (coils 1-104)",
+      "fc": 1,
+      "addr": 1,
+      "qty": 104,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 1,
+      "chartName": "Digital D1-D104 (coils 1-104) [1]",
+      "logFile": "log_Digital_D1_D104_coils_1_104_.txt"
+    },
+    {
+      "name": "Digital D182-D183 (coils 182-183)",
+      "fc": 1,
+      "addr": 182,
+      "qty": 2,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 182,
+      "chartName": "Digital D182-D183 (coils 182-183) [182]",
+      "logFile": "log_Digital_D182_D183_coils_182_183_.txt"
+    },
+    {
+      "name": "Analogue A1-A46 (registers 1-46, x10)",
+      "fc": 3,
+      "addr": 1,
+      "qty": 46,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 1,
+      "chartName": "Analogue A1-A46 (registers 1-46, x10) [1]",
+      "logFile": "log_Analogue_A1_A46_registers_1_46_x10_.txt"
+    },
+    {
+      "name": "Integer I12-I29 (registers 140-157)",
+      "fc": 3,
+      "addr": 140,
+      "qty": 18,
+      "slaveId": 1,
+      "interval": 10000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 140,
+      "chartName": "Integer I12-I29 (registers 140-157) [140]",
+      "logFile": "log_Integer_I12_I29_registers_140_157_.txt"
+    }
+  ],
+  "activePoll": 0,
+  "condColors": {},
+  "scaling": {},
+  "valueNames": {},
+  "chartSeries": [],
+  "slaveBlocks": [],
+  "dashTheme": "modern",
+  "dashFx": true,
+  "dashBgColor": "#0d1117",
+  "dashPages": [
+    {
+      "id": 1,
+      "name": "pCO chiller",
+      "elements": [
+        {
+          "id": 1,
+          "value": 0,
+          "type": "statictext",
+          "x": 20,
+          "y": 10,
+          "w": 840,
+          "h": 30,
+          "text": "Carel pCO · Standard Modular Chiller HP  ·  D[n] = coil n, A[n] = reg n x10, I[n] = reg 128 + n",
+          "fontSize": 18,
+          "bold": true,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 2,
+          "value": 0,
+          "type": "chiller",
+          "x": 20,
+          "y": 50,
+          "w": 340,
+          "h": 220,
+          "label": "CH-1 modular chiller",
+          "threshold": 1,
+          "colorOn": "#00d4aa",
+          "colorOff": "#5b6470",
+          "comps": 2,
+          "view": "values",
+          "decimals": 1,
+          "tUnit": "°C",
+          "items": [
+            {
+              "role": "fault",
+              "name": "General alarm D70",
+              "sourceType": "tag",
+              "tagName": "General_Alarm"
+            },
+            {
+              "role": "chwS",
+              "name": "Outlet A46",
+              "sourceType": "tag",
+              "tagName": "Water_Out"
+            },
+            {
+              "role": "chwR",
+              "name": "Inlet A45",
+              "sourceType": "tag",
+              "tagName": "Water_In"
+            }
+          ],
+          "sourceType": "tag",
+          "tagName": "Unit_On"
+        },
+        {
+          "id": 3,
+          "value": 0,
+          "type": "multistate",
+          "x": 380,
+          "y": 50,
+          "w": 300,
+          "h": 66,
+          "label": "Unit status (I12 = register 140)",
+          "states": "0=Active:#3fd28a,1=Off by alarm:#f85149,2=Off by supervisor:#f0c040,3=Off by time bands:#9fb3cc,4=Off by digital input:#9fb3cc,5=Off by keypad:#9fb3cc,6=Manual:#f0c040",
+          "sourceType": "tag",
+          "tagName": "Unit_Status"
+        },
+        {
+          "id": 4,
+          "value": 0,
+          "type": "multistate",
+          "x": 690,
+          "y": 50,
+          "w": 170,
+          "h": 66,
+          "label": "Mode (D51)",
+          "states": "0=Chiller:#58a6ff,1=Heat pump:#f0c040",
+          "sourceType": "tag",
+          "tagName": "Mode_HP"
+        },
+        {
+          "id": 5,
+          "value": 0,
+          "type": "text",
+          "x": 380,
+          "y": 126,
+          "w": 160,
+          "h": 66,
+          "label": "Cooling SP (A11)",
+          "unit": "°C",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Cool_SP"
+        },
+        {
+          "id": 6,
+          "value": 0,
+          "type": "text",
+          "x": 550,
+          "y": 126,
+          "w": 160,
+          "h": 66,
+          "label": "Actual SP (A14)",
+          "unit": "°C",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Actual_SP"
+        },
+        {
+          "id": 7,
+          "value": 0,
+          "type": "text",
+          "x": 720,
+          "y": 126,
+          "w": 140,
+          "h": 66,
+          "label": "Band (A15)",
+          "unit": "K",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Band"
+        },
+        {
+          "id": 8,
+          "value": 0,
+          "type": "multistate",
+          "x": 380,
+          "y": 202,
+          "w": 160,
+          "h": 56,
+          "label": "Antifreeze (D71)",
+          "states": "0=OK:#3fd28a,1=ALARM:#f85149",
+          "sourceType": "tag",
+          "tagName": "Antifreeze"
+        },
+        {
+          "id": 9,
+          "value": 0,
+          "type": "multistate",
+          "x": 550,
+          "y": 202,
+          "w": 160,
+          "h": 56,
+          "label": "Evap. flow (D77)",
+          "states": "0=OK:#3fd28a,1=ALARM:#f85149",
+          "sourceType": "tag",
+          "tagName": "Evap_Flow"
+        },
+        {
+          "id": 10,
+          "value": 0,
+          "type": "multistate",
+          "x": 720,
+          "y": 202,
+          "w": 140,
+          "h": 56,
+          "label": "High pressure (D78)",
+          "states": "0=OK:#3fd28a,1=ALARM:#f85149",
+          "sourceType": "tag",
+          "tagName": "HP1"
+        },
+        {
+          "id": 11,
+          "value": 0,
+          "type": "multistate",
+          "x": 380,
+          "y": 268,
+          "w": 160,
+          "h": 56,
+          "label": "Low pressure (D82)",
+          "states": "0=OK:#3fd28a,1=ALARM:#f85149",
+          "sourceType": "tag",
+          "tagName": "LP1"
+        },
+        {
+          "id": 12,
+          "value": 0,
+          "type": "text",
+          "x": 550,
+          "y": 268,
+          "w": 160,
+          "h": 66,
+          "label": "Comp 1 hours (I23)",
+          "unit": "h",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Comp1_Hours"
+        },
+        {
+          "id": 13,
+          "value": 0,
+          "type": "text",
+          "x": 720,
+          "y": 268,
+          "w": 140,
+          "h": 66,
+          "label": "Comp 2 hours (I25)",
+          "unit": "h",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Comp2_Hours"
+        },
+        {
+          "id": 14,
+          "value": 0,
+          "type": "multitend",
+          "x": 20,
+          "y": 345,
+          "w": 840,
+          "h": 195,
+          "label": "Inlet and outlet water, set point (°C)",
+          "maxPoints": 1200,
+          "decimals": 1,
+          "sampleMs": 2000,
+          "yMin": 0,
+          "yMax": 20,
+          "items": [
+            {
+              "name": "Inlet A45",
+              "sourceType": "tag",
+              "tagName": "Water_In",
+              "color": "#f85149",
+              "value": 0
+            },
+            {
+              "name": "Outlet A46",
+              "sourceType": "tag",
+              "tagName": "Water_Out",
+              "color": "#58a6ff",
+              "value": 0
+            },
+            {
+              "name": "Set point A14",
+              "sourceType": "tag",
+              "tagName": "Actual_SP",
+              "color": "#3fd28a",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "Unit_On",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "coils",
+      "address": 1,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "unit on/off (D1 = coil 1)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Mode_HP",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "coils",
+      "address": 51,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "mode: 0 chiller, 1 heat pump (D51 = coil 51)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "General_Alarm",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "coils",
+      "address": 70,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "general alarm (D70 = coil 70)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Antifreeze",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "coils",
+      "address": 71,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "antifreeze alarm (D71 = coil 71)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Evap_Flow",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "coils",
+      "address": 77,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "evaporator flow switch alarm (D77 = coil 77)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "HP1",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "coils",
+      "address": 78,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "high pressure circuit 1 (D78 = coil 78)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "LP1",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "coils",
+      "address": 82,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "low pressure circuit 1 (D82 = coil 82)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Cooling",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "coils",
+      "address": 182,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "cooling (D182 = coil 182)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Cool_SP",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 11,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "cooling set point °C (A11 = register 11, x10)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Heat_SP",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 12,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "heating set point °C (A12 = register 12, x10)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Actual_SP",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 14,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "current set point °C (A14 = register 14, x10)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Band",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 15,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "regulation band K (A15 = register 15, x10)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Water_In",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 45,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "main inlet water °C (A45 = register 45, x10)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Water_Out",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 46,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "main outlet water °C (A46 = register 46, x10)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Unit_Status",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 140,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "unit status: 0 active, 1 off by alarm, 2 off by supervisor, 3 time bands, 4 digital input, 5 keypad, 6 manual (I12 = register 140)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Comp1_Hours",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 151,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "compressor 1 hours (low word) (I23 = register 151)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Comp2_Hours",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 153,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "compressor 2 hours (low word) (I25 = register 153)",
+      "scale": 1,
+      "offset": 0
+    }
+  ],
+  "script": "",
+  "scriptInterval": "1000",
+  "historianLogging": {
+    "registers": [],
+    "tags": []
+  },
+  "saved": "2026-11-14T12:00:00.000Z"
+}

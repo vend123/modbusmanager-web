@@ -237,6 +237,15 @@
       "page": "grundfos-magna3-cim-modbus.html"
     },
     {
+      "id": "carel-pco-chiller",
+      "name": "Carel pCO Standard Modular Chiller",
+      "cat": "hvac",
+      "proto": "Modbus RTU",
+      "desc": "Chiller on a pCO: water temperatures, set points, unit status, alarms (Carel application)",
+      "ws": "Carel_pCO_Chiller.json",
+      "page": "carel-pco-modbus.html"
+    },
+    {
       "id": "danfoss-akcc350",
       "name": "Danfoss AK-CC 350 case controller",
       "cat": "hvac",
