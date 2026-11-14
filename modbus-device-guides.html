@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modbus Device Guides: Inverters, Meters, Drives, PLCs</title>
+<meta name="description" content="32 Modbus guides: Huawei, Sungrow, Victron, Eastron, Schneider, ABB, Danfoss, Siemens and more — register maps from vendor documents, traps, free workspaces.">
+<meta name="keywords" content="Modbus device guides, Modbus register map, Modbus inverter, Modbus energy meter, Modbus VFD, Modbus PLC">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/modbus-device-guides.html">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:title" content="Modbus Device Guides: Inverters, Meters, Drives, PLCs">
+<meta property="og:description" content="Every Modbus device guide on modbusmanager.com in one place: register maps from the vendors' own documents, the traps integrators meet, and free workspaces.">
+<meta property="og:url" content="https://modbusmanager.com/modbus-device-guides.html">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://modbusmanager.com/og-device-guides.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:published_time" content="2026-11-14T00:00:00Z">
+<meta property="article:section" content="Guides">
+<meta property="article:tag" content="Modbus">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Modbus Device Guides: Inverters, Meters, Drives, PLCs">
+<meta name="twitter:description" content="Every Modbus device guide on modbusmanager.com in one place: register maps from the vendors' own documents, the traps integrators meet, and free workspaces.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-device-guides.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "headline": "Modbus Device Guides and How-tos",
+  "description": "Every Modbus device guide on modbusmanager.com in one place: register maps from the vendors' own documents, the traps integrators meet, and free workspaces.",
+  "url": "https://modbusmanager.com/modbus-device-guides.html",
+  "image": "https://modbusmanager.com/og-device-guides.png",
+  "datePublished": "2026-11-14",
+  "author": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "keywords": "Modbus device guides, Modbus register map, Modbus inverter, Modbus energy meter, Modbus VFD, Modbus PLC"
+}
+</script>
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+.article-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 5rem}
+.section{max-width:860px;margin:0 auto;padding:1rem 2rem 4.5rem}
+.sec-label{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem}
+.sec-title{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;line-height:1.1;margin-bottom:1.4rem}
+@media(max-width:640px){.section{padding:0.5rem 1.2rem 3.5rem}.sec-title{font-size:1.7rem}}
+.breadcrumb{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--muted);margin-bottom:2rem}
+.breadcrumb a{color:var(--muted);text-decoration:none}
+.breadcrumb a:hover{color:var(--ink)}
+h1{font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;line-height:1.05;text-transform:uppercase;letter-spacing:0.01em;margin-bottom:1rem}
+h2{font-family:'Saira Condensed',sans-serif;font-size:1.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin:2.5rem 0 0.8rem;padding-top:0.5rem;border-top:2px solid var(--ink)}
+h3{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.03em;margin:1.5rem 0 0.5rem;color:var(--amber-ink)}
+p{font-size:0.93rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+ul{font-size:0.93rem;color:var(--body);line-height:1.75;margin:0 0 1rem 1.2rem;padding-left:0.6rem}
+li{margin-bottom:0.4rem}
+.lead{font-size:1.05rem;color:var(--ink);line-height:1.7;margin-bottom:2rem;border-left:3px solid var(--safety);padding-left:1rem}
+code{font-family:'IBM Plex Mono',monospace;font-size:0.82rem;background:#fff;border:1px solid var(--steel);padding:1px 5px;border-radius:2px}
+pre{font-family:'IBM Plex Mono',monospace;font-size:0.8rem;background:var(--ink);color:#E6E8E3;padding:1.2rem 1.4rem;border-radius:3px;overflow-x:auto;margin:1.2rem 0;line-height:1.6}
+pre .c{color:#888}
+pre .v{color:#F2A900}
+pre .k{color:#7ec8e3}
+table{width:100%;border-collapse:collapse;font-size:0.83rem;margin:1.2rem 0;background:var(--plate);border:2px solid var(--ink)}
+th{text-align:left;padding:0.65rem 0.9rem;border-bottom:2px solid var(--ink);background:var(--enclosure2);font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted)}
+td{padding:0.6rem 0.9rem;border-bottom:1px solid var(--steel);color:var(--body)}
+tr:hover td{background:#ECEEE9}
+td.mono{font-family:'IBM Plex Mono',monospace;font-size:0.78rem}
+td.formula{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--amber-ink)}
+.callout{background:var(--plate);border:1.5px solid var(--ink);border-left:4px solid var(--safety);padding:1rem 1.2rem;border-radius:2px;margin:1.5rem 0;font-size:0.88rem;color:var(--body);line-height:1.6}
+.callout strong{color:var(--ink)}
+.callout.tip{border-left-color:var(--run)}
+.callout.warn{border-left-color:var(--bad)}
+.step-num{display:inline-block;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.85rem;background:var(--ink);color:var(--safety);padding:2px 8px;border-radius:2px;margin-right:8px;letter-spacing:0.05em}
+.cta-box{background:var(--ink);color:var(--enclosure);padding:2rem 2.2rem;border-radius:3px;margin:3rem 0;display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
+.cta-box h3{color:var(--safety);margin:0 0 0.4rem;font-size:1.2rem;border:none;padding:0}
+.cta-box p{color:#B9BDB6;font-size:0.85rem;margin:0}
+.cta-box a{background:var(--safety);color:var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.cta-box a:hover{background:#fff}
+.download-box{border:2px solid var(--ink);background:var(--enclosure2);padding:1.4rem 1.8rem;border-radius:3px;margin:2rem 0;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.download-box h3{margin:0 0 0.3rem;font-size:1rem;border:none;padding:0;overflow-wrap:anywhere;font-family:'IBM Plex Mono',monospace;color:var(--ink)}
+.download-box p{margin:0;font-size:0.82rem;color:var(--muted);max-width:46ch}
+.download-box a{background:var(--ink);color:var(--enclosure);padding:0.6rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.download-box a:hover{background:var(--safety);color:var(--ink)}
+footer{border-top:2px solid var(--ink);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;color:var(--muted);flex-wrap:wrap;gap:1rem;background:var(--enclosure2)}
+.footer-logo{font-family:'Saira Condensed',sans-serif;color:var(--ink);font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--ink)}
+@media(max-width:640px){nav .nav-links{display:none}.article-wrap{padding:2rem 1.2rem 4rem}h1{font-size:2rem}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}td,th{white-space:normal;word-break:break-word}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+
+@media(max-width:680px){pre,code{white-space:pre-wrap;word-break:break-word;max-width:100%;overflow-x:auto}}
+
+/* family slogan band, slim (2026-10-22) */
+.slogan-band.slim{background:var(--safety,#F2A900);border-bottom:2px solid var(--ink,#16181A);padding:0.5rem 1rem;text-align:center;color:var(--ink,#16181A);display:flex;gap:0.3rem 1rem;justify-content:center;align-items:baseline;flex-wrap:wrap}
+.slogan-band.slim .sb-main{font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.3rem;line-height:1.1;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim .sb-sub{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim a{color:var(--ink,#16181A);font-weight:700}
+@media(max-width:768px){.slogan-band.slim .sb-main{font-size:1.05rem}.slogan-band.slim .sb-sub{display:none}}
+</style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/modbus-device-guides.html"}]}
+</script>
+<style id="sf-css">
+footer.sf{display:block;text-align:left;padding:2.2rem 3rem 1.6rem;border-top:2px solid var(--ink,#16181A);background:var(--enclosure2,#E8EAE5);color:var(--muted,#5F5E5A);font-family:'Archivo',sans-serif;font-size:.92rem}
+footer.sf a{color:var(--muted,#5F5E5A);text-decoration:none}
+footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
+.sf-cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.6rem 2rem;max-width:1100px}
+.sf-col{display:flex;flex-direction:column;gap:.45rem;min-width:0}
+.sf-h{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink,#16181A);font-weight:600;margin-bottom:.2rem}
+.sf-bot{display:flex;flex-wrap:wrap;gap:.6rem 1.6rem;align-items:baseline;justify-content:space-between;border-top:1px solid var(--steel,#B9BDB6);margin-top:1.8rem;padding-top:1rem;font-size:.85rem}
+.sf-logo{font-family:'Saira Condensed',sans-serif;color:var(--ink,#16181A);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+@media(max-width:768px){footer.sf{padding:1.8rem 1.2rem}.sf-cols{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:1100px){.sec-label,.eyebrow,.np-eyebrow,.np-specs span,.step-label,.def-label,.toc-label,.c-label,.q-k,.plan-label,.os-tag,.pro-tag,.ed,.sb-sub,.sb-sub a,.nd-head,.also-label,figcaption{font-size:11px!important}}
+.sf-swipe{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--amber-ink,#8A6200);text-align:right;margin:.3rem 0 .4rem}
+.sf-swipe[hidden]{display:none}
+</style>
+<style id="site-nav">
+/* site menu (tools/web-research/site-nav.js) */
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop.nd-has>.nav-drop-label{color:var(--ink,#16181A);font-weight:600}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;display:none;z-index:200}
+.nav-drop:hover>.nav-drop-menu,.nav-drop:focus-within>.nav-drop-menu{display:block}
+.nd-box{display:flex;flex-direction:column;background:var(--enclosure2,#e8e9e4);border:1px solid var(--ink,#16181A);border-radius:3px;box-shadow:0 6px 20px rgba(0,0,0,0.18);padding:0.35rem 0;min-width:210px}
+.nav-drop-menu a,.nd-glabel{display:flex;align-items:center;gap:0.55rem;padding:0.45rem 1rem;white-space:nowrap;text-transform:none;font-family:'IBM Plex Mono',monospace;font-size:0.78rem;letter-spacing:0.02em;color:var(--ink,#16181A);text-decoration:none;background:none;border:none;text-align:left;cursor:pointer;width:100%;box-sizing:border-box}
+.nav-drop-menu a:hover,.nd-glabel:hover,.nd-group:hover>.nd-glabel,.nd-group.open>.nd-glabel{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+.nav-drop-menu .ni{display:inline-block;width:1.25rem;text-align:center;flex:none;font-size:0.9rem;line-height:1}
+.nav-drop-menu a.nd-sub{padding-left:2.1rem;font-size:0.75rem}
+.nav-drop-menu .nd-hot{color:#9A6700;font-weight:600}
+.nav-drop-menu a[aria-current="page"]{font-weight:700;box-shadow:inset 3px 0 0 var(--safety,#F2A900)}
+.nd-group.nd-has>.nd-glabel{font-weight:700}
+.nd-arrow{margin-left:auto;padding-left:1rem;font-size:0.7rem;color:var(--muted,#5F5E5A);display:inline-block;transform-origin:calc(50% + 0.5rem) 50%}
+.nd-group{position:relative}
+.nd-flyout{display:none;position:absolute;left:100%;top:-0.4rem;padding-left:0.25rem;z-index:210}
+.nd-group:hover>.nd-flyout,.nd-group:focus-within>.nd-flyout,.nd-group.open>.nd-flyout{display:block}
+.nd-head{font-family:'IBM Plex Mono',monospace;font-size:0.64rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted,#5F5E5A);padding:0.55rem 1rem 0.15rem;border-top:1px solid var(--steel,#B9BDB6);margin-top:0.25rem}
+.nd-box>.nd-head:first-child{border-top:none;margin-top:0}
+/* tablet (769-1100px): logo, six menu items and the button need ~840px; below that the menu
+   wrapped to two or three lines and the download button ran off the screen (2026-11-10).
+   769-900px gets the ☰ menu as on phones (the pages' own phone rules stop at 768px);
+   901-1100px keeps the row, tighter. The small text download link repeats the button,
+   so it goes in this range, as it already does on phones. */
+@media(min-width:769px) and (max-width:1100px){
+nav{gap:1rem!important;padding-left:1.2rem!important;padding-right:1.2rem!important}
+nav .nav-links{gap:1.1rem!important;letter-spacing:0.02em!important;white-space:nowrap}
+nav>div>a:not(.nav-cta){display:none!important}
+nav .nav-cta{white-space:nowrap;padding:0.45rem 0.9rem!important}
+}
+@media(min-width:769px) and (max-width:900px){
+nav .nav-burger{display:block!important;margin-left:auto}
+nav .nav-links{display:none!important}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15);white-space:normal;margin:0!important}
+}
+@media(max-width:900px){
+nav .nav-links.open{align-items:stretch;text-align:left}
+nav .nav-links.open .nav-drop{padding-bottom:0;margin-bottom:0}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu{position:static;display:block;padding:0;margin:0.3rem 0 0.2rem}
+nav .nav-links.open .nd-box{border:none;box-shadow:none;background:none;padding:0;min-width:0}
+nav .nav-links.open .nav-drop-menu a,nav .nav-links.open .nd-glabel{padding:0.4rem 0;font-size:0.82rem;white-space:normal}
+nav .nav-links.open .nav-drop-menu a.nd-sub{padding-left:1.8rem}
+nav .nav-links.open .nd-flyout a[aria-current="page"]{padding-left:0.6rem}
+nav .nav-links.open .nd-flyout{position:static;padding:0 0 0.3rem 1.8rem;display:none}
+nav .nav-links.open .nd-group:hover>.nd-flyout,nav .nav-links.open .nd-group:focus-within>.nd-flyout{display:none}
+nav .nav-links.open .nd-group.open>.nd-flyout{display:block}
+nav .nav-links.open .nd-group.open>.nd-glabel,nav .nav-links.open .nd-group:hover>.nd-glabel{background:none}
+nav .nav-links.open .nd-group.open .nd-arrow{transform:rotate(90deg)}
+nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <span class="nav-drop-label" tabindex="0">Features &#9662;</span>
+      <div class="nav-drop-menu"><div class="nd-box">
+        <a href="/modbus-scanner.html" class="nd-hot"><span class="ni">&#128269;&#65039;</span>Modbus Scanner</a>
+        <a href="/modbus-rtu-over-tcp.html" class="nd-sub"><span class="ni">&#128257;&#65039;</span>RTU over TCP</a>
+        <a href="/modbus-tcp-security-tls.html" class="nd-sub"><span class="ni">&#128274;&#65039;</span>Modbus TCP Security (TLS)</a>
+        <a href="/modbus-hmi-dashboard.html"><span class="ni">&#128202;&#65039;</span>HMI Dashboard</a>
+        <a href="/modbus-hmi-runtime.html" class="nd-sub"><span class="ni">&#128421;&#65039;</span>HMI Runtime (OEM)</a>
+        <a href="/modbus-data-logger-software.html"><span class="ni">&#128200;&#65039;</span>Data Logger</a>
+        <a href="/modbus-rtu-rs485-data-logger.html" class="nd-sub"><span class="ni">&#128223;&#65039;</span>RTU / RS-485 Logging</a>
+        <a href="/modbus-logging-interval-deadband.html" class="nd-sub"><span class="ni">&#9201;&#65039;</span>Interval &amp; Deadband</a>
+        <a href="/modbus-to-csv-logging.html" class="nd-sub"><span class="ni">&#128196;&#65039;</span>CSV Export</a>
+        <a href="/modbus-alarm-software.html"><span class="ni">&#128276;&#65039;</span>Alarms</a>
+        <a href="/modbus-gateway-software.html"><span class="ni">&#128256;&#65039;</span>Gateway</a>
+        <a href="/modbus-to-mqtt.html" class="nd-sub"><span class="ni">&#128225;&#65039;</span>Modbus to MQTT</a>
+        <a href="/modbus-structured-text-scripting.html"><span class="ni">&#127991;&#65039;</span>Tags &amp; Structured Text</a>
+      </div></div>
+    </li>
+    <li class="nav-drop nd-has">
+      <span class="nav-drop-label" tabindex="0">Guides &#9662;</span>
+      <div class="nav-drop-menu"><div class="nd-box">
+        <a href="/modbus-device-guides.html" aria-current="page"><span class="ni">&#128218;&#65039;</span>All guides</a>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9728;&#65039;</span>Solar &amp; inverters<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+            <a href="/huawei-sun2000-modbus.html">Huawei SUN2000</a>
+            <a href="/huawei-sun2000-home-assistant.html">SUN2000 &rarr; Home Assistant</a>
+            <a href="/sungrow-inverter-modbus.html">Sungrow Inverters</a>
+            <a href="/sunspec-modbus-sma-fronius-solaredge.html">SunSpec: SMA, Fronius, SolarEdge</a>
+            <a href="/victron-gx-modbus-tcp.html">Victron Cerbo GX</a>
+            <a href="/goodwe-et-hybrid-modbus.html">GoodWe ET Hybrid</a>
+            <a href="/deye-sunsynk-growatt-modbus.html">Deye, Sunsynk &amp; Growatt</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9889;&#65039;</span>Energy meters<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+            <a href="/schneider-pm3200-modbus.html">Schneider PM3250</a>
+            <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+            <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+            <a href="/eastron-sdm230-sdm72-modbus.html">Eastron SDM230 / SDM72</a>
+            <a href="/carlo-gavazzi-em24-em340-modbus.html">Carlo Gavazzi EM340 / EM24</a>
+            <a href="/janitza-umg-96-pa-modbus.html">Janitza UMG 96-PA</a>
+            <a href="/wattnode-modbus.html">WattNode</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9881;&#65039;</span>Drives &amp; EC fans<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+            <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+            <a href="/abb-ach580-modbus.html">ABB ACH580</a>
+            <a href="/danfoss-vlt-fc102-fc302-modbus.html">Danfoss FC 102 / FC 302</a>
+            <a href="/schneider-altivar-atv320-atv630-modbus.html">Schneider ATV320 / ATV630</a>
+            <a href="/siemens-sinamics-g120-modbus.html">Siemens SINAMICS G120</a>
+            <a href="/powerflex-525-modbus.html">PowerFlex 525</a>
+            <a href="/durapulse-gs20-modbus.html">DURApulse GS20</a>
+            <a href="/yaskawa-v1000-modbus.html">Yaskawa V1000</a>
+            <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+            <a href="/modbus-vfd-speed-reference.html">VFD Speed Registers</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#127981;&#65039;</span>Siemens PLCs<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200 HMI</a>
+            <a href="/siemens-s7-put-get.html">Siemens S7 PUT/GET</a>
+          </div></div>
+        </div>
+        <a href="/register-map-service.html"><span class="ni">&#128203;&#65039;</span>Register Map from your PDF</a>
+        <a href="/manual.html"><span class="ni">&#128214;&#65039;</span>Documentation</a>
+        <a href="/modbus-poll-alternative.html"><span class="ni">&#9878;&#65039;</span>vs Modbus Poll</a>
+      </div></div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+    <li><a href="https://bacmanager.com">BACManager &#8599;</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.10/Modbus.Manager.Pro.Setup.1.9.10.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-Guides-NavText', 'product': 'pro', 'value': 1})">Pro trial ↓</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/v1.4.14/Modbus.Manager.Setup.1.4.14.exe" class="nav-cta" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-Guides-Nav', 'product': 'standard', 'value': 1})">Download free trial</a>
+  </div>
+</nav>
+<div class="slogan-band slim">
+  <span class="sb-main">Every device. One tool. Pay once.</span>
+  <span class="sb-sub">Modbus &middot; BACnet &middot; Siemens S7 &middot; one-time licence &middot; also from us: <a href="https://bacmanager.com">BACManager&nbsp;&#8599;</a></span>
+</div>
+<div class="hazard"></div>
+
+<div class="article-wrap">
+
+  <div class="breadcrumb">
+    <a href="/">ModbusManager</a> &rsaquo; Guides
+  </div>
+
+  <h1>Modbus Device Guides and How-tos</h1>
+
+  <p class="lead">Every guide on this site in one place: 32 pages on reading real devices over Modbus &mdash; inverters, energy meters, drives, PLCs &mdash; and on the protocol details that trip people up. Each device guide has its register map from the vendor's own documents, the traps an integrator meets, and most come with a free ModbusManager workspace you can open and point at your device.</p>
+
+  <style>
+  .gh-group{margin:2rem 0 0}
+  .gh-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.8rem;margin-top:.8rem}
+  .gh-card{display:flex;flex-direction:column;gap:.35rem;border:2px solid var(--ink);border-radius:3px;background:var(--plate);padding:.8rem .95rem;text-decoration:none;color:var(--ink)}
+  .gh-card:hover{border-color:var(--safety);background:#fff}
+  .gh-name{font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.08rem;text-transform:uppercase;letter-spacing:.02em}
+  .gh-desc{font-size:.84rem;line-height:1.5;color:var(--body)}
+  .gh-ws{align-self:flex-start;font-family:'IBM Plex Mono',monospace;font-size:.66rem;background:var(--safety);color:var(--ink);padding:1px 6px;border-radius:2px}
+  </style>
+
+  <h2 class="gh-group">Solar &amp; inverters</h2>
+  <div class="gh-grid">
+      <a class="gh-card" href="/huawei-smartlogger-modbus.html"><span class="gh-name">Huawei SmartLogger</span><span class="gh-ws">free workspace</span><span class="gh-desc">SmartLogger3000 and 3000A register map: inverter address formula, key SUN2000 registers and status values, plus a free 24-inverter workspace.</span></a>
+      <a class="gh-card" href="/huawei-sun2000-modbus.html"><span class="gh-name">Huawei SUN2000</span><span class="gh-ws">free workspace</span><span class="gh-desc">SUN2000 inverter Modbus registers: active power 32080, yield 32114, status 32089, meter 37113. Enable Modbus TCP on the SDongle, unit ID, port, free workspace.</span></a>
+      <a class="gh-card" href="/huawei-sun2000-home-assistant.html"><span class="gh-name">SUN2000 &rarr; Home Assistant</span><span class="gh-ws">free workspace</span><span class="gh-desc">Get a Huawei SUN2000 and DTSU666-H meter into Home Assistant locally: one Modbus TCP connection, MQTT discovery, Energy dashboard ready. Free workspace.</span></a>
+      <a class="gh-card" href="/sungrow-inverter-modbus.html"><span class="gh-name">Sungrow Inverters</span><span class="gh-ws">free workspace</span><span class="gh-desc">Sungrow SG and SH inverter Modbus registers: addresses minus one, FC04 vs FC03, low-word-first 32-bit values, work states, WiNet-S setup, free workspace.</span></a>
+      <a class="gh-card" href="/sunspec-modbus-sma-fronius-solaredge.html"><span class="gh-name">SunSpec: SMA, Fronius, SolarEdge</span><span class="gh-ws">free workspace</span><span class="gh-desc">SunSpec Modbus explained for SMA, Fronius and SolarEdge: SunS marker at 40000, model 103 registers, scale factors, unit IDs and ports per brand, free workspace.</span></a>
+      <a class="gh-card" href="/victron-gx-modbus-tcp.html"><span class="gh-name">Victron Cerbo GX</span><span class="gh-ws">free workspace</span><span class="gh-desc">Victron GX Modbus TCP: enable the server, Unit-ID 100 for system data, 227 for the MultiPlus, registers 840-850, scale factors, 0x0A/0x0B. Free workspace.</span></a>
+      <a class="gh-card" href="/goodwe-et-hybrid-modbus.html"><span class="gh-name">GoodWe ET Hybrid</span><span class="gh-ws">free workspace</span><span class="gh-desc">GoodWe ET / EH hybrid inverter Modbus: factory address 247, 9600 8N1, FC03, PV at 35103, battery 35180, SOC 37007, work and battery mode. Free workspace.</span></a>
+      <a class="gh-card" href="/deye-sunsynk-growatt-modbus.html"><span class="gh-name">Deye, Sunsynk &amp; Growatt</span><span class="gh-ws">free workspace</span><span class="gh-desc">Deye, Sunsynk and Growatt hybrid inverter Modbus registers: battery SOC, grid and load power, signs, FC03 vs FC04, word order, RS485 settings, free workspace.</span></a>
+  </div>
+
+  <h2 class="gh-group">Energy meters</h2>
+  <div class="gh-grid">
+      <a class="gh-card" href="/schneider-powerlogic-pm5000-modbus.html"><span class="gh-name">Schneider PM5000</span><span class="gh-ws">free workspace</span><span class="gh-desc">PowerLogic PM5000 series register list — PM5300, PM5320, PM5350, PM5500 — over Modbus RTU or TCP with FLOAT32 decoding, plus a free workspace file.</span></a>
+      <a class="gh-card" href="/schneider-pm3200-modbus.html"><span class="gh-name">Schneider PM3250</span><span class="gh-ws">free workspace</span><span class="gh-desc">Schneider PM3200 series on Modbus: only PM3250/PM3255, register = address + 1, FC03/FC16 only, PF -2..+2, Int64 vs Float32 energy. Free workspace.</span></a>
+      <a class="gh-card" href="/eastron-sdm630-modbus.html"><span class="gh-name">Eastron SDM630</span><span class="gh-ws">free workspace</span><span class="gh-desc">SDM630 and SDM630MCT register list with FLOAT32 decoding and FC04 addresses, plus a free ready-made workspace to start polling in minutes.</span></a>
+      <a class="gh-card" href="/eastron-sdm120-modbus.html"><span class="gh-name">Eastron SDM120</span><span class="gh-ws">free workspace</span><span class="gh-desc">SDM120-Modbus register map with FLOAT32 decoding, factory defaults (2400 baud, ID 1) and RS-485 wiring, plus a free ready-made workspace for Windows.</span></a>
+      <a class="gh-card" href="/eastron-sdm230-sdm72-modbus.html"><span class="gh-name">Eastron SDM230 / SDM72</span><span class="gh-ws">free workspace</span><span class="gh-desc">Eastron SDM230 and SDM72 Modbus: FC04 input registers, even register count, 30 values max, SDM72D-M nine registers vs SDM72DM-V2. Free workspace.</span></a>
+      <a class="gh-card" href="/carlo-gavazzi-em24-em340-modbus.html"><span class="gh-name">Carlo Gavazzi EM340 / EM24</span><span class="gh-ws">free workspace</span><span class="gh-desc">Carlo Gavazzi EM340 / EM24 Modbus: physical = Modicom - 300001, INT32 low word first, V x10, A x1000, FC03 = FC04, EM24 E1 192.168.1.10. Free workspace.</span></a>
+      <a class="gh-card" href="/janitza-umg-96-pa-modbus.html"><span class="gh-name">Janitza UMG 96-PA</span><span class="gh-ws">free workspace</span><span class="gh-desc">Janitza UMG 96-PA Modbus: the 19000 Float32 block, W and Wh units, little-endian at address + 32768, baud rate Auto, address 1-250. Free workspace.</span></a>
+      <a class="gh-card" href="/wattnode-modbus.html"><span class="gh-name">WattNode</span><span class="gh-desc">Why a new WattNode reads voltage correctly but power wrong, which register fixes it, and how to commission the meter over RS-485 in minutes.</span></a>
+  </div>
+
+  <h2 class="gh-group">Drives &amp; EC fans</h2>
+  <div class="gh-grid">
+      <a class="gh-card" href="/abb-acs580-modbus.html"><span class="gh-name">ABB ACS580</span><span class="gh-ws">free workspace</span><span class="gh-desc">Control word, status word, speed reference and actual value registers for ACS580 over Modbus RTU, plus a free ready-made workspace for Windows.</span></a>
+      <a class="gh-card" href="/abb-acs880-modbus.html"><span class="gh-name">ABB ACS880</span><span class="gh-ws">free workspace</span><span class="gh-desc">Embedded fieldbus or FSCA-01 adapter, ABB Drives profile control word, status and reference registers, plus a free ready-made workspace for Windows.</span></a>
+      <a class="gh-card" href="/abb-ach580-modbus.html"><span class="gh-name">ABB ACH580</span><span class="gh-ws">free workspace</span><span class="gh-desc">ABB ACH580 Modbus RTU: holding registers, group 58 setup, control word 0x047F, 20000 = 46.02 scaling, DI4 start interlock, Act2 = 0. Free workspace.</span></a>
+      <a class="gh-card" href="/danfoss-vlt-fc102-fc302-modbus.html"><span class="gh-name">Danfoss FC 102 / FC 302</span><span class="gh-ws">free workspace</span><span class="gh-desc">Danfoss VLT FC 102 / FC 302 on Modbus RTU: 8-30 setup, register = 10 x parameter, conversion index, CTW 50000, STW 50200, 0x047C. Free workspace.</span></a>
+      <a class="gh-card" href="/schneider-altivar-atv320-atv630-modbus.html"><span class="gh-name">Schneider ATV320 / ATV630</span><span class="gh-ws">free workspace</span><span class="gh-desc">Altivar ATV320 / ATV630 Modbus RTU: address OFF from the factory, 6001-6005 settings, scanner 12741 ETA / RFRD, CMD 0x000F, no minus one. Free workspace.</span></a>
+      <a class="gh-card" href="/siemens-sinamics-g120-modbus.html"><span class="gh-name">Siemens SINAMICS G120</span><span class="gh-ws">free workspace</span><span class="gh-desc">SINAMICS G120 CU240B-2 / CU240E-2 on Modbus RTU: p2030 = 2, address switch, STW1 40100, ZSW1 40110, diagnostics 40340, 0x047F. Free workspace.</span></a>
+      <a class="gh-card" href="/powerflex-525-modbus.html"><span class="gh-name">PowerFlex 525</span><span class="gh-desc">Why PowerFlex 525 Modbus reads land one register off, which function codes the drive answers, and how to verify it on a live drive with a free tool.</span></a>
+      <a class="gh-card" href="/durapulse-gs20-modbus.html"><span class="gh-name">DURApulse GS20</span><span class="gh-desc">How any GS20 parameter number converts into a Modbus register, where the two control words live, and how to verify both on a real drive.</span></a>
+      <a class="gh-card" href="/yaskawa-v1000-modbus.html"><span class="gh-name">Yaskawa V1000</span><span class="gh-desc">V1000 and GA500 MEMOBUS register addresses for run command, frequency reference and output monitoring, plus H5 parameters and why FC06 is rejected.</span></a>
+      <a class="gh-card" href="/modbus-hmi-ebm-papst.html"><span class="gh-name">ebm-papst EC Fan</span><span class="gh-ws">free workspace</span><span class="gh-desc">Monitor and control a bank of ebm-papst EC fans on one live dashboard. Free 16-fan demo workspace, runs on the built-in simulator or real fans.</span></a>
+      <a class="gh-card" href="/modbus-vfd-speed-reference.html"><span class="gh-name">VFD Speed Registers</span><span class="gh-desc">Which Modbus holding register sets a VFD frequency setpoint from a PLC: the speed reference and control word addresses for ABB ACS580/ACS880, Yaskawa V1000, PowerFlex 525 and DURApulse GS20 — and how to get the scaling right.</span></a>
+  </div>
+
+  <h2 class="gh-group">Siemens PLCs</h2>
+  <div class="gh-grid">
+      <a class="gh-card" href="/modbus-hmi-siemens-s7-1200.html"><span class="gh-name">Siemens S7-1200 HMI</span><span class="gh-desc">Turn ModbusManager Pro into a live HMI for your S7-1200 over Modbus TCP. Free demo project with SCL code and workspace you can run on real hardware.</span></a>
+      <a class="gh-card" href="/siemens-s7-put-get.html"><span class="gh-name">Siemens S7 PUT/GET</span><span class="gh-ws">free workspace</span><span class="gh-desc">Read and write Siemens S7-1200/1500 DBs, merkers and I/O from a PC over PUT/GET: TIA settings, address format, HMI, logging and an S7-Modbus gateway.</span></a>
+  </div>
+
+  <h2 class="gh-group">Modbus how-to</h2>
+  <div class="gh-grid">
+      <a class="gh-card" href="/modbus-rtu-over-tcp.html"><span class="gh-name">Modbus RTU over TCP vs Modbus TCP: Which Your Converter Needs</span><span class="gh-desc">RTU over TCP sends the serial frame with its CRC; Modbus TCP adds an MBAP header. How to tell which your serial device server needs, and how to test it.</span></a>
+      <a class="gh-card" href="/modbus-tcp-security-tls.html"><span class="gh-name">Modbus TCP Security (TLS, Port 802): Certificates and Testing</span><span class="gh-desc">Modbus/TCP Security wraps Modbus in TLS on port 802 with X.509 certificates on both sides. What you need, test certificates with OpenSSL, how to connect.</span></a>
+      <a class="gh-card" href="/modbus-to-mqtt.html"><span class="gh-name">Modbus to MQTT Gateway for Windows (RTU &amp; TCP, Home Assistant)</span><span class="gh-ws">free workspace</span><span class="gh-desc">Publish Modbus RTU and TCP registers to MQTT: one retained topic per value, Home Assistant discovery, writes over /set. No code. Free SDM630 workspace.</span></a>
+  </div>
+
+  <div class="callout">
+    <strong>Your device is not here?</strong> Send the PDF of its Modbus register list to the <a href="/register-map-service.html">register map service</a> and get a ready workspace back, or read it yourself with the <a href="/modbus-scanner.html">Modbus scanner</a>.
+  </div>
+
+  <div class="cta-box">
+    <div>
+      <h3>Try it with ModbusManager Pro</h3>
+      <p>The workspaces from these guides, the device library inside the app, dashboards, historian and alarms. Free 14-day trial. No credit card. Windows 10/11.</p>
+    </div>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.10/Modbus.Manager.Pro.Setup.1.9.10.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManagerPro-Guides-Body', 'product': 'pro', 'value': 1})">Download Pro Trial</a>
+  </div>
+
+</div>
+
+<div class="hazard"></div>
+<!-- GATEWAY CROSS-LINK -->
+<section class="section">
+  <div class="sec-label">// one tool for all of them</div>
+  <h2 class="sec-title">Every device, one tool</h2>
+  <div style="max-width:820px;margin:0 auto;background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem">
+    <p style="color:var(--body);line-height:1.75;margin:0 0 1.1rem">ModbusManager Pro reads all of these side by side, and republishes them as one Modbus TCP map or as MQTT topics with Home Assistant discovery.</p>
+    <a href="/modbus-gateway-software.html" style="font-family:'IBM Plex Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">Modbus gateway software &rarr;</a>
+  </div>
+</section>
+<footer class="sf" id="support">
+  <div class="sf-cols">
+    <div class="sf-col"><div class="sf-h">Features</div>
+      <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+      <a href="/modbus-data-logger-software.html">Data Logger</a>
+      <a href="/modbus-rtu-rs485-data-logger.html">RTU logging</a>
+      <a href="/modbus-to-csv-logging.html">CSV export</a>
+      <a href="/modbus-alarm-software.html">Alarms</a>
+      <a href="/modbus-gateway-software.html">Gateway</a>
+      <a href="/modbus-to-mqtt.html">Modbus to MQTT</a>
+      <a href="/modbus-structured-text-scripting.html">Tags &amp; scripting</a>
+    </div>
+    <div class="sf-col"><div class="sf-h">Devices</div>
+      <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+      <a href="/modbus-vfd-speed-reference.html">VFD drives</a>
+      <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    </div>
+    <div class="sf-col"><div class="sf-h">Help</div>
+      <a href="/manual.html">Documentation</a>
+      <a href="/#install">Install notes</a>
+      <a href="/linux-mac.html">Linux / Pi / Mac waitlist</a>
+      <a href="mailto:support@modbusmanager.com">Support</a>
+    </div>
+    <div class="sf-col"><div class="sf-h">Company</div>
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/license-terms.html">License terms</a>
+      <a href="https://bacmanager.com">BACManager (BACnet) &#8599;</a>
+    </div>
+  </div>
+  <div class="sf-bot"><span class="sf-logo">ModbusManager</span><span>Every device. One tool. Pay once.</span><span>&copy; 2026 E-Netter O&Uuml;</span><a href="mailto:support@modbusmanager.com">support@modbusmanager.com</a></div>
+<script id="sf-js">(function(){
+  function box(t){for(var e=t,i=0;e&&i<3;e=e.parentElement,i++){var o=getComputedStyle(e).overflowX;if(o==='auto'||o==='scroll')return e}return null}
+  function check(b){var h=b.previousElementSibling,wide=b.scrollWidth>b.clientWidth+4;
+    if(!h||!h.classList.contains('sf-swipe')){if(!wide)return;h=document.createElement('div');h.className='sf-swipe';h.textContent='Table continues \u2014 swipe sideways \u2192';b.parentNode.insertBefore(h,b);
+      b.addEventListener('scroll',function(){if(b.scrollLeft>20)h.hidden=true},{passive:true})}
+    if(!wide)h.hidden=true;else if(b.scrollLeft<=20)h.hidden=false}
+  function run(){var seen=[];document.querySelectorAll('table').forEach(function(t){var b=box(t);if(b&&seen.indexOf(b)<0){seen.push(b);check(b);if(window.ResizeObserver)new ResizeObserver(function(){check(b)}).observe(b)}})}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+})();</script>
+</footer>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+<script src="/email-capture.js" defer></script>
+
+<script>
+/* Download buttons (2026-10-26): the installer is fetched on a click, not
+   through the link's href, so crawlers that follow every link no longer count
+   as downloads on GitHub. data-dl is the address without https://.
+   Each click is also counted in our own Google Sheet (Apps Script), cookie
+   consent or not: site, product, version, page, referrer, language, time
+   zone. No cookies, no IP address. The download never waits for it.
+   A workspace (.json or .zip on this site) is counted as product "Workspace" with
+   the file name as its version, a manual (.pdf) as product "Manual"; both
+   download as before. */
+function dlCount(product, version) {
+  try {
+    navigator.sendBeacon('https://script.google.com/macros/s/AKfycbyx9RacY_l5KDK0RBBmLk41uKv3McyR_UJmCTWqnRqklh6fYgeXvYecddcQDGzRx5-F/exec', JSON.stringify({
+      site: location.hostname, product: product, version: version,
+      page: location.pathname, referrer: document.referrer, lang: navigator.language,
+      tz: (window.Intl && Intl.DateTimeFormat().resolvedOptions().timeZone) || ''
+    }));
+  } catch (err) {}
+}
+document.addEventListener('click', function (e) {
+  if (!e.target.closest) return;
+  var w = e.target.closest('a[href$=".json"], a[href$=".zip"], a[href$=".zap15_1"]');
+  if (w) { dlCount('Workspace', (w.getAttribute('href').match(/([^\/]+)\.(?:json|zip|zap15_1)$/) || [])[1] || ''); return; }
+  var m = e.target.closest('a[href$=".pdf"]');
+  if (m) { dlCount('Manual', (m.getAttribute('href').match(/([^\/]+)\.pdf$/) || [])[1] || ''); return; }
+  var a = e.target.closest('a[data-dl]');
+  if (!a || e.defaultPrevented) return;
+  e.preventDefault();
+  var dl = a.getAttribute('data-dl');
+  dlCount(/bacmanager/i.test(dl) ? 'BACManager' : (/Pro\.Setup|pro-v/i.test(dl) ? 'ModbusManager Pro' : 'ModbusManager Standard'),
+    (dl.match(/(\d+(?:\.\d+)+)\.exe$/) || [])[1] || '');
+  window.location.href = 'https://' + dl;
+});
+</script>
+<script src="/open-in-app.js" defer></script>
+</body>
+</html>
