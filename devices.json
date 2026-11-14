@@ -201,6 +201,15 @@
       "page": "lufft-ws-weather-sensor-modbus.html"
     },
     {
+      "id": "alfen-eve",
+      "name": "Alfen Eve EV charger (NG9xx)",
+      "cat": "solar",
+      "proto": "Modbus TCP",
+      "desc": "Charging state, power, voltages and currents per phase, max current",
+      "ws": "Alfen_Eve.json",
+      "page": "alfen-eve-modbus.html"
+    },
+    {
       "id": "nibe-s",
       "name": "NIBE S-series heat pump",
       "cat": "hvac",
