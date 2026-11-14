@@ -42,7 +42,7 @@
   "description": "How to read and control an ABB ACS880 industrial drive over Modbus RTU using ModbusManager: embedded fieldbus on the XD2D port (group 58) or FSCA-01 adapter, ABB Drives profile control word, status word, references and actual values.",
   "url": "https://modbusmanager.com/abb-acs580-modbus.html",
   "datePublished": "2026-06-30",
-  "dateModified": "2026-11-10",
+  "dateModified": "2026-11-14",
   "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
   "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
 },
@@ -482,7 +482,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
       <tr><td>Fault</td><td>0x04F6, then 0x0476</td><td class="hl">Fault reset: the stop word with bit 7 set, a rising edge of bit 7 (0x0480 would also clear OFF1&ndash;OFF3)</td></tr>
     </tbody>
   </table>
-  <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.6;font-size:0.9rem"><strong>Important:</strong> the master must keep sending the control word and reference periodically (every 200&ndash;500 ms). With communication loss mode 58.15 at <em>Cw / Ref1 / Ref2</em>, only a write resets the timer, so a master that just keeps reading still lets it run out: when the writes stop and 58.14 is set to a fault, the ACS880 trips fault 6681 (communication loss) after 58.16. Check 58.14&ndash;58.16 on the drive.</p>
+  <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.6;font-size:0.9rem"><strong>Important:</strong> the master must keep sending the control word and reference periodically (every 200&ndash;500 ms). With communication loss mode 58.15 at <em>Cw / Ref1 / Ref2</em>, only a write resets the timer, so a master that just keeps reading still lets it run out: when the writes stop and 58.14 is set to a fault, the ACS880 trips fault 6681 (communication loss) after 58.16. Check 58.14&ndash;58.16 on the drive. From ModbusManager Pro 1.9.10, the Motor / Drive faceplate does this for you: <em>Write the command again every (ms)</em> (500 ms in the ABB Drives preset) repeats the control word and the reference while the drive runs, and ends on Stop, Reset, a fault or a lost link.</p>
 </section>
 
 <div class="divider-line"></div>

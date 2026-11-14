@@ -42,7 +42,7 @@
   "description": "How to read and control an ABB ACS580 variable frequency drive over Modbus RTU using ModbusManager: control word, status word, frequency reference, actual values and the ABB Drives profile.",
   "url": "https://modbusmanager.com/abb-acs580-modbus.html",
   "datePublished": "2026-06-30",
-  "dateModified": "2026-11-10",
+  "dateModified": "2026-11-14",
   "author": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"},
   "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
 },
@@ -217,6 +217,20 @@ nav .nav-links.open{display:flex!important;flex-direction:column;position:absolu
   try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
   gtag('js', new Date());
   gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": "ABB ACS580 on Modbus RTU: fault 6681 and how to keep it running",
+  "description": "An ABB ACS580 on its built-in Modbus RTU port: 19200 baud, even parity, ABB Drives profile, register 40001 as wire address 0, the control word and status word. Why the drive trips fault 6681 (communication loss) while the master keeps reading, when 58.15 counts only writes of the control word or a reference; the fault reset 0x04F6 then 0x0476; and holding the command every 500 ms so the drive keeps running.",
+  "thumbnailUrl": "https://modbusmanager.com/acs580-video-thumb.jpg",
+  "uploadDate": "2026-11-14",
+  "duration": "PT2M43S",
+  "embedUrl": "https://www.youtube-nocookie.com/embed/NTEPKFdQpTc",
+  "contentUrl": "https://www.youtube.com/watch?v=NTEPKFdQpTc",
+  "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
+}
 </script>
 <script type="application/ld+json">
 {"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/#guides"},{"@type": "ListItem","position": 3,"name": "ABB ACS580 Guide","item": "https://modbusmanager.com/abb-acs580-modbus.html"}]}
@@ -402,6 +416,44 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 
 <div class="divider-line"></div>
 
+<!-- VIDEO (2026-11-14) -->
+<section class="section" style="padding-bottom:1rem">
+  <div class="sec-label">// watch it</div>
+  <h2 class="sec-title">Fault 6681 while the panel is reading</h2>
+  <figure style="margin:1.4rem 0 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink)">
+    <div id="acsVideo" style="position:relative;cursor:pointer;line-height:0" onclick="acsPlayVideo()"
+         role="button" tabindex="0" aria-label="Play the ABB ACS580 Modbus RTU video"
+         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();acsPlayVideo();}">
+      <img src="/acs580-video-thumb.jpg" width="1280" height="800" loading="lazy" decoding="async"
+           alt="ModbusManager Pro with an ABB ACS580 drive faceplate holding the command: running at 75 percent, status word bits ready, running and at setpoint"
+           style="width:100%;height:auto;display:block">
+      <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(22,24,26,.35)">
+        <span style="display:flex;align-items:center;justify-content:center;width:78px;height:78px;border-radius:50%;background:var(--safety);color:var(--ink);font-size:30px;padding-left:6px">&#9654;</span>
+      </span>
+      <span style="position:absolute;right:10px;bottom:10px;background:rgba(22,24,26,.85);color:#E6E8E3;font-family:'IBM Plex Mono',monospace;font-size:.72rem;padding:2px 7px;border-radius:2px">2:43</span>
+    </div>
+    <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">
+      Settings, register 40001 = address 0, the control word, fault 6681 with 58.15 at Cw / Ref1 / Ref2, reset 0x04F6 &rarr; 0x0476, and the faceplate holding the command &mdash; against a simulated ACS580 over RTU.
+    </figcaption>
+  </figure>
+  <script>
+  function acsPlayVideo() {
+    var box = document.getElementById('acsVideo');
+    if (!box || box.dataset.loaded) return;
+    box.dataset.loaded = '1';
+    box.innerHTML = '<div style="position:relative;padding-top:62.5%">' +
+      '<iframe src="https://www.youtube-nocookie.com/embed/NTEPKFdQpTc?autoplay=1&rel=0" ' +
+      'title="ABB ACS580 on Modbus RTU: fault 6681 and how to keep it running" ' +
+      'style="position:absolute;inset:0;width:100%;height:100%;border:0" ' +
+      'allow="accelerometer; autoplay; encrypted-media; picture-in-picture" ' +
+      'allowfullscreen></iframe></div>';
+    if (typeof gtag === 'function') gtag('event', 'video_play', { event_category: 'Video', event_label: 'ACS580-Guide' });
+  }
+  </script>
+</section>
+
+<div class="divider-line"></div>
+
 <!-- REGISTER MAP (first; corrected against the ACS580 firmware manual 2026-10-09) -->
 <section class="section">
   <div class="sec-label">// register map</div>
@@ -503,7 +555,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
       <tr><td>Fault</td><td>0x04F6, then 0x0476</td><td class="hl">Fault reset: the stop word with bit 7 set, a rising edge of bit 7 (0x0480 would also clear OFF1&ndash;OFF3)</td></tr>
     </tbody>
   </table>
-  <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.6;font-size:0.9rem"><strong>Important:</strong> the master must keep sending the control word and reference periodically (every 200&ndash;500 ms). With communication loss mode 58.15 at <em>Cw / Ref1 / Ref2</em>, only a write resets the timer, so a master that just keeps reading still lets it run out: when the writes stop and 58.14 is set to a fault, the ACS580 trips fault 6681 (communication loss) after 58.16. Check 58.14&ndash;58.16 on the drive.</p>
+  <p style="max-width:780px;margin:1.4rem auto 0;text-align:center;color:var(--muted);line-height:1.6;font-size:0.9rem"><strong>Important:</strong> the master must keep sending the control word and reference periodically (every 200&ndash;500 ms). With communication loss mode 58.15 at <em>Cw / Ref1 / Ref2</em>, only a write resets the timer, so a master that just keeps reading still lets it run out: when the writes stop and 58.14 is set to a fault, the ACS580 trips fault 6681 (communication loss) after 58.16. Check 58.14&ndash;58.16 on the drive. From ModbusManager Pro 1.9.10, the Motor / Drive faceplate does this for you: <em>Write the command again every (ms)</em> (500 ms in the ABB Drives preset) repeats the control word and the reference while the drive runs, and ends on Stop, Reset, a fault or a lost link.</p>
 </section>
 
 <div class="divider-line"></div>
