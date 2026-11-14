@@ -219,6 +219,15 @@
       "page": "grundfos-magna3-cim-modbus.html"
     },
     {
+      "id": "danfoss-akcc350",
+      "name": "Danfoss AK-CC 350 case controller",
+      "cat": "hvac",
+      "proto": "Modbus RTU",
+      "desc": "Refrigerated case / cold room: air and evaporator temperatures, cutout, state, relays, alarms",
+      "ws": "Danfoss_AKCC350.json",
+      "page": "danfoss-ak-cc-350-modbus.html"
+    },
+    {
       "id": "ebmpapst-ec",
       "name": "ebm-papst EC fans (16 on one bus)",
       "cat": "hvac",

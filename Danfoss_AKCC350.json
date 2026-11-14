@@ -1,0 +1,732 @@
+{
+  "version": 2,
+  "polls": [
+    {
+      "name": "r00 Cutout (PNU 100)",
+      "fc": 3,
+      "addr": 99,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 99,
+      "chartName": "r00 Cutout (PNU 100) [99]",
+      "logFile": "log_r00_Cutout_PNU_100_.txt"
+    },
+    {
+      "name": "r12 Main switch (PNU 117)",
+      "fc": 3,
+      "addr": 116,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 5000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 116,
+      "chartName": "r12 Main switch (PNU 117) [116]",
+      "logFile": "log_r12_Main_switch_PNU_117_.txt"
+    },
+    {
+      "name": "u09 S5 evaporator (PNU 1011)",
+      "fc": 3,
+      "addr": 1010,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 1010,
+      "chartName": "u09 S5 evaporator (PNU 1011) [1010]",
+      "logFile": "log_u09_S5_evaporator_PNU_1011_.txt"
+    },
+    {
+      "name": "Defrost state (PNU 1036)",
+      "fc": 3,
+      "addr": 1035,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 1035,
+      "chartName": "Defrost state (PNU 1036) [1035]",
+      "logFile": "log_Defrost_state_PNU_1036_.txt"
+    },
+    {
+      "name": "EKC State (PNU 2007)",
+      "fc": 3,
+      "addr": 2006,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 2006,
+      "chartName": "EKC State (PNU 2007) [2006]",
+      "logFile": "log_EKC_State_PNU_2007_.txt"
+    },
+    {
+      "name": "u58-u60 relays (PNU 2510-2512)",
+      "fc": 3,
+      "addr": 2509,
+      "qty": 3,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 2509,
+      "chartName": "u58-u60 relays (PNU 2510-2512) [2509]",
+      "logFile": "log_u58_u60_relays_PNU_2510_2512_.txt"
+    },
+    {
+      "name": "u12 S3, u16 S4, u17 air (PNU 2530-2532)",
+      "fc": 3,
+      "addr": 2529,
+      "qty": 3,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 2529,
+      "chartName": "u12 S3, u16 S4, u17 air (PNU 2530-2532) [2529]",
+      "logFile": "log_u12_S3_u16_S4_u17_air_PNU_2530_2532_.txt"
+    },
+    {
+      "name": "u62 alarm relay (PNU 2583)",
+      "fc": 3,
+      "addr": 2582,
+      "qty": 1,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 2582,
+      "chartName": "u62 alarm relay (PNU 2583) [2582]",
+      "logFile": "log_u62_alarm_relay_PNU_2583_.txt"
+    },
+    {
+      "name": "Alarm bits (PNU 20000-20014)",
+      "fc": 3,
+      "addr": 19999,
+      "qty": 15,
+      "slaveId": 1,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 19999,
+      "chartName": "Alarm bits (PNU 20000-20014) [19999]",
+      "logFile": "log_Alarm_bits_PNU_20000_20014_.txt"
+    }
+  ],
+  "activePoll": 0,
+  "condColors": {},
+  "scaling": {},
+  "valueNames": {},
+  "chartSeries": [],
+  "slaveBlocks": [],
+  "dashTheme": "modern",
+  "dashFx": true,
+  "dashBgColor": "#0d1117",
+  "dashPages": [
+    {
+      "id": 1,
+      "name": "AK-CC 350",
+      "elements": [
+        {
+          "id": 1,
+          "value": 0,
+          "type": "statictext",
+          "x": 20,
+          "y": 10,
+          "w": 840,
+          "h": 30,
+          "text": "Danfoss AK-CC 350  ·  Modbus RTU, address o03  ·  PNU X = wire X - 1, °C x 0.1",
+          "fontSize": 20,
+          "bold": true,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 2,
+          "value": 0,
+          "type": "displaycase",
+          "x": 20,
+          "y": 50,
+          "w": 320,
+          "h": 130,
+          "label": "Dairy case 3",
+          "hiAlarm": 8,
+          "loAlarm": -2,
+          "alarmDelay": 15,
+          "defrostHold": 30,
+          "items": [
+            {
+              "role": "temp",
+              "name": "Air u17",
+              "sourceType": "tag",
+              "tagName": "Air_Temp"
+            },
+            {
+              "role": "sp",
+              "name": "Cutout r00",
+              "sourceType": "tag",
+              "tagName": "Cutout_SP"
+            },
+            {
+              "role": "defrost",
+              "name": "Defrost",
+              "sourceType": "tag",
+              "tagName": "Defrost"
+            },
+            {
+              "role": "cool",
+              "name": "Compressor u58",
+              "sourceType": "tag",
+              "tagName": "Comp_Relay"
+            },
+            {
+              "role": "alarm",
+              "name": "Alarm relay u62",
+              "sourceType": "tag",
+              "tagName": "Alarm_Relay"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "value": 0,
+          "type": "multistate",
+          "x": 20,
+          "y": 192,
+          "w": 320,
+          "h": 66,
+          "label": "Compressor / LLSV u58 (PNU 2510)",
+          "states": "0=Off:#9fb3cc,1=Cooling:#58a6ff",
+          "sourceType": "tag",
+          "tagName": "Comp_Relay"
+        },
+        {
+          "id": 4,
+          "value": 0,
+          "type": "multistate",
+          "x": 20,
+          "y": 268,
+          "w": 320,
+          "h": 56,
+          "label": "Defrost state (PNU 1036)",
+          "states": "0=No defrost:#3fd28a,1=Defrost:#58a6ff",
+          "sourceType": "tag",
+          "tagName": "Defrost"
+        },
+        {
+          "id": 5,
+          "value": 0,
+          "type": "multistate",
+          "x": 360,
+          "y": 50,
+          "w": 340,
+          "h": 66,
+          "label": "EKC State (PNU 2007)",
+          "states": "0=Regulating:#3fd28a,2=Min ON time:#3fd28a,3=Min OFF time:#9fb3cc,4=Drip-off:#58a6ff,10=Stopped by main switch:#f85149,11=Stopped by thermostat:#9fb3cc,14=Defrost:#58a6ff,15=Fan delay:#58a6ff,17=Door open:#f0c040,20=Emergency cooling:#f85149,25=Manual control:#f0c040,29=Case cleaning:#f0c040",
+          "sourceType": "tag",
+          "tagName": "EKC_State"
+        },
+        {
+          "id": 6,
+          "value": 0,
+          "type": "multistate",
+          "x": 710,
+          "y": 50,
+          "w": 150,
+          "h": 66,
+          "label": "r12 main switch",
+          "states": "1=Start:#3fd28a,0=Stop:#f85149,-1=Manual:#f0c040",
+          "sourceType": "tag",
+          "tagName": "Main_Switch"
+        },
+        {
+          "id": 7,
+          "value": 0,
+          "type": "text",
+          "x": 360,
+          "y": 126,
+          "w": 160,
+          "h": 66,
+          "label": "S3 air in",
+          "unit": "°C",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "S3_Air_In"
+        },
+        {
+          "id": 8,
+          "value": 0,
+          "type": "text",
+          "x": 530,
+          "y": 126,
+          "w": 160,
+          "h": 66,
+          "label": "S4 air out",
+          "unit": "°C",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "S4_Air_Out"
+        },
+        {
+          "id": 9,
+          "value": 0,
+          "type": "text",
+          "x": 700,
+          "y": 126,
+          "w": 160,
+          "h": 66,
+          "label": "S5 evaporator",
+          "unit": "°C",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "S5_Evap"
+        },
+        {
+          "id": 10,
+          "value": 0,
+          "type": "multistate",
+          "x": 360,
+          "y": 202,
+          "w": 160,
+          "h": 56,
+          "label": "High temp (20005)",
+          "states": "0=OK:#3fd28a,1=ALARM:#f85149",
+          "sourceType": "tag",
+          "tagName": "A_High_Temp"
+        },
+        {
+          "id": 11,
+          "value": 0,
+          "type": "multistate",
+          "x": 530,
+          "y": 202,
+          "w": 160,
+          "h": 56,
+          "label": "Low temp (20006)",
+          "states": "0=OK:#3fd28a,1=ALARM:#f85149",
+          "sourceType": "tag",
+          "tagName": "A_Low_Temp"
+        },
+        {
+          "id": 12,
+          "value": 0,
+          "type": "multistate",
+          "x": 700,
+          "y": 202,
+          "w": 160,
+          "h": 56,
+          "label": "Door (20008)",
+          "states": "0=OK:#3fd28a,1=OPEN:#f85149",
+          "sourceType": "tag",
+          "tagName": "A_Door"
+        },
+        {
+          "id": 13,
+          "value": 0,
+          "type": "multistate",
+          "x": 360,
+          "y": 268,
+          "w": 160,
+          "h": 56,
+          "label": "Fan u59",
+          "states": "0=Off:#9fb3cc,1=Running:#3fd28a",
+          "sourceType": "tag",
+          "tagName": "Fan_Relay"
+        },
+        {
+          "id": 14,
+          "value": 0,
+          "type": "multistate",
+          "x": 530,
+          "y": 268,
+          "w": 160,
+          "h": 56,
+          "label": "Defrost relay u60",
+          "states": "0=Off:#9fb3cc,1=On:#58a6ff",
+          "sourceType": "tag",
+          "tagName": "Defrost_Relay"
+        },
+        {
+          "id": 15,
+          "value": 0,
+          "type": "multistate",
+          "x": 700,
+          "y": 268,
+          "w": 160,
+          "h": 56,
+          "label": "S5 sensor (20004)",
+          "states": "0=OK:#3fd28a,1=ERROR:#f85149",
+          "sourceType": "tag",
+          "tagName": "A_Sensor_S5"
+        },
+        {
+          "id": 16,
+          "value": 0,
+          "type": "multitend",
+          "x": 20,
+          "y": 340,
+          "w": 840,
+          "h": 200,
+          "label": "Air, cutout and evaporator (°C)",
+          "maxPoints": 1200,
+          "decimals": 1,
+          "sampleMs": 2000,
+          "yMin": -10,
+          "yMax": 10,
+          "items": [
+            {
+              "name": "Air u17",
+              "sourceType": "tag",
+              "tagName": "Air_Temp",
+              "color": "#58a6ff",
+              "value": 0
+            },
+            {
+              "name": "Cutout r00",
+              "sourceType": "tag",
+              "tagName": "Cutout_SP",
+              "color": "#3fd28a",
+              "value": 0
+            },
+            {
+              "name": "S5 evaporator",
+              "sourceType": "tag",
+              "tagName": "S5_Evap",
+              "color": "#f0c040",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "Cutout_SP",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 99,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "r00 Cutout °C = set point (PNU 100, wire 99)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Main_Switch",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 116,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "r12 main switch: 1 start, 0 stop, -1 manual (PNU 117, wire 116)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "S5_Evap",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 1010,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "u09 S5 evaporator °C (PNU 1011, wire 1010)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Defrost",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 1035,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "defrost state 0/1 (PNU 1036, wire 1035)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "EKC_State",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 2006,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "EKC state: 0 regulating, 11 stopped by thermostat, 14 defrost ... (PNU 2007, wire 2006)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Comp_Relay",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 2509,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "u58 compressor / LLSV relay (PNU 2510, wire 2509)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Fan_Relay",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 2510,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "u59 fan relay (PNU 2511, wire 2510)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Defrost_Relay",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 2511,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "u60 defrost relay (PNU 2512, wire 2511)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "S3_Air_In",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 2529,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "u12 S3 air in °C (PNU 2530, wire 2529)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "S4_Air_Out",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 2530,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "u16 S4 air out °C (PNU 2531, wire 2530)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Air_Temp",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 2531,
+      "dataType": "int16",
+      "wordOrder": "big",
+      "description": "u17 thermostat air °C (PNU 2532, wire 2531)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Alarm_Relay",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 2582,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "u62 alarm relay (PNU 2583, wire 2582)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "A_High_Temp",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 20004,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "high temperature alarm (PNU 20005, wire 20004)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "A_Low_Temp",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 20005,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "low temperature alarm (PNU 20006, wire 20005)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "A_Door",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 20007,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "door alarm (PNU 20008, wire 20007)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "A_Sensor_S5",
+      "type": "register",
+      "slaveId": 1,
+      "regType": "holdingRegisters",
+      "address": 20003,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "S5 sensor error (PNU 20004, wire 20003)",
+      "scale": 1,
+      "offset": 0
+    }
+  ],
+  "script": "",
+  "scriptInterval": "1000",
+  "historianLogging": {
+    "registers": [],
+    "tags": []
+  },
+  "saved": "2026-11-14T12:00:00.000Z"
+}
