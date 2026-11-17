@@ -1,7 +1,7 @@
 // Open a ready workspace straight in ModbusManager Pro (modbusmanager:// link, ModbusManager Pro 1.9.9 or newer).
 // Written by tools/web-research/open-in-app.js — edit it there.
 (function () {
-  var FILES = ["SDM630_workspace.json","SDM120_workspace.json","SchneiderPM5000_workspace.json","SchneiderPM3200_workspace.json","Eastron_SDM230_SDM72.json","CarloGavazzi_EM340.json","Janitza_UMG96PA.json","ABB_ACS580_monitor_workspace.json","ABB_ACS880_monitor_workspace.json","ABB_ACH580_Modbus_monitor.json","Danfoss_FC102_monitor.json","Schneider_ATV320_monitor.json","Siemens_G120_monitor.json","Huawei_SUN2000.json","SmartLogger_24inv.json","Sungrow_SG.json","SunSpec_Inverter.json","Deye_Hybrid_1P.json","Victron_CerboGX.json","GoodWe_ET_Hybrid.json","ebmpapst_16fans_workspace.json","Siemens_S7_PUT_GET.json","Huawei_SUN2000_HomeAssistant.json","SDM630_MQTT_HomeAssistant.json"];
+  var FILES = ["SDM630_workspace.json","SDM120_workspace.json","SchneiderPM5000_workspace.json","SchneiderPM3200_workspace.json","Eastron_SDM230_SDM72.json","CarloGavazzi_EM340.json","Janitza_UMG96PA.json","Socomec_DIRIS_A40.json","ABB_ACS580_monitor_workspace.json","ABB_ACS880_monitor_workspace.json","ABB_ACH580_Modbus_monitor.json","Danfoss_FC102_monitor.json","Schneider_ATV320_monitor.json","Siemens_G120_monitor.json","Huawei_SUN2000.json","SmartLogger_24inv.json","Sungrow_SG.json","SunSpec_Inverter.json","Deye_Hybrid_1P.json","Victron_CerboGX.json","GoodWe_ET_Hybrid.json","Lufft_WS501.json","Alfen_Eve.json","NIBE_S1255.json","CoolMasterNet_VRF.json","Grundfos_MAGNA3_CIM.json","Carel_pCO_Chiller.json","Danfoss_AKCC350.json","ebmpapst_16fans_workspace.json","Siemens_S7_PUT_GET.json","Omron_E5CC.json","DeepSea_DSE7320.json","Huawei_SUN2000_HomeAssistant.json","SDM630_MQTT_HomeAssistant.json"];
   var done = {};
   [].forEach.call(document.querySelectorAll('a[download][href$=".json"]'), function (a) {
     var file = (a.getAttribute('href') || '').replace(/^.*\//, '');
@@ -39,12 +39,21 @@
         n.appendChild(d);
         var o = document.createElement('div');
         o.style.cssText = 'font-size:0.8rem;opacity:0.8';
-        o.innerHTML = 'Or download the .json file below and open it with <i>Open workspace</i>.';
+        o.innerHTML = 'Or download the .json file below and open it with <i>Open workspace</i> &mdash; <a href="/workspace.html" style="color:inherit">how workspaces work</a>.';
         n.appendChild(o);
         b.parentNode.insertBefore(n, b.nextSibling && b.nextSibling.nextSibling ? b.nextSibling.nextSibling : null);
       }, 1500);
     });
     a.parentNode.insertBefore(b, a);
     if (a.className) a.parentNode.insertBefore(document.createTextNode(' '), a);
+    // under the buttons, once per button row: what a workspace is and how to use it (work list 3.46)
+    var row = a.parentNode;
+    if (row && row.parentNode && !row.getAttribute('data-ws-help')) {
+      row.setAttribute('data-ws-help', '1');
+      var h = document.createElement('div');
+      h.style.cssText = 'margin:0.7rem 0 0;font-size:0.85rem;line-height:1.5;text-align:' + (getComputedStyle(row).textAlign === 'center' ? 'center' : 'left');
+      h.innerHTML = '<a href="/workspace.html" style="color:inherit">What is a workspace? How to open it and connect your device &rarr;</a>';
+      row.parentNode.insertBefore(h, row.nextSibling);
+    }
   });
 })();

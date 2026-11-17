@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Modbus Device Guides: Inverters, Meters, Drives, PLCs</title>
-<meta name="description" content="42 Modbus guides: Huawei, Sungrow, Victron, Eastron, Schneider, ABB, Danfoss, Siemens and more — register maps from vendor documents, traps, free workspaces.">
+<meta name="description" content="43 Modbus guides: Huawei, Sungrow, Victron, Eastron, Schneider, ABB, Danfoss, Siemens and more — register maps from vendor documents, traps, free workspaces.">
 <meta name="keywords" content="Modbus device guides, Modbus register map, Modbus inverter, Modbus energy meter, Modbus VFD, Modbus PLC">
 <meta name="author" content="ModbusManager">
 <meta name="robots" content="index, follow">
@@ -23,7 +23,7 @@
 <meta property="og:image" content="https://modbusmanager.com/og-device-guides.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="article:published_time" content="2026-11-14T00:00:00Z">
+<meta property="article:published_time" content="2026-11-17T00:00:00Z">
 <meta property="article:section" content="Guides">
 <meta property="article:tag" content="Modbus">
 
@@ -40,7 +40,7 @@
   "description": "Every Modbus device guide on modbusmanager.com in one place: register maps from the vendors' own documents, the traps integrators meet, and free workspaces.",
   "url": "https://modbusmanager.com/modbus-device-guides.html",
   "image": "https://modbusmanager.com/og-device-guides.png",
-  "datePublished": "2026-11-14",
+  "datePublished": "2026-11-17",
   "author": {
     "@type": "Organization",
     "name": "ModbusManager",
@@ -334,6 +334,7 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
           </div></div>
         </div>
         <a href="/register-map-service.html"><span class="ni">&#128203;&#65039;</span>Register Map from your PDF</a>
+        <a href="/workspace.html"><span class="ni">&#128190;&#65039;</span>Workspaces: open &amp; use</a>
         <a href="/manual.html"><span class="ni">&#128214;&#65039;</span>Documentation</a>
         <a href="/modbus-poll-alternative.html"><span class="ni">&#9878;&#65039;</span>vs Modbus Poll</a>
       </div></div>
@@ -362,7 +363,7 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
 
   <h1>Modbus Device Guides and How-tos</h1>
 
-  <p class="lead">Every guide on this site in one place: 42 pages on reading real devices over Modbus &mdash; inverters, energy meters, drives, PLCs &mdash; and on the protocol details that trip people up. Each device guide has its register map from the vendor's own documents, the traps an integrator meets, and most come with a free ModbusManager workspace you can open and point at your device.</p>
+  <p class="lead">Every guide on this site in one place: 43 pages on reading real devices over Modbus &mdash; inverters, energy meters, drives, PLCs &mdash; and on the protocol details that trip people up. Each device guide has its register map from the vendor's own documents, the traps an integrator meets, and most come with a free ModbusManager workspace you can open and point at your device &mdash; <a href="/workspace.html">how workspaces work</a>.</p>
 
   <style>
   .gh-group{margin:2rem 0 0}
@@ -446,6 +447,7 @@ nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
       <a class="gh-card" href="/modbus-rtu-over-tcp.html"><span class="gh-name">Modbus RTU over TCP vs Modbus TCP: Which Your Converter Needs</span><span class="gh-desc">RTU over TCP sends the serial frame with its CRC; Modbus TCP adds an MBAP header. How to tell which your serial device server needs, and how to test it.</span></a>
       <a class="gh-card" href="/modbus-tcp-security-tls.html"><span class="gh-name">Modbus TCP Security (TLS, Port 802): Certificates and Testing</span><span class="gh-desc">Modbus/TCP Security wraps Modbus in TLS on port 802 with X.509 certificates on both sides. What you need, test certificates with OpenSSL, how to connect.</span></a>
       <a class="gh-card" href="/modbus-to-mqtt.html"><span class="gh-name">Modbus to MQTT Gateway for Windows (RTU &amp; TCP, Home Assistant)</span><span class="gh-ws">free workspace</span><span class="gh-desc">Publish Modbus RTU and TCP registers to MQTT: one retained topic per value, Home Assistant discovery, writes over /set. No code. Free SDM630 workspace.</span></a>
+      <a class="gh-card" href="/workspace.html"><span class="gh-name">ModbusManager Workspaces: What They Are and How to Use Them</span><span class="gh-desc">A workspace is one .json file with poll windows, dashboard, tags and script. Open a ready one from a device guide, connect your device, save your own.</span></a>
   </div>
 
   <div class="callout">

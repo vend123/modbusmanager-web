@@ -56,7 +56,7 @@
   "description":"Complete user manual for ModbusManager Pro 1.9.10 and Standard 1.4.14: connecting, polling and writing registers, the slave simulator, tags with Structured Text, HMI dashboards, Runtime packages, Historian, alarms, gateway with MQTT and Home Assistant discovery, and Siemens S7.",
   "url":"https://modbusmanager.com/manual.html",
   "datePublished":"2026-06-01",
-  "dateModified":"2026-11-14",
+  "dateModified":"2026-11-17",
   "author":{"@type":"Organization","name":"ModbusManager","url":"https://modbusmanager.com"},
   "publisher":{"@type":"Organization","name":"ModbusManager","url":"https://modbusmanager.com"},
   "about":{
@@ -484,6 +484,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
           </div></div>
         </div>
         <a href="/register-map-service.html"><span class="ni">&#128203;&#65039;</span>Register Map from your PDF</a>
+        <a href="/workspace.html"><span class="ni">&#128190;&#65039;</span>Workspaces: open &amp; use</a>
         <a href="/manual.html" aria-current="page"><span class="ni">&#128214;&#65039;</span>Documentation</a>
         <a href="/modbus-poll-alternative.html"><span class="ni">&#9878;&#65039;</span>vs Modbus Poll</a>
       </div></div>
@@ -901,6 +902,7 @@ function tagPlayVideo() {
 
 <section id="workspaces" class="doc-section">
 <h2>Workspaces &amp; templates</h2>
+<p><b>Step by step with pictures:</b> <a href="/workspace.html">What is a workspace and how to use it</a> &mdash; opening a ready one, connecting your own device, saving and moving your own.</p>
 <p>A <b>workspace</b> <span class="ed both">Std + Pro</span> is one JSON file with your setup. <b>&#128190; Workspace</b> saves it to Documents; the folder button opens one from the list or by <b>Browse&hellip;</b>. On quit the application asks whether to save.</p>
 <table class="doc-table"><thead><tr><th style="width:50%">Saved in the workspace</th><th>Not in the workspace</th></tr></thead><tbody><tr><td>Poll windows and their descriptions, Value Names, conditional colours, chart series, slave blocks; in Pro also the dashboard (pages, theme, effects, background), tags, the script and its interval, which series the Historian logs, and the gateway configuration (opening asks before applying it).</td><td>Connection settings (each PC keeps its own), alarm definitions and the S7 PLC list (kept by the application), simulations on slave registers, and recorded history.</td></tr></tbody></table>
 <p><b>Device templates</b> <span class="ed pro">Pro</span> load ready poll windows for a device &mdash; ebm-papst EC fan, Huawei SmartLogger, Siemens S7-1200 (as Modbus TCP server), a generic energy meter and a generic VFD &mdash; and <b>Save template</b> stores your own. Saving under a name that exists asks, then replaces that template. A templates file that cannot be read is set aside as <code>device-templates.damaged-&lt;time&gt;.json</code> and reported, never overwritten. Templates carry poll windows only; use a workspace to move a complete setup.</p>
