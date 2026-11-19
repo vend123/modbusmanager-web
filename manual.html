@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ModbusManager User Manual &amp; Documentation</title>
-<meta name="description" content="ModbusManager 1.9.10 manual: Modbus TCP and RTU, poll and write, slave simulator, tags, HMI dashboards, Historian, alarms, gateway, MQTT and Siemens S7.">
+<meta name="description" content="ModbusManager 1.9.11 manual: Modbus TCP and RTU, poll and write, slave simulator, tags, HMI dashboards, Historian, alarms, gateway, MQTT and Siemens S7.">
 <meta name="keywords" content="Modbus software manual, ModbusManager documentation, how to poll Modbus registers, Modbus TCP RTU ASCII guide, Modbus slave simulator, Modbus Structured Text, Modbus FC03 holding register, Modbus address base, Modbus HMI dashboard, Modbus gateway, Modbus historian, Siemens S7 PUT GET, Modbus HMI runtime">
 <meta name="author" content="ModbusManager">
 <meta name="robots" content="index, follow">
@@ -13,7 +13,7 @@
 <!-- Open Graph -->
 <meta property="og:title" content="ModbusManager User Manual &amp; Documentation">
 <meta property="og:site_name" content="ModbusManager">
-<meta property="og:description" content="The complete ModbusManager 1.9.10 manual: connecting, polling, writing, slave simulator, tags and Structured Text, HMI dashboards, Runtime, Historian, alarms, gateway with MQTT and Home Assistant, and Siemens S7.">
+<meta property="og:description" content="The complete ModbusManager 1.9.11 manual: connecting, polling, writing, slave simulator, tags and Structured Text, HMI dashboards, Runtime, Historian, alarms, gateway with MQTT and Home Assistant, and Siemens S7.">
 <meta property="og:url" content="https://modbusmanager.com/manual.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://modbusmanager.com/og-hmi.png">
@@ -53,7 +53,7 @@
   "@context":"https://schema.org",
   "@type":"TechArticle",
   "headline":"ModbusManager User Manual",
-  "description":"Complete user manual for ModbusManager Pro 1.9.10 and Standard 1.4.14: connecting, polling and writing registers, the slave simulator, tags with Structured Text, HMI dashboards, Runtime packages, Historian, alarms, gateway with MQTT and Home Assistant discovery, and Siemens S7.",
+  "description":"Complete user manual for ModbusManager Pro 1.9.11 and Standard 1.4.15: connecting, polling and writing registers, the slave simulator, tags with Structured Text, HMI dashboards, Runtime packages, Historian, alarms, gateway with MQTT and Home Assistant discovery, and Siemens S7.",
   "url":"https://modbusmanager.com/manual.html",
   "datePublished":"2026-06-01",
   "dateModified":"2026-11-17",
@@ -66,7 +66,7 @@
     "applicationCategory":"DeveloperApplication",
     "offers":{"@type":"Offer","price":"119","priceCurrency":"USD"},
     "url":"https://modbusmanager.com/#pro",
-    "downloadUrl":"https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.10/Modbus.Manager.Pro.Setup.1.9.10.exe"
+    "downloadUrl":"https://github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.11/Modbus.Manager.Pro.Setup.1.9.11.exe"
   }
 },
 {
@@ -495,8 +495,8 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
     <li><a href="https://bacmanager.com">BACManager &#8599;</a></li>
   </ul>
   <div style="display:flex;gap:12px;align-items:center">
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.10/Modbus.Manager.Pro.Setup.1.9.10.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-NavText','product':'pro','value':1})">Pro trial &darr;</a>
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.10/Modbus.Manager.Pro.Setup.1.9.10.exe" class="nav-cta" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-Nav','product':'pro','value':1})">Download Pro trial</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.11/Modbus.Manager.Pro.Setup.1.9.11.exe" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-NavText','product':'pro','value':1})">Pro trial &darr;</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.11/Modbus.Manager.Pro.Setup.1.9.11.exe" class="nav-cta" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-Nav','product':'pro','value':1})">Download Pro trial</a>
   </div>
 </nav>
 <div class="slogan-band slim">
@@ -506,12 +506,12 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 <!-- crumbs (site-crumbs.js) --><style>.sc-crumbs{max-width:1140px;margin:0 auto;padding:.75rem 3rem 0;font-family:'IBM Plex Mono',monospace;font-size:.72rem;line-height:1.5;color:var(--muted,#5F5E5A)}.sc-crumbs a{color:var(--muted,#5F5E5A);text-decoration:none;border-bottom:1px dotted currentColor}.sc-crumbs a:hover{color:var(--ink,#16181A)}.sc-crumbs .sep{margin:0 .45rem;opacity:.7}.sc-crumbs [aria-current]{color:var(--ink,#16181A)}@media(max-width:768px){.sc-crumbs{padding:.6rem 1.2rem 0}}</style><div class="sc-crumbs" role="navigation" aria-label="Breadcrumb"><a href="/">Home</a><span class="sep">&rsaquo;</span><span aria-current="page">User Manual</span></div><!-- /crumbs -->
 
 <header class="hero">
-  <div class="eyebrow">Documentation &mdash; ModbusManager Pro v1.9.10 &middot; Standard v1.4.14 &middot; updated 14 November 2026</div>
+  <div class="eyebrow">Documentation &mdash; ModbusManager Pro v1.9.11 &middot; Standard v1.4.15 &middot; updated 19 November 2026</div>
   <h1>ModbusManager <span class="accent">User Manual</span></h1>
   <p class="hero-desc">How to connect, poll, write, simulate, script, log, alarm, bridge and visualise Modbus data &mdash; and read Siemens S7 PLCs &mdash; with ModbusManager on Windows. Use the contents to jump to a topic, or download the whole manual as a printable PDF.</p>
   <div class="hero-ctas">
     <a href="/ModbusManagerPro_UserManual.pdf" class="btn-primary">Download PDF manual</a>
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.10/Modbus.Manager.Pro.Setup.1.9.10.exe" class="btn-ghost" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-Hero','product':'pro','value':1})">Download Pro trial</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.11/Modbus.Manager.Pro.Setup.1.9.11.exe" class="btn-ghost" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-Hero','product':'pro','value':1})">Download Pro trial</a>
   </div>
   <p class="hero-note">Free 14-day trial &bull; Standard &#36;49 &bull; Pro &#36;119 &bull; Runtime &#36;39 per machine &bull; one-time licences &bull; Windows 10 / 11</p>
 </header>
@@ -583,7 +583,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 <table class="doc-table"><thead><tr><th style="width:110px">Mode</th><th>Use it for</th></tr></thead><tbody>
 <tr><td>TCP/IP</td><td>Modbus TCP devices on Ethernet. Fields: IP address, Port (502), Timeout, Connect timeout.</td></tr>
 <tr><td>RTU</td><td>Serial RS-485 / RS-232 through a COM port or USB adapter.</td></tr>
-<tr><td>ASCII</td><td>Serial Modbus ASCII (each byte as two hex characters). Port, baud (up to 19200) and parity.</td></tr>
+<tr><td>ASCII</td><td>Serial Modbus ASCII (each byte as two hex characters). Port, baud (up to 19200), parity, data bits, stop bits, timeout, RTS Toggle and Remove Echo, as for RTU.</td></tr>
 <tr><td>RTU/TCP</td><td>RTU frames (with CRC, no MBAP header) through a TCP socket &mdash; serial-to-Ethernet converters in transparent mode. Needs Pro 1.9.6 / Standard 1.4.11 or later; earlier versions sent Modbus TCP frames here. More: <a class="inline-link" href="/modbus-rtu-over-tcp.html">Modbus RTU over TCP</a>.</td></tr>
 <tr><td>ASCII/TCP</td><td>Modbus ASCII frames (<code>:</code> + hex + LRC) through a TCP socket &mdash; converters that pass ASCII through.</td></tr>
 <tr><td>UDP</td><td>Modbus UDP (the TCP header, in datagrams).</td></tr>
@@ -615,6 +615,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 <ul class="body-list">
 <li><b>Double-click a value</b> to write it (FC06/FC05/FC16) &mdash; see <a class="inline-link" href="#writing">Writing</a>. <b>Double-click the description</b> to name the register.</li>
 <li><b>Right-click</b>: <i>Copy value</i>, <i>Write value</i>, <i>Value Names</i> (show 0 as &ldquo;Off&rdquo;, 1 as &ldquo;Run&rdquo;&hellip;), <i>Conditional Colors</i> (colour a cell by a rule). On a 32-bit cell, right-click picks the <b>word order</b>: big-endian, word-swapped, byte-swapped or fully reversed.</li>
+<li><b>32- and 64-bit columns</b>: every row shows its own pair &mdash; row N combines registers N and N+1 (64-bit: N to N+3) &mdash; so the row of the address a manual gives is right wherever the window starts.</li>
 <li>Row buttons: &#128202; <i>Add to Dashboard</i> and &#128200; <i>Log to History</i> <span class="ed pro">Pro</span>.</li>
 <li><b>Filter&hellip;</b> narrows the rows; <b>&#11015; Export CSV</b> saves the active window or all windows.</li>
 <li><span class="ed pro">Pro</span> <b>Snapshot</b> stores a baseline and highlights what changed since (<b>Clear diff</b> ends it); <b>PDF report</b> prints a Modbus commissioning report of the windows.</li>
@@ -625,6 +626,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 <section id="writing" class="doc-section">
 <h2>Writing values <span class="ed both">Std + Pro</span></h2>
 <p>The <b>Write</b> tab writes <b>FC05</b> single coil, <b>FC06</b> single register and <b>FC16</b> multiple registers. <b>FC22</b> mask write and <b>FC23</b> read/write are in the <a class="inline-link" href="#monitoring">Test Center</a>, which shows the reply. Choose the <b>Format</b> (16-bit, 32-bit signed/unsigned/float, 64-bit signed/unsigned/float) and the tool splits the value into registers in the word order you selected. Enter the register address, value (or comma-separated values) and slave ID, then <b>Send command &rarr;</b>. The reply or the exception is reported at once.</p>
+<p>A write is checked first: an empty or invalid value writes nothing, a number that does not fit the format is refused instead of wrapping, and a window on input registers (FC04) or discrete inputs (FC02) says it is read-only instead of writing the holding register or coil with the same number.</p>
 <p>For a quick change, double-click a value in the register table: the <b>Write Register</b> dialog opens with the address filled in.</p>
 <div class="callout warn"><div class="c-label">Warning</div><p>A write changes the controller. Check the slave ID, the address base and the value before sending &mdash; especially on running machinery.</p></div>
 </section>
@@ -640,7 +642,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 
 <section id="scanning" class="doc-section">
 <h2>Scanning &amp; diagnostics</h2>
-<p><b>Slave Scan</b> <span class="ed both">Std + Pro</span> probes a range of slave IDs (From ID / To ID) with one read and lists who answers &mdash; for a device on the bus whose address is unknown. A device that answers with a Modbus exception counts as found &mdash; it is there, and the register or function code is what to change. <b>Address Scan</b> sweeps a register range on one slave in blocks and lists which addresses return data, reading address by address where a block has a gap &mdash; for mapping an undocumented device; the result exports to CSV.</p>
+<p><b>Slave Scan</b> <span class="ed both">Std + Pro</span> probes a range of slave IDs (From ID / To ID, from 0) with one read and its own reply timeout (300 ms by default) and lists who answers &mdash; for a device on the bus whose address is unknown. A device that answers with a Modbus exception counts as found &mdash; it is there, and the register or function code is what to change. <b>Address Scan</b> sweeps a register range on one slave in blocks and lists which addresses return data, reading address by address where a block has a gap &mdash; for mapping an undocumented device; the result exports to CSV.</p>
 <p><b>&#9889; Auto-detect</b> <span class="ed pro">Pro</span>, in the Slave Scan tab, tries baud rates, parity settings and slave IDs on a COM port (or unit IDs behind a TCP gateway) until a device answers, then <b>Use these settings</b> applies them.</p>
 <p><b>&#128269; Diagnose</b> <span class="ed pro">Pro</span>, in the status bar, reads the recent error history and says what kind of failure it is: no reply, timeouts now and then, a Modbus exception, refused or reset TCP, garbled frames, port not found or port busy &mdash; with what to check for each.</p>
 <a class="vid" href="https://youtu.be/7PQM_slccgM" target="_blank" rel="noopener"><div class="th"><img src="https://i.ytimg.com/vi/7PQM_slccgM/hqdefault.jpg" alt="Slave Scan and Address Scan explained" loading="lazy"><span>&#9654;</span></div><div class="lb">&#9654; Watch: Slave Scan &amp; Address Scan</div></a>
@@ -741,9 +743,10 @@ function tagPlayVideo() {
 </tbody></table>
 <h3>Properties and binding</h3>
 <p>Select an element to open <b>Properties</b>. <b>Source</b> is <b>Register</b> (slave ID, register type, address &mdash; polled in the background while polling runs, even without a poll window), <b>Tag</b>, or <b>Siemens S7</b>. The other fields follow the element: label, min/max, unit, decimals, font size, compare and threshold, on/off colours and labels, states (<code>0=Off:#8892a4,1=On:#00d4aa</code>), options for Enum Write, write value for a Button, flow and spin direction, image file, size, layer order. In the Modern theme a <b>Style (Modern)</b> block adds main and second colour, alarm and warning levels, arc span, glow and glass card. A <b>KPI Card</b> shows the change over a period, in per cent or in units.</p>
+<p>An element bound to a register takes a <b>Data type</b> (UInt16, Int16, UInt32, Int32, Float32) and <b>Word order</b>, like a tag: &minus;5 &deg;C shows as &minus;5, not 65531, and a 32-bit value is written with FC16. Select several elements to copy and paste them together, also to another page.</p>
 <h3>Trends and channel charts</h3>
 <ul class="body-list">
-<li><b>Trend</b>: one value over time. <b>Max points</b> sets the length, <b>Sample interval (ms)</b> how often a point is taken (default 1000 ms; never faster than the value actually arrives). A steady value keeps drawing.</li>
+<li><b>Trend</b>: one value over time. <b>Max points</b> sets the length, <b>Sample interval (ms)</b> how often a point is taken (default 1000 ms; never faster than the value actually arrives). A steady value keeps drawing. <b>Y Min</b> / <b>Y Max</b> fix the axis (blank = automatic); a value outside is drawn at the edge.</li>
 <li>A Trend or Multi Trend channel can take its <b>Source &rarr; History</b>: pick a series the <a class="inline-link" href="#history">Historian</a> logs, and the chart draws what History holds and follows as new samples are stored &mdash; a page opened in the afternoon shows the morning too.</li>
 <li>A trend line breaks only where the data really stopped: a gap longer than 5 s, or three samples, whichever is longer. A short pause in polling no longer cuts the line.</li>
 <li><b>Bar Graph, Value Table, Multi Trend, Alarm List</b> hold several channels: <b>&#128203; Edit channels&hellip;</b> sets each channel&rsquo;s source (register or tag), name, unit, colour and, for Multi Trend and Value Table, <b>Visible when</b> (show the channel only while a tag is non-zero).</li>
@@ -804,6 +807,7 @@ function tagPlayVideo() {
 <figure class="shot"><img src="/manual-dash-run.jpg" width="1300" height="700" loading="lazy" alt="The pump station dashboard in Runtime during a high-level alarm: the alarm banner reads Alarms: 1, High level, the tank is red at 100 percent, the pump is off and the valve closed"><figcaption>Runtime during a high-level alarm: the banner, the red tank and gauge, the stopped pump.</figcaption></figure>
 <ul class="body-list">
 <li>Write elements (Button, Toggle, Slider, Setpoint, Enum Write, PID) write <b>only in Runtime</b>, and only after the element has read a value, so a click in edit mode or on an empty screen never sends anything.</li>
+<li>A write is checked: only a number the target can hold is sent (a 16-bit register takes &minus;32768 &hellip; 65535; a negative value goes as its 16-bit word, as in the register table). An element on an input register or a discrete input never writes. Anything else is refused with a line in the log.</li>
 <li>A value that stops arriving is dimmed and keeps its last reading; hover shows &ldquo;Not current &mdash; last update &hellip;&rdquo;. Text in a numeric field shows &ldquo;&mdash;&rdquo;.</li>
 </ul>
 <a class="vid" href="https://youtu.be/9ux-IB1ksv0" target="_blank" rel="noopener"><div class="th"><img src="https://i.ytimg.com/vi/9ux-IB1ksv0/hqdefault.jpg" alt="Modern HMI pump station" loading="lazy"><span>&#9654;</span></div><div class="lb">&#9654; Watch: a pump station HMI in the Modern theme</div></a>
@@ -832,7 +836,7 @@ function tagPlayVideo() {
 <li>Samples arrive at the poll rate. <b>Deadband</b> stores a sample only when the value moved at least that much (0 = store all); writes to disk are batched every 5 s.</li>
 <li><b>Scale &times;</b> and &#9881; <b>Display scale</b> (scale, offset, decimals, chart min/max) change how a series is shown; the database keeps the raw value, so a scale can be corrected later.</li>
 <li><b>Time range</b>: 1h, 24h, 7d, All, or From/To. Drag on the chart to zoom, <b>Manual scale</b> fixes the Y axis, <b>Min/max lines</b> marks the extremes; the statistics show points, min, max and average.</li>
-<li><b>Data management</b>: database size, <b>&#11015; Export CSV</b> of the selected series (ISO time, milliseconds, value), and <b>Delete data older than</b> 1 day &hellip; 1 year or a date. Series definitions are kept.</li>
+<li><b>Data management</b>: database size, <b>&#11015; Export CSV</b> of the selected series &mdash; every stored sample in the time range (up to 500 000) with ISO time, milliseconds, the value as the chart shows it and the raw value, and <b>Delete data older than</b> 1 day &hellip; 1 year or a date. Series definitions are kept.</li>
 </ul>
 <p>More on intervals and deadband: <a class="inline-link" href="/modbus-logging-interval-deadband.html">logging interval &amp; deadband</a> &middot; <a class="inline-link" href="/modbus-to-csv-logging.html">CSV export</a>.</p>
 <a class="vid" href="https://youtu.be/szRmw1vP85A" target="_blank" rel="noopener"><div class="th"><img src="https://i.ytimg.com/vi/szRmw1vP85A/hqdefault.jpg" alt="Historian tutorial" loading="lazy"><span>&#9654;</span></div><div class="lb">&#9654; Watch: logging Modbus data with the Historian</div></a>
@@ -843,6 +847,7 @@ function tagPlayVideo() {
 <figure class="shot"><img src="/manual-alarms.jpg" width="1300" height="235" loading="lazy" alt="Alarms tab: one active critical alarm High level with an Ack button, sound on, repeat until ack, and the alarm definitions High level and Pump power high with their warning and critical limits"><figcaption>An active critical alarm waiting for acknowledgement, and two definitions.</figcaption></figure>
 <ul class="body-list">
 <li><b>+ New alarm</b>: name, description, source (register or tag) and condition: greater, less, greater or equal, less or equal, equal, not equal, between, outside range.</li>
+<li>A register alarm on FC 3 or 4 has a <b>Data type</b> (UInt16, Int16, UInt32, Int32, Float32) and <b>Word order</b>, so &minus;5 &deg;C compares as &minus;5. Alarms saved before this option compare the raw word, as before.</li>
 <li>Greater/less conditions have two optional levels, <b>&#9888; Warning limit</b> and <b>&#9940; Critical limit</b>; equal/not equal take a value; range conditions take lower and upper.</li>
 <li><b>Hysteresis</b> keeps a value that hovers at the limit from raising and clearing the alarm repeatedly; <b>Delay (s)</b> raises it only after the condition has held that long.</li>
 <li><b>Active alarms</b> lists what is raised; <b>&#10003; Ack</b> acknowledges. <b>Sound on / Muted</b> and <i>Repeat until ack</i> / <i>Beep once</i> choose the alert. <b>History</b> lists raised, cleared and acknowledged times.</li>
@@ -854,7 +859,7 @@ function tagPlayVideo() {
 <li><b>When to send</b>: alarm raised, warning &rarr; critical, back to normal, acknowledged; the lowest level; the same alarm again only after a number of minutes (a flapping alarm sends once); and above a number of messages a minute, one message lists them all (a PLC going offline raises many at once).</li>
 <li>Each alarm has a <b>Notify</b> box (on by default). Dashboard element faults and limits that go to the alarm list are sent too.</li>
 <li>The messages are in the application&rsquo;s language and name the site, the alarm, the value and the limit. A failed send is tried again three times, a minute apart.</li>
-<li>The application sends them, so they work with the window closed and on a Runtime machine. Passwords and tokens stay on the computer: they are not saved in the workspace or in a Runtime package &mdash; a Runtime machine gets the settings with its package and its own passwords through the service menu.</li>
+<li>The application sends them, so they work with the window closed and on a Runtime machine. Passwords and tokens stay on the computer, encrypted for the Windows user: they are not saved in the workspace or in a Runtime package &mdash; a Runtime machine gets the settings with its package and its own passwords through the service menu.</li>
 </ul>
 <div class="callout note"><div class="c-label">Note</div><p>Alarms are evaluated and notifications sent by the application while it runs &mdash; keep it running in the tray (<i>Keep running when window is closed</i>) for unattended monitoring.</p></div>
 <a class="vid" href="https://youtu.be/2kxppR82puk" target="_blank" rel="noopener"><div class="th"><img src="https://i.ytimg.com/vi/2kxppR82puk/hqdefault.jpg" alt="Alarms tutorial" loading="lazy"><span>&#9654;</span></div><div class="lb">&#9654; Watch: alarms on Modbus values</div></a>
@@ -865,12 +870,13 @@ function tagPlayVideo() {
 <p>The gateway polls several devices as a master and republishes the values you choose as one <b>common Modbus TCP map</b> &mdash; or as a data block an S7 PLC reads with GET, or to an <b>MQTT</b> broker such as Home Assistant&rsquo;s &mdash; with type and scale conversion both ways. Writes from the PLC (or from Home Assistant) are forwarded to the device.</p>
 <figure class="shot"><img src="/manual-gateway.jpg" width="1210" height="820" loading="lazy" alt="Gateway tab: PLC side slave TCP port 5602, Siemens side S7 server with port 102 and allowed PLC addresses, source endpoints PS-02 station over TCP and Calculated tags, and five mapping rows from the station registers and a tag into the common map"><figcaption>Two endpoints (a TCP device and this application&rsquo;s tags) mapped into one common register map.</figcaption></figure>
 <ol class="body-list">
-<li><b>PLC side</b>: the <b>Slave TCP port</b> the PLC or SCADA connects to (502 by default).</li>
+<li><b>PLC side</b>: the <b>Slave TCP port</b> the PLC or SCADA connects to (502 by default). <b>Allowed PLC addresses</b> limits which computers may connect (empty = any); a refused one is logged.</li>
 <li><b>Source endpoints</b>: <b>+ TCP</b> (host, port), <b>+ RTU</b> (COM port, baud, parity), <b>+ Siemens S7</b> (a PLC from the S7 list) and <b>+ Tags</b> (this application&rsquo;s tags, including script results).</li>
 <li><b>Mapping rows</b>: name, endpoint, mode (<b>read</b> device &rarr; map, or <b>write</b> map &rarr; device), source slave ID, type and address (an S7 address or a tag for those endpoints), data type, scale and offset, then the destination: <b>Modbus map</b> (common slave ID, type, address, data type), <b>S7 DB</b> (DB, byte, bit, S7 type) or <b>MQTT</b> (topic, unit, Home Assistant device class).</li>
 <li><b>Start gateway</b>. Each endpoint and row shows its state; a row with an error says why.</li>
+<li>Every row has an <b>On</b> switch in the first column. A value that does not fit its destination is a row error, never wrapped. At start the log names two rows that write the same register or S7 byte, and two MQTT rows with the same topic.</li>
 </ol>
-<p><b>&#11014; Import CSV</b> and <b>&#11015; Export CSV</b> move rows and endpoints to and from a spreadsheet. <b>Start gateway automatically</b> plus the tray options <i>Keep running when window is closed</i> and <i>Start with Windows</i> run it unattended. The gateway configuration is saved with the workspace.</p>
+<p><b>&#11014; Import CSV</b> and <b>&#11015; Export CSV</b> move rows and endpoints to and from a spreadsheet; an imported row with a bad address is skipped and named, a row for an unknown endpoint comes in switched off. <b>Start gateway automatically</b> plus the tray options <i>Keep running when window is closed</i> and <i>Start with Windows</i> run it unattended. The gateway configuration is saved with the workspace.</p>
 <h3>S7 server: the PLC reads a DB from ModbusManager</h3>
 <p>With <b>Serve the rows whose Dest is &ldquo;S7 DB&rdquo; to Siemens PLCs</b> the gateway also answers as an S7 server (port 102): an S7-1200/1500 reads the rows with a <b>GET</b> block and writes them with <b>PUT</b> &mdash; no Modbus program in the PLC. In TIA Portal create a GET/PUT connection to an unspecified partner at this PC&rsquo;s IP address and use absolute addresses such as <code>P#DB100.DBX0.0 BYTE 16</code>. A DB is as long as its rows reach, in steps of 16 bytes; a PUT is forwarded to the row&rsquo;s source when its value changes.</p>
 <div class="callout warn"><div class="c-label">Allowed PLC addresses</div><p>Only PLCs listed in <b>Allowed PLC addresses</b> (comma-separated IPs) can connect. An empty list refuses everyone, and the panel warns about it. The list applies at once; removing an address drops that PLC.</p></div>
@@ -904,11 +910,12 @@ function tagPlayVideo() {
 <h2>Workspaces &amp; templates</h2>
 <p><b>Step by step with pictures:</b> <a href="/workspace.html">What is a workspace and how to use it</a> &mdash; opening a ready one, connecting your own device, saving and moving your own.</p>
 <p>A <b>workspace</b> <span class="ed both">Std + Pro</span> is one JSON file with your setup. <b>&#128190; Workspace</b> saves it to Documents; the folder button opens one from the list or by <b>Browse&hellip;</b>. On quit the application asks whether to save.</p>
-<table class="doc-table"><thead><tr><th style="width:50%">Saved in the workspace</th><th>Not in the workspace</th></tr></thead><tbody><tr><td>Poll windows and their descriptions, Value Names, conditional colours, chart series, slave blocks; in Pro also the dashboard (pages, theme, effects, background), tags, the script and its interval, which series the Historian logs, and the gateway configuration (opening asks before applying it).</td><td>Connection settings (each PC keeps its own), alarm definitions and the S7 PLC list (kept by the application), simulations on slave registers, and recorded history.</td></tr></tbody></table>
+<table class="doc-table"><thead><tr><th style="width:50%">Saved in the workspace</th><th>Not in the workspace</th></tr></thead><tbody><tr><td>Poll windows and their descriptions, Value Names, conditional colours, chart series, slave blocks; in Pro also the dashboard (pages, theme, effects, background), tags, the script and its interval, which series the Historian logs, the gateway configuration (opening asks before applying it) and the alarm definitions.</td><td>Connection settings (each PC keeps its own), the S7 PLC list (kept by the application), simulations on slave registers, and recorded history.</td></tr></tbody></table>
+<p><b>Opening a workspace replaces the one you had</b>: its tags, script, dashboard, colours and scaling go, except tags an alarm or a gateway row still reads. When the new workspace has other alarms, opening asks <b>Replace</b> or <b>Keep</b>; History logging it does not use is asked <b>Stop</b> or <b>Keep</b>. <b>Save</b> offers the open file&rsquo;s name, asks before replacing another file, and <b>Open folder</b> shows the Documents folder in Explorer.</p>
 <p><b>Device templates</b> <span class="ed pro">Pro</span> load ready poll windows for a device &mdash; ebm-papst EC fan, Huawei SmartLogger, Siemens S7-1200 (as Modbus TCP server), a generic energy meter and a generic VFD &mdash; and <b>Save template</b> stores your own. Saving under a name that exists asks, then replaces that template. A templates file that cannot be read is set aside as <code>device-templates.damaged-&lt;time&gt;.json</code> and reported, never overwritten. Templates carry poll windows only; use a workspace to move a complete setup.</p>
 <figure class="shot narrow" style="max-width:580px"><img src="/manual-templates.jpg" width="576" height="735" loading="lazy" alt="Device templates dialog listing built-in templates and the save current polls as a template field"><figcaption>Device templates.</figcaption></figure>
 <p>Ready workspaces for many devices are on the device guide pages (Guides menu), e.g. <a class="inline-link" href="/eastron-sdm630-modbus.html">Eastron SDM630</a> or <a class="inline-link" href="/huawei-sun2000-modbus.html">Huawei SUN2000</a>.</p>
-<p id="device-library"><b>&#128218; Device library</b> <span class="ed pro">Pro</span> lists those workspaces inside the application, with a search and categories (energy meters, solar, drives, HVAC, pumps, PLC, BACnet network, Home Assistant). <b>Open</b> shows what the workspace holds &mdash; pages, elements, poll windows, tags, whether it has a script &mdash; and that it brings no connection, and asks before it replaces yours (<b>Save mine first&hellip;</b>). <b>Open in ModbusManager</b> on a device guide page does the same from the browser.</p>
+<p id="device-library"><b>&#128218; Device library</b> <span class="ed pro">Pro</span> lists those workspaces inside the application, with a search and categories (energy meters, solar, drives, HVAC, pumps, PLC, BACnet network, Home Assistant). <b>Open</b> shows what the workspace holds &mdash; pages, elements, poll windows, tags, whether it has a script &mdash; and that it brings no connection, and asks before it replaces yours (<b>Save mine first&hellip;</b>). <b>Open in ModbusManager</b> on a device guide page does the same from the browser. The question lists the <b>slave IDs</b> the workspace reads; type yours there and the poll windows, tags, dashboard bindings and History logging open with them.</p>
 <p>If a workspace has tags that cannot be created (for example a reserved name such as <code>In</code>), a window lists each one with the reason, the dashboard elements and script lines that use it, and how to fix it; the rest of the workspace opens as usual.</p>
 </section>
 
@@ -919,7 +926,7 @@ function tagPlayVideo() {
 <li><b>Trial</b>: 14 days with every feature, from the first start. Reinstalling does not reset it. When it ends, the licence window opens instead of the application until a key is activated.</li>
 <li><b>Machine ID</b>: shown in the licence window, with a copy button. A key is issued for that ID: buy on <a class="inline-link" href="/#pricing">modbusmanager.com</a>, enter the Machine ID, and the key arrives by e-mail.</li>
 <li><b>Activate</b>: paste the key (Pro keys start <code>MBUSP-</code>, Standard <code>MBUS-</code>, Runtime <code>MBUSR-</code>) and press <b>Activate license</b>. The licence is perpetual for that machine.</li>
-<li><b>New computer</b>: a key is bound to one machine; write to <a class="inline-link" href="mailto:support@modbusmanager.com">support@modbusmanager.com</a> to move it.</li>
+<li><b>New computer</b>: a key is bound to one machine; write to <a class="inline-link" href="mailto:support@modbusmanager.com">support@modbusmanager.com</a> to move it. A key activated on another computer says so in the licence window, with that computer&rsquo;s Machine ID.</li>
 <li>Updates are free for 12 months from purchase; see the <a class="inline-link" href="/license-terms.html">licence terms</a>.</li>
 </ul>
 <a class="vid" href="https://youtu.be/OG_EjQLwi1I" target="_blank" rel="noopener"><div class="th"><img src="https://i.ytimg.com/vi/OG_EjQLwi1I/hqdefault.jpg" alt="How to activate your licence" loading="lazy"><span>&#9654;</span></div><div class="lb">&#9654; Watch: activating your licence</div></a>
@@ -965,7 +972,7 @@ function tagPlayVideo() {
   <h2>Start with the 14-day trial</h2>
   <p>Install ModbusManager Pro on Windows and follow this manual to connect, poll and build your first dashboard.</p>
   <div class="ctas">
-    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.10/Modbus.Manager.Pro.Setup.1.9.10.exe" class="btn-cta-yellow" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-CTA','product':'pro','value':1})">Download Pro trial</a>
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.11/Modbus.Manager.Pro.Setup.1.9.11.exe" class="btn-cta-yellow" onclick="gtag('event','file_download',{'event_category':'Download','event_label':'ModbusManagerPro-Manual-CTA','product':'pro','value':1})">Download Pro trial</a>
     <a href="/ModbusManagerPro_UserManual.pdf" class="btn-cta-outline">Download PDF manual</a>
   </div>
 </section>
