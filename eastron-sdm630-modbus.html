@@ -214,6 +214,20 @@ nav .nav-links.open{display:flex!important;flex-direction:column;position:absolu
   gtag('config', 'G-42Q8HEKC0X');
 </script>
 <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": "Eastron SDM630 on Modbus RTU: FC04, Float32 and the FC03 trap",
+  "description": "An Eastron SDM630 three-phase meter on RS-485 read over Modbus RTU: measurements are input registers read with function code 4 from address 0 (30001), up to 80 registers in one request; every value is a 32-bit float in two registers, high word first; frequency 30071 is not power factor 30063; function code 3 at the same address answers the 40001 demand time, a setting. Ends with the ready-made workspace from the device library.",
+  "thumbnailUrl": "https://modbusmanager.com/sdm630-video-thumb.jpg",
+  "uploadDate": "2026-11-19",
+  "duration": "PT2M36S",
+  "embedUrl": "https://www.youtube-nocookie.com/embed/utVbj9qZhXc",
+  "contentUrl": "https://www.youtube.com/watch?v=utVbj9qZhXc",
+  "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
+}
+</script>
+<script type="application/ld+json">
 {"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/modbus-device-guides.html"},{"@type": "ListItem","position": 3,"name": "Eastron SDM630 Register Map","item": "https://modbusmanager.com/eastron-sdm630-modbus.html"}]}
 </script>
 <style id="site-nav">
@@ -421,6 +435,36 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
     <a href="/SDM630_workspace.json" download class="btn-ghost">+ demo workspace (.json)</a>
   </div>
   <p class="hero-note">Windows 10/11 &middot; free 14-day Pro trial &middot; open the .json workspace inside the app</p>
+  <figure style="margin:1.8rem 0 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink)">
+    <div id="sdmVideo" style="position:relative;cursor:pointer;line-height:0" onclick="sdmPlayVideo()"
+         role="button" tabindex="0" aria-label="Play the Eastron SDM630 Modbus RTU video"
+         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();sdmPlayVideo();}">
+      <img src="/sdm630-video-thumb.jpg" width="1280" height="800" loading="lazy" decoding="async"
+           alt="ModbusManager Pro dashboard for an Eastron SDM630: total power 5844 W, frequency 49.95 Hz, power factor 0.96, power per phase, voltages and currents on L1 to L3, import and export energy and a total power trend, read over Modbus RTU"
+           style="width:100%;height:auto;display:block">
+      <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(22,24,26,.35)">
+        <span style="display:flex;align-items:center;justify-content:center;width:78px;height:78px;border-radius:50%;background:var(--safety);color:var(--ink);font-size:30px;padding-left:6px">&#9654;</span>
+      </span>
+      <span style="position:absolute;right:10px;bottom:10px;background:rgba(22,24,26,.85);color:#E6E8E3;font-family:'IBM Plex Mono',monospace;font-size:.72rem;padding:2px 7px;border-radius:2px">2:36</span>
+    </div>
+    <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">
+      Video: function code 4 from address 0, the raw words and the same pair as Float32 (high word first, and swapped), power factor 30063 against frequency 30071, function code 3 answering the demand time, and the free workspace from the device library &mdash; against a simulated SDM630 over RS-485.
+    </figcaption>
+  </figure>
+  <script>
+  function sdmPlayVideo() {
+    var box = document.getElementById('sdmVideo');
+    if (!box || box.dataset.loaded) return;
+    box.dataset.loaded = '1';
+    box.innerHTML = '<div style="position:relative;padding-top:62.5%">' +
+      '<iframe src="https://www.youtube-nocookie.com/embed/utVbj9qZhXc?autoplay=1&rel=0" ' +
+      'title="Eastron SDM630 on Modbus RTU: FC04, Float32 and the FC03 trap" ' +
+      'style="position:absolute;inset:0;width:100%;height:100%;border:0" ' +
+      'allow="accelerometer; autoplay; encrypted-media; picture-in-picture" ' +
+      'allowfullscreen></iframe></div>';
+    if (typeof gtag === 'function') gtag('event', 'video_play', { event_category: 'Video', event_label: 'SDM630-Guide' });
+  }
+  </script>
 </section>
 
 <div class="divider-line"></div>
