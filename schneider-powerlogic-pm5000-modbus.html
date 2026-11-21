@@ -220,6 +220,20 @@ nav .nav-links.open{display:flex!important;flex-direction:column;position:absolu
   gtag('config', 'G-42Q8HEKC0X');
 </script>
 <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": "Schneider PM5000 Modbus: register 3000 vs 2999, Float32, power factor",
+  "description": "A Schneider PowerLogic PM5000 power meter read over Modbus RTU (19200 baud, even parity): the measurements are 32-bit floats in holding registers from register 3000, which is address 2999 on the wire; a read from 3000 pairs the wrong words (current A = 2.7e23), Base 1 makes the app ask for 2999; the total power factor 3084 is Schneider's four-quadrant code, so 1.05 is 0.95 leading. Ends with the ready-made workspace from the device library and its power factor script.",
+  "thumbnailUrl": "https://modbusmanager.com/pm5000-video-thumb.jpg",
+  "uploadDate": "2026-11-21",
+  "duration": "PT3M31S",
+  "embedUrl": "https://www.youtube-nocookie.com/embed/-tUbsnmQlnI",
+  "contentUrl": "https://www.youtube.com/watch?v=-tUbsnmQlnI",
+  "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
+}
+</script>
+<script type="application/ld+json">
 {"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/modbus-device-guides.html"},{"@type": "ListItem","position": 3,"name": "PM5000 / PM5300 / PM5350 Register Guide","item": "https://modbusmanager.com/schneider-powerlogic-pm5000-modbus.html"}]}
 </script>
 <style id="site-nav">
@@ -427,6 +441,36 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
     <a href="/SchneiderPM5000_workspace.json" download class="btn-ghost">+ demo workspace (.json)</a>
   </div>
   <p class="hero-note">Windows 10/11 &middot; free 14-day Pro trial &middot; open the .json workspace inside the app</p>
+  <figure style="margin:1.8rem 0 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink)">
+    <div id="pmVideo" style="position:relative;cursor:pointer;line-height:0" onclick="pmPlayVideo()"
+         role="button" tabindex="0" aria-label="Play the Schneider PowerLogic PM5000 Modbus video"
+         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();pmPlayVideo();}">
+      <img src="/pm5000-video-thumb.jpg" width="1280" height="800" loading="lazy" decoding="async"
+           alt="ModbusManager Pro dashboard for a Schneider PowerLogic PM5000 read over Modbus RTU: active power 8.10 kW, reactive 2.66 kvar, apparent 8.53 kVA, frequency 50.00 Hz, voltages 230.4, 229.8 and 231.1 V line to neutral and about 399 V line to line, currents 12.40, 11.90 and 12.70 A, power factor 0.950, power per phase and an active power trend"
+           style="width:100%;height:auto;display:block">
+      <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(22,24,26,.35)">
+        <span style="display:flex;align-items:center;justify-content:center;width:78px;height:78px;border-radius:50%;background:var(--safety);color:var(--ink);font-size:30px;padding-left:6px">&#9654;</span>
+      </span>
+      <span style="position:absolute;right:10px;bottom:10px;background:rgba(22,24,26,.85);color:#E6E8E3;font-family:'IBM Plex Mono',monospace;font-size:.72rem;padding:2px 7px;border-radius:2px">3:31</span>
+    </div>
+    <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">
+      Video: a read from register 3000 (current A = 2.7e23, the real values one row early), Base 1 so the app asks for address 2999, current, voltage, power in kW and frequency as Float32, the power factor 3084 = 1.05 decoded as 0.95 leading, and the free workspace from the device library &mdash; against a simulated PM5000 over RS-485.
+    </figcaption>
+  </figure>
+  <script>
+  function pmPlayVideo() {
+    var box = document.getElementById('pmVideo');
+    if (!box || box.dataset.loaded) return;
+    box.dataset.loaded = '1';
+    box.innerHTML = '<div style="position:relative;padding-top:62.5%">' +
+      '<iframe src="https://www.youtube-nocookie.com/embed/-tUbsnmQlnI?autoplay=1&rel=0" ' +
+      'title="Schneider PM5000 Modbus: register 3000 vs 2999, Float32, power factor" ' +
+      'style="position:absolute;inset:0;width:100%;height:100%;border:0" ' +
+      'allow="accelerometer; autoplay; encrypted-media; picture-in-picture" ' +
+      'allowfullscreen></iframe></div>';
+    if (typeof gtag === 'function') gtag('event', 'video_play', { event_category: 'Video', event_label: 'PM5000-Guide' });
+  }
+  </script>
 </section>
 
 <div class="divider-line"></div>
