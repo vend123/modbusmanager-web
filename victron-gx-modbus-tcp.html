@@ -210,6 +210,20 @@ nav .nav-links.open{display:flex!important;flex-direction:column;position:absolu
   gtag('config', 'G-42Q8HEKC0X');
 </script>
 <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": "Victron Cerbo GX Modbus TCP: Unit-ID 100, 227 and scale factors",
+  "description": "A Victron Cerbo GX read over Modbus TCP on port 502: the unit ID selects the device behind the GX. Unit ID 1 answers exception 11 (gateway target device failed to respond), unit ID 100 holds the system values with Victron's scale factors (battery voltage 840: 526 / 10 = 52.6 V), a block across the reserved registers 847 to 849 gets exception 2, and the MultiPlus on the VE.Bus port answers on unit ID 227, where the power registers have scale 0.1. Ends with the ready-made workspace from the device library.",
+  "thumbnailUrl": "https://modbusmanager.com/victron-video-thumb.jpg",
+  "uploadDate": "2026-11-21",
+  "duration": "PT3M30S",
+  "embedUrl": "https://www.youtube-nocookie.com/embed/2RwZZo2Frrw",
+  "contentUrl": "https://www.youtube.com/watch?v=2RwZZo2Frrw",
+  "publisher": {"@type": "Organization", "name": "ModbusManager", "url": "https://modbusmanager.com"}
+}
+</script>
+<script type="application/ld+json">
 {"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Guides","item": "https://modbusmanager.com/modbus-device-guides.html"},{"@type": "ListItem","position": 3,"name": "Victron GX Modbus TCP","item": "https://modbusmanager.com/victron-gx-modbus-tcp.html"}]}
 </script>
 <style id="site-nav">
@@ -416,13 +430,35 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
   <p class="lead">A Victron GX device &mdash; Cerbo GX, Color Control GX, Venus GX or the GX built into a MultiPlus-II &mdash; is a Modbus TCP gateway to everything connected to it: inverter/chargers, solar chargers, batteries, meters. The Unit-ID picks the device, the register picks the value, and nearly every first attempt fails on the Unit-ID. This page covers enabling the server, the Unit-IDs, the system registers, the scale factors and the error codes, from Victron's own manual and register list.</p>
 
   <figure style="margin:1.8rem 0;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--ink)">
-    <img src="/victron-gx-dashboard.png" width="1320" height="825" loading="lazy" decoding="async"
-         alt="ModbusManager Pro dashboard for a Victron Cerbo GX energy storage system: energy flow with 3.2 kW solar, battery at 68 % charging with 1.4 kW, 1.2 kW house load and 0.6 kW export to the grid; battery voltage, current and state; active input grid; VE.Bus state bulk; AC in and out voltages; input current limit; VE.Bus error none; switch on; and a trend of PV, battery and grid power"
-         style="width:100%;height:auto;display:block">
+    <div id="vicVideo" style="position:relative;cursor:pointer;line-height:0" onclick="vicPlayVideo()"
+         role="button" tabindex="0" aria-label="Play the Victron Cerbo GX Modbus TCP video"
+         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();vicPlayVideo();}">
+      <img src="/victron-video-thumb.jpg" width="1280" height="800" loading="lazy" decoding="async"
+           alt="ModbusManager Pro dashboard for a Victron Cerbo GX energy storage system read over Modbus TCP: energy flow with 3.24 kW solar, battery at 68 % charging with 1.45 kW, 1.23 kW house load and 0.56 kW export to the grid; battery 52.6 V and 27.6 A, charging; active input grid; VE.Bus state bulk; AC in 231.6 V and AC out 230.1 V on unit ID 227; input limit 16.0 A; no VE.Bus error; switch on"
+           style="width:100%;height:auto;display:block">
+      <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(22,24,26,.35)">
+        <span style="display:flex;align-items:center;justify-content:center;width:78px;height:78px;border-radius:50%;background:var(--safety);color:var(--ink);font-size:30px;padding-left:6px">&#9654;</span>
+      </span>
+      <span style="position:absolute;right:10px;bottom:10px;background:rgba(22,24,26,.85);color:#E6E8E3;font-family:'IBM Plex Mono',monospace;font-size:.72rem;padding:2px 7px;border-radius:2px">3:30</span>
+    </div>
     <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--steel);padding:.6rem .9rem;background:var(--ink)">
-      The free workspace below on a simulated Cerbo GX &mdash; system values on Unit-ID 100, the MultiPlus on 227.
+      Video: exception 11 on Unit-ID 1, the system values on Unit-ID 100 with their scale factors (840 = 526 &rarr; 52.6 V), exception 2 for a block across the reserved registers 847&ndash;849, the MultiPlus on Unit-ID 227 where power has scale 0.1, and the free workspace below from the device library &mdash; against a simulated Cerbo GX.
     </figcaption>
   </figure>
+  <script>
+  function vicPlayVideo() {
+    var box = document.getElementById('vicVideo');
+    if (!box || box.dataset.loaded) return;
+    box.dataset.loaded = '1';
+    box.innerHTML = '<div style="position:relative;padding-top:62.5%">' +
+      '<iframe src="https://www.youtube-nocookie.com/embed/2RwZZo2Frrw?autoplay=1&rel=0" ' +
+      'title="Victron Cerbo GX Modbus TCP: Unit-ID 100, 227 and scale factors" ' +
+      'style="position:absolute;inset:0;width:100%;height:100%;border:0" ' +
+      'allow="accelerometer; autoplay; encrypted-media; picture-in-picture" ' +
+      'allowfullscreen></iframe></div>';
+    if (typeof gtag === 'function') gtag('event', 'video_play', { event_category: 'Video', event_label: 'Victron-GX-Guide' });
+  }
+  </script>
 
   <h2>Enable the Modbus TCP Server</h2>
   <p>Modbus TCP is <strong>disabled by default</strong>. On the GX go to Settings &rarr; Integrations &rarr; Modbus TCP server (on older firmware Settings &rarr; Services &rarr; Modbus-TCP) and enable it. The server listens on TCP port 502. The same menu lists <strong>Available services</strong> &mdash; every connected device with its Unit-ID &mdash; and shows the <strong>last error</strong>, which is the fastest way to see why a request failed.</p>
