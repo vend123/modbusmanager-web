@@ -464,7 +464,8 @@
           "unit": "kW",
           "color": "#f0c040",
           "yMin": 0,
-          "yMax": 20
+          "yMax": 20,
+          "decimals": 2
         }
       ]
     }
