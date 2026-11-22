@@ -20,14 +20,16 @@
       }));
     } catch (e) {}
   }
-  count('View', '');
+  // a visit from the app's Buy button (index.html sets __mmFromApp) is marked "app"
+  var APP = window.__mmFromApp ? 'app' : '';
+  count('View', APP);
   // the page already tells gtag when a Buy button, a checkout or a purchase
   // happens (consent or not): count the same moments
   var KINDS = { buy_button_click: 'Buy', runtime_order_click: 'Buy', begin_checkout: 'Checkout', purchase: 'Purchase' };
   var g = window.gtag;
   if (typeof g === 'function') {
     window.gtag = function (a, b, p) {
-      try { if (a === 'event' && KINDS[b]) count(KINDS[b], (p && (p.event_label || p.product)) || ''); } catch (e) {}
+      try { if (a === 'event' && KINDS[b]) count(KINDS[b], ((p && (p.event_label || p.product)) || '') + (APP ? ' (app)' : '')); } catch (e) {}
       return g.apply(this, arguments);
     };
   }

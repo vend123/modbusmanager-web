@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+/* Buy from inside the app (2026-11-22): the app opens #buy=<product>&mid=<Machine ID>.
+   The fragment never reaches a server; it is taken out of the address here,
+   before analytics reads it, and the checkout opens filled in. */
+(function () { try { var m = /^#buy=(pro|standard)&mid=([A-Za-z0-9]{16})$/.exec(location.hash); if (!m) return;
+  window.__mmFromApp = { product: m[1], mid: m[2] }; history.replaceState(null, '', location.pathname + location.search + '#pricing'); } catch (e) {} })();
+</script>
 <meta charset="UTF-8">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
@@ -263,6 +270,13 @@ nav .nav-links.open{display:flex!important;flex-direction:column;position:absolu
       settings: { displayMode: 'overlay', theme: 'dark' }
     });
   }
+  // from the app (see the top of <head>): the checkout opens with the Machine ID filled in
+  document.addEventListener('DOMContentLoaded', function () {
+    var a = window.__mmFromApp; if (!a) return;
+    openPaddleCheckout(a.product);
+    var f = document.getElementById('buyMachineId'); if (f) f.value = a.mid;
+    var e = document.getElementById('buyEmail'); if (e) e.focus();
+  });
 </script>
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
