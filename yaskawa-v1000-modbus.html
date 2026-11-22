@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yaskawa V1000 Modbus RTU Register List (MEMOBUS) + GA500</title>
-<meta name="description" content="V1000 and GA500 MEMOBUS register addresses for run command, frequency reference and output monitoring, plus H5 parameters and why FC06 is rejected.">
+<meta name="description" content="Yaskawa V1000 MEMOBUS/Modbus: default slave 31 (1FH) at 9600 no parity, run command 0001H, reference 0002H, monitor block 0020H, why FC06 is rejected, exception codes 21H-24H. Free workspace.">
 <meta name="keywords" content="Yaskawa V1000 Modbus, Yaskawa MEMOBUS, GA500 Modbus, Yaskawa Modbus register 0001H, Yaskawa frequency reference 0002H, Yaskawa drive status 0020H, Yaskawa FC16 write, MEMOBUS Modbus RTU, Yaskawa 1000 series Modbus">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://modbusmanager.com/yaskawa-v1000-modbus.html">
@@ -29,8 +29,8 @@
 
 <script type="application/ld+json">
 [
-{"@context":"https://schema.org","@type":"TechArticle","headline":"Yaskawa V1000 and GA500 MEMOBUS Modbus Register Guide","description":"How to communicate with Yaskawa V1000, 1000-series and GA500 drives over MEMOBUS/Modbus RTU, including the supported function codes, the operation command and frequency reference registers, and the monitor block.","url":"https://modbusmanager.com/yaskawa-v1000-modbus.html","datePublished":"2026-07-27","author":{"@type":"Organization","name":"ModbusManager"},"publisher":{"@type":"Organization","name":"ModbusManager"}},
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does my write to a Yaskawa drive fail?","acceptedAnswer":{"@type":"Answer","text":"Most likely because it was sent as function code 06. The MEMOBUS implementation supports function codes 03H for reading, 08H for a loopback test and 10H for writing, and rejects others. Send the write as function code 16 with a quantity of one register and the same address will accept it."}},{"@type":"Question","name":"Where are the run command and frequency reference?","acceptedAnswer":{"@type":"Answer","text":"The operation command is at 0001H and the frequency reference at 0002H. Yaskawa's own documentation shows both written together in one write-multiple transaction, which is the usual way to command a drive in a single message."}},{"@type":"Question","name":"Which register holds the drive status?","acceptedAnswer":{"@type":"Answer","text":"The monitor block starts at 0020H, and Yaskawa's read examples cover 0020H through 0023H in a single request. Monitor registers are a separate map from parameter registers, so a parameter cannot be read with a monitor address or the other way round."}},{"@type":"Question","name":"Is bit 1 reverse run or direction?","acceptedAnswer":{"@type":"Answer","text":"It depends on the drive family. On V1000 drives bit 1 is a reverse run command alongside bit 0 for forward run, while on GA500 bit 0 is run or stop and bit 1 selects the direction. Confirm which convention your drive follows by watching it respond rather than assuming."}},{"@type":"Question","name":"My write is rejected even with the right function code.","acceptedAnswer":{"@type":"Answer","text":"Yaskawa drives legitimately refuse some writes: during an undervoltage fault, to parameters that cannot be changed while the drive is running, to read-only data, or when the value is outside the allowed range. The exception code in the response tells you which case you are in, so log the raw response rather than only the failure."}},{"@type":"Question","name":"How many registers can I read in one request?","acceptedAnswer":{"@type":"Answer","text":"Up to sixteen consecutive registers, and the parameters have to be consecutive in the drive's map. Non-consecutive values need separate requests, which is worth planning around when a PLC polls many values on a slow serial line."}}]}
+{"@context":"https://schema.org","@type":"TechArticle","headline":"Yaskawa V1000 and GA500 MEMOBUS Modbus Register Guide","description":"How to communicate with Yaskawa V1000, 1000-series and GA500 drives over MEMOBUS/Modbus RTU, including the supported function codes, the operation command and frequency reference registers, and the monitor block.","url":"https://modbusmanager.com/yaskawa-v1000-modbus.html","datePublished":"2026-07-27","dateModified":"2026-11-22","author":{"@type":"Organization","name":"ModbusManager"},"publisher":{"@type":"Organization","name":"ModbusManager"}},
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does my write to a Yaskawa drive fail?","acceptedAnswer":{"@type":"Answer","text":"Most likely because it was sent as function code 06. The MEMOBUS implementation supports function codes 03H for reading, 08H for a loopback test and 10H for writing, and rejects others. Send the write as function code 16 with a quantity of one register and the same address will accept it."}},{"@type":"Question","name":"Where are the run command and frequency reference?","acceptedAnswer":{"@type":"Answer","text":"The operation command is at 0001H and the frequency reference at 0002H. Yaskawa's own documentation shows both written together in one write-multiple transaction, which is the usual way to command a drive in a single message."}},{"@type":"Question","name":"Which register holds the drive status?","acceptedAnswer":{"@type":"Answer","text":"The monitor block starts at 0020H, and Yaskawa's read examples cover 0020H through 0023H in a single request. Monitor registers are a separate map from parameter registers, so a parameter cannot be read with a monitor address or the other way round."}},{"@type":"Question","name":"Is bit 1 reverse run or direction?","acceptedAnswer":{"@type":"Answer","text":"On a V1000 parameter H5-12 decides. With the default 0, bit 0 is forward run and bit 1 reverse run; with H5-12 = 1, bit 0 is run or stop and bit 1 selects the direction. Check H5-12 on your drive, and watch it respond, before relying on either."}},{"@type":"Question","name":"My write is rejected even with the right function code.","acceptedAnswer":{"@type":"Answer","text":"Yaskawa drives legitimately refuse some writes: during an undervoltage fault, to parameters that cannot be changed while the drive is running, to read-only data, or when the value is outside the allowed range. The exception code in the response tells you which case you are in, so log the raw response rather than only the failure."}},{"@type":"Question","name":"How many registers can I read in one request?","acceptedAnswer":{"@type":"Answer","text":"Up to sixteen consecutive registers, and the parameters have to be consecutive in the drive's map. Non-consecutive values need separate requests, which is worth planning around when a PLC polls many values on a slow serial line."}},{"@type":"Question","name":"What is the default Modbus address of a Yaskawa V1000?","acceptedAnswer":{"@type":"Answer","text":"Slave 31, which is 1F hex (H5-01), at 9600 baud with no parity (H5-02 = 3, H5-03 = 0), 8 data bits and 1 stop bit. A request to another address gets no answer at all. Change H5-01 and power the drive off and on."}},{"@type":"Question","name":"What do exception 33 and 34 from a Yaskawa drive mean?","acceptedAnswer":{"@type":"Answer","text":"They are Yaskawa codes outside the Modbus standard. 21H (33) is a data setting error: a value outside the allowed range or a contradictory setting. 22H (34) is a write mode error: a parameter that cannot change while the drive runs, or read-only data such as the monitor registers from 0020H."}}]}
 ]
 </script>
 <style>
@@ -430,24 +430,78 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 
 <div class="divider-line"></div>
 
+<section class="section" id="defaults">
+  <div class="sec-label">// out of the box</div>
+  <h2 class="sec-title">Slave 31, 9600 baud, no parity</h2>
+  <p class="sec-sub">The second surprise: a new V1000 is not slave 1. These are the factory settings in Yaskawa&rsquo;s V1000 Technical Manual (SIEP C710606 18, appendix C). A request to any other address gets no answer at all &mdash; the drive stays silent, so a wrong address looks exactly like a wiring fault.</p>
+  <div style="overflow-x:auto">
+  <table class="compare-table">
+    <thead><tr><th>Parameter</th><th>Default</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td class="mono"><strong>H5-01</strong></td><td>1FH (31)</td><td>Slave address, 0 to 20H. 0 = no response. Power the drive off and on after a change.</td></tr>
+      <tr><td class="mono"><strong>H5-02</strong></td><td>3 = 9600 bps</td><td>4 = 19200, 5 = 38400. Power-cycle after a change.</td></tr>
+      <tr><td class="mono"><strong>H5-03</strong></td><td>0 = no parity</td><td>1 = even, 2 = odd. 8 data bits and 1 stop bit are fixed.</td></tr>
+      <tr><td class="mono"><strong>H5-05 / H5-09</strong></td><td>1 / 2.0 s</td><td>Communication error CE when no message arrives for 2 s; with H5-04 = 3 (the default) the drive shows the alarm and keeps running.</td></tr>
+      <tr><td class="mono"><strong>H5-12</strong></td><td>0</td><td>How 0001H starts the drive: 0 = bit 0 forward run, bit 1 reverse run; 1 = bit 0 run, bit 1 direction.</td></tr>
+      <tr><td class="mono"><strong>b1-01 / b1-02</strong></td><td>set to 2</td><td>Frequency reference and run command from MEMOBUS. Without this the drive answers the writes but does not act on them.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
 <section class="section">
   <div class="sec-label">// the control and monitor registers</div>
-  <h2 class="sec-title">Three addresses do most of the work</h2>
-  <p class="sec-sub">These come from Yaskawa&rsquo;s own MEMOBUS/Modbus documentation and are consistent across the 1000-series and GA500 families. Parameter addresses differ by drive and firmware and belong in your own drive&rsquo;s technical manual.</p>
+  <h2 class="sec-title">The registers that do the work</h2>
+  <p class="sec-sub">From appendix C of the V1000 Technical Manual. Yaskawa prints the addresses in hex, and they go on the wire as they are: 0020H is address 32, no offset. One request reads at most 16 registers.</p>
   <div style="overflow-x:auto">
   <table class="compare-table">
     <thead><tr><th>Address</th><th>What it is</th><th>Notes</th></tr></thead>
     <tbody>
-      <tr><td class="mono"><strong>0001H</strong></td><td>Operation command</td><td>Bit-packed. On V1000, bit 0 is forward run (1 = run, 0 = stop) and bit 1 is reverse run. On GA500, bit 0 is run/stop and bit 1 selects direction. Check which convention your drive uses before writing.</td></tr>
-      <tr><td class="mono"><strong>0002H</strong></td><td>Frequency reference</td><td>Written together with the command word in a single FC16 transaction in Yaskawa&rsquo;s own examples</td></tr>
-      <tr><td class="mono"><strong>0020H</strong></td><td>Drive status</td><td>Start of the monitor block; Yaskawa&rsquo;s read examples cover 0020H to 0023H in one request</td></tr>
+      <tr><td class="mono"><strong>0001H</strong></td><td>Operation command</td><td>Bit 0 forward run, bit 1 reverse run (H5-12 = 0); bit 2 external fault EF0; bit 3 fault reset. Read and write.</td></tr>
+      <tr><td class="mono"><strong>0002H</strong></td><td>Frequency reference</td><td>0.01 Hz with o1-03 = 0 (the default): 5000 = 50.00 Hz. Yaskawa&rsquo;s own example writes 0001H and 0002H together in one function code 16.</td></tr>
+      <tr><td class="mono"><strong>0020H</strong></td><td>Drive status 1</td><td>Bit 0 during run, bit 1 during reverse, bit 2 drive ready, bit 3 fault, bit 4 data setting error.</td></tr>
+      <tr><td class="mono"><strong>0021H</strong></td><td>Fault contents 1</td><td>One bit per fault group: bit 1 overvoltage, bit B main circuit undervoltage, bit E communication error CE, and so on.</td></tr>
+      <tr><td class="mono"><strong>0023H</strong></td><td>Frequency reference</td><td>0.01 Hz (o1-03), read back.</td></tr>
+      <tr><td class="mono"><strong>0024H</strong></td><td>Output frequency</td><td>0.01 Hz (o1-03).</td></tr>
+      <tr><td class="mono"><strong>0025H</strong></td><td>Output voltage reference</td><td>0.1 V with H5-10 = 0 (the default), 1 V with H5-10 = 1.</td></tr>
+      <tr><td class="mono"><strong>0026H</strong></td><td>Output current</td><td>0.01 A on BA0001&ndash;BA0018, 2A0001&ndash;2A0040 and 4A0001&ndash;4A0023; 0.1 A on the larger models.</td></tr>
+      <tr><td class="mono"><strong>002CH</strong></td><td>Drive status 2</td><td>Bit 0 during run, bit 1 zero speed, bit 2 speed agree, bit 6 drive ready, bit E fault.</td></tr>
+      <tr><td class="mono"><strong>0031H</strong></td><td>DC bus voltage</td><td>1 V.</td></tr>
     </tbody>
   </table>
   </div>
   <div class="tag-block" style="margin-top:1.6rem">
-    <div class="tag-text"><strong>Note the bit 1 difference:</strong> on the V1000 family bit 1 is a reverse <em>run</em> command, while on GA500 bit 1 selects direction for a single run bit. The same value written to the same address therefore behaves differently between drive families &mdash; which is exactly the kind of thing worth confirming by watching the drive rather than by reading a table.</div>
+    <div class="tag-text"><strong>Bit 1 depends on H5-12:</strong> with the default 0 it is a reverse <em>run</em> command beside bit 0 forward run; with H5-12 = 1, bit 0 is run/stop and bit 1 selects the direction. The same value at the same address does different things, so check H5-12 on your drive before writing &mdash; other Yaskawa families have the same choice.</div>
   </div>
 </section>
+
+<div class="divider-line"></div>
+
+<section class="section" id="exceptions">
+  <div class="sec-label">// when the drive says no</div>
+  <h2 class="sec-title">Exception codes 01H to 24H</h2>
+  <p class="sec-sub">01H to 03H are the standard Modbus codes. 21H to 24H are Yaskawa&rsquo;s own, so a tool that knows only the standard list calls them &ldquo;unknown&rdquo;. ModbusManager shows the number &mdash; 33 (0x21), for example &mdash; so you can look it up here.</p>
+  <div style="overflow-x:auto">
+  <table class="compare-table">
+    <thead><tr><th>Code</th><th>Name</th><th>Cause (V1000 Technical Manual, C.12)</th></tr></thead>
+    <tbody>
+      <tr><td class="mono"><strong>01H</strong></td><td>Function code error</td><td>A function code other than 03H, 08H or 10H &mdash; function code 06 included.</td></tr>
+      <tr><td class="mono"><strong>02H</strong></td><td>Register number error</td><td>The register does not exist; a broadcast to a register other than 0001H or 0002H.</td></tr>
+      <tr><td class="mono"><strong>03H</strong></td><td>Bit count error</td><td>More than 16 registers in one read or write, or a byte count that does not match the number of registers.</td></tr>
+      <tr><td class="mono"><strong>21H (33)</strong></td><td>Data setting error</td><td>Control data or a parameter value outside the allowed range, or a contradictory parameter setting.</td></tr>
+      <tr><td class="mono"><strong>22H (34)</strong></td><td>Write mode error</td><td>A parameter that cannot change while the drive runs, read-only data, or a write during an EEPROM error (CPF06).</td></tr>
+      <tr><td class="mono"><strong>23H (35)</strong></td><td>DC bus undervoltage write error</td><td>A write or an Enter command during undervoltage (Uv1).</td></tr>
+      <tr><td class="mono"><strong>24H (36)</strong></td><td>Write error during parameter process</td><td>The drive was still processing parameter data.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="tag-block" style="margin-top:1.6rem">
+    <div class="tag-text"><strong>No answer at all is not an exception.</strong> The drive ignores a message with a CRC, parity, overrun or framing error, a message for another slave address, and a message with a gap of more than 24 bits inside it. A timeout means the address or the serial settings, not the register.</div>
+  </div>
+</section>
+
 
 <div class="divider-line"></div>
 
@@ -460,13 +514,13 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
       <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">1</div>
       <div class="step-label">Step 1</div>
       <div class="step-title">Match the serial settings</div>
-      <div class="step-text" style="max-width:62ch">Set your master to the drive&rsquo;s communication parameters. On 1000-series drives the baud rate lives in the H5 group; read the values off the keypad rather than assuming defaults, because a previous commissioning may have changed them. Addressing is zero-based, so no offset juggling is needed.</div>
+      <div class="step-text" style="max-width:62ch">Set your master to the drive&rsquo;s communication parameters. Out of the box that is slave 31, 9600 baud, no parity (H5-01 to H5-03, above), but read the values off the keypad rather than assuming the defaults: a previous commissioning may have changed them. The addresses go on the wire as Yaskawa prints them, so no offset juggling is needed.</div>
     </div>
     <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
       <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">2</div>
       <div class="step-label">Step 2</div>
       <div class="step-title">Read the monitor block</div>
-      <div class="step-text" style="max-width:62ch">With FC03, read four registers starting at 0020H. A healthy idle drive returns a stable status word; operating the drive from the keypad changes bits. Viewing the register in binary makes the mapping obvious without decoding tables, and it proves the link end to end.</div>
+      <div class="step-text" style="max-width:62ch">With FC03, read up to sixteen registers starting at 0020H. A healthy idle drive returns a stable status word; operating the drive from the keypad changes bits. Viewing the register in binary makes the mapping obvious without decoding tables, and it proves the link end to end.</div>
     </div>
     <div style="background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem;margin-bottom:1.4rem;position:relative">
       <div style="font-family:'Saira Condensed',sans-serif;font-size:2.6rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.4rem;right:1.2rem;line-height:1">3</div>
@@ -488,7 +542,29 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
     </div>
   </div>
   <div class="tag-block" style="margin-top:1.2rem">
-    <div class="tag-text">ModbusManager sends single-register writes as FC06 or FC16 by choice, shows every register in decimal, hex and binary at once, and logs the exact request and response &mdash; so a rejected write shows you the exception code instead of just failing quietly.</div>
+    <div class="tag-text">In ModbusManager the Write tab sends FC06 or FC16 as you choose, every register shows in decimal, hex and binary at once, and a rejected write shows its exception code &mdash; a Yaskawa code with its number. The dashboard, tags and the gateway write one register with FC06 and, when the drive answers exception 01, write it again with FC16 and keep using FC16 for that drive (ModbusManager Pro 1.9.12 and newer).</div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<section class="section" id="workspace">
+  <div class="sec-label">// free workspace</div>
+  <h2 class="sec-title">A ready V1000 workspace</h2>
+  <p class="sec-sub">For ModbusManager Pro, with the drive at slave 31. Connect over RTU at 9600 baud, no parity, then open it.</p>
+  <div class="explainer-grid">
+    <div class="explainer-text">
+      <p><strong>Three FC03 reads:</strong> the monitor block 0020H&ndash;002FH (16 registers, every 0.5 s), the command 0001H&ndash;0002H and the DC bus 0031H.</p>
+      <p><strong>Ten tags</strong> with the scaling done: output frequency and reference in Hz, voltage, current, DC bus, both status words, the run command.</p>
+      <p><strong>A dashboard:</strong> the drive faceplate with Start, Stop, Reset and the reference, drive status 1 bit by bit, the values, and a trend of output frequency and reference.</p>
+      <p style="margin-top:1.4rem"><a class="btn-primary" href="/Yaskawa_V1000_workspace.json" download>&#11015; Download workspace</a></p>
+    </div>
+    <div>
+      <div class="definition-box">
+        <div class="def-label">It controls the drive</div>
+        <p>Start, Stop, Reset and the reference write to 0001H and 0002H and ask before they write. They need b1-01 = 2 and b1-02 = 2 on the drive, and ModbusManager Pro 1.9.12 or newer, which writes with FC16 when the drive refuses FC06. Keep the motor safe the first time.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -512,7 +588,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">Is bit 1 reverse run or direction?<span class="icon">+</span></div>
-      <div class="faq-a">It depends on the drive family. On V1000 drives bit 1 is a reverse run command alongside bit 0 for forward run, while on GA500 bit 0 is run or stop and bit 1 selects the direction. Confirm which convention your drive follows by watching it respond rather than assuming.</div>
+      <div class="faq-a">On a V1000 parameter H5-12 decides. With the default 0, bit 0 is forward run and bit 1 reverse run; with H5-12 = 1, bit 0 is run or stop and bit 1 selects the direction. Check H5-12 on your drive, and watch it respond, before relying on either.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">My write is rejected even with the right function code.<span class="icon">+</span></div>
@@ -521,6 +597,14 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">How many registers can I read in one request?<span class="icon">+</span></div>
       <div class="faq-a">Up to sixteen consecutive registers, and the parameters have to be consecutive in the drive's map. Non-consecutive values need separate requests, which is worth planning around when a PLC polls many values on a slow serial line.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What is the default Modbus address of a Yaskawa V1000?<span class="icon">+</span></div>
+      <div class="faq-a">Slave 31, which is 1F hex (H5-01), at 9600 baud with no parity (H5-02 = 3, H5-03 = 0), 8 data bits and 1 stop bit. A request to another address gets no answer at all. Change H5-01 and power the drive off and on.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What do exception 33 and 34 from a Yaskawa drive mean?<span class="icon">+</span></div>
+      <div class="faq-a">They are Yaskawa codes outside the Modbus standard. 21H (33) is a data setting error: a value outside the allowed range or a contradictory setting. 22H (34) is a write mode error: a parameter that cannot change while the drive runs, or read-only data such as the monitor registers from 0020H.</div>
     </div>
   </div>
 </section>
@@ -653,5 +737,6 @@ document.addEventListener('click', function (e) {
   window.location.href = 'https://' + dl;
 });
 </script>
+<script src="/open-in-app.js" defer></script>
 </body>
 </html>

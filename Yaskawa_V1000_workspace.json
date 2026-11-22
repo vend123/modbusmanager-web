@@ -1,0 +1,643 @@
+{
+  "version": 2,
+  "polls": [
+    {
+      "name": "Monitor 0020H-002FH (32-47)",
+      "fc": 3,
+      "addr": 32,
+      "qty": 16,
+      "slaveId": 31,
+      "interval": 500,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 32,
+      "chartName": "Monitor 0020H-002FH (32-47) [32]",
+      "logFile": "log_Monitor_0020H_002FH_32_47_.txt"
+    },
+    {
+      "name": "Command 0001H-0002H (1-2)",
+      "fc": 3,
+      "addr": 1,
+      "qty": 2,
+      "slaveId": 31,
+      "interval": 1000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 1,
+      "chartName": "Command 0001H-0002H (1-2) [1]",
+      "logFile": "log_Command_0001H_0002H_1_2_.txt"
+    },
+    {
+      "name": "DC bus 0031H (49)",
+      "fc": 3,
+      "addr": 49,
+      "qty": 1,
+      "slaveId": 31,
+      "interval": 2000,
+      "disabled": false,
+      "chart": {
+        "paused": false,
+        "crosshair": false,
+        "cursorX": null,
+        "dragging": false,
+        "layout": null,
+        "data": []
+      },
+      "log": {
+        "active": false,
+        "buffer": [],
+        "startTime": null,
+        "count": 0
+      },
+      "chartReg": 49,
+      "chartName": "DC bus 0031H (49) [49]",
+      "logFile": "log_DC_bus_0031H_49_.txt"
+    }
+  ],
+  "activePoll": 0,
+  "condColors": {},
+  "scaling": {},
+  "valueNames": {},
+  "chartSeries": [],
+  "slaveBlocks": [],
+  "dashTheme": "modern",
+  "dashFx": true,
+  "dashBgColor": "#0d1117",
+  "dashPages": [
+    {
+      "id": 1,
+      "name": "V1000",
+      "elements": [
+        {
+          "id": 1,
+          "value": 0,
+          "type": "statictext",
+          "x": 20,
+          "y": 10,
+          "w": 840,
+          "h": 30,
+          "text": "Pump P-2  ·  Yaskawa V1000  ·  MEMOBUS/Modbus RTU, slave 31 (1FH)",
+          "fontSize": 20,
+          "bold": true,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 2,
+          "value": 0,
+          "type": "drive",
+          "x": 20,
+          "y": 50,
+          "w": 300,
+          "h": 120,
+          "label": "P-2 V1000",
+          "unit": "Hz",
+          "min": 0,
+          "max": 60,
+          "step": 1,
+          "powerUnit": "kW",
+          "fbTimeout": 10,
+          "startVal": 1,
+          "stopVal": 0,
+          "resetVal": 8,
+          "resetBack": 0,
+          "resetMs": 1000,
+          "items": [
+            {
+              "role": "run",
+              "name": "RUN",
+              "sourceType": "register",
+              "slaveId": 31,
+              "regType": "holdingRegisters",
+              "address": 32,
+              "bit": 0
+            },
+            {
+              "role": "ready",
+              "name": "READY",
+              "sourceType": "register",
+              "slaveId": 31,
+              "regType": "holdingRegisters",
+              "address": 32,
+              "bit": 2
+            },
+            {
+              "role": "atSp",
+              "name": "AGREE",
+              "sourceType": "register",
+              "slaveId": 31,
+              "regType": "holdingRegisters",
+              "address": 44,
+              "bit": 2
+            },
+            {
+              "role": "warn",
+              "name": "WARN"
+            },
+            {
+              "role": "fault",
+              "name": "FAULT",
+              "sourceType": "register",
+              "slaveId": 31,
+              "regType": "holdingRegisters",
+              "address": 32,
+              "bit": 3
+            },
+            {
+              "role": "hand",
+              "name": "HAND"
+            },
+            {
+              "role": "faultCode",
+              "name": "CODE"
+            },
+            {
+              "role": "freq",
+              "name": "HZ",
+              "sourceType": "tag",
+              "tagName": "Out_Hz"
+            },
+            {
+              "role": "current",
+              "name": "A",
+              "sourceType": "tag",
+              "tagName": "Out_A"
+            },
+            {
+              "role": "power",
+              "name": "P"
+            },
+            {
+              "role": "speedAct",
+              "name": "SPEED"
+            },
+            {
+              "role": "ref",
+              "name": "REF",
+              "sourceType": "tag",
+              "tagName": "Ref_Hz"
+            },
+            {
+              "role": "hours",
+              "name": "H"
+            },
+            {
+              "role": "runCmd",
+              "name": "RUN CMD",
+              "sourceType": "register",
+              "slaveId": 31,
+              "regType": "holdingRegisters",
+              "address": 1
+            },
+            {
+              "role": "resetCmd",
+              "name": "RESET",
+              "sourceType": "register",
+              "slaveId": 31,
+              "regType": "holdingRegisters",
+              "address": 1
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "value": 0,
+          "type": "text",
+          "x": 20,
+          "y": 180,
+          "w": 145,
+          "h": 56,
+          "label": "Output frequency 0024H",
+          "unit": "Hz",
+          "decimals": 2,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Out_Hz"
+        },
+        {
+          "id": 4,
+          "value": 0,
+          "type": "text",
+          "x": 175,
+          "y": 180,
+          "w": 145,
+          "h": 56,
+          "label": "Reference 0023H",
+          "unit": "Hz",
+          "decimals": 2,
+          "fontSize": 24,
+          "color": "#9fb3cc",
+          "sourceType": "tag",
+          "tagName": "FreqRef_Hz"
+        },
+        {
+          "id": 5,
+          "value": 0,
+          "type": "text",
+          "x": 20,
+          "y": 244,
+          "w": 145,
+          "h": 56,
+          "label": "Output current 0026H",
+          "unit": "A",
+          "decimals": 2,
+          "fontSize": 24,
+          "color": "#00d4aa",
+          "sourceType": "tag",
+          "tagName": "Out_A"
+        },
+        {
+          "id": 6,
+          "value": 0,
+          "type": "text",
+          "x": 175,
+          "y": 244,
+          "w": 145,
+          "h": 56,
+          "label": "Output voltage 0025H",
+          "unit": "V",
+          "decimals": 1,
+          "fontSize": 24,
+          "color": "#9fb3cc",
+          "sourceType": "tag",
+          "tagName": "Out_V"
+        },
+        {
+          "id": 7,
+          "value": 0,
+          "type": "text",
+          "x": 20,
+          "y": 308,
+          "w": 145,
+          "h": 56,
+          "label": "DC bus 0031H",
+          "unit": "V",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#9fb3cc",
+          "sourceType": "tag",
+          "tagName": "DCbus_V"
+        },
+        {
+          "id": 8,
+          "value": 0,
+          "type": "text",
+          "x": 175,
+          "y": 308,
+          "w": 145,
+          "h": 56,
+          "label": "Command 0001H",
+          "unit": "",
+          "decimals": 0,
+          "fontSize": 24,
+          "color": "#9fb3cc",
+          "sourceType": "tag",
+          "tagName": "Run_Cmd"
+        },
+        {
+          "id": 9,
+          "value": 0,
+          "type": "bitword",
+          "x": 340,
+          "y": 50,
+          "w": 300,
+          "h": 320,
+          "label": "Drive status 1 0020H",
+          "sourceType": "register",
+          "slaveId": 31,
+          "regType": "holdingRegisters",
+          "address": 32,
+          "wsize": 16,
+          "wordOrder": "hl",
+          "view": "all",
+          "bitCols": 1,
+          "showNums": true,
+          "emptyText": "",
+          "bits": [
+            {
+              "bit": 0,
+              "name": "During run",
+              "kind": "ok"
+            },
+            {
+              "bit": 1,
+              "name": "During reverse",
+              "kind": "info"
+            },
+            {
+              "bit": 2,
+              "name": "Drive ready",
+              "kind": "ok"
+            },
+            {
+              "bit": 3,
+              "name": "Fault",
+              "kind": "alarm"
+            },
+            {
+              "bit": 4,
+              "name": "Data setting error",
+              "kind": "warn"
+            },
+            {
+              "bit": 5,
+              "name": "Output MA/MB-MC",
+              "kind": "info"
+            },
+            {
+              "bit": 6,
+              "name": "Output P1-PC",
+              "kind": "info"
+            },
+            {
+              "bit": 7,
+              "name": "Output P2-PC",
+              "kind": "info"
+            },
+            {
+              "bit": 14,
+              "name": "ComRef enabled",
+              "kind": "info"
+            },
+            {
+              "bit": 15,
+              "name": "ComCtrl enabled",
+              "kind": "info"
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "value": 0,
+          "type": "statictext",
+          "x": 660,
+          "y": 50,
+          "w": 200,
+          "h": 24,
+          "text": "MEMOBUS defaults",
+          "fontSize": 15,
+          "bold": true,
+          "color": "#9fb3cc"
+        },
+        {
+          "id": 11,
+          "value": 0,
+          "type": "statictext",
+          "x": 660,
+          "y": 80,
+          "w": 200,
+          "h": 24,
+          "text": "H5-01  slave 1FH = 31",
+          "fontSize": 13,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 12,
+          "value": 0,
+          "type": "statictext",
+          "x": 660,
+          "y": 106,
+          "w": 200,
+          "h": 24,
+          "text": "H5-02  9600 bps",
+          "fontSize": 13,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 13,
+          "value": 0,
+          "type": "statictext",
+          "x": 660,
+          "y": 132,
+          "w": 200,
+          "h": 24,
+          "text": "H5-03  no parity, 1 stop",
+          "fontSize": 13,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 14,
+          "value": 0,
+          "type": "statictext",
+          "x": 660,
+          "y": 158,
+          "w": 200,
+          "h": 24,
+          "text": "Read: 03H, max 16 regs",
+          "fontSize": 13,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 15,
+          "value": 0,
+          "type": "statictext",
+          "x": 660,
+          "y": 184,
+          "w": 200,
+          "h": 24,
+          "text": "Write: 10H only (no 06H)",
+          "fontSize": 13,
+          "color": "#f0c040"
+        },
+        {
+          "id": 16,
+          "value": 0,
+          "type": "statictext",
+          "x": 660,
+          "y": 210,
+          "w": 200,
+          "h": 24,
+          "text": "b1-01 = 2, b1-02 = 2",
+          "fontSize": 13,
+          "color": "#e6eef8"
+        },
+        {
+          "id": 17,
+          "value": 0,
+          "type": "multitend",
+          "x": 20,
+          "y": 390,
+          "w": 840,
+          "h": 170,
+          "label": "Output frequency 0024H and reference 0023H (Hz)",
+          "maxPoints": 1200,
+          "decimals": 2,
+          "sampleMs": 500,
+          "items": [
+            {
+              "name": "Output 0024H",
+              "sourceType": "tag",
+              "tagName": "Out_Hz",
+              "color": "#00d4aa",
+              "value": 0
+            },
+            {
+              "name": "Reference 0023H",
+              "sourceType": "tag",
+              "tagName": "FreqRef_Hz",
+              "color": "#f0c040",
+              "value": 0
+            }
+          ],
+          "yMin": 0,
+          "yMax": 60
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "Run_Cmd",
+      "type": "register",
+      "slaveId": 31,
+      "regType": "holdingRegisters",
+      "address": 1,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "Operation command 0001H (wire 1): bit0 forward run, bit1 reverse run (H5-12 = 0), bit3 fault reset",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Ref_Hz",
+      "type": "register",
+      "slaveId": 31,
+      "regType": "holdingRegisters",
+      "address": 2,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "Frequency reference 0002H (wire 2), 0.01 Hz (o1-03 = 0); written from the faceplate",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "Status1",
+      "type": "register",
+      "slaveId": 31,
+      "regType": "holdingRegisters",
+      "address": 32,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "Drive status 1 0020H (wire 32)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "Fault1",
+      "type": "register",
+      "slaveId": 31,
+      "regType": "holdingRegisters",
+      "address": 33,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "Fault contents 1 0021H (wire 33), bit-packed",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "FreqRef_Hz",
+      "type": "register",
+      "slaveId": 31,
+      "regType": "holdingRegisters",
+      "address": 35,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "Frequency reference 0023H (wire 35), 0.01 Hz",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "Out_Hz",
+      "type": "register",
+      "slaveId": 31,
+      "regType": "holdingRegisters",
+      "address": 36,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "Output frequency 0024H (wire 36), 0.01 Hz",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "Out_V",
+      "type": "register",
+      "slaveId": 31,
+      "regType": "holdingRegisters",
+      "address": 37,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "Output voltage reference 0025H (wire 37), 0.1 V (H5-10 = 0)",
+      "scale": 0.1,
+      "offset": 0
+    },
+    {
+      "name": "Out_A",
+      "type": "register",
+      "slaveId": 31,
+      "regType": "holdingRegisters",
+      "address": 38,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "Output current 0026H (wire 38), 0.01 A on 4A0001-4A0023 (0.1 A on larger models)",
+      "scale": 0.01,
+      "offset": 0
+    },
+    {
+      "name": "Status2",
+      "type": "register",
+      "slaveId": 31,
+      "regType": "holdingRegisters",
+      "address": 44,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "Drive status 2 002CH (wire 44)",
+      "scale": 1,
+      "offset": 0
+    },
+    {
+      "name": "DCbus_V",
+      "type": "register",
+      "slaveId": 31,
+      "regType": "holdingRegisters",
+      "address": 49,
+      "dataType": "uint16",
+      "wordOrder": "big",
+      "description": "DC bus voltage 0031H (wire 49), 1 V",
+      "scale": 1,
+      "offset": 0
+    }
+  ],
+  "script": "",
+  "scriptInterval": "1000",
+  "historianLogging": {
+    "registers": [],
+    "tags": []
+  },
+  "saved": "2026-11-22T12:00:00.000Z"
+}

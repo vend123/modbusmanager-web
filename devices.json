@@ -1,6 +1,6 @@
 {
   "about": "The device library ModbusManager and BACManager read (Device library, Open in app). One entry per ready workspace on this site.",
-  "updated": "2026-11-14",
+  "updated": "2026-11-22",
   "devices": [
     {
       "id": "eastron-sdm630",
@@ -127,6 +127,15 @@
       "desc": "CU240B-2 / CU240E-2 monitor: ZSW1, speed, frequency, current, power, faults",
       "ws": "Siemens_G120_monitor.json",
       "page": "siemens-sinamics-g120-modbus.html"
+    },
+    {
+      "id": "yaskawa-v1000",
+      "name": "Yaskawa V1000",
+      "cat": "drives",
+      "proto": "Modbus RTU",
+      "desc": "Drive monitor and control: MEMOBUS slave 31, status bits, Hz, V, A, drive faceplate (writes with FC16)",
+      "ws": "Yaskawa_V1000_workspace.json",
+      "page": "yaskawa-v1000-modbus.html"
     },
     {
       "id": "huawei-sun2000",
