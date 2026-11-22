@@ -1342,5 +1342,6 @@ function scGo(i){ scIdx = (i + SC_N) % SC_N;
 scPlay();
 if (!SC_STILL) setInterval(function(){ if (!scHold && document.visibilityState === 'visible') scGo(scIdx + 1); }, 9000);
 </script>
+<script src="/count.js" defer></script>
 </body>
 </html>

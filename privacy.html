@@ -410,6 +410,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
     <tr><td><strong>Support emails</strong></td><td>When you contact support</td><td>Responding to your inquiry</td></tr>
     <tr><td><strong>Usage &amp; device data</strong></td><td>When you visit the website</td><td>Website analytics via Google Analytics &mdash; pages viewed, approximate location, device and browser type</td></tr>
     <tr><td><strong>Download count</strong></td><td>When you click a Download button</td><td>Counting downloads: which product, which page, the page you came from, browser language and time zone. No cookies, no IP address, nothing that identifies you</td></tr>
+    <tr><td><strong>Visit count</strong></td><td>When a page opens, and when you press Buy, open the checkout or complete a purchase</td><td>Counting visits and purchases: which page, what happened, the page you came from, browser language and time zone. No cookies, no storage on your device, no IP address, nothing that identifies you. Search engine crawlers are not counted</td></tr>
   </table>
 
   <div class="note"><strong>Important:</strong> ModbusManager software itself does <strong>not</strong> collect any data from your computer. It works completely offline and does not send any telemetry, usage statistics or device information to our servers.</div>
@@ -455,7 +456,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
     </tr>
     <tr>
       <td><strong>Google Apps Script / Sheets</strong></td>
-      <td>Download count (see section 2); the Linux / Raspberry Pi / macOS waitlist; trial reminders; register map service orders (the uploaded manual is stored in Google Drive)</td>
+      <td>Download and visit count (see section 2); the Linux / Raspberry Pi / macOS waitlist; trial reminders; register map service orders (the uploaded manual is stored in Google Drive)</td>
       <td><a href="https://policies.google.com/privacy" target="_blank">policies.google.com/privacy</a></td>
     </tr>
     <tr>
@@ -498,7 +499,7 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 
   <h2>9. Cookies</h2>
   <p>Our website uses <strong>Google Analytics</strong> to understand how visitors use the site (for example, which pages are viewed). Google Analytics sets cookies and may process aggregated, largely anonymised usage and device data. We do not use these cookies for advertising or to identify you personally.</p>
-  <p>Download clicks are counted without cookies and without your IP address, whether or not you accept analytics cookies (see section 2).</p>
+  <p>Download clicks, page visits and purchases are counted without cookies and without your IP address, whether or not you accept analytics cookies (see section 2).</p>
   <p>You can refuse or delete cookies in your browser settings, or install Google's official <a href="https://tools.google.com/dlpage/gaoptout" target="_blank">opt-out browser add-on</a> to stop Google Analytics on all sites.</p>
 
   <h2>10. Children's Privacy</h2>
@@ -594,5 +595,6 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 </script>
 
 <script src="/email-capture.js" defer></script>
+<script src="/count.js" defer></script>
 </body>
 </html>
