@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modbus Slave Simulator for Windows: Test the Master Before the Device Exists | ModbusManager</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<meta name="description" content="Simulate Modbus slave devices over TCP and RTU with live values: sine, ramp, counter, random and a PID process, Float32 and 32-bit types. Built into ModbusManager Standard and Pro, next to the master.">
+<meta name="keywords" content="Modbus slave simulator, Modbus simulator, Modbus TCP slave simulator, Modbus RTU slave simulator, Modbus server simulator, simulate Modbus device, Modbus test without hardware, Modbus Slave alternative">
+<meta name="author" content="ModbusManager">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://modbusmanager.com/modbus-slave-simulator.html">
+
+<meta property="og:title" content="Modbus slave simulator: test the master before the device exists">
+<meta property="og:site_name" content="ModbusManager">
+<meta property="og:description" content="Live simulated Modbus devices over TCP and RTU, in the same app as the master: sine, ramp, counter, random, a PID process.">
+<meta property="og:url" content="https://modbusmanager.com/modbus-slave-simulator.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://modbusmanager.com/og-slave-simulator.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Modbus slave simulator for Windows">
+<meta name="twitter:description" content="Simulate Modbus devices over TCP and RTU with live values, next to the master. ModbusManager, from $49 one-time.">
+<meta name="twitter:image" content="https://modbusmanager.com/og-slave-simulator.png">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+[
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Modbus Slave Simulator: Test the Master Before the Device Exists",
+  "description": "How to simulate Modbus slave devices over TCP and RTU with live values in ModbusManager: register blocks, simulation types, a PID process, behaviour like real hardware, and reading the simulator as a master on the same PC.",
+  "url": "https://modbusmanager.com/modbus-slave-simulator.html",
+  "datePublished": "2026-11-23",
+  "dateModified": "2026-11-23",
+  "author": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ModbusManager",
+    "url": "https://modbusmanager.com"
+  }
+},
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can I simulate a Modbus device without any hardware?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The Slave tab of ModbusManager turns the PC into a Modbus TCP and/or RTU slave. You define slave IDs and register blocks, give registers moving values, and point your SCADA, HMI or PLC at it. The same app can read it as a master to check what it sends."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can it simulate several devices at once?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Add blocks for as many slave IDs (1-247) as you need; each ID can have several blocks of holding registers, input registers, coils and discrete inputs. One TCP port answers all of them, and on RTU each ID answers on the shared line like a separate device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it work over Modbus RTU as well as TCP?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Start a TCP server on any port, an RTU server on a COM port with its own baud rate, data bits, parity and stop bits, or both. To test on one PC, use a virtual COM port pair (for example com0com): the master on one port, the simulator on the other."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens when the master asks for an address or a slave ID that is not simulated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An address outside the blocks of that slave ID gets exception 02, illegal data address, as a real device answers. On TCP a slave ID that is not simulated gets exception 0B. On RTU it gets no answer at all, because on a shared RS-485 line the device with that ID would answer, and frames with a bad CRC are dropped and counted."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can the master write to the simulated registers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Writes to coils and holding registers (function codes 05, 06, 15 and 16) change the simulated values and appear in the request log. A PID loop register block follows a setpoint the master writes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the slave simulator in Standard or only in Pro?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Both. ModbusManager Standard ($49) and Pro ($119) include the slave simulator with counters, sine waves, ramps, random values and the PID process. Pro adds a static-value type and the dashboard, tags, Historian, alarms and gateway that can work against the simulated devices."
+      }
+    }
+  ]
+}
+]
+</script>
+<style>
+:root{--enclosure:#D8DAD5;--enclosure2:#E6E8E3;--plate:#F4F5F2;--ink:#16181A;--body:#3A3E40;--muted:#5F5E5A;--steel:#B9BDB6;--safety:#F2A900;--amber-ink:#9A6700;--run:#1E7A4F;--bad:#A32D2D}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Archivo',sans-serif;background:var(--enclosure);color:var(--ink);min-height:100vh}
+.mono{font-family:'IBM Plex Mono',monospace}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--enclosure2);z-index:100}
+.logo{font-family:'Saira Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.logo span{color:var(--amber-ink)}
+.nav-links{display:flex;gap:1.1rem;list-style:none;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;letter-spacing:0.04em;color:var(--muted);flex-wrap:wrap}
+.nav-links a{color:inherit;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink);color:var(--safety);padding:0.5rem 1.3rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.nav-cta:hover{color:#fff}
+
+/* HAZARD STRIPE */
+.hazard{height:10px;background:repeating-linear-gradient(45deg,var(--safety) 0 14px,var(--ink) 14px 28px)}
+
+/* HERO */
+.hero{padding:4rem 3rem 3.5rem;max-width:1140px;margin:0 auto}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.9rem}
+.hero h1{font-family:'Saira Condensed',sans-serif;font-size:3rem;font-weight:700;line-height:1;color:var(--ink);margin-bottom:1rem;letter-spacing:0.01em;text-transform:uppercase;max-width:720px}
+.hero h1 .accent{color:var(--amber-ink)}
+.hero-desc{font-size:1rem;color:var(--body);line-height:1.7;margin-bottom:1.8rem;max-width:640px}
+.hero-ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn-primary{background:var(--run);color:#fff;padding:0.75rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-primary:hover{background:#186040}
+.btn-ghost{background:transparent;color:var(--ink);border:2px solid var(--ink);padding:0.65rem 1.4rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-ghost:hover{background:var(--ink);color:var(--safety)}
+.hero-note{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--muted);margin-top:0.7rem}
+
+/* SECTION */
+.section{padding:3.5rem 3rem;max-width:1140px;margin:0 auto}
+.sec-label{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem}
+.sec-title{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:0.6rem}
+.sec-sub{font-size:0.95rem;color:var(--body);line-height:1.7;margin-bottom:2rem;max-width:680px}
+.divider-line{border:none;border-top:2px solid var(--ink)}
+
+/* WHAT IS HMI */
+.explainer-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.explainer-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.definition-box{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.5rem 1.8rem}
+.definition-box .def-label{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem}
+.definition-box p{font-size:0.9rem;color:var(--body);line-height:1.7}
+
+/* WIDGET GRID */
+.widget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.widget-card{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem}
+.widget-icon{font-size:1.6rem;margin-bottom:0.7rem}
+.widget-name{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem}
+.widget-desc{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;counter-reset:step}
+.step{background:var(--plate);border:2px solid var(--ink);border-radius:3px;padding:1.4rem 1.6rem;position:relative}
+.step::before{counter-increment:step;content:counter(step);font-family:'Saira Condensed',sans-serif;font-size:2.5rem;font-weight:700;color:var(--enclosure2);position:absolute;top:0.5rem;right:1rem;line-height:1}
+.step-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--amber-ink);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem}
+.step-title{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.5rem}
+.step-text{font-size:0.85rem;color:var(--body);line-height:1.65}
+
+/* TAG ENGINE */
+.tag-block{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:start}
+.tag-text p{font-size:0.95rem;color:var(--body);line-height:1.75;margin-bottom:1rem}
+.code-box{background:var(--ink);color:#D4D8D0;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;line-height:1.7;padding:1.4rem 1.6rem;border-radius:3px;overflow-x:auto}
+.code-box .cm{color:#5F7A5F}
+.code-box .ck{color:var(--safety)}
+.code-box .cv{color:#8EC0B0}
+
+/* COMPARE TABLE */
+.compare-table{width:100%;border-collapse:collapse;font-size:0.88rem}
+.compare-table th{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.05em;text-transform:uppercase;padding:0.7rem 1rem;border-bottom:2px solid var(--ink);text-align:left;background:var(--enclosure2)}
+.compare-table td{padding:0.65rem 1rem;border-bottom:1px solid var(--steel)}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table .hl{background:rgba(30,122,79,0.06)}
+.yes{color:var(--run);font-weight:600}
+.no{color:var(--bad)}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:0}
+.faq-item{border-top:1px solid var(--steel)}
+.faq-item:last-child{border-bottom:1px solid var(--steel)}
+.faq-q{font-family:'Saira Condensed',sans-serif;font-size:1.05rem;font-weight:600;letter-spacing:0.02em;padding:1.1rem 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq-q:hover{color:var(--amber-ink)}
+.faq-q .icon{font-family:'IBM Plex Mono',monospace;font-size:1.1rem;flex-shrink:0;transition:transform 0.2s}
+.faq-a{font-size:0.9rem;color:var(--body);line-height:1.75;padding:0 0 1.1rem;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .icon{transform:rotate(45deg)}
+
+/* CTA STRIP */
+.cta-strip{background:var(--ink);color:var(--safety);padding:3.5rem 3rem;text-align:center}
+.cta-strip h2{font-family:'Saira Condensed',sans-serif;font-size:2.2rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.6rem}
+.cta-strip p{font-size:0.95rem;color:var(--enclosure);margin-bottom:1.8rem;max-width:540px;margin-left:auto;margin-right:auto}
+.cta-strip .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-cta-yellow{background:var(--safety);color:var(--ink);padding:0.8rem 2rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+.btn-cta-yellow:hover{background:#e09800}
+.btn-cta-outline{background:transparent;color:var(--safety);border:2px solid var(--safety);padding:0.7rem 1.8rem;border-radius:2px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none}
+
+/* FOOTER */
+footer{background:var(--ink);color:var(--steel);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:0.75rem}
+.footer-logo{font-family:'Saira Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:0.05em;text-transform:uppercase}
+footer a{color:var(--steel);text-decoration:none}
+footer a:hover{color:#fff}
+
+@media(max-width:768px){
+  nav{padding:0.75rem 1.2rem;flex-wrap:wrap;gap:0.5rem}
+  .nav-links{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  .hero h1{font-size:2.2rem}
+  .section{padding:2.5rem 1.2rem}
+  .explainer-grid,.tag-block{grid-template-columns:1fr}
+  .widget-grid{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .cta-strip{padding:2.5rem 1.2rem}
+  footer{padding:1.5rem 1.2rem;flex-direction:column;align-items:flex-start;gap:0.75rem}
+}
+@media(max-width:520px){
+  .widget-grid,.steps{grid-template-columns:1fr}
+}
+.dl-options{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.8rem}
+@media(max-width:768px){.dl-options{grid-template-columns:1fr}}
+
+@media(max-width:680px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;max-width:100%}}
+
+@media(max-width:680px){nav{padding:0.7rem 1rem;gap:0.6rem}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}nav>div>a:first-child{display:none}}
+
+
+.nav-burger{display:none;background:none;border:none;font-size:1.5rem;color:var(--ink,#16181A);cursor:pointer;padding:0 0.3rem;line-height:1}
+@media(max-width:768px){
+.nav-burger{display:block;margin-left:auto}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+}
+
+@media(max-width:768px){nav>div>a:first-child{display:none}.nav-cta{padding:0.4rem 0.7rem;font-size:0.75rem}.compare-table{min-width:0!important}}
+
+@media(max-width:768px){nav .nav-links.open a,nav .nav-links.open .nav-drop-label{white-space:normal!important;word-break:break-word}}
+
+/* family slogan band, slim (2026-10-22) */
+.slogan-band.slim{background:var(--safety,#F2A900);border-bottom:2px solid var(--ink,#16181A);padding:0.5rem 1rem;text-align:center;color:var(--ink,#16181A);display:flex;gap:0.3rem 1rem;justify-content:center;align-items:baseline;flex-wrap:wrap}
+.slogan-band.slim .sb-main{font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1.3rem;line-height:1.1;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim .sb-sub{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.05em;text-transform:uppercase}
+.slogan-band.slim a{color:var(--ink,#16181A);font-weight:700}
+@media(max-width:768px){.slogan-band.slim .sb-main{font-size:1.05rem}.slogan-band.slim .sb-sub{display:none}}
+</style>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-42Q8HEKC0X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent', 'update', {'analytics_storage': 'granted'}); } } catch(e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-42Q8HEKC0X');
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "ModbusManager","item": "https://modbusmanager.com/"},{"@type": "ListItem","position": 2,"name": "Features","item": "https://modbusmanager.com/#features"},{"@type": "ListItem","position": 3,"name": "Modbus Slave Simulator","item": "https://modbusmanager.com/modbus-slave-simulator.html"}]}
+</script>
+<style id="site-nav">
+/* site menu (tools/web-research/site-nav.js) */
+.nav-drop{position:relative;padding-bottom:0.6rem;margin-bottom:-0.6rem}
+.nav-drop-label{cursor:pointer;text-transform:uppercase;white-space:nowrap;color:inherit;display:inline-block}
+.nav-drop.nd-has>.nav-drop-label{color:var(--ink,#16181A);font-weight:600}
+.nav-drop-menu{position:absolute;top:100%;left:0;padding-top:0.6rem;display:none;z-index:200}
+.nav-drop:hover>.nav-drop-menu,.nav-drop:focus-within>.nav-drop-menu{display:block}
+.nd-box{display:flex;flex-direction:column;background:var(--enclosure2,#e8e9e4);border:1px solid var(--ink,#16181A);border-radius:3px;box-shadow:0 6px 20px rgba(0,0,0,0.18);padding:0.35rem 0;min-width:210px}
+.nav-drop-menu a,.nd-glabel{display:flex;align-items:center;gap:0.55rem;padding:0.45rem 1rem;white-space:nowrap;text-transform:none;font-family:'IBM Plex Mono',monospace;font-size:0.78rem;letter-spacing:0.02em;color:var(--ink,#16181A);text-decoration:none;background:none;border:none;text-align:left;cursor:pointer;width:100%;box-sizing:border-box}
+.nav-drop-menu a:hover,.nd-glabel:hover,.nd-group:hover>.nd-glabel,.nd-group.open>.nd-glabel{background:var(--safety,#F2A900);color:var(--ink,#16181A)}
+.nav-drop-menu .ni{display:inline-block;width:1.25rem;text-align:center;flex:none;font-size:0.9rem;line-height:1}
+.nav-drop-menu a.nd-sub{padding-left:2.1rem;font-size:0.75rem}
+.nav-drop-menu .nd-hot{color:#9A6700;font-weight:600}
+.nav-drop-menu a[aria-current="page"]{font-weight:700;box-shadow:inset 3px 0 0 var(--safety,#F2A900)}
+.nd-group.nd-has>.nd-glabel{font-weight:700}
+.nd-arrow{margin-left:auto;padding-left:1rem;font-size:0.7rem;color:var(--muted,#5F5E5A);display:inline-block;transform-origin:calc(50% + 0.5rem) 50%}
+.nd-group{position:relative}
+.nd-flyout{display:none;position:absolute;left:100%;top:-0.4rem;padding-left:0.25rem;z-index:210}
+.nd-group:hover>.nd-flyout,.nd-group:focus-within>.nd-flyout,.nd-group.open>.nd-flyout{display:block}
+.nd-head{font-family:'IBM Plex Mono',monospace;font-size:0.64rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted,#5F5E5A);padding:0.55rem 1rem 0.15rem;border-top:1px solid var(--steel,#B9BDB6);margin-top:0.25rem}
+.nd-box>.nd-head:first-child{border-top:none;margin-top:0}
+/* tablet (769-1100px): logo, six menu items and the button need ~840px; below that the menu
+   wrapped to two or three lines and the download button ran off the screen (2026-11-10).
+   769-900px gets the ☰ menu as on phones (the pages' own phone rules stop at 768px);
+   901-1100px keeps the row, tighter. The small text download link repeats the button,
+   so it goes in this range, as it already does on phones. */
+@media(min-width:769px) and (max-width:1100px){
+nav{gap:1rem!important;padding-left:1.2rem!important;padding-right:1.2rem!important}
+nav .nav-links{gap:1.1rem!important;letter-spacing:0.02em!important;white-space:nowrap}
+nav>div>a:not(.nav-cta){display:none!important}
+nav .nav-cta{white-space:nowrap;padding:0.45rem 0.9rem!important}
+}
+@media(min-width:769px) and (max-width:900px){
+nav .nav-burger{display:block!important;margin-left:auto}
+nav .nav-links{display:none!important}
+nav .nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;box-sizing:border-box;background:var(--enclosure2,#e8e9e4);border-bottom:2px solid var(--ink,#16181A);padding:0.8rem 1.2rem;gap:0.9rem;z-index:150;box-shadow:0 8px 20px rgba(0,0,0,0.15);white-space:normal;margin:0!important}
+}
+@media(max-width:900px){
+nav .nav-links.open{align-items:stretch;text-align:left}
+nav .nav-links.open .nav-drop{padding-bottom:0;margin-bottom:0}
+nav .nav-links.open .nav-drop-label{font-weight:700;color:var(--ink,#16181A)}
+nav .nav-links.open .nav-drop-menu{position:static;display:block;padding:0;margin:0.3rem 0 0.2rem}
+nav .nav-links.open .nd-box{border:none;box-shadow:none;background:none;padding:0;min-width:0}
+nav .nav-links.open .nav-drop-menu a,nav .nav-links.open .nd-glabel{padding:0.4rem 0;font-size:0.82rem;white-space:normal}
+nav .nav-links.open .nav-drop-menu a.nd-sub{padding-left:1.8rem}
+nav .nav-links.open .nd-flyout a[aria-current="page"]{padding-left:0.6rem}
+nav .nav-links.open .nd-flyout{position:static;padding:0 0 0.3rem 1.8rem;display:none}
+nav .nav-links.open .nd-group:hover>.nd-flyout,nav .nav-links.open .nd-group:focus-within>.nd-flyout{display:none}
+nav .nav-links.open .nd-group.open>.nd-flyout{display:block}
+nav .nav-links.open .nd-group.open>.nd-glabel,nav .nav-links.open .nd-group:hover>.nd-glabel{background:none}
+nav .nav-links.open .nd-group.open .nd-arrow{transform:rotate(90deg)}
+nav .nav-links.open .nd-head{padding:0.45rem 0 0.1rem}
+}
+</style>
+<style id="sf-css">
+footer.sf{display:block;text-align:left;padding:2.2rem 3rem 1.6rem;border-top:2px solid var(--ink,#16181A);background:var(--enclosure2,#E8EAE5);color:var(--muted,#5F5E5A);font-family:'Archivo',sans-serif;font-size:.92rem}
+footer.sf a{color:var(--muted,#5F5E5A);text-decoration:none}
+footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
+.sf-cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.6rem 2rem;max-width:1100px}
+.sf-col{display:flex;flex-direction:column;gap:.45rem;min-width:0}
+.sf-h{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink,#16181A);font-weight:600;margin-bottom:.2rem}
+.sf-bot{display:flex;flex-wrap:wrap;gap:.6rem 1.6rem;align-items:baseline;justify-content:space-between;border-top:1px solid var(--steel,#B9BDB6);margin-top:1.8rem;padding-top:1rem;font-size:.85rem}
+.sf-logo{font-family:'Saira Condensed',sans-serif;color:var(--ink,#16181A);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+@media(max-width:768px){footer.sf{padding:1.8rem 1.2rem}.sf-cols{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:1100px){.sec-label,.eyebrow,.np-eyebrow,.np-specs span,.step-label,.def-label,.toc-label,.c-label,.q-k,.plan-label,.os-tag,.pro-tag,.ed,.sb-sub,.sb-sub a,.nd-head,.also-label,figcaption{font-size:11px!important}}
+.sf-swipe{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--amber-ink,#8A6200);text-align:right;margin:.3rem 0 .4rem}
+.sf-swipe[hidden]{display:none}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="logo">Modbus<span>Manager</span></a>
+    <button class="nav-burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li class="nav-drop nd-has">
+      <span class="nav-drop-label" tabindex="0">Features &#9662;</span>
+      <div class="nav-drop-menu"><div class="nd-box">
+        <a href="/modbus-scanner.html" class="nd-hot"><span class="ni">&#128269;&#65039;</span>Modbus Scanner</a>
+        <a href="/modbus-slave-simulator.html" aria-current="page"><span class="ni">&#129514;&#65039;</span>Slave Simulator</a>
+        <a href="/modbus-rtu-over-tcp.html" class="nd-sub"><span class="ni">&#128257;&#65039;</span>RTU over TCP</a>
+        <a href="/modbus-tcp-security-tls.html" class="nd-sub"><span class="ni">&#128274;&#65039;</span>Modbus TCP Security (TLS)</a>
+        <a href="/modbus-hmi-dashboard.html"><span class="ni">&#128202;&#65039;</span>HMI Dashboard</a>
+        <a href="/modbus-hmi-runtime.html" class="nd-sub"><span class="ni">&#128421;&#65039;</span>HMI Runtime (OEM)</a>
+        <a href="/modbus-data-logger-software.html"><span class="ni">&#128200;&#65039;</span>Data Logger</a>
+        <a href="/modbus-rtu-rs485-data-logger.html" class="nd-sub"><span class="ni">&#128223;&#65039;</span>RTU / RS-485 Logging</a>
+        <a href="/modbus-logging-interval-deadband.html" class="nd-sub"><span class="ni">&#9201;&#65039;</span>Interval &amp; Deadband</a>
+        <a href="/modbus-to-csv-logging.html" class="nd-sub"><span class="ni">&#128196;&#65039;</span>CSV Export</a>
+        <a href="/modbus-alarm-software.html"><span class="ni">&#128276;&#65039;</span>Alarms</a>
+        <a href="/modbus-gateway-software.html"><span class="ni">&#128256;&#65039;</span>Gateway</a>
+        <a href="/modbus-to-mqtt.html" class="nd-sub"><span class="ni">&#128225;&#65039;</span>Modbus to MQTT</a>
+        <a href="/modbus-structured-text-scripting.html"><span class="ni">&#127991;&#65039;</span>Tags &amp; Structured Text</a>
+      </div></div>
+    </li>
+    <li class="nav-drop">
+      <span class="nav-drop-label" tabindex="0">Guides &#9662;</span>
+      <div class="nav-drop-menu"><div class="nd-box">
+        <a href="/modbus-device-guides.html"><span class="ni">&#128218;&#65039;</span>All guides</a>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9728;&#65039;</span>Solar &amp; inverters<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/huawei-smartlogger-modbus.html">Huawei SmartLogger</a>
+            <a href="/huawei-sun2000-modbus.html">Huawei SUN2000</a>
+            <a href="/huawei-sun2000-home-assistant.html">SUN2000 &rarr; Home Assistant</a>
+            <a href="/sungrow-inverter-modbus.html">Sungrow Inverters</a>
+            <a href="/sunspec-modbus-sma-fronius-solaredge.html">SunSpec: SMA, Fronius, SolarEdge</a>
+            <a href="/victron-gx-modbus-tcp.html">Victron Cerbo GX</a>
+            <a href="/goodwe-et-hybrid-modbus.html">GoodWe ET Hybrid</a>
+            <a href="/deye-sunsynk-growatt-modbus.html">Deye, Sunsynk &amp; Growatt</a>
+            <a href="/lufft-ws-weather-sensor-modbus.html">Lufft WS weather sensors</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#128268;&#65039;</span>EV charging<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/alfen-eve-modbus.html">Alfen Eve EV charger</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9889;&#65039;</span>Energy meters<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/schneider-powerlogic-pm5000-modbus.html">Schneider PM5000</a>
+            <a href="/schneider-pm3200-modbus.html">Schneider PM3250</a>
+            <a href="/eastron-sdm630-modbus.html">Eastron SDM630</a>
+            <a href="/eastron-sdm120-modbus.html">Eastron SDM120</a>
+            <a href="/eastron-sdm230-sdm72-modbus.html">Eastron SDM230 / SDM72</a>
+            <a href="/carlo-gavazzi-em24-em340-modbus.html">Carlo Gavazzi EM340 / EM24</a>
+            <a href="/janitza-umg-96-pa-modbus.html">Janitza UMG 96-PA</a>
+            <a href="/socomec-diris-a40-modbus.html">Socomec DIRIS A-40</a>
+            <a href="/wattnode-modbus.html">WattNode</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9832;&#65039;</span>Heat pumps &amp; HVAC<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/nibe-s-series-modbus.html">NIBE S-series heat pumps</a>
+            <a href="/coolmaster-vrf-modbus.html">CoolMasterNet VRF</a>
+            <a href="/grundfos-magna3-cim-modbus.html">Grundfos MAGNA3 (CIM)</a>
+            <a href="/carel-pco-modbus.html">Carel pCO (chiller / AHU)</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#9881;&#65039;</span>Drives &amp; EC fans<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/abb-acs580-modbus.html">ABB ACS580</a>
+            <a href="/abb-acs880-modbus.html">ABB ACS880</a>
+            <a href="/abb-ach580-modbus.html">ABB ACH580</a>
+            <a href="/danfoss-vlt-fc102-fc302-modbus.html">Danfoss FC 102 / FC 302</a>
+            <a href="/schneider-altivar-atv320-atv630-modbus.html">Schneider ATV320 / ATV630</a>
+            <a href="/siemens-sinamics-g120-modbus.html">Siemens SINAMICS G120</a>
+            <a href="/powerflex-525-modbus.html">PowerFlex 525</a>
+            <a href="/durapulse-gs20-modbus.html">DURApulse GS20</a>
+            <a href="/yaskawa-v1000-modbus.html">Yaskawa V1000</a>
+            <a href="/modbus-hmi-ebm-papst.html">ebm-papst EC Fan</a>
+            <a href="/modbus-vfd-speed-reference.html">VFD Speed Registers</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#127981;&#65039;</span>Siemens PLCs<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/modbus-hmi-siemens-s7-1200.html">Siemens S7-1200 HMI</a>
+            <a href="/siemens-s7-put-get.html">Siemens S7 PUT/GET</a>
+          </div></div>
+        </div>
+        <div class="nd-group">
+          <button type="button" class="nd-glabel" aria-haspopup="true" onclick="this.parentNode.classList.toggle('open')"><span class="ni">&#127899;&#65039;</span>Controllers<span class="nd-arrow">&#9656;</span></button>
+          <div class="nd-flyout"><div class="nd-box">
+            <a href="/omron-e5cc-modbus.html">Omron E5CC temperature controller</a>
+            <a href="/danfoss-ak-cc-350-modbus.html">Danfoss AK-CC 350 case controller</a>
+            <a href="/deepsea-dse7320-modbus.html">Deep Sea DSE7320 generator</a>
+          </div></div>
+        </div>
+        <a href="/register-map-service.html"><span class="ni">&#128203;&#65039;</span>Register Map from your PDF</a>
+        <a href="/workspace.html"><span class="ni">&#128190;&#65039;</span>Workspaces: open &amp; use</a>
+        <a href="/manual.html"><span class="ni">&#128214;&#65039;</span>Documentation</a>
+        <a href="/modbus-poll-alternative.html"><span class="ni">&#9878;&#65039;</span>vs Modbus Poll</a>
+      </div></div>
+    </li>
+    <li><a href="/#pro">Pro</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#support">Support</a></li>
+    <li><a href="https://bacmanager.com">BACManager &#8599;</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.12/Modbus.Manager.Pro.Setup.1.9.12.exe" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-SlaveSim-NavText', 'product': 'pro', 'value': 1})" style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-ink);text-decoration:none;letter-spacing:0.04em">Pro trial &darr;</a>
+    <a href="/ModbusManager-Siemens-S7-1200-demo.zip" download class="nav-cta">Free demo &darr;</a>
+  </div>
+</nav>
+<div class="slogan-band slim">
+  <span class="sb-main">Every device. One tool. Pay once.</span>
+  <span class="sb-sub">Modbus &middot; BACnet &middot; Siemens S7 &middot; one-time licence &middot; also from us: <a href="https://bacmanager.com">BACManager&nbsp;&#8599;</a></span>
+</div>
+<!-- crumbs (site-crumbs.js) --><style>.sc-crumbs{max-width:1140px;margin:0 auto;padding:.75rem 3rem 0;font-family:'IBM Plex Mono',monospace;font-size:.72rem;line-height:1.5;color:var(--muted,#5F5E5A)}.sc-crumbs a{color:var(--muted,#5F5E5A);text-decoration:none;border-bottom:1px dotted currentColor}.sc-crumbs a:hover{color:var(--ink,#16181A)}.sc-crumbs .sep{margin:0 .45rem;opacity:.7}.sc-crumbs [aria-current]{color:var(--ink,#16181A)}@media(max-width:768px){.sc-crumbs{padding:.6rem 1.2rem 0}}</style><div class="sc-crumbs" role="navigation" aria-label="Breadcrumb"><a href="/">ModbusManager</a><span class="sep">&rsaquo;</span><a href="/#features">Features</a><span class="sep">&rsaquo;</span><span aria-current="page">Modbus Slave Simulator</span></div><!-- /crumbs -->
+
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow">// Slave simulator</div>
+  <h1>Modbus slave simulator:<br><span class="accent">test the master before the device exists</span></h1>
+  <p class="hero-desc">The meter is on order, the drive is on another site, the PLC program is due Friday. ModbusManager's Slave tab turns your PC into the Modbus device the master expects &mdash; over TCP and RTU, with values that move: sine waves, ramps, counters, random noise and a simulated PID process. It is in the same app as the master, so you can read your own simulator and see exactly what goes over the wire.</p>
+  <div class="hero-ctas">
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.12/Modbus.Manager.Pro.Setup.1.9.12.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-SlaveSim-Hero', 'product': 'pro', 'value': 1})">Download free trial</a>
+    <a href="/#pricing" class="btn-ghost">See pricing</a>
+  </div>
+  <p class="hero-note">Windows 10/11 &middot; TCP &amp; RTU &middot; in Standard ($49) and Pro ($119) &middot; one-time license &middot; 14-day trial</p>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- WHEN -->
+<section class="section">
+  <div class="sec-label">// when you need one</div>
+  <h2 class="sec-title">Every Modbus master needs something to talk to</h2>
+  <p class="sec-sub">A SCADA tag list, an HMI screen or a PLC's Modbus driver can only be tested against a device that answers. A simulator stands in for it:</p>
+  <ul style="margin:14px 0 0 1.2rem;color:var(--body);line-height:1.8;max-width:860px">
+    <li><b>Commissioning before delivery</b> &mdash; build and check the tag list and screens while the hardware is still on its way.</li>
+    <li><b>Testing a PLC program</b> &mdash; a PLC as Modbus master reads realistic values and its writes land somewhere you can see.</li>
+    <li><b>Factory acceptance tests and training</b> &mdash; repeatable values without a rack of real devices.</li>
+    <li><b>Reproducing a field problem</b> &mdash; the same register layout, the same data type, the same word order, on your desk.</li>
+    <li><b>The far end of a gateway</b> &mdash; a source device for ModbusManager's own <a href="/modbus-gateway-software.html">Modbus gateway</a>.</li>
+  </ul>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- HOW -->
+<section class="section">
+  <div class="sec-label">// how it works</div>
+  <h2 class="sec-title">Slave IDs, register blocks, a server</h2>
+
+  <div style="margin-top:24px">
+    <div style="border-left:3px solid var(--safety);padding:4px 0 4px 18px;margin-bottom:26px">
+      <h3 style="margin:0 0 6px;font-size:1.15rem;color:var(--ink)">&#9312; Add a device: a slave ID and its registers</h3>
+      <p style="margin:0 0 10px;color:var(--body);line-height:1.65">Under <b>Slave devices</b>, <b>+</b> adds a block: a slave ID (1&ndash;247), a register type (holding registers, input registers, coils or discrete inputs), a start address and a quantity (up to 1000). A slave ID can own several blocks, so a meter with registers at 0 and at 3000 is two blocks of the same ID. Overlapping blocks are refused.</p>
+      <p style="margin:0 0 10px;color:var(--body);line-height:1.65">Add more slave IDs and the same PC is a whole bus of devices.</p>
+    </div>
+    <div style="border-left:3px solid var(--safety);padding:4px 0 4px 18px;margin-bottom:26px">
+      <h3 style="margin:0 0 6px;font-size:1.15rem;color:var(--ink)">&#9313; Start a server: TCP, RTU, or both</h3>
+      <p style="margin:0 0 10px;color:var(--body);line-height:1.65">Under <b>Server</b>, start Modbus TCP on any port (502 by default) and/or Modbus RTU on a COM port. The RTU line has its own baud rate, data bits, parity and stop bits, independent of the connection the app uses as a master &mdash; so one PC can be master on one port and slave on another.</p>
+      <p style="margin:0 0 10px;color:var(--body);line-height:1.65">To test RTU on a single PC, a virtual COM port pair (com0com, for example) connects the two: the master on one end, the simulator on the other.</p>
+    </div>
+    <div style="border-left:3px solid var(--safety);padding:4px 0 4px 18px;margin-bottom:26px">
+      <h3 style="margin:0 0 6px;font-size:1.15rem;color:var(--ink)">&#9314; Watch the master arrive</h3>
+      <p style="margin:0 0 10px;color:var(--body);line-height:1.65">The <b>Link</b> line says whether a master is really there: which address connected over TCP, how many requests came in and how long ago the last one was. On RTU it shows the request rate and the frames with a bad CRC, which point at a wrong baud rate or parity. Refused requests appear in the request log below with the reason.</p>
+      <figure style="margin:1.1rem 0 0;max-width:900px;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
+        <img src="slave-sim-slave.png" alt="ModbusManager Slave tab: slave ID 1 with holding registers 0 to 19, simulations on registers 0, 2, 4, 6 and 10, a TCP server on port 5020, and the Link line showing master 127.0.0.1 connected with its last request 0.3 s ago" loading="lazy" style="display:block;width:100%;height:auto">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);padding:0.6rem 0.9rem;border-top:1px solid var(--steel)">Slave ID 1, holding registers 0&ndash;19, five simulations, TCP on port 5020 &mdash; and the master that is reading it</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- VALUES -->
+<section class="section">
+  <div class="sec-label">// values that move</div>
+  <h2 class="sec-title">A dead register teaches you nothing</h2>
+  <p class="sec-sub">A screen that shows 0 everywhere looks fine and proves nothing. Type a value into any register, or give it a simulation from the &#9881; button next to it:</p>
+  <div style="overflow-x:auto;margin-top:18px;max-width:900px">
+  <table style="width:100%;border-collapse:collapse;font-size:0.92rem;color:var(--body)">
+    <thead><tr><th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--ink);font-family:'IBM Plex Mono',monospace;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.04em">Type</th><th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--ink);font-family:'IBM Plex Mono',monospace;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.04em">What it does</th><th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--ink);font-family:'IBM Plex Mono',monospace;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.04em">Good for</th></tr></thead>
+    <tbody>
+      <tr><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top"><b>Counter &uarr; / &darr;</b></td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">Steps up or down between Min and Max</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">Energy and operating-hour counters, roll-over tests</td></tr>
+      <tr><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top"><b>Sine wave</b></td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">Swings between Min and Max with a set period</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">Voltages, temperatures, anything that should look alive on a trend</td></tr>
+      <tr><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top"><b>Ramp</b></td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">Rises from Min to Max, then starts again</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">Tank levels, scaling and alarm limits</td></tr>
+      <tr><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top"><b>Random</b></td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">A new value between Min and Max each interval</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">Noise, deadband and change detection</td></tr>
+      <tr><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top"><b>PID loop</b></td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">A simulated process with setpoint, output, mode and tuning in six registers</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">PID faceplates and setpoint writes</td></tr>
+      <tr><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top"><b>Static value</b> (Pro)</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">One typed value, written in the chosen data type</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">A Float32 or 32-bit value without converting it by hand</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="margin:16px 0 0;color:var(--body);line-height:1.65;max-width:860px">Each type writes the register as <b>UInt16, Int16, Int32, UInt32 or Float32</b>; the 32-bit types take two registers and a word order, high word first or low word first &mdash; so you can reproduce the exact layout of the device you are waiting for, including the word order your master has to get right.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start;margin-top:18px">
+    <figure style="margin:0;flex:0 0 auto;max-width:364px;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
+      <img src="slave-sim-dialog.png" alt="Simulate dialog for holding register 0: sine wave, Float32, high word first, minimum 228, maximum 232, period 60000 ms, interval 200 ms" loading="lazy" style="display:block;width:100%;height:auto">
+      <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);padding:0.6rem 0.9rem;border-top:1px solid var(--steel)">A Float32 voltage, 228&ndash;232 V, one sine per minute</figcaption>
+    </figure>
+    <div style="flex:1 1 300px;border-left:3px solid var(--safety);padding:4px 0 4px 18px">
+      <h3 style="margin:0 0 6px;font-size:1.05rem;color:var(--ink)">Match the simulator to the poll rate</h3>
+      <p style="margin:0 0 10px;color:var(--body);line-height:1.65">Keep the simulation interval well below the master's poll interval, and a sine period at least ten times the poll interval. When the two rates are close, the master sees the same value twice and then skips one, and a smooth curve turns into steps that are not in the device.</p>
+      <h3 style="margin:14px 0 6px;font-size:1.05rem;color:var(--ink)">The PID process</h3>
+      <p style="margin:0;color:var(--body);line-height:1.65">A PID loop takes six holding registers: +0 process value &times;10, +1 setpoint &times;10, +2 output 0&ndash;1000, +3 mode (1 = auto), +4 P &times;10, +5 I in seconds. Write a new setpoint from the master &mdash; or from the dashboard's PID faceplate in Pro &mdash; and watch the process follow it.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- LIKE HARDWARE -->
+<section class="section">
+  <div class="sec-label">// behaves like the real thing</div>
+  <h2 class="sec-title">It refuses what a real device refuses</h2>
+  <p class="sec-sub">A simulator that answers everything hides the mistakes your master will make on site. This one answers like hardware:</p>
+  <div style="overflow-x:auto;margin-top:18px;max-width:900px">
+  <table style="width:100%;border-collapse:collapse;font-size:0.92rem;color:var(--body)">
+    <thead><tr><th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--ink);font-family:'IBM Plex Mono',monospace;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.04em">The master asks for</th><th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--ink);font-family:'IBM Plex Mono',monospace;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.04em">The simulator</th></tr></thead>
+    <tbody>
+      <tr><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">An address outside the blocks of that slave ID</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">Exception <b>02</b>, illegal data address &mdash; the classic off-by-one between 40001 and 0 shows up here, not on site</td></tr>
+      <tr><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">A slave ID that is not simulated, over TCP</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">Exception <b>0B</b>, as a gateway answers for a device that does not respond</td></tr>
+      <tr><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">A slave ID that is not simulated, over RTU</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top"><b>No answer at all</b> &mdash; on a shared RS-485 line the device with that ID answers, and a second reply would collide with it</td></tr>
+      <tr><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">A frame with a bad CRC, over RTU</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">Dropped and counted on the Link line, as a real slave drops it</td></tr>
+      <tr><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">A write to a coil or holding register (FC 05, 06, 15, 16)</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">The value changes and the write appears in the request log</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- MASTER AND SLAVE -->
+<section class="section">
+  <div class="sec-label">// master and slave in one app</div>
+  <h2 class="sec-title">Read your own simulator</h2>
+  <p class="sec-sub">ModbusManager is a Modbus master too, so the same PC can read the simulated device and show what a SCADA will get. Here a poll window reads the simulated meter over TCP with <b>Float</b> on: voltage, current, frequency and energy decoded from register pairs. If your SCADA shows something else, the difference is in the SCADA's settings &mdash; data type, word order or address base.</p>
+      <figure style="margin:1.1rem 0 0;max-width:900px;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--plate)">
+        <img src="slave-sim-master.png" alt="A ModbusManager poll window reading the simulated meter on 127.0.0.1 port 5020, slave ID 1, FC03 registers 0 to 7 with Float on: 231.40 V, 12.13 A, 50.04 Hz and 12502.5 kWh" loading="lazy" style="display:block;width:100%;height:auto">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);padding:0.6rem 0.9rem;border-top:1px solid var(--steel)">The same app as a master: four Float32 values from the simulated meter, read every second</figcaption>
+      </figure>
+  <p style="margin:18px 0 0;color:var(--body);line-height:1.65;max-width:860px">In <b>Pro</b> the simulated device can feed everything else: <a href="/modbus-structured-text-scripting.html">tags and Structured Text</a>, a <a href="/modbus-hmi-dashboard.html">dashboard</a>, the <a href="/modbus-data-logger-software.html">Historian</a> and <a href="/modbus-alarm-software.html">alarms</a> &mdash; a complete project built and tested before the first real device is wired.</p>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- COMPARE -->
+<section class="section">
+  <div class="sec-label">// one program, both ends</div>
+  <h2 class="sec-title">Master and slave without a second program</h2>
+  <p class="sec-sub">With some Modbus tools the master and the slave simulator are two separate programs, each bought on its own. In ModbusManager the slave simulator is part of both editions, next to the master:</p>
+  <div style="overflow-x:auto;margin-top:18px;max-width:900px">
+  <table style="width:100%;border-collapse:collapse;font-size:0.92rem;color:var(--body)">
+    <thead><tr><th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--ink);font-family:'IBM Plex Mono',monospace;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.04em"></th><th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--ink);font-family:'IBM Plex Mono',monospace;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.04em">Standard, $49</th><th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--ink);font-family:'IBM Plex Mono',monospace;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.04em">Pro, $119</th></tr></thead>
+    <tbody>
+      <tr><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">Modbus master: poll windows, write, chart, serial monitor, scans</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">&#10003;</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">&#10003;</td></tr>
+      <tr><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">Slave simulator over TCP and RTU, several slave IDs</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">&#10003;</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">&#10003;</td></tr>
+      <tr><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">Counter, sine, ramp, random, PID process</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">&#10003;</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">&#10003;</td></tr>
+      <tr><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">Static value in a chosen data type</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">&mdash;</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">&#10003;</td></tr>
+      <tr><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">Dashboard, tags, Historian, alarms, gateway against the simulated devices</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">&mdash;</td><td style="padding:8px 10px;border-bottom:1px solid var(--steel);vertical-align:top">&#10003;</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="margin:14px 0 0;color:var(--body);line-height:1.65;max-width:860px">Coming from Modbus Poll? See <a href="/modbus-poll-alternative.html">ModbusManager as a Modbus Poll alternative</a>.</p>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="sec-label">// questions</div>
+  <h2 class="sec-title">Modbus slave simulator: common questions</h2>
+  <div style="margin-top:18px;max-width:880px">
+    <div style="border-bottom:1px solid var(--steel);padding:14px 0">
+      <h3 style="margin:0 0 6px;font-size:1.02rem;color:var(--ink)">Can I simulate a Modbus device without any hardware?</h3>
+      <p style="margin:0;color:var(--body);line-height:1.65">Yes. The Slave tab of ModbusManager turns the PC into a Modbus TCP and/or RTU slave. You define slave IDs and register blocks, give registers moving values, and point your SCADA, HMI or PLC at it. The same app can read it as a master to check what it sends.</p>
+    </div>
+    <div style="border-bottom:1px solid var(--steel);padding:14px 0">
+      <h3 style="margin:0 0 6px;font-size:1.02rem;color:var(--ink)">Can it simulate several devices at once?</h3>
+      <p style="margin:0;color:var(--body);line-height:1.65">Yes. Add blocks for as many slave IDs (1-247) as you need; each ID can have several blocks of holding registers, input registers, coils and discrete inputs. One TCP port answers all of them, and on RTU each ID answers on the shared line like a separate device.</p>
+    </div>
+    <div style="border-bottom:1px solid var(--steel);padding:14px 0">
+      <h3 style="margin:0 0 6px;font-size:1.02rem;color:var(--ink)">Does it work over Modbus RTU as well as TCP?</h3>
+      <p style="margin:0;color:var(--body);line-height:1.65">Yes. Start a TCP server on any port, an RTU server on a COM port with its own baud rate, data bits, parity and stop bits, or both. To test on one PC, use a virtual COM port pair (for example com0com): the master on one port, the simulator on the other.</p>
+    </div>
+    <div style="border-bottom:1px solid var(--steel);padding:14px 0">
+      <h3 style="margin:0 0 6px;font-size:1.02rem;color:var(--ink)">What happens when the master asks for an address or a slave ID that is not simulated?</h3>
+      <p style="margin:0;color:var(--body);line-height:1.65">An address outside the blocks of that slave ID gets exception 02, illegal data address, as a real device answers. On TCP a slave ID that is not simulated gets exception 0B. On RTU it gets no answer at all, because on a shared RS-485 line the device with that ID would answer, and frames with a bad CRC are dropped and counted.</p>
+    </div>
+    <div style="border-bottom:1px solid var(--steel);padding:14px 0">
+      <h3 style="margin:0 0 6px;font-size:1.02rem;color:var(--ink)">Can the master write to the simulated registers?</h3>
+      <p style="margin:0;color:var(--body);line-height:1.65">Yes. Writes to coils and holding registers (function codes 05, 06, 15 and 16) change the simulated values and appear in the request log. A PID loop register block follows a setpoint the master writes.</p>
+    </div>
+    <div style="border-bottom:1px solid var(--steel);padding:14px 0">
+      <h3 style="margin:0 0 6px;font-size:1.02rem;color:var(--ink)">Is the slave simulator in Standard or only in Pro?</h3>
+      <p style="margin:0;color:var(--body);line-height:1.65">Both. ModbusManager Standard ($49) and Pro ($119) include the slave simulator with counters, sine waves, ramps, random values and the PID process. Pro adds a static-value type and the dashboard, tags, Historian, alarms and gateway that can work against the simulated devices.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider-line"></div>
+
+<!-- CTA -->
+<section class="section" style="text-align:center">
+  <h2 style="font-size:1.6rem;color:var(--ink);margin-bottom:10px">Start testing without the hardware</h2>
+  <p class="sec-sub" style="margin:0 auto 22px;max-width:560px">Download the trial, open the Slave tab, add a device and start the server. Your master has something to talk to in a minute.</p>
+  <div class="hero-ctas" style="justify-content:center">
+    <a href="#download" data-dl="github.com/vend123/modbusmanager-downloads/releases/download/pro-v1.9.12/Modbus.Manager.Pro.Setup.1.9.12.exe" class="btn-primary" onclick="gtag('event', 'trial_download', {'event_category': 'Download', 'event_label': 'ModbusManager-SlaveSim-CTA', 'product': 'pro', 'value': 1})">Download free trial</a>
+    <a href="/#pricing" class="btn-ghost">See pricing</a>
+  </div>
+</section>
+
+<footer class="sf" id="support">
+  <div class="sf-cols">
+    <div class="sf-col"><div class="sf-h">Features</div>
+      <a href="/modbus-hmi-dashboard.html">HMI Dashboard</a>
+      <a href="/modbus-data-logger-software.html">Data Logger</a>
+      <a href="/modbus-rtu-rs485-data-logger.html">RTU logging</a>
+      <a href="/modbus-to-csv-logging.html">CSV export</a>
+      <a href="/modbus-alarm-software.html">Alarms</a>
+      <a href="/modbus-slave-simulator.html">Slave simulator</a>
+      <a href="/modbus-gateway-software.html">Gateway</a>
+      <a href="/modbus-to-mqtt.html">Modbus to MQTT</a>
+      <a href="/modbus-structured-text-scripting.html">Tags &amp; scripting</a>
+    </div>
+    <div class="sf-col"><div class="sf-h">Devices</div>
+      <a href="/eastron-sdm630-modbus.html">Energy meters</a>
+      <a href="/modbus-vfd-speed-reference.html">VFD drives</a>
+      <a href="/huawei-smartlogger-modbus.html">Solar / inverters</a>
+    </div>
+    <div class="sf-col"><div class="sf-h">Help</div>
+      <a href="/manual.html">Documentation</a>
+      <a href="/#install">Install notes</a>
+      <a href="/linux-mac.html">Linux / Pi / Mac waitlist</a>
+      <a href="mailto:support@modbusmanager.com">Support</a>
+    </div>
+    <div class="sf-col"><div class="sf-h">Company</div>
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/license-terms.html">License terms</a>
+      <a href="https://bacmanager.com">BACManager (BACnet) &#8599;</a>
+    </div>
+  </div>
+  <div class="sf-bot"><span class="sf-logo">ModbusManager</span><span>Every device. One tool. Pay once.</span><span>&copy; 2026 E-Netter O&Uuml;</span><a href="mailto:support@modbusmanager.com">support@modbusmanager.com</a></div>
+<script id="sf-js">(function(){
+  function box(t){for(var e=t,i=0;e&&i<3;e=e.parentElement,i++){var o=getComputedStyle(e).overflowX;if(o==='auto'||o==='scroll')return e}return null}
+  function check(b){var h=b.previousElementSibling,wide=b.scrollWidth>b.clientWidth+4;
+    if(!h||!h.classList.contains('sf-swipe')){if(!wide)return;h=document.createElement('div');h.className='sf-swipe';h.textContent='Table continues \u2014 swipe sideways \u2192';b.parentNode.insertBefore(h,b);
+      b.addEventListener('scroll',function(){if(b.scrollLeft>20)h.hidden=true},{passive:true})}
+    if(!wide)h.hidden=true;else if(b.scrollLeft<=20)h.hidden=false}
+  function run(){var seen=[];document.querySelectorAll('table').forEach(function(t){var b=box(t);if(b&&seen.indexOf(b)<0){seen.push(b);check(b);if(window.ResizeObserver)new ResizeObserver(function(){check(b)}).observe(b)}})}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+})();</script>
+</footer>
+
+
+<script>
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+</script>
+
+
+<!-- Cookie consent (Google Analytics) -->
+<style>
+#mm-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--ink,#16181A);color:#E6E8E3;border-top:3px solid var(--safety,#F2A900);padding:1rem 1.4rem;display:none;font-family:'Archivo',sans-serif;font-size:0.88rem;line-height:1.5}
+#mm-consent.show{display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;justify-content:center}
+#mm-consent p{margin:0;max-width:720px}
+#mm-consent a{color:var(--safety,#F2A900);text-decoration:underline}
+#mm-consent .mm-btns{display:flex;gap:.6rem;flex-shrink:0}
+#mm-consent button{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.1rem;border:2px solid var(--safety,#F2A900);border-radius:3px;cursor:pointer}
+#mm-consent .mm-accept{background:var(--safety,#F2A900);color:var(--ink,#16181A);font-weight:600}
+#mm-consent .mm-decline{background:transparent;color:var(--safety,#F2A900)}
+</style>
+<div id="mm-consent" role="dialog" aria-label="Cookie consent">
+  <p>We use Google Analytics cookies to see how the site is used. You can accept or decline &mdash; declining keeps analytics off. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <div class="mm-btns">
+    <button class="mm-decline" type="button" onclick="mmConsent(false)">Decline</button>
+    <button class="mm-accept" type="button" onclick="mmConsent(true)">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  function apply(g){ if(typeof gtag==='function'){ gtag('consent','update',{'analytics_storage': g?'granted':'denied'}); } }
+  window.mmConsent=function(ok){
+    try{ localStorage.setItem('mm_consent', ok?'granted':'denied'); }catch(e){}
+    apply(ok);
+    var b=document.getElementById('mm-consent'); if(b){ b.classList.remove('show'); }
+  };
+  function init(){
+    var c=null; try{ c=localStorage.getItem('mm_consent'); }catch(e){}
+    if(c==='granted'){ apply(true); }
+    else if(c==='denied'){ apply(false); }
+    else { var b=document.getElementById('mm-consent'); if(b){ b.classList.add('show'); } }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+
+<script src="/email-capture.js" defer></script>
+
+<script>
+/* Download buttons (2026-10-26): the installer is fetched on a click, not
+   through the link's href, so crawlers that follow every link no longer count
+   as downloads on GitHub. data-dl is the address without https://.
+   Each click is also counted in our own Google Sheet (Apps Script), cookie
+   consent or not: site, product, version, page, referrer, language, time
+   zone. No cookies, no IP address. The download never waits for it.
+   A workspace (.json or .zip on this site) is counted as product "Workspace" with
+   the file name as its version, a manual (.pdf) as product "Manual"; both
+   download as before. */
+function dlCount(product, version) {
+  try {
+    navigator.sendBeacon('https://script.google.com/macros/s/AKfycbyx9RacY_l5KDK0RBBmLk41uKv3McyR_UJmCTWqnRqklh6fYgeXvYecddcQDGzRx5-F/exec', JSON.stringify({
+      site: location.hostname, product: product, version: version,
+      page: location.pathname, referrer: document.referrer, lang: navigator.language,
+      tz: (window.Intl && Intl.DateTimeFormat().resolvedOptions().timeZone) || ''
+    }));
+  } catch (err) {}
+}
+document.addEventListener('click', function (e) {
+  if (!e.target.closest) return;
+  var w = e.target.closest('a[href$=".json"], a[href$=".zip"], a[href$=".zap15_1"]');
+  if (w) { dlCount('Workspace', (w.getAttribute('href').match(/([^\/]+)\.(?:json|zip|zap15_1)$/) || [])[1] || ''); return; }
+  var m = e.target.closest('a[href$=".pdf"]');
+  if (m) { dlCount('Manual', (m.getAttribute('href').match(/([^\/]+)\.pdf$/) || [])[1] || ''); return; }
+  var a = e.target.closest('a[data-dl]');
+  if (!a || e.defaultPrevented) return;
+  e.preventDefault();
+  var dl = a.getAttribute('data-dl');
+  dlCount(/bacmanager/i.test(dl) ? 'BACManager' : (/Pro\.Setup|pro-v/i.test(dl) ? 'ModbusManager Pro' : 'ModbusManager Standard'),
+    (dl.match(/(\d+(?:\.\d+)+)\.exe$/) || [])[1] || '');
+  window.location.href = 'https://' + dl;
+});
+</script>
+<script src="/count.js" defer></script>
+</body>
+</html>
