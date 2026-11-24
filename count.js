@@ -4,12 +4,16 @@
    page view, Buy-button click, checkout opened and purchase. Sent: site,
    what happened, page, the page you came from, browser language and time
    zone. No cookies, no storage, no IP address, nothing that identifies you.
-   Crawlers and automated browsers are not counted. */
+   Crawlers, automated browsers and copies of a page outside the two sites
+   are not counted. */
 (function () {
   var URL = 'https://script.google.com/macros/s/AKfycbyx9RacY_l5KDK0RBBmLk41uKv3McyR_UJmCTWqnRqklh6fYgeXvYecddcQDGzRx5-F/exec';
   var nav = window.navigator || {};
   if (nav.webdriver || /bot|crawl|spider|slurp|lighthouse|headless|preview|facebookexternalhit|bingpreview/i.test(nav.userAgent || '')) return;
   if (typeof nav.sendBeacon !== 'function') return;
+  // only the real sites count (2026-11-24): a local preview of a page (127.0.0.1,
+  // localhost, a file, a LAN address) sent rows of its own
+  if (!/^(www\.)?(modbusmanager|bacmanager)\.com$/i.test(window.location.hostname || '')) return;
   function count(kind, what) {
     try {
       var tz = '';
