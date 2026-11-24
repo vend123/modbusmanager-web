@@ -551,6 +551,18 @@ footer.sf a:hover{color:var(--ink,#16181A);text-decoration:underline}
 <tr><td><b>Pro</b> &mdash; &#36;119</td><td>Everything in Standard, plus Dashboard, Tags &amp; Structured Text, History, Alarms, Gateway, Siemens S7, Runtime packages, device templates, Auto-detect, Diagnose, register snapshots and the PDF commissioning report. Marked <span class="ed pro">Pro</span>.</td></tr>
 <tr><td><b>Runtime</b> &mdash; &#36;39 / machine</td><td>Runs a dashboard package made in Pro full screen on an OEM or panel PC, with no editor. See <a class="inline-link" href="#runtime">Runtime edition</a>.</td></tr>
 </tbody></table>
+<!-- system-requirements (add-system-requirements.js) -->
+<h3 id="system-requirements">System requirements</h3>
+<p>ModbusManager Standard and Pro run on an ordinary office laptop or PC:</p>
+<table class="doc-table"><thead><tr><th style="width:150px">Item</th><th>Minimum</th></tr></thead><tbody>
+<tr><td><b>Operating system</b></td><td>Windows 10 or Windows 11, 64-bit</td></tr>
+<tr><td><b>Processor</b></td><td>Any x64 processor (Intel or AMD), two cores or more</td></tr>
+<tr><td><b>Memory</b></td><td>4 GB RAM minimum, 8 GB recommended. The application itself uses about 0.4 GB, and up to 0.6 GB with many poll windows, a dashboard and the Historian running (measured).</td></tr>
+<tr><td><b>Disk</b></td><td>About 600 MB for the program, plus room for logged history if you use the Historian</td></tr>
+<tr><td><b>Screen</b></td><td>1366 &times; 768 or larger; 1920 &times; 1080 recommended for dashboards</td></tr>
+<tr><td><b>Connections</b></td><td>Modbus TCP: a normal Ethernet or Wi-Fi connection. Modbus RTU (RS-485 / RS-232): a USB-to-RS485 or RS-232 adapter that appears as a COM port in Windows.</td></tr>
+<tr><td><b>Internet</b></td><td>Not needed to run the software or to use a licence key. Only buying online, alarm messages by e-mail or Telegram and an MQTT broker on the internet use a connection.</td></tr>
+</tbody></table>
 <div class="steps"><div class="step"><div class="step-label">Install</div><div class="step-title">Run the installer</div><div class="step-text">Download the installer and start ModbusManager from the Start menu.</div></div><div class="step"><div class="step-label">Trial</div><div class="step-title">14 days, full features</div><div class="step-text">The licence button in the toolbar shows the days left, e.g. &ldquo;Trial: 12d&rdquo;.</div></div><div class="step"><div class="step-label">Connect</div><div class="step-title">Add your device</div><div class="step-text">Press <b>Connect</b> (or <span class="kbd">F3</span>), choose the mode, enter the parameters.</div></div><div class="step"><div class="step-label">Build</div><div class="step-title">Poll &amp; visualise</div><div class="step-text">Read registers, name them as tags, then build an operator screen.</div></div></div>
 <p>On the first start Pro asks <b>&ldquo;What would you like to do?&rdquo;</b> &mdash; <i>Read a device</i>, <i>Simulate a slave</i>, <i>Combine several devices</i>, <i>Build a dashboard</i> or <i>Just let me look around</i> &mdash; and opens the matching tab. During the trial a short licence reminder appears at start and every 15 minutes; it also asks whether you managed to connect, and <i>I am stuck</i> leads to tips and a diagnostic text you can copy into a support e-mail.</p>
 <h3>Where to go next</h3>
